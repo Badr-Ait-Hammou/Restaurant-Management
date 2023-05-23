@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useReducer } from "react";
-import axios from 'axios';
+/*import React, { useState, useEffect, useReducer } from "react";
+import axios from '../service/callerService';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -29,14 +29,14 @@ export default function User() {
 
 
     useEffect(() => {
-        axios.get("http://localhost:8080/api/users/").then((response) => {
+        axios.get("/api/controller/users/").then((response) => {
             setUser(response.data);
         });
     }, [upTB]);
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        axios.post("http://localhost:8080/api/auth/register", {
+        axios.post("/api/controller/auth/register", {
             firstname,
             lastname,
             email,
@@ -196,4 +196,4 @@ export default function User() {
 
         </ThemeProvider>
     );
-}
+}*/

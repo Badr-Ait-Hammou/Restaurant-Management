@@ -1,8 +1,12 @@
-import React, { useState, useEffect } from "react";
 import axios from  '../service/callerService';
+import React, { useState, useEffect } from "react";
 import Modal from "react-modal";
 import 'bootstrap/dist/css/bootstrap.css';
-import Button from "@mui/material/Button";
+import { Button } from 'primereact/button';
+import ReactPaginate from "react-paginate";
+import {ConfirmDialog, confirmDialog} from "primereact/confirmdialog";
+import {Toast} from "primereact/toast";
+import {useRef} from "react";
 
 
 
@@ -13,6 +17,12 @@ export default function ZoneList({ cityId })  {
     const [villes, setVilles] = useState([]);
     const [zoneName, setZoneName] = useState('');
     const [zoneCity, setZoneCity] = useState('');
+    const [pageNumber, setPageNumber] = useState(0);
+
+    const itemsPerPage = 4;
+    const offset = pageNumber * itemsPerPage;
+    const currentPageItems = zones.slice(offset, offset + itemsPerPage);
+    const toast = useRef(null);
 
 
 
@@ -32,16 +42,33 @@ export default function ZoneList({ cityId })  {
         fetchCities();
     }, []);
 
+   ;
+
+
     const handleDelete = (zoneId) => {
-        if (window.confirm("Are you sure you want to delete this zone?")) {
+        const confirmDelete = () => {
             axios.delete(`/api/controller/zones/${zoneId}`).then(() => {
                 setZones(zones.filter((zone) => zone.id !== zoneId));
+                toast.current.show({severity:'error', summary: 'Done', detail:'Zone deleted successfully', life: 3000});
             });
-        }
+        };
+
+        confirmDialog({
+            message: 'Are you sure you want to Delete this Zone?',
+            header: 'Confirmation',
+            icon: 'pi pi-exclamation-triangle',
+            acceptLabel: 'Yes',
+            rejectLabel: 'No',
+            acceptClassName: 'p-button-danger',
+            accept: confirmDelete
+        });
+        loadzones();
     };
+
 
     const handleOpenModal = (zone) => {
         setSelectedZone(zone);
+       // setSelectedZone(zone.nom);
         setModalIsOpen(true);
     };
 
@@ -83,6 +110,8 @@ export default function ZoneList({ cityId })  {
 
     return (
         <div>
+            <Toast ref={toast} />
+            <ConfirmDialog />
             <div className="table-responsive">
                 <table className="table mt-5 text-center">
                     <thead>
@@ -94,23 +123,34 @@ export default function ZoneList({ cityId })  {
                     </tr>
                     </thead>
                     <tbody>
-                    {zones.map((zone) => (
+                    {currentPageItems.map((zone) => (
                         <tr key={zone.id}>
                             <td>{zone.id}</td>
                             <td>{zone.nom}</td>
                             <td>{zone.ville && zone.ville.nom}</td>
                             <td>
-                                <Button variant="contained" color="warning"  onClick={() => handleDelete(zone.id)}>
-                                    Delete
-                                </Button>
-                                <Button variant="contained" color="info" sx={{ ml:1 }} onClick={() => handleOpenModal(zone)}>
-                                    Edit
-                                </Button>
+                                <Button  label="Edit" severity="help" raised  className="mx-1"  onClick={() => handleOpenModal(zone)}/>
+                                <Button label="Delete" severity="danger"  className="mx-1" text raised  onClick={() => handleDelete(zone.id)}/>
+
                             </td>
                         </tr>
                     ))}
                     </tbody>
                 </table>
+                <div className="pagination-container">
+                    <ReactPaginate
+                        previousLabel={<button className="pagination-button">&lt;</button>}
+                        nextLabel={<button className="pagination-button">&gt;</button>}
+                        pageCount={Math.ceil(zones.length / itemsPerPage)}
+                        onPageChange={({ selected }) => setPageNumber(selected)}
+                        containerClassName={"pagination"}
+                        previousLinkClassName={"pagination__link"}
+                        nextLinkClassName={"pagination__link"}
+                        disabledClassName={"pagination__link--disabled"}
+                        activeClassName={"pagination__link--active"}
+                    />
+                </div>
+
             </div>
             <Modal
                 isOpen={modalIsOpen}
@@ -141,7 +181,7 @@ export default function ZoneList({ cityId })  {
             >
                 <div className="card">
                     <div className="card-body">
-                        <h5 className="card-title" id="modal-modal-title">Update User</h5>
+                        <h5 className="card-title" id="modal-modal-title">Update Zone</h5>
                         <form>
                             <div className="mb-3">
                                 <label htmlFor="user-nom" className="form-label">Zone:</label>
@@ -171,15 +211,12 @@ export default function ZoneList({ cityId })  {
                                 </select>
                             </div>
 
-
                         </form>
                         <div className="d-flex justify-content-center mt-3">
-                            <Button variant="contained" color="error"  onClick={handleCloseModal}>
-                                Annuler
-                            </Button>
-                            <Button variant="contained" color="success" sx={{ ml:1 }} onClick={() => handleEditZone(selectedZone.id)}>
-                                Sauvegarder
-                            </Button>
+                            <Button label="Cancel" severity="warning" raised    className="mx-2" onClick={handleCloseModal}/>
+
+                            <Button label="Save" severity="success" raised    className="mx-2" onClick={() => handleEditZone(selectedZone.id)}/>
+
                         </div>
                     </div>
                 </div>

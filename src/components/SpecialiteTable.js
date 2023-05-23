@@ -1,42 +1,73 @@
-import React,{useState,useEffect} from "react";
+import React,{useState,useEffect,useRef} from "react";
 import 'bootstrap/dist/css/bootstrap.css';
-import Button from '@mui/material/Button';
-import axios from '../service/callerService';
+import axios from  '../service/callerService';
 import Modal from "react-modal";
+import { Toast } from 'primereact/toast';
+import { Button } from 'primereact/button';
+import ReactPaginate from "react-paginate";
+import {ConfirmDialog, confirmDialog} from "primereact/confirmdialog";
 
 
 
 
-export default function SpecialiteTable(){
-    const [specialites, setSpecialites] = useState([]);
-    const [specialiteNom, setSpecialiteNom] = useState('');
+export default function VilleTable(){
+    const [specialites, setSpecialite] = useState([]);
+    const [villeNom, setVilleNom] = useState('');
     const [selectedSpecialite, setSelectedSpecialite] = useState(null);
     const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [pageNumber, setPageNumber] = useState(0);
+    const itemsPerPage = 4;
+    const offset = pageNumber * itemsPerPage;
+    const currentPageItems = specialites.slice(offset, offset + itemsPerPage);
+    const toast = useRef(null);
+
 
 
 
     useEffect(() => {
-        const getSpecialite = async () => {
+        const getSpecialites = async () => {
             const res = await axios.get('/api/controller/specialites/');
-            const getdata = res.data;
-            setSpecialites(getdata);
+            // const getdata = await res.json();
+            setSpecialite(res.data);
             loadSpecialites();
         }
-        getSpecialite();
+        getSpecialites();
     }, []);
+
+
 
     const loadSpecialites=async ()=>{
         const res=await axios.get("/api/controller/specialites/");
-        setSpecialites(res.data);
+        setSpecialite(res.data);
     }
 
+
+
     const handleDelete = (specialiteId) => {
-        if (window.confirm("Are you sure you want to delete this Item?")) {
+        const confirmDelete = () => {
             axios.delete(`/api/controller/specialites/${specialiteId}`).then(() => {
-                setSpecialites(specialites.filter((specialite) => specialite.id !== specialiteId));
+                setSpecialite(specialites.filter((specialite) => specialite.id !== specialiteId));
+                toast.current.show({severity:'danger', summary: 'Done', detail:'Speciality deleted successfully', life: 3000});
             });
-        }
+        };
+
+        confirmDialog({
+            message: 'Are you sure you want to Delete this Speciality ?',
+            header: 'Confirmation',
+            icon: 'pi pi-exclamation-triangle',
+            acceptLabel: 'Yes',
+            rejectLabel: 'No',
+            acceptClassName: 'p-button-danger',
+            accept: confirmDelete
+        });
+        loadSpecialites();
     };
+
+
+
+
+
+
 
 
     const handleOpenModal = (specialite) => {
@@ -50,20 +81,21 @@ export default function SpecialiteTable(){
 
 
 
-    const handleEditSpecialite = async (id) => {
+
+    const handleEditVille = async (id) => {
         try {
             const response = await axios.put(`/api/controller/specialites/${id}`, {
-                nom: specialiteNom,
+                nom: villeNom,
 
             })
-            const updatedSpecialites = specialites.map((specialite) => {
+            const updatedSpecialite = specialites.map((specialite) => {
                 if (specialite.id === id) {
                     return response.data;
                 }else{
                     return specialite;
                 }
             });
-            setSpecialites(updatedSpecialites);
+            setSpecialite(updatedSpecialite);
             setModalIsOpen(false);
             loadSpecialites();
         } catch (error) {
@@ -75,26 +107,29 @@ export default function SpecialiteTable(){
 
     return (
         <div>
+            <Toast ref={toast} />
+            <ConfirmDialog />
             <div className="table-responsive">
                 <table className="table mt-5 text-center">
                     <thead>
                     <tr>
                         <th scope="col">id</th>
-                        <th scope="col">specialite</th>
+                        <th scope="col">City</th>
                         <th scope="col">Actions</th>
 
                     </tr>
                     </thead>
                     <tbody>
-                    {specialites.map((specialite,index)=>(
+                    {currentPageItems.map((specialite,index)=>(
                         <tr key={index}>
                             <th scope="row">{specialite.id}</th>
                             <td>{specialite.nom}</td>
                             <td>
+                                <Toast ref={toast} position="top-center" />
+                                <Button  label="Edit" severity="help" raised  className="mx-1"   onClick={() => handleOpenModal(specialite)} />
 
-                                <Button variant="contained" color="info" onClick={() => handleOpenModal(specialite)} >edit</Button>
 
-                                <Button variant="contained" color="warning" sx={{ ml:2 }}onClick={() => handleDelete(specialite.id)}>delete</Button>
+                                <Button label="Delete" severity="danger"  className="mx-1" text raised   onClick={() => handleDelete(specialite.id)}/>
 
                             </td>
                         </tr>
@@ -102,6 +137,19 @@ export default function SpecialiteTable(){
 
                     </tbody>
                 </table>
+                <div className="pagination-container">
+                    <ReactPaginate
+                        previousLabel={<button className="pagination-button">&lt;</button>}
+                        nextLabel={<button className="pagination-button">&gt;</button>}
+                        pageCount={Math.ceil(specialites.length / itemsPerPage)}
+                        onPageChange={({ selected }) => setPageNumber(selected)}
+                        containerClassName={"pagination"}
+                        previousLinkClassName={"pagination__link"}
+                        nextLinkClassName={"pagination__link"}
+                        disabledClassName={"pagination__link--disabled"}
+                        activeClassName={"pagination__link--active"}
+                    />
+                </div>
             </div>
 
             <Modal
@@ -133,21 +181,19 @@ export default function SpecialiteTable(){
             >
                 <div className="card">
                     <div className="card-body">
-                        <h5 className="card-title" id="modal-modal-title">Update Specialite</h5>
+                        <h5 className="card-title" id="modal-modal-title">Update Speciality</h5>
                         <form>
                             <div className="mb-3">
-                                <label htmlFor="user-nom" className="form-label">Specialite:</label>
-                                <input type="text" className="form-control" id="user-nom" value={specialiteNom} onChange={(e) => setSpecialiteNom(e.target.value)} />
+                                <label htmlFor="user-nom" className="form-label">Zone:</label>
+                                <input type="text" className="form-control" id="user-nom" value={villeNom} onChange={(e) => setVilleNom(e.target.value)} />
                             </div>
 
                         </form>
                         <div className="d-flex justify-content-center mt-3">
-                            <Button variant="contained" color="error" onClick={handleCloseModal}>
-                                Annuler
-                            </Button>
-                            <Button variant="contained" color="success" sx={{ ml:1 }} onClick={() => handleEditSpecialite(selectedSpecialite.id)}>
-                                Sauvegarder
-                            </Button>
+                            <Button  label="Cancel" severity="warning" raised  className="mx-1" onClick={handleCloseModal}/>
+
+                            <Button  label="Save" severity="success" raised  className="mx-1" sx={{ ml:1 }} onClick={() => handleEditVille(selectedSpecialite.id)}/>
+
                         </div>
                     </div>
                 </div>

@@ -4,10 +4,12 @@ import React,{useState,useEffect} from "react";
 import Modal from "react-modal";
 import 'bootstrap/dist/css/bootstrap.css';
 import ReactPaginate from 'react-paginate';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
-import {IconButton} from "@mui/material";
+
 import moment from "moment";
+import {Button} from "primereact/button";
+import {ConfirmDialog, confirmDialog} from "primereact/confirmdialog";
+import {Toast} from "primereact/toast";
+import {useRef} from "react";
 
 
 
@@ -19,6 +21,7 @@ export default function RestaurantTable() {
     const [restaurants, setrestaurants] = useState([]);
     const [users, setUsers] = useState([]);
     const [zones, setZones] = useState([]);
+    const [specialite, setSpecialite] = useState([]);
     const [series, setSeries] = useState([]);
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [restaurantnom, setRestaurantNom] = useState('');
@@ -28,14 +31,15 @@ export default function RestaurantTable() {
     const [restaurantdateclose, setRestaurantDateclose] = useState('');
     const [restaurantAdresse, setRestaurantAdresse] = useState('');
     const [restaurantPhoto, setRestaurantPhoto] = useState('');
-    const [restaurantUser, setRestaurantUser] = useState('');
     const [restaurantSerie, setRestaurantSerie] = useState('');
     const [restaurantZone, setRestaurantZone] = useState('');
+    const [restaurantSpecialite, setRestaurantSpecialite] = useState('');
     const [selectedRestaurant, setSelectedRestaurant] = useState(null);
     const [pageNumber, setPageNumber] = useState(0);
     const itemsPerPage = 4;
     const offset = pageNumber * itemsPerPage;
     const currentPageItems = restaurants.slice(offset, offset + itemsPerPage);
+    const toast = useRef(null);
 
 
 
@@ -44,6 +48,12 @@ export default function RestaurantTable() {
     useEffect(() => {
         axios.get("/api/controller/restaurants/").then((response) => {
             setrestaurants(response.data);
+        });
+    }, []);
+
+    useEffect(() => {
+        axios.get("/api/controller/specialites/").then((response) => {
+            setSpecialite(response.data);
         });
     }, []);
 
@@ -71,13 +81,37 @@ export default function RestaurantTable() {
         fetchseries();
     }, []);
 
+    useEffect(() => {
+        const fetchspecialites = async () => {
+            const result = await axios(`/api/controller/specialites/`);
+            setSpecialite(result.data);
+        };
+        fetchspecialites();
+    }, []);
+
+
+
+
     const handleDelete = (id) => {
-        if (window.confirm("Are you sure you want to delete this User?")) {
+        const confirmDelete = () => {
             axios.delete(`/api/controller/restaurants/${id}`).then(() => {
                 setrestaurants(restaurants.filter((restaurant) => restaurant.id !== id));
+                toast.current.show({severity:'danger', summary: 'Done', detail:'Restaurant deleted successfully', life: 3000});
             });
-        }
+        };
+
+        confirmDialog({
+            message: 'Are you sure you want to Delete this Restaurant ?',
+            header: 'Confirmation',
+            icon: 'pi pi-exclamation-triangle',
+            acceptLabel: 'Yes',
+            rejectLabel: 'No',
+            acceptClassName: 'p-button-danger',
+            accept: confirmDelete
+        });
+        loadRestaurants();
     };
+
 
     const handleOpenModal = (restaurant) => {
         setSelectedRestaurant(restaurant);
@@ -90,6 +124,7 @@ export default function RestaurantTable() {
         setRestaurantPhoto(restaurant.photo);
         setRestaurantSerie(restaurant.serie.id);
         setRestaurantZone(restaurant.zone.id);
+        setRestaurantSpecialite(restaurant.specialite.id);
         setModalIsOpen(true);
         //setSelectedRestaurant(restaurant);
         // setModalIsOpen(true);
@@ -115,6 +150,9 @@ export default function RestaurantTable() {
                 },
                 serie: {
                     id: restaurantSerie
+                },
+                specialite: {
+                    id: restaurantSpecialite
                 }
 
             })
@@ -149,20 +187,24 @@ export default function RestaurantTable() {
 
     return (
         <div >
-            <div className="table-responsive  ">
+            <Toast ref={toast} />
+            <ConfirmDialog />
+            <div className="table-responsive">
                 <table className="table mt-5 text-center">
-                    <thead className="bg-dark text-white">
+                    <thead>
                     <tr>
                         <th>ID</th>
                         <th>Photos</th>
                         <th>Nom</th>
-                        <th>Latitude</th>
+                        {/* <th>Latitude</th>
                         <th>Longitude</th>
-                        <th>Adresse</th>
-                        <th>dateouverture</th>
-                        <th>datefermeture</th>
-                        <th>serie</th>
+                        */}
+                        <th>Address</th>
+                        <th>OPEN</th>
+                        <th>CLOSE</th>
+                        <th>SERIES</th>
                         <th>Zone</th>
+                        <th>SPECIALITY</th>
                         <th>Actions</th>
                     </tr>
                     </thead>
@@ -174,35 +216,25 @@ export default function RestaurantTable() {
                                 <img src={restaurant.photo} alt="Restaurant" style={{ maxWidth: "70%" ,borderRadius:"10px"}} />
                             </td>
                             <td style={{ padding:"10px" }}>{restaurant.nom}</td>
-                            <td style={{ padding:"10px" }}>{restaurant.latitude}</td>
+                            {/* <td style={{ padding:"10px" }}>{restaurant.latitude}</td>
                             <td style={{ padding:"10px" }}>{restaurant.longitude}</td>
+                            */}
                             <td style={{ padding: "10px", maxWidth: "100px", overflowX: "scroll",  whiteSpace: "nowrap" }}>
                                 {restaurant.adresse}
                             </td>
                             <td style={{ padding:"10px" }}>
-                                {moment(restaurant.dateOuverture).format("YYYY-MM-DD HH:mm")}
+                                {restaurant.dateOuverture}
                             </td>
                             <td style={{ padding:"10px" }}>
-                                {moment(restaurant.dateFermeture).format("YYYY-MM-DD HH:mm")}
+                                {restaurant.dateFermeture}
                             </td>
                             <td style={{ padding:"10px" }}>{restaurant.serie && restaurant.serie.nom}</td>
                             <td style={{ padding:"10px" }}>{restaurant.zone && restaurant.zone.nom}</td>
+                            <td style={{ padding:"10px" }}>{restaurant.specialite && restaurant.specialite.nom}</td>
                             <td>
-                                <IconButton
-                                    style={{color:"red"}}
-                                    aria-label="delete"
-                                    onClick={() => handleDelete(restaurant.id)}
-                                >
-                                    <DeleteIcon />
-                                </IconButton>
-                                <IconButton
-                                    style={{color:"teal"}}
-                                    aria-label="edit"
+                                <Button  label="Edit" severity="help" raised  className="mx-1"  onClick={() => handleOpenModal(restaurant)}/>
+                                <Button label="Delete" severity="danger"  className="mx-1" text raised  onClick={() => handleDelete(restaurant.id)}/>
 
-                                    onClick={() => handleOpenModal(restaurant)}
-                                >
-                                    <EditIcon />
-                                </IconButton>
                             </td>
                         </tr>
                     ))}
@@ -279,11 +311,11 @@ export default function RestaurantTable() {
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="restaurant-dateopen" className="form-label">date open:</label>
-                                <input type="datetime-local" className="form-control" id="user-password" value={restaurantdateopen} onChange={(e) => setRestaurantDateopen(e.target.value)} />
+                                <input type="time" className="form-control" id="user-password" value={restaurantdateopen} onChange={(e) => setRestaurantDateopen(e.target.value)} />
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="restaurant-dateclose" className="form-label">date close:</label>
-                                <input type="datetime-local" className="form-control" id="user-password" value={restaurantdateclose} onChange={(e) => setRestaurantDateclose(e.target.value)} />
+                                <input type="time" className="form-control" id="user-password" value={restaurantdateclose} onChange={(e) => setRestaurantDateclose(e.target.value)} />
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="restaurant-adresse" className="form-label">Photo:</label>
@@ -340,12 +372,37 @@ export default function RestaurantTable() {
                                     </select>
                                 </div>
 
+                                <div className="col-md-6">
+                                    <label htmlFor="restaurant-serie" className="form-label">serie:</label>
+                                    <select
+                                        value={restaurantSpecialite}
+                                        onChange={(e) => setRestaurantSpecialite(e.target.value)}
+                                        style={{
+                                            backgroundColor: "#f2f2f2",
+                                            border: "none",
+                                            borderRadius: "4px",
+                                            color: "#555",
+                                            fontSize: "16px",
+                                            padding: "8px 12px",
+                                            width: "100%",
+                                            marginBottom: "12px"
+                                        }}
+                                    >  <option value="">Select a serie </option>
+
+                                        {specialite.map((specialite) => (
+                                            <option key={specialite.id} value={specialite.id}>
+                                                {specialite.nom}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+
 
                             </div>
                         </form>
                         <div className="d-flex justify-content-center mt-3">
-                            <button type="button" className="btn btn-secondary me-2" onClick={handleCloseModal}>Annuler</button>
-                            <button type="button" className="btn btn-primary" onClick={() => handleEditRestaurant(selectedRestaurant.id)}>Sauvegarder</button>
+                            <Button  label="Cancel" severity="warning" raised  className="mx-1" onClick={handleCloseModal}/>
+                            <Button  label="Save" severity="success" raised  className="mx-1" sx={{ ml:1 }} onClick={() => handleEditRestaurant(selectedRestaurant.id)}/>
                         </div>
                     </div>
                 </div>

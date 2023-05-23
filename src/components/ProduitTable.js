@@ -1,13 +1,17 @@
 
-import axios from "axios";
+import axios from '../service/callerService';
 import React,{useState,useEffect} from "react";
 import Modal from "react-modal";
 import 'bootstrap/dist/css/bootstrap.css';
 import ReactPaginate from 'react-paginate';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
-import {IconButton} from "@mui/material";
+import { InputText } from 'primereact/inputtext';
+import { TriStateCheckbox } from 'primereact/tristatecheckbox';
+
 import moment from "moment";
+import {Button} from "primereact/button";
+import {ConfirmDialog, confirmDialog} from "primereact/confirmdialog";
+import {Toast} from "primereact/toast";
+import {useRef} from "react";
 
 
 export default function ProduitTable() {
@@ -26,42 +30,62 @@ export default function ProduitTable() {
     const itemsPerPage = 4;
     const offset = pageNumber * itemsPerPage;
     const currentPageItems = produits.slice(offset, offset + itemsPerPage);
+    const toast = useRef(null);
 
-useEffect(() => {
-        axios.get("http://localhost:8080/api/produits/").then((response) => {
+
+    useEffect(() => {
+        axios.get("/api/controller/produits/").then((response) => {
             setproduits(response.data);
         });
     }, []);
 
     useEffect(() => {
         const fetchproduits = async () => {
-            const result = await axios(`http://localhost:8080/api/produits/`);
+            const result = await axios(`/api/controller/produits/`);
             setproduits(result.data);
         };
         fetchproduits();
     }, []);
 
-const handleDelete = (id) => {
-        if (window.confirm("Are you sure you want to delete this Produit?")) {
-            axios.delete(`http://localhost:8080/api/produits/${id}`).then(() => {
+
+
+    const handleDelete = (id) => {
+        const confirmDelete = () => {
+            axios.delete(`/api/controller/produits/${id}`).then(() => {
                 setproduits(produits.filter((produit) => produit.id !== id));
+                toast.current.show({severity:'danger', summary: 'Done', detail:'Product deleted successfully', life: 3000});
             });
-        }
+        };
+
+        confirmDialog({
+            message: 'Are you sure you want to Delete this Product ?',
+            header: 'Confirmation',
+            icon: 'pi pi-exclamation-triangle',
+            acceptLabel: 'Yes',
+            rejectLabel: 'No',
+            acceptClassName: 'p-button-danger',
+            accept: confirmDelete
+        });
+        loadProduits();
     };
 
 
 
-const handleOpenModal = (produit) => {
-        setSelectedProduit(produit);
-        setProduitNom(produit.nom);
-        setProduitDescription(produit.description);
-        setProduitPhoto(produit.photo);
-        setProduitStock(produit.stock);
-        setProduitPromotion(produit.promotion);
-        setProduitPrix(produit.prix);
-        setProduitRestaurant(produit.restaurant.id);
-        setModalIsOpen(true);
-         
+
+
+
+    const handleOpenModal = (produit) => {
+        if (produit) {
+            setSelectedProduit(produit);
+            setProduitNom(produit.nom);
+            setProduitDescription(produit.description);
+            setProduitPhoto(produit.photo);
+            setProduitStock(produit.stock);
+            setProduitPromotion(produit.promotion);
+            setProduitPrix(produit.prix);
+            setProduitRestaurant(produit.restaurant ? produit.restaurant.id : '');
+            setModalIsOpen(true);
+        }
     };
 const handleCloseModal = () => {
         setModalIsOpen(false)
@@ -70,7 +94,7 @@ const handleCloseModal = () => {
 
  const handleEditProduit = async (id) => {
         try {
-            const response = await axios.put(`http://localhost:8080/api/produits/${id}`, {
+            const response = await axios.put(`/api/controller/produits/${id}`, {
                 nom:produitnom,
                 description:produitdescription,
                 photo:produitphoto,
@@ -82,7 +106,7 @@ const handleCloseModal = () => {
                 }
 
             })
-const updatedProduit = produits.map((produit) => {
+            const updatedProduit = produits.map((produit) => {
                 if (produit.id === id) {
                     return response.data;
                 }else{
@@ -96,6 +120,13 @@ const updatedProduit = produits.map((produit) => {
             console.error(error);
         }
     };
+    useEffect(() => {
+        const fetchRestaurants = async () => {
+            const result = await axios(`/api/controller/restaurants/`);
+            setRestaurants(result.data);
+        };
+        fetchRestaurants();
+    }, []);
 
     const handlePhotoChange = (event) => {
         const file = event.target.files[0];
@@ -106,14 +137,16 @@ const updatedProduit = produits.map((produit) => {
         reader.readAsDataURL(file);
     };
     const loadProduits=async ()=>{
-        const res=await axios.get(`http://localhost:8080/api/produits/`);
+        const res=await axios.get(`/api/controller/produits/`);
         setproduits(res.data);
     }
 return (
-        <div >
-            <div className="table-responsive  ">
-                <table className="table mt-5 text-center">
-                    <thead className="bg-dark text-white">
+    <div >
+        <Toast ref={toast} />
+        <ConfirmDialog />
+        <div className="table-responsive">
+            <table className="table mt-5 text-center">
+                <thead>
                     <tr>
                         <th>ID</th>
                         <th>Photos</th>
@@ -137,27 +170,13 @@ return (
                             <td style={{ padding:"10px" }}>{produit.nom}</td>
                             <td style={{ padding:"10px" }}>{produit.description}</td>
                             <td style={{ padding:"10px" }}>{produit.stock}</td>
-                            <td style={{ padding: "10px", maxWidth: "100px", overflowX: "scroll",  whiteSpace: "nowrap" }}>
-                                {produit.promotion}
-                            </td>
+                            <td style={{ padding:"10px" }}>{produit.promotion ? "true" : "false"}</td>
+
                             <td style={{ padding:"10px" }}>{produit.prix}</td>
                             <td style={{ padding:"10px" }}>{produit.restaurant && produit.restaurant.nom}</td>
                             <td>
-                                <IconButton
-                                    style={{color:"red"}}
-                                    aria-label="delete"
-                                    onClick={() => handleDelete(produit.id)}
-                                >
-                                    <DeleteIcon />
-                                </IconButton>
-                                <IconButton
-                                    style={{color:"teal"}}
-                                    aria-label="edit"
-
-                                    onClick={() => handleOpenModal(produit)}
-                                >
-                                    <EditIcon />
-                                </IconButton>
+                                <Button  label="Edit" severity="help" raised  className="mx-1"  onClick={() => handleOpenModal(produit)}/>
+                                <Button label="Delete" severity="danger"  className="mx-1" text raised  onClick={() => handleDelete(produit.id)}/>
                             </td>
                         </tr>
                     ))}
@@ -167,7 +186,7 @@ return (
                     <ReactPaginate
                         previousLabel={<button className="pagination-button">&lt;</button>}
                         nextLabel={<button className="pagination-button">&gt;</button>}
-                        pageCount={Math.ceil(restaurants.length / itemsPerPage)}
+                        pageCount={Math.ceil(produits.length / itemsPerPage)}
                         onPageChange={({ selected }) => setPageNumber(selected)}
                         containerClassName={"pagination"}
                         previousLinkClassName={"pagination__link"}
@@ -177,76 +196,74 @@ return (
                     />
                 </div>
             </div>
-            <Modal
-                isOpen={modalIsOpen}
-                onRequestClose={handleCloseModal}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-                style={{
-                    overlay: {
-                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                        zIndex: 999
-                    },
-                    content: {
-                        top: '50%',
-                        left: '50%',
-                        right: 'auto',
-                        bottom: 'auto',
-                        marginRight: '-50%',
-                        transform: 'translate(-50%, -50%)',
-                        backgroundColor: '#fff',
-                        borderRadius: '10px',
-                        boxShadow: '20px 30px 25px rgba(0, 0, 0, 0.2)',
-                        padding: '20px',
-                        width: '100%',
-                        maxWidth: '700px',
-                        height: 'auto',
-                        maxHeight: '90%',
-                        overflow: 'auto'
-                    }
-                }}
-            >
+        <Modal
+            isOpen={modalIsOpen}
+            onRequestClose={handleCloseModal}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+            style={{
+                overlay: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                    zIndex: 999
+                },
+                content: {
+                    top: '50%',
+                    left: '50%',
+                    right: 'auto',
+                    bottom: 'auto',
+                    marginRight: '-50%',
+                    transform: 'translate(-50%, -50%)',
+                    backgroundColor: '#fff',
+                    borderRadius: '10px',
+                    boxShadow: '20px 30px 25px rgba(0, 0, 0, 0.2)',
+                    padding: '20px',
+                    width: '100%',
+                    maxWidth: '700px',
+                    height: 'auto',
+                    maxHeight: '90%',
+                    overflow: 'auto'
+                }
+            }}
+        >
             <div>
-                <div className="card-body" >
-                        <h5 className="card-title" id="modal-modal-title">Update Produit</h5>
-                        <form>
-                            <div className="mb-3">
-                                <label htmlFor="produit-nom" className="form-label">Nom:</label>
-                                <input type="text" className="form-control" id="user-nom" value={produitnom} onChange={(e) => setProduitNom(e.target.value)} required/>
+                <div className="card-body">
+                    <h5 className="card-title" id="modal-modal-title">Update Product</h5>
+                    <form>
+                        <div className="row mb-3">
+                            <div className="col-md-6">
+                            <label htmlFor="produit-nom" className="form-label">Name:</label>
+                            <InputText
+                                type="text"
+                                className="form-control"
+                                id="user-nom"
+                                value={produitnom}
+                                onChange={(e) => setProduitNom(e.target.value)}
+                                required
+                            />
+                        </div>
+                            <div className="col-md-6">
+                                <label htmlFor="produit-description" className="form-label">Description:</label>
+                                <InputText
+                                    type="text"
+                                    className="form-control"
+                                    id="user-prenom"
+                                    value={produitdescription}
+                                    onChange={(e) => setProduitDescription(e.target.value)}
+                                    required
+                                />
                             </div>
+                        </div>
 
-                            <div className="row mb-3">
-                                <div className="col-md-6">
-                                    <label htmlFor="produit-description" className="form-label">Description:</label>
-                                    <input type="text" className="form-control" id="user-prenom" value={produitdescription} onChange={(e) => setProduitDescription(e.target.value)} required />
-                                </div>
-
-                                <div className="mb-3">
-                                    <label htmlFor="restaurant-adresse" className="form-label">Photo:</label>
-                                    <input type="file" className="form-control" id="user-password"  onChange={handlePhotoChange} />
-                                </div>
-                                
-                                
-
-                             <div className="mb-3">
-                                <label htmlFor="produit-stock" className="form-label">Stock:</label>
-                                <input type="text" className="form-control" id="user-password" value={produitstock} onChange={(e) => setProduitStock(e.target.value)} />
+                        <div className="row mb-3">
+                            <div className="col-md-6">
+                                <label htmlFor="restaurant-adresse" className="form-label">Photo:</label>
+                                <InputText
+                                    type="file"
+                                    className="form-control"
+                                    id="user-password"
+                                    onChange={handlePhotoChange}
+                                />
                             </div>
-           
-                            <div className="mb-3">
-                                <label htmlFor="produit-promotion" className="form-label">Promotion:</label>
-                                <input type="text" className="form-control" id="user-password" value={produitpromotion} onChange={(e) => setProduitPromotion(e.target.value)} />
-                            </div>
-
-                           
-                            
-                            <div className="mb-3">
-                                <label htmlFor="produit-prix" className="form-label">Prix:</label>
-                                <input type="text" className="form-control" id="user-password" value={produitPrix} onChange={(e) => setProduitPrix(e.target.value)} />
-                            </div> 
-                             
-                                 
-                            <div className="row mb-3">
                                 <div className="col-md-6">
                                     <label htmlFor="produit-restaurant" className="form-label">Restaurant:</label>
                                     <select
@@ -271,17 +288,63 @@ return (
                                         ))}
                                     </select>
                                 </div>
-                                </div>
-                                </div>
-                        </form>
-                                <div className="d-flex justify-content-center mt-3">
-                                    <button type="button" className="btn btn-secondary me-2" onClick={handleCloseModal}>Annuler</button>
-                                    <button type="button" className="btn btn-primary" onClick={() => handleEditProduit(selectedProduit.id)}>Sauvegarder</button>
-                                </div>
-                    </div>
+                        </div>
+
+                        <div className="row mb-3">
+                            <div className="col-md-6">
+                                <label htmlFor="produit-stock" className="form-label">Stock:</label>
+                                <InputText
+                                    type="text"
+                                    className="form-control"
+                                    id="user-password"
+                                    value={produitstock}
+                                    onChange={(e) => setProduitStock(e.target.value)}
+                                />
+                            </div>
+
+                            <div className="col-md-6">
+                                <label htmlFor="produit-prix" className="form-label">Prix:</label>
+                                <InputText
+                                    type="text"
+                                    className="form-control"
+                                    id="user-password"
+                                    value={produitPrix}
+                                    onChange={(e) => setProduitPrix(e.target.value)}
+                                    required
+                                />
+                            </div>
+                        </div>
+
+
+                        <div className="row mb-3">
+
+                            <div className="col-md-6 mt-1">
+                                <label  className="form-label mx-2">On Sale ?:</label>
+                                <InputText type="checkbox" className="form-check-input" id="produit-promotion" checked={produitpromotion} onChange={(e) => setProduitPromotion(e.target.checked)} />
+                            </div>
+
+
+
+                        </div>
+                    </form>
                 </div>
-            </Modal>
-                </div>
+
+            </div>
+            <div className="d-flex justify-content-center mt-3">
+                <Button
+                    label="Cancel"
+                    severity="warning"
+                    raised
+                    className="mx-2"
+                    onClick={handleCloseModal}/>
+                <Button label="Save"
+                        severity="success"
+                        raised
+                        className="mx-2" onClick={() => handleEditProduit(selectedProduit.id)}/>
+            </div>
+        </Modal>
+    </div>
+
                 
     );
 

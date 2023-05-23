@@ -10,6 +10,7 @@ let login = (emailL,passwordL) => {
 }
 
 
+
 let saveToken = (token) => {
     localStorage.setItem('token', token)
     console.log('token', token)
@@ -36,7 +37,22 @@ let getTokenInfo = () => {
     return jwt_decode(getToken())
 }
 
-
-export const accountService = {
-    login, saveToken, logout, isLogged, getToken,getTokenInfo
+let getUserByEmail = (email) => {
+    return Axios.get(`http://localhost:8080/api/auth/${email}`).then(res => res.data)
 }
+
+let getUserById = (userId) => {
+    return Axios.get(`http://localhost:8080/api/controller/paniers/userproductsinbasket/${userId}`).then(res => res.data)
+}
+
+let saveRole = (role) =>{
+    localStorage.setItem('role', role)
+}
+
+let getRole = () => {
+    return localStorage.getItem('role')
+}
+export const accountService = {
+    login, saveToken, logout, isLogged, getToken,getTokenInfo,getUserByEmail,getUserById,getRole,saveRole
+}
+

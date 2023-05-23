@@ -166,53 +166,73 @@ import { accountService } from '../service/accountService';
 
 
 
-const theme = createTheme();
+
 
 export default function Login({isAuth, setAuth}) {
 
 
     const navigate = useNavigate();
-   // const authService = AuthService();
-/*
-    const onSubmit = (e) => {
-        e.preventDefault()
-        const data = new FormData(e.currentTarget);
-        setEmail(data.get("email"))
-        setPassword(data.get("password"))
-        try{
-            accountService.login(email,password)
-                .then(res => {
-                    accountService.saveToken(res.data.access_token)
-                    navigate('/home', {replace: true})
-                })
-        }catch(error){
-            console.log(error)
-        }
-    }
 
- */
-    const onSubmit = (e) => {
+
+const onSubmit = (e) => {
         e.preventDefault();
         const data = new FormData(e.currentTarget);
         const email = data.get("email");
         const password = data.get("password");
         try {
-            accountService.login(email, password).then((res) => {
+            accountService.login(email, password).then(async (res) => {
+                const token = decodeToken(res.data.access_token); // decode the token to get user details
+                const user = await accountService.getUserByEmail(token.sub);
+                console.log("rol",user.role);
                 accountService.saveToken(res.data.access_token);
-                navigate("/admin", { replace: true });
+                accountService.saveRole(user.role);
+                navigate("/admin", {replace: true});
             });
         } catch (error) {
             console.log(error);
         }
     };
 
+/*
+    const onSubmit = (e) => {
+        e.preventDefault();
+        const data = new FormData(e.currentTarget);
+        const email = data.get("email");
+        const password = data.get("password");
+        try {
+            accountService.login(email, password).then(async (res) => {
+                const token = decodeToken(res.data.access_token); // decode the token to get user details
+                const user = await accountService.getUserByEmail(token.sub);
+                console.log(user.role);
+                // get the user associated with the token
+                if (user.role === 'USER') {
+                    navigate("/use", { replace: true });
+                } else {
+                    navigate("/admin", {replace: true}); // redirect to user page
+                }
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
+    function decodeToken(token) {
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        return JSON.parse(atob(base64));
+    }
+*/
 
+    function decodeToken(token) {
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        return JSON.parse(atob(base64));
+    }
 
 
     return (
-        <ThemeProvider theme={theme}>
-            <Container component="main" maxWidth="xs">
+
+            <Container component="main" maxWidth="xs" >
                 <CssBaseline />
                 <Box
                     sx={{
@@ -259,20 +279,17 @@ export default function Login({isAuth, setAuth}) {
                             Login
                         </Button>
                         <Grid container>
-                            <Grid item xs>
-                                <Link href="/register" variant="body2">
-                                    Mot de passe oublié ?
-                                </Link>
-                            </Grid>
+
                             <Grid item>
+                                <Button>
                                 <Link  to={`/register`} variant="body2">
-                                    {"Vous n'avez pas de compte? Inscrivez-vous"}
+                                    {"SIGN UP"}
                                 </Link>
+                                </Button>
                             </Grid>
                         </Grid>
                     </Box>
                 </Box>
             </Container>
-        </ThemeProvider>
     );
 }

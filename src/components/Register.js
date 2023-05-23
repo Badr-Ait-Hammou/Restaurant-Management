@@ -101,6 +101,7 @@ export default function Register() {
     const [lastname, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [telephone, settel] = useState("");
+    const [adresse, setAdresse] = useState("");
     const [role, setRole] = useState("");
     const [error, setError] = useState('');
 
@@ -113,6 +114,7 @@ export default function Register() {
             firstname:firstname,
             lastname:lastname,
             telephone:telephone,
+            adresse:adresse,
             role: 'USER',
             email: email
         }).then(response => {
@@ -195,7 +197,7 @@ export default function Register() {
                                     required
                                     fullWidth
                                     id="tel"
-                                    label="tel Name"
+                                    label="Phone number"
                                     name="tel"
                                     autoComplete="family-name"
                                     onChange={event => settel(event.target.value)}
@@ -216,18 +218,23 @@ export default function Register() {
                                 <TextField
                                     required
                                     fullWidth
+                                    id="email"
+                                    label="Address"
+                                    name="address"
+                                    autoComplete="address"
+                                    onChange={event => setAdresse(event.target.value)}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    required
+                                    fullWidth
                                     name="password"
                                     label="Password"
                                     type="password"
                                     id="password"
                                     autoComplete="new-password"
                                     onChange={event => setPassword(event.target.value)}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <FormControlLabel
-                                    control={<Checkbox value="allowExtraEmails" color="primary" />}
-                                    label="I want to receive inspiration, marketing promotions and updates via email."
                                 />
                             </Grid>
                         </Grid>

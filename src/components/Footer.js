@@ -7,7 +7,7 @@ import "../styles/footer.css"
 
 export default function Footer() {
     return (
-        <div className="footer-dark" style={{marginTop:"50px"}}>
+        <div className="footer-dark" style={{marginTop:"50px",}}>
             <footer>
                 <div className="container">
                     <div className="row">
@@ -29,7 +29,7 @@ export default function Footer() {
                             <h3>Contact Us</h3>
                             <ul>
                                 <li><h6 >Phone: 555-123-4567</h6></li>
-                                <li><h6 >Email: info@pharmacylocationapp.com</h6></li>
+                                <li><h6 >Email: info@restaurantlocationapp.com</h6></li>
                                 <li><h6 >Address: 123 Main St, Morocco</h6></li>
                             </ul>
                         </div>

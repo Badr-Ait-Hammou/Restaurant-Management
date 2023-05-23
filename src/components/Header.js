@@ -15,8 +15,9 @@ import { Restaurant } from "@mui/icons-material";
 import {Link} from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import {accountService} from "../service/accountService";
+import Logo from "../images/restaurant.svg"
 
-const pages = ['ville', 'zone', 'restaurant','home','serie','specialite'];
+const pages = ['ville' ,'zone','serie','specialite', 'restaurant','produit','user','orders','reservations'];
 const settings = [ ''];
 
 export default function Header() {
@@ -49,7 +50,9 @@ export default function Header() {
         <AppBar position="static" style={{backgroundColor:"lightseagreen"}}>
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
-                    <Restaurant sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+
+                    <img src={Logo} style={{width:"70px"}}/>
+                    {/*<Restaurant sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
                     <Typography
                         variant="h6"
                         noWrap
@@ -67,7 +70,7 @@ export default function Header() {
                     >
                         Restaurant
                     </Typography>
-
+*/}
                     <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
                         <IconButton
                             size="large"
@@ -79,6 +82,7 @@ export default function Header() {
                         >
                             <MenuIcon />
                         </IconButton>
+
                         <Menu
                             id="menu-appbar"
                             anchorEl={anchorElNav}
@@ -138,7 +142,7 @@ export default function Header() {
                             >
                                 <Link
                                     style={{ textDecoration: "none", color: "white" }}
-                                    to={`admin/${page}`}
+                                    to={`${page}`}
                                 >
                                     {page}
                                 </Link>

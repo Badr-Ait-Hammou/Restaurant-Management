@@ -1,14 +1,21 @@
-
-import Button from '@mui/material/Button';
+import { Toast } from 'primereact/toast';
+import { Button } from 'primereact/button';
+import"../styles/login.css"
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import axios from "axios";
+import { InputText } from 'primereact/inputtext';
+import axios from '../service/callerService';
 import React,{useState,useEffect,useReducer} from "react";
 import ProduitTable from "../components/ProduitTable";
 import { Card, CardContent } from '@mui/material';
+import Checkbox from "@mui/material/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Modal from "react-modal";
+import {useRef} from "react";
+import RestaurantTable from "./RestaurantTable";
+
 
 
 
@@ -19,16 +26,19 @@ export default function Produit() {
     const [description, setDescription] = useState("");
     const [photo, setPhotos] = useState("");
     const [stock, setStock] = useState("");
-    const [promotion, setpromotion] = useState("");
+   // const [promotion, setpromotion] = useState("");
+    const [promotion, setpromotion] = useState(false);
+
     const [prix, setprix] = useState("");
     const [upTB, forceUpdate] = useReducer((x) => x + 1, 0);
     const [tableKey, setTableKey] = useState(Date.now());
-
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+    const toast = useRef(null);
 
 
 
     useEffect(() => {
-        axios.get("http://localhost:8080/api/Restaurants/").then((response) => {
+        axios.get("/api/controller/restaurants/").then((response) => {
             setRestaurants(response.data);
         });
     }, [upTB]);
@@ -38,12 +48,13 @@ export default function Produit() {
         console.log("jsjkjksjkjkqsdjks",photo);
 
         event.preventDefault();
-        axios.post("http://localhost:8080/api/produits/save", {
+        axios.post("/api/controller/produits/save", {
             nom,
             description,
             photo,
             stock,
-            promotion,
+           // promotion,
+            promotion: promotion ? true : false,
             prix,
             restaurant: {
                 id: restaurantid
@@ -58,10 +69,15 @@ export default function Produit() {
             setRestaurantid("");
             forceUpdate();
             setTableKey(Date.now());
+            setModalIsOpen(false);
+            showSuccess();
 
         });
     };
 
+    const showSuccess = () => {
+        toast.current.show({severity:'success', summary: 'Success', detail:'item added successfully', life: 1000});
+    }
 
     const handlePhotoChange = (event) => {
         const file = event.target.files[0];
@@ -72,149 +88,202 @@ export default function Produit() {
         reader.readAsDataURL(file);
     };
 
+    const handleOpenModal = () => {
+        setModalIsOpen(true);
+        //setSelectedRestaurant(restaurant);
+        // setModalIsOpen(true);
+    };
 
+    const handleCloseModal = () => {
+        setModalIsOpen(false)
+    };
     return (
 
-        <Container component="main" maxWidth="lg">
-            <Card sx={{ marginTop: 3 }} >
-                <CardContent>
-                    <form onSubmit={handleSubmit}>
-                        <Box
-                            sx={{
-                                marginTop: 3,
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'center',
-                            }}
-                        >
 
-                            <Typography component="h1" variant="h5">
-                                Produit
-                            </Typography>
-                            <Box   sx={{ mt: 3 }}>
-                                <Grid container spacing={2}>
 
-                                    <Grid item xs={12} sm={4}>
-                                        <TextField
-                                            required
-                                            fullWidth
+        <div>
+            <Card className="mx-3 mt-3 p-3">
+                <CardContent >
+                        <div style={{ alignItems: "center" }}>
+                            <h3 >PRODUCTS</h3>
+                        </div>
+                        <div >
+                            <Toast ref={toast} position="top-center" />
 
-                                            label="produit"
+                            <Button
+                                label="Add"
+                                style={{backgroundColor:"lightseagreen"}}
+                                raised
+                                className="mx-2"
+                                onClick={() => handleOpenModal()}
 
-                                            autoComplete="produit"
-                                            id="nom"
-                                            value={nom}
-                                            onChange={(event) => setNom(event.target.value)}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12} sm={4}>
-                                        <TextField
-                                            required
-                                            fullWidth
+                            />
 
-                                            label="description"
+                        </div>
 
-                                            autoComplete="description"
-                                            id="description"
+
+                    </CardContent>
+                    <ProduitTable key={tableKey} />
+                </Card>
+
+                <Modal
+                    isOpen={modalIsOpen}
+                    onRequestClose={handleCloseModal}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                    style={{
+                        overlay: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                            zIndex: 999
+                        },
+                        content: {
+                            top: '50%',
+                            left: '50%',
+                            right: 'auto',
+                            bottom: 'auto',
+                            marginRight: '-50%',
+                            transform: 'translate(-50%, -50%)',
+                            backgroundColor: '#fff',
+                            borderRadius: '10px',
+                            boxShadow: '20px 30px 25px rgba(0, 0, 0, 0.2)',
+                            padding: '20px',
+                            width: '100%',
+                            maxWidth: '700px',
+                            height: 'auto',
+                            maxHeight: '90%',
+                            overflow: 'auto'
+                        }
+                    }}
+                >
+                    <div>
+                        <div className="card-body">
+                            <h5 className="card-title" id="modal-modal-title">ADD PRODUCT</h5>
+                            <form>
+                                <div className="mb-3">
+                                    <label htmlFor="produit-nom" className="form-label">Name:</label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        id="user-nom"
+                                        value={nom}
+                                        onChange={(event) => setNom(event.target.value)}
+                                        required
+                                    />
+                                </div>
+
+                                <div className="row mb-3">
+                                    <div className="col-md-6">
+                                        <label htmlFor="produit-description" className="form-label">Description:</label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            id="user-prenom"
                                             value={description}
                                             onChange={(event) => setDescription(event.target.value)}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12} sm={4}>
-                                        <TextField
                                             required
-                                            fullWidth
-                                            type="file" accept="image/*" onChange={handlePhotoChange}
                                         />
-                                    </Grid>
-                                    <Grid item xs={12} sm={4}>
-                                        <TextField
+                                    </div>
+
+                                    <div className="col-md-6">
+                                        <label htmlFor="restaurant-adresse" className="form-label">Pic:</label>
+                                        <input
+                                            type="file"
+                                            className="form-control"
+                                            id="user-password"
+                                            type="file"
+                                            accept="image/*"
+                                            onChange={handlePhotoChange}
                                             required
-                                            fullWidth
+                                        />
+                                    </div>
+                                </div>
 
-                                            label="stock"
-
-                                            autoComplete="stock"
-                                            id="stock"
+                                <div className="row mb-3">
+                                    <div className="col-md-6">
+                                        <label htmlFor="produit-stock" className="form-label">In Stock:</label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            id="user-password"
                                             value={stock}
                                             onChange={(event) => setStock(event.target.value)}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12} sm={4}>
-                                        <TextField
                                             required
-                                            fullWidth
-
-                                            label="promotion"
-
-                                            autoComplete="promotion"
-                                            id="promotion"
-                                            value={promotion}
-                                            onChange={(event) => setpromotion(event.target.value)}
                                         />
-                                    </Grid>
+                                    </div>
 
-                                    <Grid item xs={12} sm={4}>
-                                        <TextField
-                                            required
-                                            fullWidth
-
-                                            label="prix"
-
-                                            autoComplete="prix"
-                                            id="prix"
+                                    <div className="col-md-6">
+                                        <label htmlFor="produit-prix" className="form-label">Price:</label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            id="user-password"
                                             value={prix}
                                             onChange={(event) => setprix(event.target.value)}
+                                            required
                                         />
-                                    </Grid>
-                                     
+                                    </div>
+                                </div>
 
-                                    
-                                   
-
-                                    <Grid item xs={12} sm={4} >
-
-
-                                    <select
+                                <div className="row mb-3">
+                                    <div className="col-md-6">
+                                        <label htmlFor="produit-restaurant" className="form-label">Restaurant:</label>
+                                        <select
                                             className="form-control"
                                             id="cityId"
                                             value={restaurantid}
                                             onChange={(event) => setRestaurantid(event.target.value)}
+                                            style={{
+                                                backgroundColor: "#f2f2f2",
+                                                border: "none",
+                                                borderRadius: "4px",
+                                                color: "#555",
+                                                fontSize: "16px",
+                                                padding: "8px 12px",
+                                                width: "100%",
+                                                marginBottom: "12px"
+                                            }}
+                                            required
                                         >
-                                            <option value="">Select a restaurant </option>
+                                            <option value="">Select a restaurant</option>
                                             {Restaurants && Restaurants.map((restaurant) => (
                                                 <option key={restaurant.id} value={restaurant.id}>
                                                     {restaurant.nom}
                                                 </option>
                                             ))}
                                         </select>
-                                    </Grid>
+                                    </div>
+                                </div>
 
-                                     
- 
+                                <div className="mb-2 mx-1">
+                                    <label htmlFor="produit-promotion" className="form-label">Promotion:</label>
+                                    <InputText
+                                        type="checkbox"
+                                        className="form-check-input"
+                                        id="produit-promotion"
+                                        checked={promotion}
+                                        onChange={(event) => setpromotion(event.target.checked)}
+                                    />
+                                </div>
+                            </form>
+                            <div className="d-flex justify-content-center mt-3">
+                                <Button  label="Cancel"
+                                         severity="warning"
+                                         raised
+                                         className="mx-2"
+                                         onClick={handleCloseModal}/>
 
-                                </Grid>
-                                <Button
-                                    type="submit"
+                                <Button  label="Save"
+                                         severity="success"
+                                         raised
 
-                                    sx={{ mt: 3, mb: 2 }}
-                                    variant="contained"
-                                >
-                                    add
-                                </Button>
+                                         onClick={(e) => handleSubmit(e)}/>
+                            </div>
+                            </div>
+                        </div>
 
+                </Modal>
+            </div>
 
-                            </Box>
-                        </Box>
-                    </form>
-                </CardContent>
-            </Card>
-            <Card sx={{ marginTop: 5 }}>
-                <CardContent>
-                    <ProduitTable key={tableKey} />
-                </CardContent>
-            </Card>
-        </Container>
 
 
     );

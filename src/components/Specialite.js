@@ -1,18 +1,13 @@
-import React, { useState, useEffect, useReducer } from "react";
+import React, { useState, useEffect, useReducer,useRef } from "react";
 import axios from '../service/callerService';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-
+import"../styles/login.css"
+import { Toast } from 'primereact/toast';
+import { Button } from 'primereact/button';
 import SpecialiteTable from "../components/SpecialiteTable";
+import {Card, CardContent} from "@mui/material";
+import Modal from "react-modal";
 
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-const theme = createTheme();
 export default function Specialite() {
 
     const [specialite, setSpecialite] = useState([]);
@@ -20,82 +15,133 @@ export default function Specialite() {
     const [upTB, forceUpdate] = useReducer((x) => x + 1, 0);
     const [tableKey, setTableKey] = useState(Date.now());
 
-    const onInputChange = (e) => {
-        setNom(e.target.value);
-        setSpecialite({ ...specialite, nom: e.target.value });
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+    const toast = useRef(null);
+
+
+    const handleOpenModal = (specialite) => {
+        setSpecialite(specialite);
+        setModalIsOpen(true);
     };
 
-    const onSubmit = async (e) => {
+    const handleCloseModal = () => {
+        setModalIsOpen(false)
+    };
+
+    const showSuccess = () => {
+        toast.current.show({severity:'success', summary: 'Success', detail:'item added successfully', life: 1000});
+    }
+
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (!nom) {
             alert("Please enter a specialite name");
         } else {
-            await axios.post("/api/controller/specialites/save", specialite);
+            await axios.post("api/controller/specialites/save", { nom });
             setNom("");
             forceUpdate();
-            setTableKey(Date.now()); // update the key to re-render the table
+            setTableKey(Date.now());
+            setModalIsOpen(false); // update state variable using setModalIsOpen function
+            showSuccess();
+
         }
     };
-
     useEffect(() => {
-        getSpecialites();
+        getSeries();
     }, [upTB]); // add upTB to the dependency array
 
-    const getSpecialites = async () => {
+    const getSeries = async () => {
         const res = await axios.get(`/api/controller/specialites/`);
         setSpecialite(res.data);
-
     }
 
     return (
-        <ThemeProvider theme={theme}>
-            <Container component="main" maxWidth="lg">
-                <CssBaseline />
-                <Box
-                    sx={{
-                        marginTop: 8,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                    }}
-                >
+        <div>
+            <Card className="mx-3 mt-3 p-3">
+                <CardContent >
+                    <div style={{ alignItems: "center" }}>
+                        <h3 >SPECIALITY</h3>
+                    </div>
+                    <div >
+                        <Toast ref={toast} position="top-center" />
 
-                    <Typography component="h1" variant="h5">
-                    Specialite
-                    </Typography>
-                    <form onSubmit={(e) => onSubmit(e)} noValidate>
-                        <Box
-                            sx={{
-                                marginTop: 8,
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'center',
-                            }}
-                        >
-                            <Grid container spacing={2}>
+                        <Button
+                            label="Add"
+                            style={{backgroundColor:"lightseagreen"}}
+                            raised
+                            className="mx-2"
+                            onClick={() => handleOpenModal(specialite)}
+
+                        />
+                        {/*
+                        <InputText placeholder="Search"  />
+                        */}
+                    </div>
 
 
-                                <Grid item xs={12} >
-                                    <TextField
-                                        required
-                                        fullWidth
-                                        name="specialite"
-                                        value={nom}
-                                        onChange={(e) => onInputChange(e)}
-                                    />
-                                </Grid>
-                            </Grid>
-                            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-                                add
-                            </Button>
-                        </Box>
+                </CardContent>
+                <SpecialiteTable key={tableKey}/>
+            </Card>
 
-                    </form>
-                </Box>
 
-            </Container>
-            <SpecialiteTable key={tableKey} /> {/* pass the key to the table component */}
-        </ThemeProvider>
+
+
+            <Modal
+                isOpen={modalIsOpen}
+                onRequestClose={handleCloseModal}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+
+                style={{
+                    overlay: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                        zIndex: 1000
+                    },
+                    content: {
+                        top: '50%',
+                        left: '50%',
+                        right: 'auto',
+                        bottom: 'auto',
+                        marginRight: '-50%',
+                        transform: 'translate(-50%, -50%)',
+                        backgroundColor: '#fff',
+                        borderRadius: '10px',
+                        boxShadow: '20px 30px 25px rgba(0, 0, 0, 0.2)',
+                        padding: '20px',
+                        width:'350px',
+                        height:'300px'
+                    }
+                }}
+            >
+                <div className="card">
+                    <div className="card-body">
+                        <h5 className="card-title" id="modal-modal-title">Update Speciality</h5>
+                        <form>
+                            <div className="mb-3">
+                                <label htmlFor="user-nom" className="form-label">Speciality Name:</label>
+                                <input type="text" className="form-control" id="user-nom" value={nom} onChange={(e) => setNom(e.target.value)} />
+                            </div>
+
+                        </form>
+                        <div className="d-flex justify-content-center mt-3">
+                            <Button  label="Cancel"
+                                     severity="warning"
+                                     raised
+                                     className="mx-2"
+                                     onClick={handleCloseModal}/>
+
+
+                            <Button  label="Save"
+                                     severity="success"
+                                     raised
+
+                                     onClick={(e) => handleSubmit(e)}/>
+                        </div>
+                    </div>
+                </div>
+            </Modal>
+        </div>
+
     );
-
 }

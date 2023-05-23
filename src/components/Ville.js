@@ -1,44 +1,49 @@
-import React, { useState, useEffect, useReducer } from "react";
-import axios from '../service/callerService';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
+import React, {useState, useEffect, useReducer, useRef} from "react";
+import axios from  '../service/callerService';
+import 'bootstrap/dist/css/bootstrap.css';
+import Villetable from "../components/VilleTable";
+import"../styles/login.css"
+import { Card, CardContent } from '@mui/material';
+import { Toast } from 'primereact/toast';
+import { Button } from 'primereact/button';
+import Modal from "react-modal";
 
-import VilleTable from "../components/VilleTable";
 
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-const theme = createTheme();
 export default function Ville() {
 
     const [ville, setVille] = useState([]);
     const [nom, setNom] = useState("");
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+    const toast = useRef(null);
     const [upTB, forceUpdate] = useReducer((x) => x + 1, 0);
     const [tableKey, setTableKey] = useState(Date.now());
 
-    const onInputChange = (e) => {
-        setNom(e.target.value);
-        setVille({ ...ville, nom: e.target.value });
-    };
 
-    const onSubmit = async (e) => {
+
+    const showSuccess = () => {
+        toast.current.show({severity:'success', summary: 'Success', detail:'item added successfully', life: 1000});
+    }
+
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (!nom) {
             alert("Please enter a ville name");
         } else {
-            await axios.post("/api/controller/villes/save", ville);
+            await axios.post("api/controller/villes/save", { nom });
             setNom("");
             forceUpdate();
-            setTableKey(Date.now()); // update the key to re-render the table
+            setTableKey(Date.now());
+            setModalIsOpen(false); // update state variable using setModalIsOpen function
+            showSuccess();
+
         }
     };
 
     useEffect(() => {
         getVilles();
+
     }, [upTB]); // add upTB to the dependency array
 
     const getVilles = async () => {
@@ -46,57 +51,105 @@ export default function Ville() {
         const res = await axios.get(`/api/controller/villes/`);
         setVille(res.data);
 
+
     }
 
+
+    const handleOpenModal = (ville) => {
+        setVille(ville);
+        setModalIsOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setModalIsOpen(false)
+    };
     return (
-        <ThemeProvider theme={theme}>
-            <Container component="main" maxWidth="lg">
-                <CssBaseline />
-                <Box
-                    sx={{
-                        marginTop: 8,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                    }}
-                >
+        <div>
+            <Card className="mx-3 mt-3 p-3">
+                <CardContent >
+                    <div style={{ alignItems: "center" }}>
+                        <h3 >CITY</h3>
+                    </div>
+                    <div >
+                        <Toast ref={toast} position="top-center" />
 
-                    <Typography component="h1" variant="h5">
-                        Ville
-                    </Typography>
-                    <form onSubmit={(e) => onSubmit(e)} noValidate>
-                        <Box
-                            sx={{
-                                marginTop: 8,
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'center',
-                            }}
-                        >
-                            <Grid container spacing={2}>
+                        <Button
+                            label="Add"
+                            style={{backgroundColor:"lightseagreen"}}
+                            raised
+                            className="mx-2"
+                            onClick={() => handleOpenModal(ville)}
+
+                        />
+                        {/*
+                        <InputText placeholder="Search"  />
+                        */}
+                    </div>
 
 
-                                <Grid item xs={12} >
-                                    <TextField
-                                        required
-                                        fullWidth
-                                        name="ville"
-                                        value={nom}
-                                        onChange={(e) => onInputChange(e)}
-                                    />
-                                </Grid>
-                            </Grid>
-                            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-                                add
-                            </Button>
-                        </Box>
+                </CardContent>
+                <Villetable key={tableKey}/>
+            </Card>
 
-                    </form>
-                </Box>
 
-            </Container>
-            <VilleTable key={tableKey} /> {/* pass the key to the table component */}
-        </ThemeProvider>
+
+
+            <Modal
+                isOpen={modalIsOpen}
+                onRequestClose={handleCloseModal}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+
+                style={{
+                    overlay: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                        zIndex: 1000
+                    },
+                    content: {
+                        top: '50%',
+                        left: '50%',
+                        right: 'auto',
+                        bottom: 'auto',
+                        marginRight: '-50%',
+                        transform: 'translate(-50%, -50%)',
+                        backgroundColor: '#fff',
+                        borderRadius: '10px',
+                        boxShadow: '20px 30px 25px rgba(0, 0, 0, 0.2)',
+                        padding: '20px',
+                        width:'350px',
+                        height:'250px'
+                    }
+                }}
+            >
+                <div className="card">
+                    <div className="card-body">
+                        <h5 className="card-title" id="modal-modal-title">Update City</h5>
+                        <form>
+                            <div className="mb-3">
+                                <label htmlFor="user-nom" className="form-label">city Name:</label>
+                                <input type="text" className="form-control" id="user-nom" value={nom} onChange={(e) => setNom(e.target.value)} />
+                            </div>
+
+                        </form>
+                        <div className="d-flex justify-content-center mt-3">
+                            <Button  label="Cancel"
+                                     severity="warning"
+                                     raised
+                                     className="mx-2"
+                                     onClick={handleCloseModal}/>
+
+
+                            <Button  label="Save"
+                                     severity="success"
+                                     raised
+
+                                     onClick={(e) => handleSubmit(e)}/>
+                        </div>
+                    </div>
+                </div>
+            </Modal>
+        </div>
+
     );
 
 }

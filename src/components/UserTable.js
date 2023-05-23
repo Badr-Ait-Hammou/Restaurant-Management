@@ -3,7 +3,9 @@ import axios from '../service/callerService';
 import React,{useState,useEffect} from "react";
 import Modal from "react-modal";
 import 'bootstrap/dist/css/bootstrap.css';
-import Button from "@mui/material/Button";
+import"../styles/login.css"
+import { Button } from 'primereact/button';
+import {Card, CardContent} from "@mui/material";
 
 
 
@@ -29,14 +31,14 @@ export default function UserTable() {
 
 
     useEffect(() => {
-        axios.get("http://localhost:8080/api/users/").then((response) => {
+        axios.get("/api/controller/users/").then((response) => {
             setusers(response.data);
         });
     }, []);
 
     const handleDelete = (id) => {
         if (window.confirm("Are you sure you want to delete this User?")) {
-            axios.delete(`http://localhost:8080/api/users/${id}`).then(() => {
+            axios.delete(`/api/controller/users/${id}`).then(() => {
                 setusers(users.filter((user) => user.id !== id));
             });
         }
@@ -53,7 +55,7 @@ export default function UserTable() {
 
     const handleEditUser = async (id) => {
         try {
-            const response = await axios.put(`http://localhost:8080/api/users/${id}`, {
+            const response = await axios.put(`/api/controller/users/${id}`, {
                 firstName: userFirstname,
                 lastName:userLastname,
                 email:userEmail,
@@ -79,12 +81,18 @@ export default function UserTable() {
     };
 
     const loadUsers=async ()=>{
-        const res=await axios.get(`http://localhost:8080/api/users/`);
+        const res=await axios.get(`/api/controller/users/`);
         setusers(res.data);
     }
 
     return (
+
         <div>
+            <Card className="mx-3 mt-3 p-3">
+                <CardContent >
+                    <div style={{ alignItems: "center" }}>
+                        <h3 >USERS</h3>
+                    </div>
             <div className="table-responsive">
 
                 <table className="table mt-5 text-center">
@@ -97,6 +105,7 @@ export default function UserTable() {
                         <th>Role</th>
                         <th>email</th>
                         <th>telephone</th>
+                        <th>actions</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -111,18 +120,19 @@ export default function UserTable() {
 
                             <td>{user.telephone}</td>
                             <td>
-                                <Button variant="contained" color="warning" onClick={() => handleDelete(user.id)}>
-                                    Delete
-                                </Button>
-                                <Button variant="contained" color="info" sx={{ ml:2 }}  onClick={() => handleOpenModal(user)}>
-                                    Edit
-                                </Button>
+
+                                {/*<Button label="Block" severity="danger"  className="mx-1" text raised sx={{ ml:2 }}  onClick={() => handleOpenModal(user)}/>*/}
+                                <Button label="Block" severity="danger"  className="mx-1" text raised sx={{ ml:2 }}  />
+
                             </td>
                         </tr>
                     ))}
                     </tbody>
                 </table>
+
             </div>
+                </CardContent>
+            </Card>
 
             <Modal
                 isOpen={modalIsOpen}
@@ -193,6 +203,7 @@ export default function UserTable() {
                     </div>
                 </div>
             </Modal>
+
         </div>
     );
 
