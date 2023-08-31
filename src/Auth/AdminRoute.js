@@ -19,6 +19,7 @@ import Orders from "../components/Orders"
 import Reservation from "../clientcomponent/ClientReservation"
 import Reservations from "../components/Reservations"
 import ClientOrders from "../clientcomponent/ClientOrders"
+import Cart from "../clientcomponent/Cart"
 const AdminRoute = () => {
 
     return (
@@ -63,6 +64,7 @@ const AdminRoute = () => {
                     )}
                 <Route path="/restaurants" element={<CltRest/>}/>
                 <Route path="/home/restaurants" element={<CltRest/>}/>
+                <Route path="/cart" element={<Cart/>}/>
                 <Route path="/orders" element={<ClientOrders/>}/>
                 <Route path="/reservation" element={<Reservation/>}/>
                 <Route path="/profile" element={<Profile/>}/>

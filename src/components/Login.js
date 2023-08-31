@@ -195,35 +195,6 @@ const onSubmit = (e) => {
     const showSuccess = () => {
         toast.current.show({severity:'success', summary: 'Success', detail:'item added successfully', life: 1000});
     }
-/*
-    const onSubmit = (e) => {
-        e.preventDefault();
-        const data = new FormData(e.currentTarget);
-        const email = data.get("email");
-        const password = data.get("password");
-        try {
-            accountService.login(email, password).then(async (res) => {
-                const token = decodeToken(res.data.access_token); // decode the token to get user details
-                const user = await accountService.getUserByEmail(token.sub);
-                console.log(user.role);
-                // get the user associated with the token
-                if (user.role === 'USER') {
-                    navigate("/use", { replace: true });
-                } else {
-                    navigate("/admin", {replace: true}); // redirect to user page
-                }
-            });
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    function decodeToken(token) {
-        const base64Url = token.split('.')[1];
-        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-        return JSON.parse(atob(base64));
-    }
-*/
 
     function decodeToken(token) {
         const base64Url = token.split('.')[1];
