@@ -35,7 +35,7 @@ export default function Cart() {
         fetchUserData();
     }, []);
 
-    useEffect(() => {
+    const loadCartProducts = () => {
         if (userId) {
             axios.get(`/api/controller/carts/userid/${userId}`)
                 .then(response => {
@@ -45,6 +45,10 @@ export default function Cart() {
                     console.error('Error fetching cart products:', error);
                 });
         }
+    };
+
+    useEffect(() => {
+        loadCartProducts();
     }, [userId]);
 
     const deleteProduct = (productId) => {
@@ -59,7 +63,6 @@ export default function Cart() {
                 console.error("Error deleting product:", error);
             });
     };
-
 
     const getTotalAmount = () => {
         let totalAmount = 0;
@@ -77,19 +80,69 @@ export default function Cart() {
         return totalQuantity;
     };
 
+    function saveOrder(cartProducts, userId) {
+        const orderPromises = cartProducts.map((product) => {
+            const orderItem = {
+                user: {id:userId},
+                totalPrice: product.totalprice * (productQuantities[product.id] || 1),
+                productQuantity: productQuantities[product.id] || 1,
+                produit:{
+                    id:product.produit.id,
+                }
+            };
+
+            return axios.post('/api/controller/orders/save', orderItem)
+                .then((response) => response.data)
+                .catch((error) => {
+                    console.error('Error saving order:', error);
+                    throw error;
+                });
+        });
+
+        return Promise.all(orderPromises);
+    }
+    const handleProceedToPay = () => {
+
+        // Save orders and then delete cart items
+        saveOrder(cartProducts, userId)
+            .then((orderResponses) => {
+                console.log('Orders saved successfully:', orderResponses);
+                // Delete cart items
+                const deletePromises = cartProducts.map((product) => {
+                    return axios.delete(`/api/controller/carts/${product.id}`)
+                        .then(() => console.log(`Deleted product ${product.id} from cart`))
+                        .catch((error) => {
+                            console.error(`Error deleting product ${product.id} from cart:`, error);
+                            throw error;
+                        });
+                });
+                return Promise.all(deletePromises);
+
+            })
+            .then(() => {
+                console.log('All cart items deleted');
+                loadCartProducts();
+            })
+            .catch((error) => {
+                console.error('Error saving orders or deleting cart items:', error);
+            });
+
+    };
+
+
+
     return (
         <div className="card mt-5 mx-2">
             <section style={{ backgroundColor: "#eee" }}>
-                <div className="container h-100 py-5">
+                <div className="container mt-2 ">
                     <div className="row d-flex justify-content-center align-items-center h-100">
                         <div className="col-12 col-md-10">
                             <div className="d-flex justify-content-between align-items-center mb-4">
                                 <h3 className="fw-normal mb-0 text-black">Shopping Cart</h3>
                             </div>
-
                             {cartProducts.map((product) => (
-                                <div className="card rounded-3 mb-4" key={product.id}>
-                                    <div className="card-body p-4">
+                                <div className="card rounded-3 mb-2" key={product.id}>
+                                    <div className="card-body p-3 ">
                                         <div className="row d-flex justify-content-between align-items-center">
                                             <div className="col-4 col-md-2 col-lg-2 col-xl-2">
                                                 <img
@@ -102,18 +155,18 @@ export default function Cart() {
                                                 <p className="lead fw-normal mb-2">{product.produit.nom}</p>
 
                                                 <p>
-                                                    <span className="text-muted">Price: </span>
+                                                    <span className="text-muted">Price:</span>
                                                     <strong>{product.totalprice}Dh</strong><br/>
                                                     <span className="text-muted">In stock: </span>
                                                     {product.produit.stock}<br/>
                                                     <span className="text-muted">Restaurant: </span>
                                                     {product.produit.restaurant.nom}
-
                                                 </p>
+
                                             </div>
                                             <div className="col-8 col-md-3 col-lg-3 col-xl-2 d-flex mt-3 mt-md-0">
                                                 <InputNumber
-                                                    value={productQuantities[product.id] || product.quantity}
+                                                    value= {productQuantities[product.id] || product.quantity}
                                                     mode="decimal"
                                                     showButtons
                                                     min={1}
@@ -127,7 +180,7 @@ export default function Cart() {
                                                 />
                                             </div>
                                             <div className="col-4 col-md-3 col-lg-2 col-xl-2 offset-md-1 mt-3 mt-md-0">
-                                                <h5 className="mb-0">{product.totalprice * (productQuantities[product.id] || 1)}Dh</h5>
+                                                <h5 className="mb-0"> {product.totalprice * (productQuantities[product.id] || 1)}Dh</h5>
                                             </div>
                                             <div className="col-3 col-md-1 col-lg-1 col-xl-1 text-end mt-3 mt-md-0">
                                                 <Button
@@ -141,15 +194,17 @@ export default function Cart() {
                                     </div>
                                 </div>
                             ))}
-                            <div className="card">
+                            <div className="card mb-2">
                                 <div className="card-body">
                                     <div className="row d-flex justify-content-between align-items-center">
                                         <div className="col-12 col-md-6">
                                             <p className="mb-1">Total Quantity: {getTotalQuantity()}</p>
                                             <p className="mb-0">Total Amount: {getTotalAmount()}Dh</p>
                                         </div>
-                                        <div className="col-12 col-md-6 text-md-end mt-3 mt-md-0">
-                                            <Button label="Proceed to Pay" severity="info" />
+                                        <div className="col-12 col-md-6 text-md-end mt-5 mt-md-0">
+                                            <Button label="Proceed to Pay" severity="info"
+                                                    onClick={handleProceedToPay}
+                                            />
                                         </div>
                                     </div>
                                 </div>
