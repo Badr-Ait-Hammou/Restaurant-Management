@@ -1,15 +1,13 @@
-import { Toast } from 'primereact/toast';
 import { Button } from 'primereact/button';
 import { Fieldset } from 'primereact/fieldset';
 import "../styles/clientreservation.css"
 import axios from '../service/callerService';
-import React,{useState,useEffect,useReducer} from "react";
+import React,{useState,useEffect} from "react";
 import { Card, CardContent } from '@mui/material';
-import Modal from "react-modal";
 import {useRef} from "react";
 import {accountService} from "../service/accountService";
 import moment from "moment";
-import {confirmDialog, ConfirmDialog} from 'primereact/confirmdialog';
+import {confirmDialog} from 'primereact/confirmdialog';
 
 
 
@@ -18,7 +16,7 @@ export default function ClientOrders() {
     const [orders, setOrders] = useState([]);
     const [userId, setUserId] = useState("");
     const [alertMessage] = useState("Once you make an order one of our agents will contact you asap");
-    const [type, settype] = useState("");
+
     const toast = useRef(null);
 
     useEffect(() => {
@@ -70,9 +68,7 @@ export default function ClientOrders() {
 
 
 
-    const showSuccess = () => {
-        toast.current.show({severity:'success', summary: 'Success', detail:'item added successfully', life: 1000});
-    }
+
 
     const loadReservations=async ()=>{
         const res=await  axios.get(`/api/controller/orders/user/${userId}`);

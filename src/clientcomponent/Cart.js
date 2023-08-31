@@ -4,13 +4,18 @@ import {Button} from 'primereact/button';
 import axios from '../service/callerService';
 import {accountService} from "../service/accountService";
 import {InputNumber} from "primereact/inputnumber";
+import { Dialog } from 'primereact/dialog';
+import {Toast} from "primereact/toast";
+import {useRef} from "react";
+
 
 export default function Cart() {
+    const [isDialogVisible, setDialogVisible] = useState(false);
     const [cartProducts, setCartProducts] = useState([]);
     const [userId, setUserId] = useState("");
     const [productQuantities, setProductQuantities] = useState({});
+    const toast = useRef(null);
 
-    // Update product quantity
     const updateQuantity = (productId, newQuantity) => {
         setProductQuantities((prevQuantities) => ({
             ...prevQuantities,
@@ -18,6 +23,14 @@ export default function Cart() {
         }));
     };
 
+    const handleConfirmPayment = () => {
+          handleProceedToPay();
+          setDialogVisible(false);
+    };
+
+    const opendialog = () => {
+        setDialogVisible(true);
+    };
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -37,15 +50,16 @@ export default function Cart() {
 
     const loadCartProducts = () => {
         if (userId) {
-            axios.get(`/api/controller/carts/userid/${userId}`)
+                axios.get(`/api/controller/carts/userid/${userId}`)
                 .then(response => {
                     setCartProducts(response.data);
                 })
                 .catch(error => {
                     console.error('Error fetching cart products:', error);
-                });
+             });
         }
     };
+
 
     useEffect(() => {
         loadCartProducts();
@@ -63,6 +77,10 @@ export default function Cart() {
                 console.error("Error deleting product:", error);
             });
     };
+
+    const showSuccess = () => {
+        toast.current.show({severity:'success', summary: 'Success', detail:'order submitted successfully', life: 1000});
+    }
 
     const getTotalAmount = () => {
         let totalAmount = 0;
@@ -90,7 +108,6 @@ export default function Cart() {
                     id:product.produit.id,
                 }
             };
-
             return axios.post('/api/controller/orders/save', orderItem)
                 .then((response) => response.data)
                 .catch((error) => {
@@ -98,16 +115,14 @@ export default function Cart() {
                     throw error;
                 });
         });
-
         return Promise.all(orderPromises);
     }
+
     const handleProceedToPay = () => {
 
-        // Save orders and then delete cart items
         saveOrder(cartProducts, userId)
             .then((orderResponses) => {
                 console.log('Orders saved successfully:', orderResponses);
-                // Delete cart items
                 const deletePromises = cartProducts.map((product) => {
                     return axios.delete(`/api/controller/carts/${product.id}`)
                         .then(() => console.log(`Deleted product ${product.id} from cart`))
@@ -117,22 +132,23 @@ export default function Cart() {
                         });
                 });
                 return Promise.all(deletePromises);
-
             })
             .then(() => {
                 console.log('All cart items deleted');
                 loadCartProducts();
+                showSuccess();
             })
             .catch((error) => {
-                console.error('Error saving orders or deleting cart items:', error);
+                console.error('Error saving orders or deleting cart items:',error);
             });
-
     };
 
 
-
     return (
-        <div className="card mt-5 mx-2">
+        <>
+            <Toast ref={toast} />
+
+            <div className="card mt-5 mx-2">
             <section style={{ backgroundColor: "#eee" }}>
                 <div className="container mt-2 ">
                     <div className="row d-flex justify-content-center align-items-center h-100">
@@ -202,9 +218,7 @@ export default function Cart() {
                                             <p className="mb-0">Total Amount: {getTotalAmount()}Dh</p>
                                         </div>
                                         <div className="col-12 col-md-6 text-md-end mt-5 mt-md-0">
-                                            <Button label="Proceed to Pay" severity="info"
-                                                    onClick={handleProceedToPay}
-                                            />
+                                            <Button label="Proceed to Pay" severity="info" onClick={opendialog}/>
                                         </div>
                                     </div>
                                 </div>
@@ -215,5 +229,15 @@ export default function Cart() {
             </section>
         </div>
 
+            <Dialog
+                visible={isDialogVisible}
+                onHide={() => setDialogVisible(false)}
+                header="Confirm Payment"
+            >
+                <p>Are you sure you want to proceed with the payment?</p>
+                <Button label="Confirm" onClick={handleConfirmPayment} />
+                <Button label="Cancel" onClick={() => setDialogVisible(false)} className="p-button-secondary" />
+            </Dialog>
+</>
     );
 }
