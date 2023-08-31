@@ -20,6 +20,7 @@ import Reservation from "../clientcomponent/ClientReservation"
 import Reservations from "../components/Reservations"
 import ClientOrders from "../clientcomponent/ClientOrders"
 const AdminRoute = () => {
+
     return (
         <>
             {accountService.isLogged && accountService.getRole() === 'ADMIN' && (
@@ -34,7 +35,7 @@ const AdminRoute = () => {
                     <Route path="/home" element={<Home/>}/>
 
                 {accountService.isLogged && accountService.getRole() === 'ADMIN' && (
-                <Route path="/ville" element={<Ville/>}/>
+                <Route path="/city" element={<Ville/>}/>
                     )}
                 {accountService.isLogged && accountService.getRole() === 'ADMIN' && (
                     <Route path="/restaurant" element={<Restaurant/>}/>

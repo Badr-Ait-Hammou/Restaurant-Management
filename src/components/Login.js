@@ -147,7 +147,7 @@ export default function Login() {
             </form>
 * */
 
-import React, { useContext, useState } from 'react';
+import React, { useRef} from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -158,20 +158,19 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
-
-
 import { accountService } from '../service/accountService';
+import {Toast} from "primereact/toast";
 
 
 
 
 
-export default function Login({isAuth, setAuth}) {
+export default function Login({}) {
 
 
     const navigate = useNavigate();
+    const toast = useRef(null);
 
 
 const onSubmit = (e) => {
@@ -190,9 +189,12 @@ const onSubmit = (e) => {
             });
         } catch (error) {
             console.log(error);
+            showSuccess();
         }
     };
-
+    const showSuccess = () => {
+        toast.current.show({severity:'success', summary: 'Success', detail:'item added successfully', life: 1000});
+    }
 /*
     const onSubmit = (e) => {
         e.preventDefault();
@@ -234,6 +236,8 @@ const onSubmit = (e) => {
 
             <Container component="main" maxWidth="xs" >
                 <CssBaseline />
+                <Toast ref={toast} position="top-center" />
+
                 <Box
                     sx={{
                         marginTop: 8,
@@ -242,6 +246,7 @@ const onSubmit = (e) => {
                         alignItems: 'center',
                     }}
                 >
+
                     <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
                         <LockOutlinedIcon />
                     </Avatar>

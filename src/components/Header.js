@@ -17,8 +17,7 @@ import { useNavigate } from "react-router-dom";
 import {accountService} from "../service/accountService";
 import Logo from "../images/restaurant.svg"
 
-const pages = ['ville' ,'zone','serie','specialite', 'restaurant','produit','user','orders','reservations'];
-const settings = [ ''];
+const pages = ['city' ,'zone','serie','specialite', 'restaurant','produit','user','orders','reservations'];
 
 export default function Header() {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -51,7 +50,7 @@ export default function Header() {
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
 
-                    <img src={Logo} style={{width:"70px"}}/>
+                    <img alt="badr" src={Logo} style={{width:"70px"}}/>
                     {/*<Restaurant sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
                     <Typography
                         variant="h6"

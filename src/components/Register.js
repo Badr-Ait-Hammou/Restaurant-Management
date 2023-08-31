@@ -79,8 +79,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -102,7 +100,6 @@ export default function Register() {
     const [email, setEmail] = useState("");
     const [telephone, settel] = useState("");
     const [adresse, setAdresse] = useState("");
-    const [role, setRole] = useState("");
     const [error, setError] = useState('');
 
     const handleRegistration = (event) => {
@@ -123,10 +120,6 @@ export default function Register() {
             setError(error.response.data.message);
         });
     };
-
-
-
-
 
   /*  const handleSubmit = (event) => {
         event.preventDefault();
