@@ -63,22 +63,12 @@ export default function ClientOrders() {
         });
     }, [userId]);
 
-
-
-
-
-
-
-
     const loadReservations=async ()=>{
         const res=await  axios.get(`/api/controller/orders/user/${userId}`);
         setOrders(res.data);
     }
 
-
     return (
-
-
 
         <div>
 
