@@ -1,16 +1,12 @@
-import { Button } from 'primereact/button';
-import { Fieldset } from 'primereact/fieldset';
+import {Button} from 'primereact/button';
+import {Fieldset} from 'primereact/fieldset';
 import "../styles/clientreservation.css"
 import axios from '../service/callerService';
-import React,{useState,useEffect} from "react";
-import { Card, CardContent } from '@mui/material';
-import {useRef} from "react";
+import React, {useState, useEffect, useRef} from "react";
+import {Card, CardContent} from '@mui/material';
 import {accountService} from "../service/accountService";
 import moment from "moment";
 import {confirmDialog} from 'primereact/confirmdialog';
-
-
-
 
 export default function ClientOrders() {
     const [orders, setOrders] = useState([]);
@@ -26,7 +22,7 @@ export default function ClientOrders() {
                 try {
                     const user = await accountService.getUserByEmail(tokenInfo.sub);
                     setUserId(user.id);
-                    console.log('user',user.id);
+                    console.log('user', user.id);
                 } catch (error) {
                     console.log('Error retrieving user:', error);
                 }
@@ -36,12 +32,16 @@ export default function ClientOrders() {
         fetchUserData();
     }, []);
 
-
     const handleDelete = (reservationId) => {
         const confirmDelete = () => {
             axios.delete(`/api/controller/orders/${reservationId}`).then(() => {
                 setOrders(orders.filter((reservation) => reservation.id !== reservationId));
-                toast.current.show({ severity: 'success', summary: 'Success', detail: 'Reservation canceled successfully', life: 3000 });
+                toast.current.show({
+                    severity: 'success',
+                    summary: 'Success',
+                    detail: 'Reservation canceled successfully',
+                    life: 3000
+                });
             });
         };
 
@@ -63,51 +63,66 @@ export default function ClientOrders() {
         });
     }, [userId]);
 
-    const loadReservations=async ()=>{
-        const res=await  axios.get(`/api/controller/orders/user/${userId}`);
+    const loadReservations = async () => {
+        const res = await axios.get(`/api/controller/orders/user/${userId}`);
         setOrders(res.data);
     }
 
+    const groupOrdersByCreatedDate = () => {
+        const grouped = [];
+        let currentGroup = null;
+
+        for (const order of orders) {
+            const createdDate = moment(order.dateCreated);
+            if (!currentGroup || createdDate.diff(moment(currentGroup.createdDate), 'seconds') > 60) {
+                currentGroup = {createdDate: createdDate.format("YYYY-MM-DD HH:mm"), orders: []};
+                grouped.push(currentGroup);
+            }
+            currentGroup.orders.push(order);
+        }
+        return grouped;
+    };
+
     return (
-
         <div>
-
-            <div className="alert" style={{backgroundColor:"yellow",padding: "10px",fontFamily:"serif"
-            }}>
+            <div className="alert" style={{backgroundColor: "yellow", padding: "10px", fontFamily: "serif"}}>
                 {alertMessage}
             </div>
             <Card className="mx-3 mt-3 p-3">
-                <CardContent >
-                    <div style={{ alignItems: "center" }}>
-                        <h3 >ORDERS</h3>
+                <CardContent>
+                    <div style={{alignItems: "center"}}>
+                        <h3>ORDERS</h3>
                     </div>
-
                 </CardContent>
                 <div className="mt-5">
-                    {orders.map((orders) => (
-                        <div  key={orders.id}>
-
-                            <div className="content" >
-                                <Fieldset legend="Order Details"  toggleable>
-                                    <p>
-                                        <strong className="mt-2 ">You placed an order on :</strong> {moment(orders.dateCreated).format("YYYY-MM-DD  / HH:mm")}<br />
-                                        <strong className="mt-2 ">Total amount :</strong>{orders.totalPrice}<br />
-                                        <strong className="mt-2 ">Quantity:</strong> {orders.productQuantity}<br />
-                                        <strong className="mt-2 ">Your email</strong> {orders.user && orders.user.email}
-                                    </p>
-                                    <Button label="CANCEL" severity="danger"  className="mx-1"  raised  />
-
+                    {groupOrdersByCreatedDate().map((group, index) => (
+                        <div key={index}>
+                            <div className="content mt-5">
+                                <Fieldset legend={`Order Details (${group.createdDate})`} toggleable>
+                                    {group.orders.map((order) => (
+                                        <div key={order.id} className="d-flex"
+                                             style={{alignItems: "center", justifyContent: "center"}}>
+                                            <img src={order.produit.photo} alt={order.produit.nom} style={{
+                                                width: '100px',
+                                                height: '100px',
+                                                marginRight: '30px',
+                                                marginTop: "2px"
+                                            }}/>                                            <p>
+                                            <strong className="mt-2 mx-2 ">Total amount
+                                                :</strong>{order.totalPrice}<br/>
+                                            <strong
+                                                className="mt-2 mx-2 ">Quantity:</strong> {order.productQuantity}<br/>
+                                        </p>
+                                            <Button label="CANCEL" severity="danger" className="mx-1" raised
+                                                    onClick={() => handleDelete(order.id)}/>
+                                        </div>
+                                    ))}
                                 </Fieldset>
                             </div>
                         </div>
                     ))}
                 </div>
             </Card>
-
-
         </div>
-
-
-
     );
 }
