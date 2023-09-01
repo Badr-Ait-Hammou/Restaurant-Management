@@ -32,7 +32,7 @@ export default function Cart() {
         setDialogVisible(true);
     };
 
-    useEffect(() => {
+
         const fetchUserData = async () => {
             const tokenInfo = accountService.getTokenInfo();
             if (tokenInfo) {
@@ -45,8 +45,7 @@ export default function Cart() {
                 }
             }
         };
-        fetchUserData();
-    }, []);
+
 
     const loadCartProducts = () => {
         if (userId) {
@@ -63,6 +62,8 @@ export default function Cart() {
 
     useEffect(() => {
         loadCartProducts();
+        fetchUserData();
+
     }, [userId]);
 
     const deleteProduct = (productId) => {
@@ -85,7 +86,7 @@ export default function Cart() {
     const getTotalAmount = () => {
         let totalAmount = 0;
         cartProducts.forEach((product) => {
-            totalAmount += (product.totalprice * (productQuantities[product.id] || 0));
+            totalAmount += (product.totalprice * (productQuantities[product.id] || 1));
         });
         return totalAmount;
     };
@@ -93,7 +94,7 @@ export default function Cart() {
     const getTotalQuantity = () => {
         let totalQuantity = 0;
         cartProducts.forEach((product) => {
-            totalQuantity += (productQuantities[product.id] || 0);
+            totalQuantity += (productQuantities[product.id] || 1);
         });
         return totalQuantity;
     };
@@ -156,7 +157,13 @@ export default function Cart() {
                             <div className="d-flex justify-content-between align-items-center mb-4">
                                 <h3 className="fw-normal mb-0 text-black">Shopping Cart</h3>
                             </div>
-                            {cartProducts.map((product) => (
+                            {cartProducts.length === 0 ? (
+                                <div className="alert alert-secondary">
+                                    oops! There are no products in the cart.
+                                </div>
+                            ) : (
+                                <>
+                                {cartProducts.map((product) => (
                                 <div className="card rounded-3 mb-2" key={product.id}>
                                     <div className="card-body p-3 ">
                                         <div className="row d-flex justify-content-between align-items-center">
@@ -209,7 +216,7 @@ export default function Cart() {
                                         </div>
                                     </div>
                                 </div>
-                            ))}
+                                ))}
                             <div className="card mb-2">
                                 <div className="card-body">
                                     <div className="row d-flex justify-content-between align-items-center">
@@ -223,6 +230,8 @@ export default function Cart() {
                                     </div>
                                 </div>
                             </div>
+                                </>
+                            )}
                         </div>
                     </div>
                 </div>
