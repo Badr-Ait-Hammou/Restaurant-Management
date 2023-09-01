@@ -68,10 +68,10 @@ export default function ClientOrders() {
         setOrders(res.data);
     }
 
+
     const groupOrdersByCreatedDate = () => {
         const grouped = [];
         let currentGroup = null;
-
         for (const order of orders) {
             const createdDate = moment(order.dateCreated);
             if (!currentGroup || createdDate.diff(moment(currentGroup.createdDate), 'seconds') > 60) {
@@ -107,13 +107,15 @@ export default function ClientOrders() {
                                                 height: '100px',
                                                 marginRight: '30px',
                                                 marginTop: "2px"
-                                            }}/>                                            <p>
+                                            }}/>
+                                            <p>
                                             <strong className="mt-2 mx-2 ">Total amount
                                                 :</strong>{order.totalPrice}<br/>
                                             <strong
                                                 className="mt-2 mx-2 ">Quantity:</strong> {order.productQuantity}<br/>
                                         </p>
-                                            <Button label="CANCEL" severity="danger" className="mx-1" raised
+                                            <Button label="CANCEL" severity="danger" className="mx-1"
+                                                    raised
                                                     onClick={() => handleDelete(order.id)}/>
                                         </div>
                                     ))}
