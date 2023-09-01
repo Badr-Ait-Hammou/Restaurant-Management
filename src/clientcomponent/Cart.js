@@ -120,19 +120,28 @@ export default function Cart() {
     }
 
     const handleProceedToPay = () => {
+        const updateStockPromises = [];
+        const deleteCartPromises = [];
 
         saveOrder(cartProducts, userId)
             .then((orderResponses) => {
                 console.log('Orders saved successfully:', orderResponses);
-                const deletePromises = cartProducts.map((product) => {
-                    return axios.delete(`/api/controller/carts/${product.id}`)
-                        .then(() => console.log(`Deleted product ${product.id} from cart`))
-                        .catch((error) => {
-                            console.error(`Error deleting product ${product.id} from cart:`, error);
-                            throw error;
-                        });
+
+                cartProducts.forEach((product) => {
+                    const quantity = productQuantities[product.id] || 1;
+
+                    const updateStockPromise = axios.put(`/api/controller/produits/stock/${product.produit.id}`, {
+                        stock: product.produit.stock - quantity,
+                    });
+
+                    updateStockPromises.push(updateStockPromise);
+
+                    // Create a promise to delete the cart item
+                    const deleteCartPromise = axios.delete(`/api/controller/carts/${product.id}`);
+                    deleteCartPromises.push(deleteCartPromise);
                 });
-                return Promise.all(deletePromises);
+
+                return Promise.all([...updateStockPromises, ...deleteCartPromises]);
             })
             .then(() => {
                 console.log('All cart items deleted');
@@ -140,10 +149,9 @@ export default function Cart() {
                 showSuccess();
             })
             .catch((error) => {
-                console.error('Error saving orders or deleting cart items:',error);
+                console.error('Error saving orders or updating product stocks:', error);
             });
     };
-
 
     return (
         <>
