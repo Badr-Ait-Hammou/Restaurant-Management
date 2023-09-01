@@ -1,12 +1,12 @@
-import {Button} from 'primereact/button';
-import {Fieldset} from 'primereact/fieldset';
-import "../styles/clientreservation.css"
+import { Button } from 'primereact/button';
+import { Fieldset } from 'primereact/fieldset';
+import "../styles/clientreservation.css";
 import axios from '../service/callerService';
-import React, {useState, useEffect, useRef} from "react";
-import {Card, CardContent} from '@mui/material';
-import {accountService} from "../service/accountService";
+import React, { useState, useEffect, useRef } from "react";
+import { Card, CardContent } from '@mui/material';
+import { accountService } from "../service/accountService";
 import moment from "moment";
-import {confirmDialog} from 'primereact/confirmdialog';
+import { confirmDialog } from 'primereact/confirmdialog';
 
 export default function ClientOrders() {
     const [orders, setOrders] = useState([]);
@@ -28,25 +28,30 @@ export default function ClientOrders() {
                 }
             }
         };
-
         fetchUserData();
     }, []);
 
-    const handleDelete = (reservationId) => {
+    const handleDelete = (reservationIds) => {
         const confirmDelete = () => {
-            axios.delete(`/api/controller/orders/${reservationId}`).then(() => {
-                setOrders(orders.filter((reservation) => reservation.id !== reservationId));
+            const promises = reservationIds.map((reservationId) => {
+                return axios.delete(`/api/controller/orders/${reservationId}`);
+            });
+
+            Promise.all(promises).then(() => {
+                // Filter out the deleted orders
+                const updatedOrders = orders.filter((order) => !reservationIds.includes(order.id));
+                setOrders(updatedOrders);
                 toast.current.show({
                     severity: 'success',
                     summary: 'Success',
-                    detail: 'Reservation canceled successfully',
+                    detail: 'Reservations canceled successfully',
                     life: 3000
                 });
             });
         };
 
         confirmDialog({
-            message: 'Are you sure you want to Cancel this Reservation?',
+            message: 'Are you sure you want to Cancel these Reservations?',
             header: 'Confirmation',
             icon: 'pi pi-exclamation-triangle',
             acceptLabel: 'Yes',
@@ -54,7 +59,6 @@ export default function ClientOrders() {
             acceptClassName: 'p-button-danger',
             accept: confirmDelete
         });
-        loadReservations();
     };
 
     useEffect(() => {
@@ -68,14 +72,13 @@ export default function ClientOrders() {
         setOrders(res.data);
     }
 
-
     const groupOrdersByCreatedDate = () => {
         const grouped = [];
         let currentGroup = null;
         for (const order of orders) {
             const createdDate = moment(order.dateCreated);
             if (!currentGroup || createdDate.diff(moment(currentGroup.createdDate), 'seconds') > 60) {
-                currentGroup = {createdDate: createdDate.format("YYYY-MM-DD HH:mm"), orders: []};
+                currentGroup = { createdDate: createdDate.format("YYYY-MM-DD HH:mm"), orders: [] };
                 grouped.push(currentGroup);
             }
             currentGroup.orders.push(order);
@@ -85,12 +88,12 @@ export default function ClientOrders() {
 
     return (
         <div>
-            <div className="alert" style={{backgroundColor: "yellow", padding: "10px", fontFamily: "serif"}}>
+            <div className="alert" style={{ backgroundColor: "yellow", padding: "10px", fontFamily: "serif" }}>
                 {alertMessage}
             </div>
             <Card className="mx-3 mt-3 p-3">
                 <CardContent>
-                    <div style={{alignItems: "center"}}>
+                    <div style={{ alignItems: "center" }}>
                         <h3>ORDERS</h3>
                     </div>
                 </CardContent>
@@ -101,24 +104,25 @@ export default function ClientOrders() {
                                 <Fieldset legend={`Order Details (${group.createdDate})`} toggleable>
                                     {group.orders.map((order) => (
                                         <div key={order.id} className="d-flex"
-                                             style={{alignItems: "center", justifyContent: "center"}}>
+                                             style={{ alignItems: "center", justifyContent: "center" }}>
                                             <img src={order.produit.photo} alt={order.produit.nom} style={{
                                                 width: '100px',
                                                 height: '100px',
                                                 marginRight: '30px',
                                                 marginTop: "2px"
-                                            }}/>
+                                            }} />
                                             <p>
-                                            <strong className="mt-2 mx-2 ">Total amount
-                                                :</strong>{order.totalPrice}<br/>
-                                            <strong
-                                                className="mt-2 mx-2 ">Quantity:</strong> {order.productQuantity}<br/>
-                                        </p>
-                                            <Button label="CANCEL" severity="danger" className="mx-1"
-                                                    raised
-                                                    onClick={() => handleDelete(order.id)}/>
+                                                <strong className="mt-2 mx-2 ">Total amount
+                                                    :</strong>{order.totalPrice}<br />
+                                                <strong
+                                                    className="mt-2 mx-2 ">Quantity:</strong> {order.productQuantity}<br />
+                                            </p>
                                         </div>
                                     ))}
+                                    <div className="d-flex justify-content-center">
+                                        <Button label="CANCEL" severity="danger" className="mx-1"
+                                                raised onClick={() => handleDelete(group.orders.map(order => order.id))} />
+                                    </div>
                                 </Fieldset>
                             </div>
                         </div>
