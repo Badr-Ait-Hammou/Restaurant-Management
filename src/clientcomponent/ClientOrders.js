@@ -133,8 +133,7 @@ export default function ClientOrders() {
                                     ))}
                                     <div className="d-flex justify-content-end">
                                         <div className="mt-3">
-                                            <strong>Total Amount :</strong> {group.orders.reduce((total, order) => total + order.totalPrice, 0)}
-                                         Dh</div>
+                                            <strong>Total Amount :</strong> {group.orders.reduce((total, order) => total + order.totalPrice, 0)} Dh</div>
                                         <Button label="CANCEL" severity="danger" className="mx-3"
                                                 raised onClick={() => handleDelete(group.orders.map(order => order.id))} />
                                     </div>
