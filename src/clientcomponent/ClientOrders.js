@@ -109,13 +109,13 @@ export default function ClientOrders() {
                                 <Fieldset legend={`Order Details (${group.createdDate})`} toggleable>
                                     {group.orders.map((order, orderIndex) => (
                                         <div key={order.id} className="order-item">
-                                            {orderIndex > 0 && <Divider />} {/* Divider between orders */}
+                                            {orderIndex > 0 && <Divider />}
                                             <Grid container alignItems="center">
                                                 <Grid item xs={4} className="left">
                                                     <img src={order.produit.photo} alt={order.produit.nom} style={{
                                                         width: '100px',
                                                         height: '100px',
-                                                        borderRadius: '8px' // Adding border radius
+                                                        borderRadius: '8px'
                                                     }} />
                                                 </Grid>
                                                 <Grid item xs={4} className="right">
