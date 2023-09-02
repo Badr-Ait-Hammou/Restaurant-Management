@@ -119,7 +119,7 @@ export default function ClientOrders() {
                                                     <p>
                                                         <strong className="mt-2 mx-2">Product :</strong> {order.produit.nom}<br />
                                                         <strong className="mt-2 mx-2">Restaurant :</strong> {order.produit.restaurant.nom} <br />
-                                                        <strong className="mt-2 mx-2">Quantity :</strong> {order.produit.prix} Dh<br />
+                                                        <strong className="mt-2 mx-2">Price :</strong> {order.produit.prix} Dh<br />
                                                     </p>
                                                 </Grid> <Grid item xs={4} className="right">
                                                     <p>
@@ -131,7 +131,10 @@ export default function ClientOrders() {
                                         </div>
                                     ))}
                                     <div className="d-flex justify-content-end">
-                                        <Button label="CANCEL" severity="danger" className="mx-1"
+                                        <div className="mt-3">
+                                            <strong>Total Amount :</strong> {group.orders.reduce((total, order) => total + order.totalPrice, 0)}
+                                         Dh</div>
+                                        <Button label="CANCEL" severity="danger" className="mx-3"
                                                 raised onClick={() => handleDelete(group.orders.map(order => order.id))} />
                                     </div>
                                 </Fieldset>
