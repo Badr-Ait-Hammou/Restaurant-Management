@@ -6,7 +6,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { Card, CardContent } from '@mui/material';
 import { accountService } from "../service/accountService";
 import moment from "moment";
-import { confirmDialog } from 'primereact/confirmdialog';
+import {ConfirmDialog, confirmDialog} from 'primereact/confirmdialog';
+import {Toast} from "primereact/toast";
 
 export default function ClientOrders() {
     const [orders, setOrders] = useState([]);
@@ -38,7 +39,6 @@ export default function ClientOrders() {
             });
 
             Promise.all(promises).then(() => {
-                // Filter out the deleted orders
                 const updatedOrders = orders.filter((order) => !reservationIds.includes(order.id));
                 setOrders(updatedOrders);
                 toast.current.show({
@@ -88,6 +88,8 @@ export default function ClientOrders() {
 
     return (
         <div>
+            <Toast ref={toast} />
+            <ConfirmDialog />
             <div className="alert" style={{ backgroundColor: "yellow", padding: "10px", fontFamily: "serif" }}>
                 {alertMessage}
             </div>
