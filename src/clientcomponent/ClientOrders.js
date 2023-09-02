@@ -8,6 +8,9 @@ import { accountService } from "../service/accountService";
 import moment from "moment";
 import {ConfirmDialog, confirmDialog} from 'primereact/confirmdialog';
 import {Toast} from "primereact/toast";
+import Grid from '@mui/material/Grid';
+import Divider from '@mui/material/Divider';
+
 
 export default function ClientOrders() {
     const [orders, setOrders] = useState([]);
@@ -78,7 +81,7 @@ export default function ClientOrders() {
         for (const order of orders) {
             const createdDate = moment(order.dateCreated);
             if (!currentGroup || createdDate.diff(moment(currentGroup.createdDate), 'seconds') > 60) {
-                currentGroup = { createdDate: createdDate.format("YYYY-MM-DD HH:mm"), orders: [] };
+                currentGroup = {createdDate: createdDate.format("YYYY-MM-DD HH:mm"), orders: []};
                 grouped.push(currentGroup);
             }
             currentGroup.orders.push(order);
@@ -101,27 +104,36 @@ export default function ClientOrders() {
                 </CardContent>
                 <div className="mt-5">
                     {groupOrdersByCreatedDate().map((group, index) => (
-                        <div key={index}>
+                        <div key={index} className="order-group">
                             <div className="content mt-5">
                                 <Fieldset legend={`Order Details (${group.createdDate})`} toggleable>
-                                    {group.orders.map((order) => (
-                                        <div key={order.id} className="d-flex"
-                                             style={{ alignItems: "center", justifyContent: "center" }}>
-                                            <img src={order.produit.photo} alt={order.produit.nom} style={{
-                                                width: '100px',
-                                                height: '100px',
-                                                marginRight: '30px',
-                                                marginTop: "2px"
-                                            }} />
-                                            <p>
-                                                <strong className="mt-2 mx-2 ">Total amount
-                                                    :</strong>{order.totalPrice}<br />
-                                                <strong
-                                                    className="mt-2 mx-2 ">Quantity:</strong> {order.productQuantity}<br />
-                                            </p>
+                                    {group.orders.map((order, orderIndex) => (
+                                        <div key={order.id} className="order-item">
+                                            {orderIndex > 0 && <Divider />} {/* Divider between orders */}
+                                            <Grid container alignItems="center">
+                                                <Grid item xs={4} className="left">
+                                                    <img src={order.produit.photo} alt={order.produit.nom} style={{
+                                                        width: '100px',
+                                                        height: '100px',
+                                                        borderRadius: '8px' // Adding border radius
+                                                    }} />
+                                                </Grid>
+                                                <Grid item xs={4} className="right">
+                                                    <p>
+                                                        <strong className="mt-2 mx-2">Product :</strong> {order.produit.nom}<br />
+                                                        <strong className="mt-2 mx-2">Restaurant :</strong> {order.produit.restaurant.nom} <br />
+                                                        <strong className="mt-2 mx-2">Quantity :</strong> {order.produit.prix} Dh<br />
+                                                    </p>
+                                                </Grid> <Grid item xs={4} className="right">
+                                                    <p>
+                                                        <strong className="mt-2 mx-2">Total amount:</strong> {order.totalPrice} Dh<br />
+                                                        <strong className="mt-2 mx-2">Quantity:</strong> {order.productQuantity} Pcs<br />
+                                                    </p>
+                                                </Grid>
+                                            </Grid>
                                         </div>
                                     ))}
-                                    <div className="d-flex justify-content-center">
+                                    <div className="d-flex justify-content-end">
                                         <Button label="CANCEL" severity="danger" className="mx-1"
                                                 raised onClick={() => handleDelete(group.orders.map(order => order.id))} />
                                     </div>
