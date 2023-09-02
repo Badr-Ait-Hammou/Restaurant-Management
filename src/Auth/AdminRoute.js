@@ -69,6 +69,7 @@ const AdminRoute = () => {
                 <Route path="/reservation" element={<Reservation/>}/>
                 <Route path="/profile" element={<Profile/>}/>
                 <Route exact path="/restaurants/restaurants/:id" element={<RestaurantDetails/>}/>
+                <Route exact path="/home/restaurants/restaurants/:id" element={<RestaurantDetails/>}/>
             </Route>
         </Routes>
             <Footer/>
