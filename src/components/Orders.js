@@ -10,6 +10,8 @@ import { Toolbar } from 'primereact/toolbar';
 import { InputText } from 'primereact/inputtext';
 import MainCard from "../ui-component/MainCard";
 import moment from "moment";
+import { Tag } from 'primereact/tag';
+
 
 
 
@@ -18,6 +20,7 @@ export default function Orders( )  {
     const [globalFilter, setGlobalFilter] = useState(null);
     const toast = useRef(null);
     const dt = useRef(null);
+
 
 
 
@@ -38,7 +41,6 @@ export default function Orders( )  {
 
     const header = (
         <div className="flex flex-wrap gap-2 align-items-center justify-content-between">
-            <h4 className="m-0">Manage Products</h4>
             <span className="p-input-icon-left">
                 <i className="pi pi-search" />
                 <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Search..." />
@@ -71,14 +73,14 @@ export default function Orders( )  {
 
     const imageBodyTemplate = (rowData) => {
         return (
-            <div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '5px', justifyContent: 'center' }}>
                 {rowData.orders.map((order) => (
                     <img
                         key={order.produit.id}
                         src={order.produit.photo}
                         alt={order.produit.nom}
-                        className="shadow-2 border-round"
-                        style={{ width: '64px', marginRight: '8px' }}
+                        className="shadow-cyan-200 border-round"
+                        style={{ width: '60px',borderRadius:"8px" }}
                     />
                 ))}
             </div>
@@ -122,12 +124,13 @@ export default function Orders( )  {
                         globalFilter={globalFilter}
                         header={header}
                     >
-                        <Column field="createdDate" header="Created Date" sortable style={{ minWidth: '16rem' }}></Column>
+                        <Column field="createdDate" header="Created Date" sortable style={{ minWidth: '12rem' }}></Column>
                         <Column field="email" header="Client" body={(rowData) => rowData.orders[0].user.email}></Column>
-                        <Column field="totalPrice" header="Total Amount"  body={(rowData) => <div>{rowData.orders.reduce((total, order) => total + order.totalPrice, 0).toFixed(2)} Dh</div>} style={{ minWidth: '8rem' }}></Column>
+                        <Column field="totalPrice" header="Total Amount"  body={(rowData) => <div><Tag severity="info" rounded>
+                            {rowData.orders.reduce((total, order) => total + order.totalPrice, 0).toFixed(2)} Dh</Tag></div>} style={{ minWidth: '8rem' }}></Column>
 
                         <Column field="orders" header="Products" body={imageBodyTemplate}></Column>
-                        <Column body={actionBodyTemplate} exportable={false} style={{ minWidth: '12rem' }}></Column>
+                        <Column header="Actions" body={actionBodyTemplate} exportable={false} style={{ minWidth: '12rem' }}></Column>
                     </DataTable>
                 </div>
             </div>
