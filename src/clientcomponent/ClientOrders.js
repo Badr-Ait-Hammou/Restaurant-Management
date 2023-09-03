@@ -10,6 +10,7 @@ import {ConfirmDialog, confirmDialog} from 'primereact/confirmdialog';
 import {Toast} from "primereact/toast";
 import Grid from '@mui/material/Grid';
 import Divider from '@mui/material/Divider';
+import {Tag} from "primereact/tag";
 
 
 export default function ClientOrders() {
@@ -47,14 +48,14 @@ export default function ClientOrders() {
                 toast.current.show({
                     severity: 'success',
                     summary: 'Success',
-                    detail: 'Reservations canceled successfully',
+                    detail: 'Order canceled successfully',
                     life: 3000
                 });
             });
         };
 
         confirmDialog({
-            message: 'Are you sure you want to Cancel these Reservations?',
+            message: 'Are you sure you want to Cancel this Order?',
             header: 'Confirmation',
             icon: 'pi pi-exclamation-triangle',
             acceptLabel: 'Yes',
@@ -131,11 +132,36 @@ export default function ClientOrders() {
                                             </Grid>
                                         </div>
                                     ))}
-                                    <div className="d-flex justify-content-end">
+                                    <div className="d-flex justify-content-end ">
+                                        <div>
+                                            <Tag className="m-3"
+                                                severity={
+                                                    group.orders[0].status === "Pending"
+                                                        ? "warning"
+                                                        : group.orders[0].status === "Cancelled"
+                                                            ? "error"
+                                                            : group.orders[0].status === "Confirmed"
+                                                                ? "info"
+                                                                : group.orders[0].status === "Delivered"
+                                                                    ? "success"
+                                                                    : "secondary" // Default to "info" if none of the above conditions match
+                                                }
+                                                rounded
+                                            >
+                                                {group.orders[0].status}
+                                            </Tag>
+                                        </div>
                                         <div className="mt-3">
-                                            <strong>Order Amount :</strong> {group.orders.reduce((total, order) => total + order.totalPrice, 0)} Dh</div>
-                                        <Button label="CANCEL" severity="danger" className="mx-3"
-                                                raised onClick={() => handleDelete(group.orders.map(order => order.id))} />
+                                            <strong>Order Amount :</strong>{" "}
+                                            {group.orders.reduce((total, order) => total + order.totalPrice, 0)} Dh
+                                        </div>
+                                        <Button
+                                            label="CANCEL"
+                                            severity="danger"
+                                            className="mx-3"
+                                            raised
+                                            onClick={() => handleDelete(group.orders.map(order => order.id))}
+                                        />
                                     </div>
                                 </Fieldset>
                             </div>
