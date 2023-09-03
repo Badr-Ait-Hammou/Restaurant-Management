@@ -1,22 +1,24 @@
 import axios from  '../service/callerService';
-import React, { useState, useEffect } from "react";
 import 'bootstrap/dist/css/bootstrap.css';
 import { Button } from 'primereact/button';
-import ReactPaginate from "react-paginate";
 import"../styles/login.css"
-import { Card, CardContent } from '@mui/material';
-
-
+import React, { useState, useEffect, useRef } from 'react';
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
+import { Toast } from 'primereact/toast';
+import { Toolbar } from 'primereact/toolbar';
+import { InputText } from 'primereact/inputtext';
+import MainCard from "../ui-component/MainCard";
+import moment from "moment";
 
 
 
 export default function Orders( )  {
     const [orders, setOrders] = useState([]);
-    const [pageNumber, setPageNumber] = useState(0);
+    const [globalFilter, setGlobalFilter] = useState(null);
+    const toast = useRef(null);
+    const dt = useRef(null);
 
-    const itemsPerPage = 4;
-    const offset = pageNumber * itemsPerPage;
-    const currentPageItems = orders.slice(offset, offset + itemsPerPage);
 
 
 
@@ -30,82 +32,105 @@ export default function Orders( )  {
         fetchorders();
     }, []);
 
+    const exportCSV = () => {
+        dt.current.exportCSV();
+    };
+
+    const header = (
+        <div className="flex flex-wrap gap-2 align-items-center justify-content-between">
+            <h4 className="m-0">Manage Products</h4>
+            <span className="p-input-icon-left">
+                <i className="pi pi-search" />
+                <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Search..." />
+            </span>
+        </div>
+    );
 
 
 
+    const actionBodyTemplate = (rowData) => {
+        return (
+            <React.Fragment>
+                <Button icon="pi pi-pencil" rounded outlined className="mr-2"  />
+                <Button icon="pi pi-trash" rounded outlined severity="danger"  />
+            </React.Fragment>
+        );
+    };
 
+    const leftToolbarTemplate = () => {
+        return (
+            <div className="flex flex-wrap gap-2">
+                <Button label="New" icon="pi pi-plus" severity="success" />
+            </div>
+        );
+    };
 
+    const rightToolbarTemplate = () => {
+        return <Button label="Export" icon="pi pi-upload" className="p-button-help" onClick={exportCSV} />;
+    };
 
+    const imageBodyTemplate = (rowData) => {
+        return (
+            <div>
+                {rowData.orders.map((order) => (
+                    <img
+                        key={order.produit.id}
+                        src={order.produit.photo}
+                        alt={order.produit.nom}
+                        className="shadow-2 border-round"
+                        style={{ width: '64px', marginRight: '8px' }}
+                    />
+                ))}
+            </div>
+        );
+    };
 
+    const groupOrdersByUserAndTime = () => {
+        const grouped = [];
+        let currentGroup = null;
 
+        for (const order of orders) {
+            const createdDate = moment(order.dateCreated);
+            if (!currentGroup || createdDate.diff(moment(currentGroup.createdDate), 'seconds') > 60) {
+                currentGroup = { createdDate: createdDate.format("YYYY-MM-DD HH:mm"), orders: [] };
+                grouped.push(currentGroup);
+            }
+            currentGroup.orders.push(order);
+        }
 
-
+        return grouped;
+    };
 
 
 
     return (
-        <div>
-            <Card className="mx-3 mt-3 p-3">
-                <CardContent >
-                    <div style={{ alignItems: "center" }}>
-                        <h3 >ORDERS</h3>
-                    </div>
-        <div>
-            <div className="table-responsive">
-                <table className="table mt-5 text-center">
-                    <thead>
-                    <tr>
-                        <th>ORDER ID</th>
-                        <th>DATE</th>
-                        <th>PRODUCTS</th>
-                        <th>TOTAL AMOUNT</th>
-                        <th>USER</th>
-                        <th>Actions</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {currentPageItems.map((orders) => (
-                        <tr key={orders.id}>
-                            <td>{orders.id}</td>
-                            <td>{orders.dateCreated}</td>
-                            <td>
-                                {orders.orderItem.map((item) => (
-                                    <div key={item.id}>
-                                        <img src={item.produit.photo} alt="Produit Photo" style={{ height: "20px" ,margin:"5px" }} />
-                                        <span>{item.produit.nom}</span>
-                                    </div>
-                                ))}
-                            </td>
-                            <td>{orders.totalPrice} DH</td>
+        <MainCard sx={{ margin: '20px' }}>
+            <div>
+                <Toast ref={toast} />
+                <div className="card">
+                    <Toolbar className="mb-4" start={leftToolbarTemplate} end={rightToolbarTemplate}></Toolbar>
 
-                            <td>{orders.user && orders.user.telephone}</td>
-                            <td>
-                                <Button  label="CONFIRM" severity="help" raised  className="mx-1"  />
-                                <Button  label="CANCEL" severity="danger" text raised  className="mx-1"  />
+                    <DataTable
+                        ref={dt}
+                        value={groupOrdersByUserAndTime()}
+                        dataKey="createdDate"
+                        paginator
+                        rows={10}
+                        rowsPerPageOptions={[5, 10, 25]}
+                        paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} orders"
+                        globalFilter={globalFilter}
+                        header={header}
+                    >
+                        <Column field="createdDate" header="Created Date" sortable style={{ minWidth: '16rem' }}></Column>
+                        <Column field="email" header="Client" body={(rowData) => rowData.orders[0].user.email}></Column>
+                        <Column field="totalPrice" header="Total Amount"  body={(rowData) => <div>{rowData.orders.reduce((total, order) => total + order.totalPrice, 0).toFixed(2)} Dh</div>} style={{ minWidth: '8rem' }}></Column>
 
-                            </td>
-                        </tr>
-                    ))}
-                    </tbody>
-                </table>
-                <div className="pagination-container">
-                    <ReactPaginate
-                        previousLabel={<button className="pagination-button">&lt;</button>}
-                        nextLabel={<button className="pagination-button">&gt;</button>}
-                        pageCount={Math.ceil(orders.length / itemsPerPage)}
-                        onPageChange={({ selected }) => setPageNumber(selected)}
-                        containerClassName={"pagination"}
-                        previousLinkClassName={"pagination__link"}
-                        nextLinkClassName={"pagination__link"}
-                        disabledClassName={"pagination__link--disabled"}
-                        activeClassName={"pagination__link--active"}
-                    />
+                        <Column field="orders" header="Products" body={imageBodyTemplate}></Column>
+                        <Column body={actionBodyTemplate} exportable={false} style={{ minWidth: '12rem' }}></Column>
+                    </DataTable>
                 </div>
-
             </div>
-
-        </div>
-                </CardContent></Card></div>
+        </MainCard>
     );
-};
-
+}
