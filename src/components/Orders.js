@@ -27,6 +27,7 @@ export default function Orders( )  {
 
 
 
+
     useEffect(() => {
         const fetchorders = async () => {
             const result = await axios(`/api/controller/orders/all`);
@@ -126,6 +127,30 @@ export default function Orders( )  {
                     >
                         <Column field="createdDate" header="Created Date" sortable style={{ minWidth: '12rem' }}></Column>
                         <Column field="email" header="Client" body={(rowData) => rowData.orders[0].user.email}></Column>
+                        <Column
+                            field="status"
+                            header="Status"
+                            body={(rowData) => (
+                                <div>
+                                    <Tag
+                                        severity={
+                                            rowData.orders[0].status === "Pending"
+                                                ? "warning"
+                                                : rowData.orders[0].status === "Cancelled"
+                                                    ? "error"
+                                                    : rowData.orders[0].status === "Confirmed"
+                                                        ? "info"
+                                                        : rowData.orders[0].status === "Delivered"
+                                                            ? "success"
+                                                            : "info" // Default to "info" if none of the above conditions match
+                                        }
+                                        rounded
+                                    >
+                                        {rowData.orders[0].status}
+                                    </Tag>
+                                </div>
+                            )}
+                        />
                         <Column field="totalPrice" header="Total Amount"  body={(rowData) => <div><Tag severity="info" rounded>
                             {rowData.orders.reduce((total, order) => total + order.totalPrice, 0).toFixed(2)} Dh</Tag></div>} style={{ minWidth: '8rem' }}></Column>
 

@@ -11,6 +11,7 @@ import {Toast} from "primereact/toast";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import 'primeicons/primeicons.css';
 import "primereact/resources/primereact.min.css";
+import {Tag} from "primereact/tag";
 
 
 export default function RestaurantDetails() {
@@ -154,15 +155,40 @@ export default function RestaurantDetails() {
                 <div className="container mt-5">
                     <div className="row row-cols-2 row-cols-md-2 row-cols-lg-4 g-4">
                         {products.map((product) => (
-                            <div key={product.id} className="col mb-4">
+                            <div key={product.id} className={`col mb-4 ${product.stock <= 0 ? "out-of-stock" : ""}`}>
                                 <div className="card h-100">
                                     <Link to={`products/${product.id}`}>
-                                        <img
-                                            src={product.photo}
-                                            className="card-img-top"
-                                            alt="Pharmacy"
-                                            style={{ objectFit: "cover", height: "auto" }}
-                                        />
+                                        <div style={{ position: "relative" }}>
+                                            <img
+                                                src={product.photo}
+                                                className="card-img-top"
+                                                alt="rest"
+                                                style={{ objectFit: "cover", height: "auto" }}
+                                            />
+                                            {product.stock <= 0 ? (
+                                                <Tag
+                                                    severity="warning"
+                                                    value="Out of Stock"
+                                                    className="stock-tag"
+                                                    style={{
+                                                        position: "absolute",
+                                                        top: "10px",
+                                                        right: "10px",
+                                                    }}
+                                                />
+                                            ) : (
+                                                <Tag
+                                                    severity="success"
+                                                    value="In Stock"
+                                                    className="stock-tag"
+                                                    style={{
+                                                        position: "absolute",
+                                                        top: "10px",
+                                                        right: "10px",
+                                                    }}
+                                                />
+                                            )}
+                                        </div>
                                     </Link>
                                     <div className="card-body">
                                         <h5 className="card-title">{product.nom}</h5>
@@ -170,19 +196,13 @@ export default function RestaurantDetails() {
                                         <p className="card-text">Stock: {product.stock}</p>
 
                                         <Button
-
                                             raised
                                             className="mx-2"
                                             onClick={() => handleAddToCart(product)}
-                                            disabled={addedProducts.includes(product.id)}
+                                            disabled={product.stock <= 0 || addedProducts.includes(product.id)}
                                             style={{
-                                                backgroundColor: addedProducts.includes(product.id)
-                                                    ? 'lightseagreen'
-                                                    : 'lightgreen',
-                                                cursor: addedProducts.includes(product.id)
-                                                    ? 'not-allowed'
-                                                    : 'pointer',
-
+                                                backgroundColor: addedProducts.includes(product.id) ? 'lightseagreen' : 'lightgreen',
+                                                cursor: product.stock <= 0 || addedProducts.includes(product.id) ? 'not-allowed' : 'pointer',
                                                 alignItems: 'center',
                                                 justifyContent: 'center',
                                                 gap: '0.5rem',

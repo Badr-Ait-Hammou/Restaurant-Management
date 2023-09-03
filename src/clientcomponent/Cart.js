@@ -98,12 +98,17 @@ export default function Cart() {
         });
         return totalQuantity;
     };
+    const isProceedToPayDisabled = cartProducts.some((product) => {
+        const quantity = productQuantities[product.id] || 1;
+        return product.produit.stock < quantity;
+    });
 
     function saveOrder(cartProducts, userId) {
         const orderPromises = cartProducts.map((product) => {
             const orderItem = {
                 user: {id:userId},
                 totalPrice: product.totalprice * (productQuantities[product.id] || 1),
+                status:"Pending",
                 productQuantity: productQuantities[product.id] || 1,
                 produit:{
                     id:product.produit.id,
@@ -233,7 +238,10 @@ export default function Cart() {
                                             <p className="mb-0">Total Amount: {getTotalAmount()}Dh</p>
                                         </div>
                                         <div className="col-12 col-md-6 text-md-end mt-5 mt-md-0">
-                                            <Button label="Proceed to Pay" severity="info" onClick={opendialog}/>
+                                            <Button label="Proceed to Pay"
+                                                    disabled={isProceedToPayDisabled}
+                                                    severity="info" onClick={opendialog}
+                                            />
                                         </div>
                                     </div>
                                 </div>
