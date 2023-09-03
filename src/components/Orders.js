@@ -94,8 +94,8 @@ export default function Orders( )  {
 
         for (const order of orders) {
             const createdDate = moment(order.dateCreated);
-            if (!currentGroup || createdDate.diff(moment(currentGroup.createdDate), 'seconds') > 60) {
-                currentGroup = { createdDate: createdDate.format("YYYY-MM-DD HH:mm"), orders: [] };
+            if (!currentGroup || createdDate.diff(moment(currentGroup.createdDate), 'seconds') > 2) {
+                currentGroup = { createdDate: createdDate.format("YYYY-MM-DD HH:mm:ss"), orders: [] };
                 grouped.push(currentGroup);
             }
             currentGroup.orders.push(order);
