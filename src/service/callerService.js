@@ -19,7 +19,7 @@ Axios.interceptors.request.use(request => {
 Axios.interceptors.response.use(response => {
     return response
 }, error => {
-    if(error.response.status === 401){
+    if(error.response && error.response.status === 401){
         accountService.logout()
         window.location = '/auth/login'
     }else{

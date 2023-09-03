@@ -1,35 +1,38 @@
 import axios from '../service/callerService';
-import { useEffect, useState,useRef } from "react";
-import React from "react";
 import {accountService} from "../service/accountService";
-import Modal from "react-modal";
 import { Button } from 'primereact/button';
 import {Toast} from "primereact/toast";
-import "../styles/profile.css"
-import "primereact/resources/themes/lara-light-indigo/theme.css";
-import 'primeicons/primeicons.css';
-import "primereact/resources/primereact.min.css";
-import TextField from "@mui/material/TextField";
+import Addphoto from "../images/add photo.png"
+import MainCard from "../ui-component/MainCard";
+import React, {useState,useEffect,useRef} from "react";
+import {Box} from "@mui/system";
+import {styled} from "@mui/material/styles";
+import Badge from "@mui/material/Badge";
+import Avatar from "@mui/material/Avatar";
+import {TextField, Grid} from "@mui/material";
+import PersonPinIcon from '@mui/icons-material/PersonPin';
 
 
 export default function ClientProfile() {
     const [userId, setUserId] = useState("");
-    const [fullname, setFullname] = useState("");
-    const [firstadd, setfirstadd] = useState("");
-    const [secondadd, setsecondadd] = useState("");
-    const [ares, setarea] = useState("");
-    const [phone, setPhone] = useState("");
-    const [postcode, setpostcode] = useState("");
+    const [user, setUser] = useState([]);
     const [email, setemail] = useState("");
-    const [modalIsOpen, setModalIsOpen] = useState(false);
-    const [profile, setProfile] = useState([]);
     const toast = useRef(null);
     const [photo, setPhotos] = useState("");
-    const [isSubmitted, setIsSubmitted] = useState(false);
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [adresse, setAdresse] = useState('');
+    const [telephone, setTelephone] = useState('');
+    const [area, setArea] = useState('');
+    const [postcode, setpostcode] = useState('');
 
 
-
-
+    const SmallAvatar = styled(Avatar)(({ theme }) => ({
+        width: 22,
+        height: 22,
+        padding:2,
+        border: `2px solid ${theme.palette.background.paper}`,
+    }));
 
 
     useEffect(() => {
@@ -40,341 +43,229 @@ export default function ClientProfile() {
                     const user = await accountService.getUserByEmail(tokenInfo.sub);
                     setUserId(user.id);
                     console.log('user',user.id);
-                   // console.log(getProfile());
+                    // console.log(getProfile());
                 } catch (error) {
                     console.log('Error retrieving user:', error);
                 }
             }
         };
         fetchUserData();
-        loadProfile();
+        loadUser();
     }, []);
-    const handlePhotoChange = (event) => {
-        const file = event.target.files[0];
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            setPhotos(e.target.result);
-        };
-        reader.readAsDataURL(file);
-    };
-
-    const handleEditProfile = async () => {
-        try {
-            const response = await axios.put(`/api/controller/profiles/${userId}`, {
-                fullName: fullname,
-                firstAdresse: firstadd,
-                secondAdresse: secondadd,
-                phoneNumber: phone,
-                postCode: postcode,
-                area: ares,
-                photo: photo,
-                email: email,
-                user: {
-                    id: userId,
-                },
-            });
-
-            if (Array.isArray(profile)) {
-                const updatedProfile = profile.map((prof) => {
-                    if (prof.user.userId === userId) {
-                        return response.data;
-                    } else {
-                        return prof;
-                    }
-                });
-                setProfile(updatedProfile);
-            }
-
-            setModalIsOpen(false);
-            loadProfile();
-
-        } catch (error) {
-            console.error(error);
-        }
-    };
-
-
-
-
-    const showSuccess = () => {
-        toast.current.show({severity:'success', summary: 'Success', detail:'item added successfully', life: 1000});
-    }
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        axios.post("/api/controller/profiles/", {
-            fullName: fullname,
-            firstAdresse: firstadd,
-            secondAdresse: secondadd,
-            phoneNumber: phone,
-            postCode: postcode,
-            area:ares ,
-            photo :photo,
-            email:email ,
-            user: {
-                id: userId,
-            }
-
-        }).then((response) => {
-            setModalIsOpen(false);
-            showSuccess();
-            loadProfile();
-
-        });
-    };
-
 
     useEffect(() => {
-        axios.get(`/api/controller/profiles/user/${userId}`)
-            .then((response) => {
-                setProfile(response.data);
-                console.log(profile);
-            })
-            .catch((error) => {
-                console.log('Error retrieving user profile:', error);
-            });
-        loadProfile();
+        console.log(userId);
+        axios.get(`/api/controller/users/${userId}`).then((response) => {
+            setUser(response.data);
+            loadUser();
+        });
+
     }, [userId]);
 
 
+    const handleUpdate = (event) => {
+        event.preventDefault();
 
-    const handleOpenModal = (profile) => {
-        setModalIsOpen(true);
-        setIsSubmitted(true);
+        const requestData = {
+            id:user.id,
+            firstName  :firstName || user.firstName,
+            lastName : lastName || user.lastName,
+            adresse : adresse || user.adresse,
+            email:user.email,
+            telephone :telephone || user.telephone,
+            postcode :postcode || user.postcode,
+            photo:photo || user.photo,
+            area :area || user.area,
+            role:user.role,
+            password:user.password,
+        };
+
+        axios.put(`/api/controller/users/${userId}`, requestData)
+            .then((response) => {
+                console.log("API Response:", response.data);
+
+                loadUser();
+                showupdate();
+            })
+            .catch((error) => {
+                console.error("Error while saving project:", error);
+            });
     };
 
-    const handleCloseModal = () => {
-        setModalIsOpen(false)
+    const loadUser = async () => {
+        axios.get(`/api/controller/users/${userId}`).then((response) => {
+            const userData= response.data;
+            setUser(userData);
+
+            if (!firstName && userData) setFirstName(userData.firstName);
+            if (!lastName && userData) setLastName(userData.lastName);
+            if (!email && userData) setemail(userData.email);
+            if (!adresse && userData) setAdresse(userData.adresse);
+            if (!area && userData) setArea(userData.area);
+            if (!photo && userData) setPhotos(userData.photo);
+            if (!telephone && userData) setTelephone(userData.telephone);
+            if (!postcode && userData) setpostcode(userData.postcode);
+        });
     };
 
-    const loadProfile=async ()=>{
-        const res=await  axios.get(`/api/controller/profiles/user/${userId}`);
-        setProfile(res.data);
+    const showupdate = () => {
+        toast.current.show({severity:'info', summary: 'success', detail:'profile updated successfully', life: 3000});
     }
 
+
+
+
+
+
+
+    const handleImageUpload = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                setPhotos(e.target.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
     return (
-        <div className="container rounded  mt-3 mb-5" style={{backgroundColor:"whitesmoke"}}>
-            <Button
-                label="Add"
-                style={{backgroundColor:"lightseagreen"}}
-                raised
-                className="mx-2 mt-3"
-                onClick={() => handleOpenModal(profile)}
-                disabled={isSubmitted}
+        <MainCard sx={{ margin: '20px' }} title={<div style={{display:"flex",justifyContent:"center", alignItems:"center"}}><PersonPinIcon /> {user.username}'s Profile </div>} >
+            <Toast ref={toast} />
 
-            />
-            <Button
-                label="Edit"
-                style={{backgroundColor:"lightskyblue"}}
-                raised
-                className="mx-2 mt-3"
-                onClick={() => handleOpenModal(profile)}
+            <Grid container justifyContent="center">
+                <Grid item xs={12} textAlign="center">
+                    <label htmlFor="uploadImage">
+                        <Box
+                            style={{
+                                alignItems: "center",
+                                justifyContent: "center",
+                                display: "flex",
+                                marginBottom: "8px",
+                            }}
+                        >
+                            {user && user.photo ? (
+                                <Badge
 
+                                    overlap="circular"
+                                    anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                                    badgeContent={
+                                        <SmallAvatar  alt="Remy Sharp" src={Addphoto}  />
+                                    }
+                                >
+                                    <Avatar alt="AH" src={user.photo} style={{ width: '150px',height:'145px', cursor: 'pointer',padding:"30px",alignItems:"center",justifyContent:"center",        backgroundColor:'rgb(127,222,225)',
+                                    }}  />
+                                </Badge>
+                            ) : (
+                                <Badge
 
-            />
-            <div className="row">
-                <div className="col-md-12 border-right">
-                    <div className="d-flex flex-column align-items-center text-center ">
-                        <img
-                            className="rounded-circle mt-2"
-                            width="150px"
-                            src={profile.photo}
-                        />
-                        <span className="font-weight-bold">{profile.fullName}</span>
-                        <span className="text-black-50">{profile.email}</span>
-                        <span> </span>
-                    </div>
-                    <Toast ref={toast} position="top-center" />
+                                    overlap="circular"
+                                    anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                                    badgeContent={
+                                        <SmallAvatar  alt="Remy Sharp" src={Addphoto}  />
+                                    }
+                                >
+                                    <Avatar alt="AH"  style={{ width: '150px',height:'145px', cursor: 'pointer',padding:"30px",alignItems:"center",justifyContent:"center" }}  />
+                                </Badge>
+                            )}
+                        </Box>
+                    </label>
+                    <input
+                        type="file"
+                        id="uploadImage"
+                        style={{ display: "none" }}
+                        onChange={handleImageUpload}
+                    />
 
-                </div>
-                <div className="col-md-12 border-right">
-                    <div className="p-3 py-5">
-                        <div className="d-flex justify-content-center align-items-center mb-3">
-                           <strong className="text-center">Profile Settings</strong>
-                        </div>
-                        <div className="row mt-2">
-                            <div className="col-md-6">
-                                <label className="labels">FULL NAME</label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    placeholder="first name"
-                                    value={profile.fullName}
-                                />
-                            </div>
-                            <div className="col-md-6">
-                                <label className="labels">EMAIL</label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    value={profile.email}
-                                    placeholder="surname"
-                                />
-                            </div>
-                        </div>
-                        <div className="row mt-3">
-                            <div className="col-md-12">
-                                <label className="labels">Mobile Number</label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    placeholder="enter phone number"
-                                    value={profile.phoneNumber}
-                                />
-                            </div>
-                            <div className="col-md-12">
-                                <label className="labels">Address Line 1</label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    placeholder="enter address line 1"
-                                    value={profile.firstAdresse}                                />
-                            </div>
-                            <div className="col-md-12">
-                                <label className="labels">Address Line 2</label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    placeholder="enter address line 2"
-                                    value={profile.secondAdresse}                                  />
-                            </div>
-                            <div className="col-md-12">
-                                <label className="labels">Postcode</label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    placeholder="enter address line 2"
-                                    value={profile.postCode}                                  />
-                            </div>
+                    <h3 className="text-muted mb-1 mt-3">
+                        <i className="mx-2 pi pi-user  "></i>
+                        <strong>{user ? user.firstName || "firstName" : "FirstName"}</strong>
+                    </h3>
 
-                            <div className="col-md-12">
-                                <label className="labels">Area</label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    placeholder="enter address line 2"
-                                    value={profile.area}                                  />
-                            </div>
+                    <h3 className="text-muted mb-1 mt-3">
+                        <i className="mx-2 pi pi-phone  "></i>
+                        {user ? user.telephone || "phone" : "Phone"}
+                    </h3>
+                    <p className="text-muted mb-4 mt-2">
+                        <i className="mx-2 pi pi-inbox "></i>
+                        {user ? user.email || "Email" : "Email"}
+                    </p>
 
+                    <Button label="Update" severity="info" raised onClick={handleUpdate} />
+                </Grid>
+            </Grid>
 
-                        </div>
+            <Grid container spacing={3} mt={3}>
+                <Grid item xs={6}>
+                    <TextField
+                        fullWidth
+                        label="firstName"
+                        value={firstName}
+                        placeholder={user ? user.firstName || "firstName" : "firstName"}
+                        onChange={(e) => setFirstName(e.target.value)}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <TextField
+                        fullWidth
+                        label="lastName"
+                        value={lastName}
+                        placeholder={user ? user.lastName || "lastName" : "lastName"}
+                        onChange={(e) => setLastName(e.target.value)}
+                    />
+                </Grid>
+            </Grid>
 
+            <Grid container spacing={3} mt={3}>
+                <Grid item xs={6}>
+                    <TextField
+                        fullWidth
+                        label="Address"
+                        value={adresse}
+                        onChange={(e) => setAdresse(e.target.value)}
+                        placeholder={user ? user.adresse || "Address" : "Address"}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <TextField
+                        fullWidth
+                        label="Post Code"
+                        value={postcode}
+                        onChange={(e) => setpostcode(e.target.value)}
+                        placeholder={user ? user.postcode || "Post Code" : "Post Code"}
+                    />
+                </Grid>
+            </Grid>
 
-                    </div>
-                </div>
-
-
-            </div>
-            <>
-                <Modal
-                    isOpen={modalIsOpen}
-                    onRequestClose={handleCloseModal}
-                    aria-labelledby="modal-modal-title"
-                    aria-describedby="modal-modal-description"
-
-                    isOpen={modalIsOpen}
-                    onRequestClose={handleCloseModal}
-                    aria-labelledby="modal-modal-title"
-                    aria-describedby="modal-modal-description"
-                    style={{
-                        overlay: {
-                            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                            zIndex: 999
-                        },
-                        content: {
-                            top: '50%',
-                            left: '50%',
-                            right: 'auto',
-                            bottom: 'auto',
-                            marginRight: '-50%',
-                            transform: 'translate(-50%, -50%)',
-                            backgroundColor: '#fff',
-                            borderRadius: '10px',
-                            boxShadow: '20px 30px 25px rgba(0, 0, 0, 0.2)',
-                            padding: '20px',
-                            width: '100%',
-                            maxWidth: '700px',
-                            height: 'auto',
-                            maxHeight: '90%',
-                            overflow: 'auto'
-                        }
-                    }}
-                >
-                    <div className="card">
-                        <div className="card-body">
-                            <h5 className="card-title" id="modal-modal-title">Update Speciality</h5>
-                            <form>
-                                <div className="row">
-                                    <div className="col-md-6">
-                                        <label htmlFor="user-nom" className="form-label">Full Name:</label>
-                                        <input type="text" className="form-control" id="user-nom" value={fullname}
-                                               onChange={(e) => setFullname(e.target.value)}/>
-                                    </div>
-                                    <div className="col-md-6">
-                                        <label htmlFor="user-address" className="form-label">First Address:</label>
-                                        <input type="text" className="form-control" id="user-address" value={firstadd}
-                                               onChange={(e) => setfirstadd(e.target.value)}/>
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col-md-6">
-                                        <label htmlFor="user-nom" className="form-label">Second Address:</label>
-                                        <input type="text" className="form-control" id="user-nom" value={secondadd}
-                                               onChange={(e) => setsecondadd(e.target.value)}/>
-                                    </div>
-                                    <div className="col-md-6">
-                                        <label htmlFor="user-address" className="form-label">Phone:</label>
-                                        <input type="number" className="form-control" id="user-address" value={phone}
-                                               onChange={(e) => setPhone(e.target.value)}/>
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col-md-6">
-                                        <label htmlFor="user-nom" className="form-label">Postal Code:</label>
-                                        <input type="text" className="form-control" id="user-nom" value={postcode}
-                                               onChange={(e) => setpostcode(e.target.value)}/>
-                                    </div>
-                                    <div className="col-md-6">
-                                        <label htmlFor="user-address" className="form-label">Area:</label>
-                                        <input type="text" className="form-control" id="user-address" value={ares}
-                                               onChange={(e) => setarea(e.target.value)}/>
-                                    </div>
-                                </div>
-                                <div className="row">
-                                    <div className="col-md-6">
-                                        <label htmlFor="user-nom" className="form-label">Email:</label>
-                                        <input type="text" className="form-control" id="user-nom" value={email}
-                                               onChange={(e) => setemail(e.target.value)}/>
-                                    </div>
-                                    <div className="col-md-6">
-                                        <TextField
-                                            required
-                                            fullWidth
-                                            type="file" accept="image/*" onChange={handlePhotoChange}
-                                        />
-                                    </div>
-
-                                </div>
-                            </form>
-                            <div className="d-flex justify-content-center mt-3">
-                                <Button
-                                    label="Update"
-                                    severity="help"
-                                    raised
-                                    className="mx-2"
-                                    onClick={() => handleEditProfile(profile)}
-                                />
+            <Grid container spacing={3} mt={3}>
+                <Grid item xs={6}>
+                    <TextField
+                        fullWidth
+                        label="Area"
+                        value={area}
+                        onChange={(e) => setArea(e.target.value)}
+                        placeholder={user ? user.area || "Area" : "Area"}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <TextField
+                        fullWidth
+                        label="Telephone"
+                        value={telephone}
+                        onChange={(e) => setTelephone(e.target.value)}
+                        placeholder={user ? user.telephone || "phone" : "PHONE"}
+                    />
+                </Grid>
+            </Grid>
 
 
-                                <Button  label="Save"
-                                         severity="success"
-                                         raised
-
-                                         onClick={(e) => handleSubmit(e)}/>
-                            </div>
-                        </div>
-                    </div>
-                </Modal>
-            </>
-        </div>
+        </MainCard>
     );
 }
+
+
+
+
+
+
+
