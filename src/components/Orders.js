@@ -121,12 +121,16 @@ export default function Orders( )  {
     };
 
     const actionBodyTemplate = (rowData) => {
+        const currentStatus = rowData.orders[0].status;
+
+        const filteredItems = items.filter((item) => item.label !== currentStatus);
+
         return (
             <React.Fragment>
                 <div style={{ position: 'relative', height: '90px' }}>
                     <Toast ref={toast} />
                     <SpeedDial
-                        model={items.map(item => ({
+                        model={filteredItems.map((item) => ({
                             ...item,
                             command: () => {
                                 if (item.command) {
@@ -134,7 +138,7 @@ export default function Orders( )  {
                                 }
                             },
                         }))}
-                        radius={80}
+                        radius={70}
                         type="semi-circle"
                         direction="up"
                         style={{ left: 'calc(50% - 2rem)', bottom: 6, transform: 'scale(0.7)' }}
@@ -143,7 +147,6 @@ export default function Orders( )  {
             </React.Fragment>
         );
     };
-
 
 
 
