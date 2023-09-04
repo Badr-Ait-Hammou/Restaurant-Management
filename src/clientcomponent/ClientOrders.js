@@ -17,6 +17,8 @@ export default function ClientOrders() {
     const [orders, setOrders] = useState([]);
     const [userId, setUserId] = useState("");
     const [alertMessage] = useState("Once you make an order one of our agents will contact you asap");
+    const [updatedStatus, setUpdatedStatus] = useState(""); // Added state for updated status
+
 
     const toast = useRef(null);
 
@@ -66,10 +68,14 @@ export default function ClientOrders() {
     };
 
     useEffect(() => {
+        loadOrders();
+    }, [userId]);
+
+    const loadOrders = () => {
         axios.get(`/api/controller/orders/userorder/${userId}`).then((response) => {
             setOrders(response.data);
         });
-    }, [userId]);
+    };
 
 
 
@@ -86,6 +92,38 @@ export default function ClientOrders() {
         }
         return grouped;
     };
+
+
+    const updateStatus = (group) => {
+        const validOrders = group.orders.filter(order => order.status !== null);
+
+        if (validOrders.length === 0) {
+            console.error("No valid orders to update.");
+            return;
+        }
+
+        const updatePromises = validOrders.map(order => {
+            return axios.put(`/api/controller/orders/status/${order.id}`, {
+                status: 'Delivered'
+            });
+        });
+
+        Promise.all(updatePromises)
+            .then(() => {
+                setUpdatedStatus('Delivered');
+                loadOrders();
+                toast.current.show({
+                    severity: 'success',
+                    summary: 'Success',
+                    detail: 'Status updated successfully',
+                    life: 3000
+                });
+            })
+            .catch((error) => {
+                console.error('Error updating status:', error);
+            });
+    };
+
 
     return (
         <div>
@@ -107,8 +145,7 @@ export default function ClientOrders() {
                                 <Fieldset legend={`Order Details (${group.createdDate})`} toggleable>
                                     {group.orders.map((order, orderIndex) => (
                                         <div key={order.id} className="order-item ">
-                                            {orderIndex > 0 &&  <Divider  component="" className="m-2" />
-                                            }
+                                            {orderIndex > 0 &&  <Divider  component="" className="m-2" />}
                                             <Grid container alignItems="center ">
                                                 <Grid item xs={4} className="left">
                                                     <img src={order.produit.photo} alt={order.produit.nom} style={{
@@ -124,29 +161,29 @@ export default function ClientOrders() {
                                                         <strong className="mt-2 mx-2">Price :</strong> {order.produit.prix} Dh<br />
                                                     </p>
                                                 </Grid> <Grid item xs={4} className="right">
-                                                    <p>
-                                                        <strong className="mt-2 mx-2">Total amount:</strong> {order.totalPrice} Dh<br />
-                                                        <strong className="mt-2 mx-2">Quantity:</strong> {order.productQuantity} Pcs<br />
-                                                    </p>
-                                                </Grid>
+                                                <p>
+                                                    <strong className="mt-2 mx-2">Total amount:</strong> {order.totalPrice} Dh<br />
+                                                    <strong className="mt-2 mx-2">Quantity:</strong> {order.productQuantity} Pcs<br />
+                                                </p>
+                                            </Grid>
                                             </Grid>
                                         </div>
                                     ))}
-                                    <div className="d-flex justify-content-end ">
+                                    <div className="d-flex justify-content-end">
                                         <div>
                                             <Tag className="m-3"
-                                                severity={
-                                                    group.orders[0].status === "Pending"
-                                                        ? "warning"
-                                                        : group.orders[0].status === "Cancelled"
-                                                            ? "error"
-                                                            : group.orders[0].status === "Confirmed"
-                                                                ? "info"
-                                                                : group.orders[0].status === "Delivered"
-                                                                    ? "success"
-                                                                    : "secondary" // Default to "info" if none of the above conditions match
-                                                }
-                                                rounded
+                                                 severity={
+                                                     group.orders[0].status === "Pending"
+                                                         ? "warning"
+                                                         : group.orders[0].status === "Cancelled"
+                                                             ? "error"
+                                                             : group.orders[0].status === "Confirmed"
+                                                                 ? "info"
+                                                                 : group.orders[0].status === "Delivered"
+                                                                     ? "success"
+                                                                     : "secondary" // Default to "info" if none of the above conditions match
+                                                 }
+                                                 rounded
                                             >
                                                 {group.orders[0].status}
                                             </Tag>
@@ -162,9 +199,19 @@ export default function ClientOrders() {
                                             raised
                                             onClick={() => handleDelete(group.orders.map(order => order.id))}
                                         />
+                                        <Button
+                                            label="UPDATE"
+                                            severity="info"
+                                            className="mx-3"
+                                            onClick={() => {
+                                                console.log('Calling updateStatus with groups:', group.orders);
+                                                updateStatus(group);
+                                            }}
+                                        />
                                     </div>
                                 </Fieldset>
                             </div>
+
                         </div>
                     ))}
                 </div>
