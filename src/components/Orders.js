@@ -11,7 +11,11 @@ import { InputText } from 'primereact/inputtext';
 import MainCard from "../ui-component/MainCard";
 import moment from "moment";
 import { Tag } from 'primereact/tag';
-
+import { SpeedDial } from 'primereact/speeddial';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import RailwayAlertRoundedIcon from '@mui/icons-material/RailwayAlertRounded';
+import LocalShippingIcon from '@mui/icons-material/LocalShipping';
+import PendingRoundedIcon from '@mui/icons-material/PendingRounded';
 
 
 
@@ -21,20 +25,53 @@ export default function Orders( )  {
     const toast = useRef(null);
     const dt = useRef(null);
 
-
-
-
-
+    const items = [
+        {
+            label: 'Delivered',
+            icon: <CheckCircleOutlineIcon />,
+            command: (event) => {
+                const rowData = event.data;
+                updateStatus('Delivered', rowData);
+            },
+        },
+        {
+            label: 'Cancelled',
+            icon: <RailwayAlertRoundedIcon />,
+            command: (event) => {
+                const rowData = event.data;
+                updateStatus('Cancelled', rowData);
+            },
+        },
+        {
+            label: 'Pending',
+            icon: <PendingRoundedIcon />,
+            command: (event) => {
+                const rowData = event.data; 
+                updateStatus('Pending', rowData);
+            },
+        },
+        {
+            label: 'Shipped',
+            icon: <LocalShippingIcon />,
+            command: (event) => {
+                const rowData = event.data;
+                updateStatus('Shipped', rowData);
+            },
+        },
+    ];
 
 
 
     useEffect(() => {
-        const fetchorders = async () => {
-            const result = await axios(`/api/controller/orders/all`);
-            setOrders(result.data);
-        };
-        fetchorders();
+       loadOrders();
     }, []);
+
+
+    const loadOrders = () => {
+        axios.get(`/api/controller/orders/all`).then((response) => {
+            setOrders(response.data);
+        });
+    };
 
     const exportCSV = () => {
         dt.current.exportCSV();
@@ -51,14 +88,64 @@ export default function Orders( )  {
 
 
 
+    const updateStatus = (action, rowData) => {
+
+        const validOrders = rowData.orders.filter(order => order.status !== null);
+        if (validOrders.length === 0) {
+            console.error("No valid orders to update.");
+            return;
+        }
+        console.log("updateStatus called with action:", action);
+        console.log("rowData:", rowData);
+
+        const updatePromises = validOrders.map((order) => {
+            return axios.put(`/api/controller/orders/status/${order.id}`, {
+                status: action,
+            });
+        });
+
+        Promise.all(updatePromises)
+            .then(() => {
+                loadOrders();
+                toast.current.show({
+                    severity: 'success',
+                    summary: 'Success',
+                    detail: 'Status updated successfully',
+                    life: 3000,
+                });
+            })
+            .catch((error) => {
+                console.error('Error updating status:', error);
+            });
+    };
+
     const actionBodyTemplate = (rowData) => {
         return (
             <React.Fragment>
-                <Button icon="pi pi-pencil" rounded outlined className="mr-2"  />
-                <Button icon="pi pi-trash" rounded outlined severity="danger"  />
+                <div style={{ position: 'relative', height: '90px' }}>
+                    <Toast ref={toast} />
+                    <SpeedDial
+                        model={items.map(item => ({
+                            ...item,
+                            command: () => {
+                                if (item.command) {
+                                    item.command({ data: rowData });
+                                }
+                            },
+                        }))}
+                        radius={80}
+                        type="semi-circle"
+                        direction="up"
+                        style={{ left: 'calc(50% - 2rem)', bottom: 6, transform: 'scale(0.7)' }}
+                    />
+                </div>
             </React.Fragment>
         );
     };
+
+
+
+
 
     const leftToolbarTemplate = () => {
         return (
@@ -137,12 +224,12 @@ export default function Orders( )  {
                                             rowData.orders[0].status === "Pending"
                                                 ? "warning"
                                                 : rowData.orders[0].status === "Cancelled"
-                                                    ? "error"
-                                                    : rowData.orders[0].status === "Confirmed"
+                                                    ? "danger"
+                                                    : rowData.orders[0].status === "Shipped"
                                                         ? "info"
                                                         : rowData.orders[0].status === "Delivered"
                                                             ? "success"
-                                                            : "info" // Default to "info" if none of the above conditions match
+                                                            : "secondary"
                                         }
                                         rounded
                                     >
@@ -155,7 +242,7 @@ export default function Orders( )  {
                             {rowData.orders.reduce((total, order) => total + order.totalPrice, 0).toFixed(2)} Dh</Tag></div>} style={{ minWidth: '8rem' }}></Column>
 
                         <Column field="orders" header="Products" body={imageBodyTemplate}></Column>
-                        <Column header="Actions" body={actionBodyTemplate} exportable={false} style={{ minWidth: '12rem' }}></Column>
+                        <Column header="Actions" body={actionBodyTemplate} exportable={false} style={{ minWidth: '10rem' }}></Column>
                     </DataTable>
                 </div>
             </div>
