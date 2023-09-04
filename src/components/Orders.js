@@ -180,6 +180,22 @@ export default function Orders( )  {
         );
     };
 
+
+    const productBodyTemplate = (rowData) => {
+        return (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '5px', justifyContent: 'center' }}>
+                {rowData.orders.map((order) => (
+                    <Tag
+                        key={order.produit.id}
+                        value={order.produit.nom}
+                        className="shadow-cyan-200 border-round"
+                        style={{ width: '60px',borderRadius:"8px" }}
+                    />
+                ))}
+            </div>
+        );
+    };
+
     const groupOrdersByUserAndTime = () => {
         const grouped = [];
         let currentGroup = null;
@@ -272,7 +288,8 @@ export default function Orders( )  {
                             {rowData.orders.reduce((total, order) => total + order.totalPrice, 0).toFixed(2)} Dh</Tag></div>} style={{ minWidth: '8rem' }}></Column>
 
                         <Column field="orders" header="Products" body={imageBodyTemplate}></Column>
-                        <Column header="Actions" body={actionBodyTemplate} exportable={false} style={{ minWidth: '10rem' }}></Column>
+                        <Column field="orders" header="Products" body={productBodyTemplate}></Column>
+                        <Column header="Order Status" body={actionBodyTemplate} exportable={false} style={{ minWidth: '12rem' }}></Column>
                     </DataTable>
                 </div>
             </div>
