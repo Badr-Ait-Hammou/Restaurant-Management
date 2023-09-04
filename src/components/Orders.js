@@ -16,6 +16,7 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import RailwayAlertRoundedIcon from '@mui/icons-material/RailwayAlertRounded';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import PendingRoundedIcon from '@mui/icons-material/PendingRounded';
+import IconButton from "@mui/material/IconButton";
 
 
 
@@ -219,30 +220,55 @@ export default function Orders( )  {
                         <Column field="createdDate" header="Created Date" sortable style={{ minWidth: '12rem' }}></Column>
                         <Column field="email" header="Client" body={(rowData) => rowData.orders[0].user.email}></Column>
                         <Column
-                            field="status"
+                            field="orders.status"
                             header="Status"
+                            style={{ minWidth: '12rem' }}
                             body={(rowData) => (
-                                <div>
-                                    <Tag
-                                        severity={
-                                            rowData.orders[0].status === "Pending"
-                                                ? "warning"
-                                                : rowData.orders[0].status === "Cancelled"
-                                                    ? "danger"
-                                                    : rowData.orders[0].status === "Shipped"
-                                                        ? "info"
-                                                        : rowData.orders[0].status === "Delivered"
-                                                            ? "success"
-                                                            : "secondary"
-                                        }
-                                        rounded
-                                    >
-                                        {rowData.orders[0].status}
-                                    </Tag>
+                                <div >
+                                    {rowData.orders[0].status === "Pending" && (
+                                        <div>
+                                            <IconButton color="warning" className="mt-2">
+                                                <PendingRoundedIcon/>
+                                            </IconButton>
+                                            <Tag severity="warning" rounded >
+                                                {rowData.orders[0].status}
+                                            </Tag>
+                                        </div>
+                                    )}
+                                    {rowData.orders[0].status === "Cancelled" && (
+                                        <div>
+                                            <IconButton color="error" className="mt-2">
+                                                <RailwayAlertRoundedIcon/>
+                                            </IconButton>
+                                            <Tag severity="danger" rounded>
+                                                {rowData.orders[0].status}
+                                            </Tag>
+                                        </div>
+                                    )}
+                                    {rowData.orders[0].status === "Shipped" && (
+                                        <div>
+                                            <IconButton color="info" className="mt-2">
+                                                <LocalShippingIcon />
+                                            </IconButton>
+                                            <Tag severity="info" rounded>
+                                                {rowData.orders[0].status}
+                                            </Tag>
+                                        </div>
+                                    )}
+                                    {rowData.orders[0].status === "Delivered" && (
+                                        <div>
+                                            <IconButton color="success" className="mt-2">
+                                                <CheckCircleOutlineIcon/>
+                                            </IconButton>
+                                            <Tag severity="success" rounded>
+                                                {rowData.orders[0].status}
+                                            </Tag>
+                                        </div>
+                                    )}
                                 </div>
                             )}
                         />
-                        <Column field="totalPrice" header="Total Amount"  body={(rowData) => <div><Tag severity="info" rounded>
+                        <Column field="totalPrice" header="Total Amount"  body={(rowData) => <div className="mt-2"><Tag severity="info" rounded>
                             {rowData.orders.reduce((total, order) => total + order.totalPrice, 0).toFixed(2)} Dh</Tag></div>} style={{ minWidth: '8rem' }}></Column>
 
                         <Column field="orders" header="Products" body={imageBodyTemplate}></Column>

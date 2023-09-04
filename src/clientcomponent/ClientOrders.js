@@ -11,15 +11,20 @@ import {Toast} from "primereact/toast";
 import Grid from '@mui/material/Grid';
 import Divider from '@mui/material/Divider';
 import {Tag} from "primereact/tag";
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import RailwayAlertRoundedIcon from '@mui/icons-material/RailwayAlertRounded';
+import LocalShippingIcon from '@mui/icons-material/LocalShipping';
+import PendingRoundedIcon from '@mui/icons-material/PendingRounded';
+import IconButton from '@mui/material/IconButton';
+
 
 
 export default function ClientOrders() {
     const [orders, setOrders] = useState([]);
     const [userId, setUserId] = useState("");
     const [alertMessage] = useState("Once you make an order one of our agents will contact you asap");
-
-
     const toast = useRef(null);
+
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -170,43 +175,63 @@ export default function ClientOrders() {
                                     <div className="d-flex justify-content-end">
                                         <div className="m-3">
                                             {group.orders[0].status === "Pending" && (
-                                                <Tag severity="warning" rounded icon="pi pi-clock">
+                                                <div>
+                                                    <IconButton color="primary" className="mt-2">
+                                                        <PendingRoundedIcon/>
+                                                    </IconButton>
+                                                <Tag severity="warning" rounded >
                                                     {group.orders[0].status}
                                                 </Tag>
+                                                </div>
                                             )}
                                             {group.orders[0].status === "Cancelled" && (
-                                                <Tag severity="danger" rounded icon="pi pi-times">
+                                                <div>
+                                                    <IconButton color="error" className="mt-2">
+                                                        <RailwayAlertRoundedIcon/>
+                                                    </IconButton>
+                                                <Tag severity="danger" rounded>
                                                     {group.orders[0].status}
                                                 </Tag>
+                                                </div>
                                             )}
                                             {group.orders[0].status === "Shipped" && (
-                                                <Tag severity="info" rounded icon="pi pi-info-circle">
-                                                    {group.orders[0].status}
+                                                <div>
+                                                <IconButton color="info" className="mt-2">
+                                                    <LocalShippingIcon />
+                                                </IconButton>
+                                                <Tag severity="info" rounded>
+                                                 {group.orders[0].status}
                                                 </Tag>
+                                                </div>
                                             )}
                                             {group.orders[0].status === "Delivered" && (
-                                                <Tag severity="success" rounded icon="pi pi-check">
+                                                <div>
+                                                    <IconButton color="success" className="mt-2">
+                                                        <CheckCircleOutlineIcon/>
+                                                    </IconButton>
+                                                <Tag severity="success" rounded>
                                                     <i className="pi pi-check" />
                                                     {group.orders[0].status}
                                                 </Tag>
+                                                </div>
                                             )}
                                         </div>
                                         <div className="mt-3">
                                             <strong>Order Amount :</strong>{" "}
                                             {group.orders.reduce((total, order) => total + order.totalPrice, 0)} Dh
                                         </div>
-                                        <Button
+                                        {/*<Button
                                             label="CANCEL"
                                             severity="danger"
                                             className="mx-3"
                                             raised
                                             onClick={() => handleDelete(group.orders.map(order => order.id))}
                                         />
-
-                                        <Button icon="pi pi-times" label="cancel" rounded severity="danger" aria-label="Cancel" onClick={() => {
-                                            console.log('Calling updateStatus with groups:', group.orders);
-                                            updateStatus(group);
-                                        }} />
+                                        */}
+                                        <Button  icon="pi pi-times" label="cancel" className="mx-3"
+                                                 rounded severity="danger"
+                                                 onClick={() => {updateStatus(group);}}
+                                        />
 
                                     </div>
                                 </Fieldset>
