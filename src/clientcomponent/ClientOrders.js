@@ -17,7 +17,6 @@ export default function ClientOrders() {
     const [orders, setOrders] = useState([]);
     const [userId, setUserId] = useState("");
     const [alertMessage] = useState("Once you make an order one of our agents will contact you asap");
-    const [updatedStatus, setUpdatedStatus] = useState(""); // Added state for updated status
 
 
     const toast = useRef(null);
@@ -104,13 +103,12 @@ export default function ClientOrders() {
 
         const updatePromises = validOrders.map(order => {
             return axios.put(`/api/controller/orders/status/${order.id}`, {
-                status: 'Delivered'
+                status: 'Cancelled'
             });
         });
 
         Promise.all(updatePromises)
             .then(() => {
-                setUpdatedStatus('Delivered');
                 loadOrders();
                 toast.current.show({
                     severity: 'success',
@@ -170,23 +168,28 @@ export default function ClientOrders() {
                                         </div>
                                     ))}
                                     <div className="d-flex justify-content-end">
-                                        <div>
-                                            <Tag className="m-3"
-                                                 severity={
-                                                     group.orders[0].status === "Pending"
-                                                         ? "warning"
-                                                         : group.orders[0].status === "Cancelled"
-                                                             ? "error"
-                                                             : group.orders[0].status === "Confirmed"
-                                                                 ? "info"
-                                                                 : group.orders[0].status === "Delivered"
-                                                                     ? "success"
-                                                                     : "secondary" // Default to "info" if none of the above conditions match
-                                                 }
-                                                 rounded
-                                            >
-                                                {group.orders[0].status}
-                                            </Tag>
+                                        <div className="m-3">
+                                            {group.orders[0].status === "Pending" && (
+                                                <Tag severity="warning" rounded icon="pi pi-clock">
+                                                    {group.orders[0].status}
+                                                </Tag>
+                                            )}
+                                            {group.orders[0].status === "Cancelled" && (
+                                                <Tag severity="danger" rounded icon="pi pi-times">
+                                                    {group.orders[0].status}
+                                                </Tag>
+                                            )}
+                                            {group.orders[0].status === "Shipped" && (
+                                                <Tag severity="info" rounded icon="pi pi-info-circle">
+                                                    {group.orders[0].status}
+                                                </Tag>
+                                            )}
+                                            {group.orders[0].status === "Delivered" && (
+                                                <Tag severity="success" rounded icon="pi pi-check">
+                                                    <i className="pi pi-check" />
+                                                    {group.orders[0].status}
+                                                </Tag>
+                                            )}
                                         </div>
                                         <div className="mt-3">
                                             <strong>Order Amount :</strong>{" "}
@@ -199,15 +202,12 @@ export default function ClientOrders() {
                                             raised
                                             onClick={() => handleDelete(group.orders.map(order => order.id))}
                                         />
-                                        <Button
-                                            label="UPDATE"
-                                            severity="info"
-                                            className="mx-3"
-                                            onClick={() => {
-                                                console.log('Calling updateStatus with groups:', group.orders);
-                                                updateStatus(group);
-                                            }}
-                                        />
+
+                                        <Button icon="pi pi-times" label="cancel" rounded severity="danger" aria-label="Cancel" onClick={() => {
+                                            console.log('Calling updateStatus with groups:', group.orders);
+                                            updateStatus(group);
+                                        }} />
+
                                     </div>
                                 </Fieldset>
                             </div>
