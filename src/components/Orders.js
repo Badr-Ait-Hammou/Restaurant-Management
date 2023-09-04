@@ -42,20 +42,21 @@ export default function Orders( )  {
                 updateStatus('Cancelled', rowData);
             },
         },
-        {
-            label: 'Pending',
-            icon: <PendingRoundedIcon />,
-            command: (event) => {
-                const rowData = event.data; 
-                updateStatus('Pending', rowData);
-            },
-        },
+
         {
             label: 'Shipped',
             icon: <LocalShippingIcon />,
             command: (event) => {
                 const rowData = event.data;
                 updateStatus('Shipped', rowData);
+            },
+        },
+        {
+            label: 'Pending',
+            icon: <PendingRoundedIcon />,
+            command: (event) => {
+                const rowData = event.data;
+                updateStatus('Pending', rowData);
             },
         },
     ];
