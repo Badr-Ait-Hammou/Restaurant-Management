@@ -2,8 +2,6 @@ import axios from  '../service/callerService';
 import 'bootstrap/dist/css/bootstrap.css';
 import { Button } from 'primereact/button';
 import Tooltip from '@mui/material/Tooltip';
-
-import"../styles/login.css"
 import React, { useState, useEffect, useRef } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
@@ -243,9 +241,9 @@ export default function Orders( )  {
                         header={header}
                     >
                         <Column field="createdDate" header="Created Date" sortable style={{ minWidth: '12rem' }}></Column>
-                        <Column field="email" header="Client" body={(rowData) => rowData.orders[0].user.email}></Column>
+                        <Column field="orders[0].user.email" header="Client" body={(rowData) => rowData.orders[0].user.email}></Column>
                         <Column
-                            field="orders.status"
+                            field="orders[0].status"
                             header="Status"
                             style={{ minWidth: '12rem' }}
                             body={(rowData) => (
@@ -293,7 +291,7 @@ export default function Orders( )  {
                                 </div>
                             )}
                         />
-                        <Column field="totalPrice" header="Total Amount"  body={(rowData) => <div className="mt-2"><Tag severity="info" rounded>
+                        <Column field="orders.totalPrice" header="Total Amount"  body={(rowData) => <div className="mt-2"><Tag severity="info" rounded>
                             {rowData.orders.reduce((total, order) => total + order.totalPrice, 0).toFixed(2)} Dh</Tag></div>} style={{ minWidth: '8rem' }}></Column>
 
                         <Column field="orders" header="Products" style={{ minWidth: '18rem' }} body={imageBodyTemplate}> </Column>
