@@ -344,7 +344,7 @@ export default function ClientOrders() {
                                                 </div>
 
                                                 <div>
-                                                    <Tag severity="danger" className=" p-2" rounded>
+                                                    <Tag severity="secondary" className=" p-2" rounded>
                                                         <strong className="m-2">Order Amount
                                                             :</strong>{group.orders.reduce((total, order) => total + order.totalPrice, 0)} Dh
                                                     </Tag>
