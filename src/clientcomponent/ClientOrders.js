@@ -18,6 +18,8 @@ import PendingRoundedIcon from '@mui/icons-material/PendingRounded';
 import IconButton from '@mui/material/IconButton';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
 
 
 export default function ClientOrders() {
@@ -175,12 +177,12 @@ export default function ClientOrders() {
                                 </Grid>
                             </div>
                         ))}
-                        <div className="d-flex justify-content-end">
+                            <div className="d-flex justify-content-end align-items-center">
                             <div className="m-3">
                                 {filteredOrders[0].status === statusFilter && (
                                     <div>
                                         {statusFilter === 'Pending' && (
-                                            <IconButton color="primary" className="mt-2">
+                                            <IconButton color="warning" className="mt-2">
                                                 <PendingRoundedIcon />
                                             </IconButton>
                                         )}
@@ -209,8 +211,24 @@ export default function ClientOrders() {
                                 <strong>Order Amount :</strong>{" "}
                                 {filteredOrders.reduce((total, order) => total + order.totalPrice, 0)} Dh
                             </div>
-                            <Button icon="pi pi-times" label="cancel" className="mx-3" rounded severity="danger" onClick={() => { updateStatus(group); }} />
+                            {statusFilter === 'Pending' && (
+                                <div>
+                                    {groupOrdersByCreatedDate().some((group) => group.orders.some((order) => order.status === 'Pending')) && (
+                                        <Button
+                                            icon="pi pi-times"
+                                            label="cancel"
+                                            className="mx-3"
+                                            rounded
+                                            severity="danger"
+                                            onClick={() => {
+                                                updateStatus(group);
+                                            }}
+                                        />
+                                    )}
+                                </div>
+                            )}
                         </div>
+
                     </Fieldset>
                 </div>
             </div>
@@ -279,13 +297,13 @@ export default function ClientOrders() {
                                                     </Grid>
                                                 </div>
                                             ))}
-                                            <div className="d-flex justify-content-end">
+                                            <div className="d-flex justify-content-end align-items-center">
                                                 <div className="m-3">
                                                     {group.orders[0].status && (
                                                         <div>
-                                                            {group.orders[0].status === "Pending" && (
+                                                            {group.orders[0].status === 'Pending' && (
                                                                 <div>
-                                                                    <IconButton color="primary" className="mt-2">
+                                                                    <IconButton color="warning" className="mt-2">
                                                                         <PendingRoundedIcon />
                                                                     </IconButton>
                                                                     <Tag severity="warning" rounded>
@@ -293,7 +311,7 @@ export default function ClientOrders() {
                                                                     </Tag>
                                                                 </div>
                                                             )}
-                                                            {group.orders[0].status === "Cancelled" && (
+                                                            {group.orders[0].status === 'Cancelled' && (
                                                                 <div>
                                                                     <IconButton color="error" className="mt-2">
                                                                         <RailwayAlertRoundedIcon />
@@ -303,7 +321,7 @@ export default function ClientOrders() {
                                                                     </Tag>
                                                                 </div>
                                                             )}
-                                                            {group.orders[0].status === "Shipped" && (
+                                                            {group.orders[0].status === 'Shipped' && (
                                                                 <div>
                                                                     <IconButton color="info" className="mt-2">
                                                                         <LocalShippingIcon />
@@ -313,13 +331,12 @@ export default function ClientOrders() {
                                                                     </Tag>
                                                                 </div>
                                                             )}
-                                                            {group.orders[0].status === "Delivered" && (
+                                                            {group.orders[0].status === 'Delivered' && (
                                                                 <div>
                                                                     <IconButton color="success" className="mt-2">
                                                                         <CheckCircleOutlineIcon />
                                                                     </IconButton>
                                                                     <Tag severity="success" rounded>
-                                                                        <i className="pi pi-check" />
                                                                         {group.orders[0].status}
                                                                     </Tag>
                                                                 </div>
@@ -327,21 +344,30 @@ export default function ClientOrders() {
                                                         </div>
                                                     )}
                                                 </div>
-                                                <div className="mt-3">
+                                                <div className="mt-2">
                                                     <strong>Order Amount :</strong>{" "}
                                                     {group.orders.reduce((total, order) => total + order.totalPrice, 0)} Dh
                                                 </div>
-                                                <Button
-                                                    icon="pi pi-times"
-                                                    label="cancel"
-                                                    className="mx-3"
-                                                    rounded
-                                                    severity="danger"
-                                                    onClick={() => {
-                                                        updateStatus(group);
-                                                    }}
-                                                />
+                                                {group.orders[0].status === 'Pending' && (
+                                                    <div>
+                                                        {groupOrdersByCreatedDate().some((group) =>
+                                                            group.orders.some((order) => order.status === 'Pending')
+                                                        ) && (
+                                                            <Button
+                                                                icon="pi pi-times"
+                                                                label="cancel"
+                                                                className="mx-3 mt-2"
+                                                                rounded
+                                                                severity="danger"
+                                                                onClick={() => {
+                                                                    updateStatus(group);
+                                                                }}
+                                                            />
+                                                        )}
+                                                    </div>
+                                                )}
                                             </div>
+
                                         </Fieldset>
                                     </div>
                                 </div>
@@ -351,25 +377,82 @@ export default function ClientOrders() {
                     {value === 1 && (
                         <div>
                             {/* Display pending orders */}
-                            {groupOrdersByCreatedDate().map((group, index) => renderOrderDetails(group, 'Pending', updateStatus))}
+                            {groupOrdersByCreatedDate().some((group) => group.orders.some((order) => order.status === 'Pending')) ? (
+                                groupOrdersByCreatedDate().map((group) =>
+                                    renderOrderDetails(group, 'Pending', updateStatus)
+                                )
+                            ) : (
+                                <div className="order-group">
+                                    <div className="content mt-5">
+                                        <Fieldset legend="No Pending Orders">
+                                            <Alert severity="warning">
+                                                <AlertTitle>Info</AlertTitle>
+                                                <strong>oops!</strong> — There is No Pending Orders —
+                                            </Alert>
+                                        </Fieldset>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     )}
+
                     {value === 2 && (
                         <div>
                             {/* Display cancelled orders */}
-                            {groupOrdersByCreatedDate().map((group, index) => renderOrderDetails(group, 'Cancelled', updateStatus))}
+                            {groupOrdersByCreatedDate().some((group) => group.orders.some((order) => order.status === 'Cancelled'))? (
+                            groupOrdersByCreatedDate().map((group) => renderOrderDetails(group, 'Cancelled', updateStatus))
+                                ):(
+
+                                <div className="order-group">
+                                    <div className="content mt-5">
+                                        <Fieldset legend="No Cancelled Orders">
+                                            <Alert severity="error">
+                                                <AlertTitle>Info</AlertTitle>
+                                                <strong>oops!</strong> — There is No Cancelled Orders —
+                                            </Alert>
+                                        </Fieldset>
+                                    </div>
+                                </div>
+                                    )}
                         </div>
                     )}
                     {value === 3 && (
                         <div>
                             {/* Display shipped orders */}
-                            {groupOrdersByCreatedDate().map((group, index) => renderOrderDetails(group, 'Shipped', updateStatus))}
+                            {groupOrdersByCreatedDate().some((group) => group.orders.some((order) => order.status === 'Shipped'))? (
+                                groupOrdersByCreatedDate().map((group) => renderOrderDetails(group, 'Shipped', updateStatus))
+                            ):(
+                                <div className="order-group">
+                                    <div className="content mt-5">
+                                        <Fieldset legend="No Shipped Orders">
+                                            <Alert severity="info">
+                                                <AlertTitle>Info</AlertTitle>
+                                                <strong>oops!</strong> — There is No Shipped Orders —
+                                            </Alert>
+                                        </Fieldset>
+                                    </div>
+                                </div>
+                                )}
                         </div>
                     )}
                     {value === 4 && (
                         <div>
                             {/* Display delivered orders */}
-                            {groupOrdersByCreatedDate().map((group, index) => renderOrderDetails(group, 'Delivered', updateStatus))}
+                            {groupOrdersByCreatedDate().some((group) => group.orders.some((order) => order.status === 'Delivered')) ? (
+                                groupOrdersByCreatedDate().map((group) => renderOrderDetails(group, 'Delivered', updateStatus))
+                            ):(
+                                <div className="order-group">
+                                    <div className="content mt-5">
+                                        <Fieldset legend="No Delivered Orders">
+                                            <Alert severity="success">
+                                                <AlertTitle>Info</AlertTitle>
+                                                <strong>oops!</strong> — There is No Delivered Orders —
+                                            </Alert>
+                                        </Fieldset>
+                                    </div>
+                                </div>
+
+                            )}
                         </div>
                     )}
                 </div>
