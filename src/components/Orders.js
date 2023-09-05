@@ -1,6 +1,8 @@
 import axios from  '../service/callerService';
 import 'bootstrap/dist/css/bootstrap.css';
 import { Button } from 'primereact/button';
+import Tooltip from '@mui/material/Tooltip';
+
 import"../styles/login.css"
 import React, { useState, useEffect, useRef } from 'react';
 import { DataTable } from 'primereact/datatable';
@@ -17,6 +19,7 @@ import RailwayAlertRoundedIcon from '@mui/icons-material/RailwayAlertRounded';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import PendingRoundedIcon from '@mui/icons-material/PendingRounded';
 import IconButton from "@mui/material/IconButton";
+import {Fade} from "@mui/material";
 
 
 
@@ -166,35 +169,41 @@ export default function Orders( )  {
 
     const imageBodyTemplate = (rowData) => {
         return (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '5px', justifyContent: 'center' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '5px', justifyContent: 'center' }}>
                 {rowData.orders.map((order) => (
-                    <img
-                        key={order.produit.id}
-                        src={order.produit.photo}
-                        alt={order.produit.nom}
-                        className="shadow-cyan-200 border-round"
-                        style={{ width: '60px',borderRadius:"8px" }}
-                    />
+                    <div key={order.produit.id}>
+                         <Tooltip   TransitionComponent={Fade}
+                                    TransitionProps={{ timeout: 600 }}
+                                    placement="top"
+                                    title={<div style={{ display: 'flex', alignItems: 'center' ,gap:5 }}>
+                                        <img
+                                    src={order.produit.photo}
+                                    alt={order.produit.nom}
+                                    className="shadow-cyan-200 border-round"
+                                    style={{ width: '40px', borderRadius: '8px' }}
+                                        />
+                                        <div>
+                                <p className="mt-2">{order.produit.nom}</p>
+                                <p>{order.produit.prix} Dh x {order.productQuantity} Pcs : {order.totalPrice} Dh</p>
+                                 </div>
+                            </div>
+                        }>
+                            <img
+                                src={order.produit.photo}
+                                alt={order.produit.nom}
+                                className="shadow-cyan-200 border-round"
+                                style={{ width: '60px', borderRadius: '8px' }}
+                            />
+                        </Tooltip>
+
+                    </div>
                 ))}
             </div>
         );
     };
 
 
-    const productBodyTemplate = (rowData) => {
-        return (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '5px', justifyContent: 'center' }}>
-                {rowData.orders.map((order) => (
-                    <Tag
-                        key={order.produit.id}
-                        value={order.produit.nom}
-                        className="shadow-cyan-200 border-round"
-                        style={{ width: '60px',borderRadius:"8px" }}
-                    />
-                ))}
-            </div>
-        );
-    };
+
 
     const groupOrdersByUserAndTime = () => {
         const grouped = [];
@@ -287,8 +296,7 @@ export default function Orders( )  {
                         <Column field="totalPrice" header="Total Amount"  body={(rowData) => <div className="mt-2"><Tag severity="info" rounded>
                             {rowData.orders.reduce((total, order) => total + order.totalPrice, 0).toFixed(2)} Dh</Tag></div>} style={{ minWidth: '8rem' }}></Column>
 
-                        <Column field="orders" header="Products" body={imageBodyTemplate}></Column>
-                        <Column field="orders" header="Products" body={productBodyTemplate}></Column>
+                        <Column field="orders" header="Products" style={{ minWidth: '18rem' }} body={imageBodyTemplate}> </Column>
                         <Column header="Order Status" body={actionBodyTemplate} exportable={false} style={{ minWidth: '12rem' }}></Column>
                     </DataTable>
                 </div>
