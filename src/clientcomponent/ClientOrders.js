@@ -301,57 +301,30 @@ export default function ClientOrders() {
                                                     </Grid>
                                                 </div>
                                             ))}
-                                            <div className="d-flex justify-content-end align-items-center">
-                                                <div className="mx-2 ">
-                                                    {group.orders[0].status && (
+                                            <Divider component="" className="m-2" />
+
+                                            <div className="d-flex justify-content-center align-items-center">
+
+                                                <div className="m-1">
+                                                    {group.orders[0].status  && (
                                                         <div>
-                                                            {group.orders[0].status === 'Pending' && (
-                                                                <div>
-                                                                    <IconButton color="warning" className="mt-2 ">
-                                                                        <PendingRoundedIcon />
-                                                                    </IconButton>
-                                                                    <Tag severity="warning"  className="p-2" rounded>
-                                                                        {group.orders[0].status}
-                                                                    </Tag>
-                                                                </div>
-                                                            )}
-                                                            {group.orders[0].status === 'Cancelled' && (
-                                                                <div>
-                                                                    <IconButton color="error" className="mt-2">
-                                                                        <RailwayAlertRoundedIcon />
-                                                                    </IconButton>
-                                                                    <Tag severity="danger" className="p-2" rounded>
-                                                                        {group.orders[0].status}
-                                                                    </Tag>
-                                                                </div>
-                                                            )}
-                                                            {group.orders[0].status === 'Shipped' && (
-                                                                <div>
-                                                                    <IconButton color="info" className="mt-2">
-                                                                        <LocalShippingIcon />
-                                                                    </IconButton>
-                                                                    <Tag severity="info" className="p-2" rounded>
-                                                                        {group.orders[0].status}
-                                                                    </Tag>
-                                                                </div>
-                                                            )}
-                                                            {group.orders[0].status === 'Delivered' && (
-                                                                <div>
-                                                                    <IconButton color="success" className="mt-2">
-                                                                        <CheckCircleOutlineIcon />
-                                                                    </IconButton>
-                                                                    <Tag severity="success" className="p-2" rounded>
-                                                                        {group.orders[0].status}
-                                                                    </Tag>
-                                                                </div>
-                                                            )}
+
+                                                            <Tag  severity={group.orders[0].status === 'Delivered' ? 'success' : group.orders[0].status === 'Cancelled' ? 'danger' : group.orders[0].status === 'Shipped' ? 'info' : 'warning'} rounded>
+                                                                {group.orders[0].status === 'Delivered' && <CheckCircleOutlineIcon className="mx-1" />}
+                                                                {group.orders[0].status === 'Cancelled' && <RailwayAlertRoundedIcon className="mx-1" />}
+                                                                {group.orders[0].status === 'Shipped' && <LocalShippingIcon  className="mx-1"/>}
+                                                                {group.orders[0].status === 'Pending' && <PendingRoundedIcon className="mx-1" />}
+                                                                {group.orders[0].status}
+                                                            </Tag>
+
                                                         </div>
                                                     )}
+
                                                 </div>
 
                                                 <div >
-                                                    <Tag severity="danger" className="mt-1 p-2" rounded>
-                                                        <strong className="m-2">Order Amount :</strong>{group.orders.reduce((total, order) => total + order.totalPrice, 0)} Dh
+                                                    <Tag severity="danger" className=" p-2" rounded>
+                                                    <strong className="m-2">Order Amount :</strong>{group.orders.reduce((total, order) => total + order.totalPrice, 0)} Dh
                                                     </Tag>
                                                 </div>
                                                 {group.orders[0].status === 'Pending' && (
@@ -360,10 +333,9 @@ export default function ClientOrders() {
                                                             group.orders.some((order) => order.status === 'Pending')
                                                         ) && (
                                                             <Button
-                                                                 raised severity="danger"
-                                                                className="mx-1 p-1"
-                                                                label="Cancel"
-
+                                                                className="p-1 mx-1"
+                                                                label="cancel"
+                                                                severity="danger"
                                                                 onClick={() => {
                                                                     updateStatus(group);
                                                                 }}
