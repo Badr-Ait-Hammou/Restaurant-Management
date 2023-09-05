@@ -199,7 +199,7 @@ export default function ClientOrders() {
                                                 <CheckCircleOutlineIcon />
                                             </IconButton>
                                         )}
-                                        <Tag severity={statusFilter === 'Delivered' ? 'success' : statusFilter === 'Cancelled' ? 'danger' : 'warning'} rounded>
+                                        <Tag severity={statusFilter === 'Delivered' ? 'success' : statusFilter === 'Cancelled' ? 'danger' : statusFilter === 'Shipped' ? 'info' : 'warning'} rounded>
                                             {filteredOrders[0].status}
                                         </Tag>
                                     </div>
