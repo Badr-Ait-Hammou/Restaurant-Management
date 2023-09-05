@@ -113,6 +113,7 @@ export default function ClientOrders() {
             return;
         }
 
+        const confirmCancel = () => {
         const updatePromises = validOrders.map(order => {
             return axios.put(`/api/controller/orders/status/${order.id}`, {
                 status: 'Cancelled'
@@ -123,17 +124,23 @@ export default function ClientOrders() {
             .then(() => {
                 loadOrders();
                 toast.current.show({
-                    severity: 'success',
+                    severity: 'info',
                     summary: 'Success',
-                    detail: 'Status updated successfully',
+                    detail: 'order Cancelled successfully',
                     life: 3000
                 });
-            })
-            .catch((error) => {
-                console.error('Error updating status:', error);
-            });
-    };
+            }) };
 
+        confirmDialog({
+            message: 'Are you sure you want to Cancel this Order?',
+            header: 'Confirmation',
+            icon: 'pi pi-exclamation-triangle',
+            acceptLabel: 'Yes',
+            rejectLabel: 'No',
+            acceptClassName: 'p-button-danger',
+            accept: confirmCancel
+        });
+    };
 
 
 
