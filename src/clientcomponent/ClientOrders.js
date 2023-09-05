@@ -15,9 +15,8 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import RailwayAlertRoundedIcon from '@mui/icons-material/RailwayAlertRounded';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import PendingRoundedIcon from '@mui/icons-material/PendingRounded';
-import IconButton from '@mui/material/IconButton';
 import Tab from '@mui/material/Tab';
-import Tabs, { tabsClasses } from '@mui/material/Tabs';
+import Tabs, {tabsClasses} from '@mui/material/Tabs';
 
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
@@ -30,8 +29,6 @@ export default function ClientOrders() {
     const [alertMessage] = useState("Once you make an order one of our agents will contact you asap");
     const toast = useRef(null);
     const [value, setValue] = React.useState(0);
-
-
 
 
     useEffect(() => {
@@ -114,22 +111,23 @@ export default function ClientOrders() {
         }
 
         const confirmCancel = () => {
-        const updatePromises = validOrders.map(order => {
-            return axios.put(`/api/controller/orders/status/${order.id}`, {
-                status: 'Cancelled'
-            });
-        });
-
-        Promise.all(updatePromises)
-            .then(() => {
-                loadOrders();
-                toast.current.show({
-                    severity: 'info',
-                    summary: 'Success',
-                    detail: 'order Cancelled successfully',
-                    life: 3000
+            const updatePromises = validOrders.map(order => {
+                return axios.put(`/api/controller/orders/status/${order.id}`, {
+                    status: 'Cancelled'
                 });
-            }) };
+            });
+
+            Promise.all(updatePromises)
+                .then(() => {
+                    loadOrders();
+                    toast.current.show({
+                        severity: 'info',
+                        summary: 'Success',
+                        detail: 'order Cancelled successfully',
+                        life: 3000
+                    });
+                })
+        };
 
         confirmDialog({
             message: 'Are you sure you want to Cancel this Order?',
@@ -141,7 +139,6 @@ export default function ClientOrders() {
             accept: confirmCancel
         });
     };
-
 
 
     function renderOrderDetails(group, statusFilter, updateStatus) {
@@ -157,7 +154,7 @@ export default function ClientOrders() {
                     <Fieldset legend={`Order Details (${group.createdDate})`} toggleable>
                         {filteredOrders.map((order, orderIndex) => (
                             <div key={order.id} className="order-item ">
-                                {orderIndex > 0 && <Divider component="" className="m-2" />}
+                                {orderIndex > 0 && <Divider component="" className="m-2"/>}
                                 <Grid container alignItems="center ">
                                     <Grid item xs={4} className="left">
                                         <img
@@ -172,32 +169,37 @@ export default function ClientOrders() {
                                     </Grid>
                                     <Grid item xs={4} className="right">
                                         <p>
-                                            <strong className="mt-2 mx-2">Product :</strong> {order.produit.nom}<br />
-                                            <strong className="mt-2 mx-2">Restaurant :</strong> {order.produit.restaurant.nom} <br />
-                                            <strong className="mt-2 mx-2">Price :</strong> {order.produit.prix} Dh<br />
+                                            <strong className="mt-2 mx-2">Product :</strong> {order.produit.nom}<br/>
+                                            <strong className="mt-2 mx-2">Restaurant
+                                                :</strong> {order.produit.restaurant.nom} <br/>
+                                            <strong className="mt-2 mx-2">Price :</strong> {order.produit.prix} Dh<br/>
                                         </p>
                                     </Grid>
                                     <Grid item xs={4} className="right">
                                         <p>
-                                            <strong className="mt-2 mx-2">Total amount:</strong> {order.totalPrice} Dh<br />
-                                            <strong className="mt-2 mx-2">Quantity:</strong> {order.productQuantity} Pcs<br />
+                                            <strong className="mt-2 mx-2">Total
+                                                amount:</strong> {order.totalPrice} Dh<br/>
+                                            <strong className="mt-2 mx-2">Quantity:</strong> {order.productQuantity} Pcs<br/>
                                         </p>
                                     </Grid>
                                 </Grid>
                             </div>
                         ))}
-                        <Divider component="" className="m-2" />
+                        <Divider component="" className="m-2"/>
 
                         <div className="d-flex justify-content-center align-items-center ">
                             <div className="m-1">
                                 {filteredOrders[0].status === statusFilter && (
                                     <div>
 
-                                        <Tag  severity={statusFilter === 'Delivered' ? 'success' : statusFilter === 'Cancelled' ? 'danger' : statusFilter === 'Shipped' ? 'info' : 'warning'} rounded>
-                                            {statusFilter === 'Delivered' && <CheckCircleOutlineIcon className="mx-1" />}
-                                            {statusFilter === 'Cancelled' && <RailwayAlertRoundedIcon className="mx-1" />}
-                                            {statusFilter === 'Shipped' && <LocalShippingIcon  className="mx-1"/>}
-                                            {statusFilter === 'Pending' && <PendingRoundedIcon className="mx-1" />}
+                                        <Tag
+                                            severity={statusFilter === 'Delivered' ? 'success' : statusFilter === 'Cancelled' ? 'danger' : statusFilter === 'Shipped' ? 'info' : 'warning'}
+                                            rounded>
+                                            {statusFilter === 'Delivered' && <CheckCircleOutlineIcon className="mx-1"/>}
+                                            {statusFilter === 'Cancelled' &&
+                                                <RailwayAlertRoundedIcon className="mx-1"/>}
+                                            {statusFilter === 'Shipped' && <LocalShippingIcon className="mx-1"/>}
+                                            {statusFilter === 'Pending' && <PendingRoundedIcon className="mx-1"/>}
                                             {filteredOrders[0].status}
                                         </Tag>
 
@@ -205,9 +207,10 @@ export default function ClientOrders() {
                                 )}
 
                             </div>
-                            <div >
+                            <div>
                                 <Tag className=" p-2" rounded>
-                                    <strong className="m-2">Order Amount :</strong> {filteredOrders.reduce((total, order) => total + order.totalPrice, 0)} Dh
+                                    <strong className="m-2">Order Amount
+                                        :</strong> {filteredOrders.reduce((total, order) => total + order.totalPrice, 0)} Dh
                                 </Tag>
                             </div>
                             {statusFilter === 'Pending' && (
@@ -234,21 +237,21 @@ export default function ClientOrders() {
 
     return (
         <div>
-            <Toast ref={toast} />
-            <ConfirmDialog />
-            <div className="alert" style={{ backgroundColor: "yellow", padding: "10px", fontFamily: "serif" }}>
+            <Toast ref={toast}/>
+            <ConfirmDialog/>
+            <div className="alert" style={{backgroundColor: "yellow", padding: "10px", fontFamily: "serif"}}>
                 {alertMessage}
             </div>
             <Card className="mx-3 mt-3 p-3">
                 <CardContent>
-                    <div style={{ alignItems: "center" }}>
+                    <div style={{alignItems: "center"}}>
                         <h3>ORDERS</h3>
                     </div>
                 </CardContent>
 
                 <div className="mt-5">
 
-                    <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                    <Box sx={{display: 'flex', justifyContent: 'center'}}>
                         <Tabs
                             value={value}
                             onChange={(event, newValue) => setValue(newValue)}
@@ -257,16 +260,16 @@ export default function ClientOrders() {
                             aria-label="visible arrows tabs example"
                             sx={{
                                 [`& .${tabsClasses.scrollButtons}`]: {
-                                    '&.Mui-disabled': { opacity: 0.3 },
+                                    '&.Mui-disabled': {opacity: 0.3},
                                 },
                                 overflowX: 'auto',
                             }}
                         >
-                            <Tab label="All" />
-                            <Tab label="Pending" />
-                            <Tab label="Cancelled" />
-                            <Tab label="Shipped" />
-                            <Tab label="Delivered" />
+                            <Tab label="All"/>
+                            <Tab label="Pending"/>
+                            <Tab label="Cancelled"/>
+                            <Tab label="Shipped"/>
+                            <Tab label="Delivered"/>
                         </Tabs>
                     </Box>
 
@@ -279,7 +282,7 @@ export default function ClientOrders() {
                                         <Fieldset legend={`Order Details (${group.createdDate})`} toggleable>
                                             {group.orders.map((order, orderIndex) => (
                                                 <div key={order.id} className="order-item ">
-                                                    {orderIndex > 0 && <Divider component="" className="m-2" />}
+                                                    {orderIndex > 0 && <Divider component="" className="m-2"/>}
                                                     <Grid container alignItems="center">
                                                         <Grid item xs={4} className="left">
                                                             <img
@@ -294,33 +297,44 @@ export default function ClientOrders() {
                                                         </Grid>
                                                         <Grid item xs={4} className="right">
                                                             <p>
-                                                                <strong className="mt-2 mx-2">Product :</strong> {order.produit.nom}<br />
-                                                                <strong className="mt-2 mx-2">Restaurant :</strong> {order.produit.restaurant.nom} <br />
-                                                                <strong className="mt-2 mx-2">Price :</strong> {order.produit.prix} Dh<br />
+                                                                <strong className="mt-2 mx-2">Product
+                                                                    :</strong> {order.produit.nom}<br/>
+                                                                <strong className="mt-2 mx-2">Restaurant
+                                                                    :</strong> {order.produit.restaurant.nom} <br/>
+                                                                <strong className="mt-2 mx-2">Price
+                                                                    :</strong> {order.produit.prix} Dh<br/>
                                                             </p>
                                                         </Grid>
                                                         <Grid item xs={4} className="right">
                                                             <p>
-                                                                <strong className="mt-2 mx-2">Total amount:</strong> {order.totalPrice} Dh<br />
-                                                                <strong className="mt-2 mx-2">Quantity:</strong> {order.productQuantity} Pcs<br />
+                                                                <strong className="mt-2 mx-2">Total
+                                                                    amount:</strong> {order.totalPrice} Dh<br/>
+                                                                <strong
+                                                                    className="mt-2 mx-2">Quantity:</strong> {order.productQuantity} Pcs<br/>
                                                             </p>
                                                         </Grid>
                                                     </Grid>
                                                 </div>
                                             ))}
-                                            <Divider component="" className="m-2" />
+                                            <Divider component="" className="m-2"/>
 
                                             <div className="d-flex justify-content-center align-items-center">
 
                                                 <div className="m-1">
-                                                    {group.orders[0].status  && (
+                                                    {group.orders[0].status && (
                                                         <div>
 
-                                                            <Tag  severity={group.orders[0].status === 'Delivered' ? 'success' : group.orders[0].status === 'Cancelled' ? 'danger' : group.orders[0].status === 'Shipped' ? 'info' : 'warning'} rounded>
-                                                                {group.orders[0].status === 'Delivered' && <CheckCircleOutlineIcon className="mx-1" />}
-                                                                {group.orders[0].status === 'Cancelled' && <RailwayAlertRoundedIcon className="mx-1" />}
-                                                                {group.orders[0].status === 'Shipped' && <LocalShippingIcon  className="mx-1"/>}
-                                                                {group.orders[0].status === 'Pending' && <PendingRoundedIcon className="mx-1" />}
+                                                            <Tag
+                                                                severity={group.orders[0].status === 'Delivered' ? 'success' : group.orders[0].status === 'Cancelled' ? 'danger' : group.orders[0].status === 'Shipped' ? 'info' : 'warning'}
+                                                                rounded>
+                                                                {group.orders[0].status === 'Delivered' &&
+                                                                    <CheckCircleOutlineIcon className="mx-1"/>}
+                                                                {group.orders[0].status === 'Cancelled' &&
+                                                                    <RailwayAlertRoundedIcon className="mx-1"/>}
+                                                                {group.orders[0].status === 'Shipped' &&
+                                                                    <LocalShippingIcon className="mx-1"/>}
+                                                                {group.orders[0].status === 'Pending' &&
+                                                                    <PendingRoundedIcon className="mx-1"/>}
                                                                 {group.orders[0].status}
                                                             </Tag>
 
@@ -329,9 +343,10 @@ export default function ClientOrders() {
 
                                                 </div>
 
-                                                <div >
+                                                <div>
                                                     <Tag severity="danger" className=" p-2" rounded>
-                                                    <strong className="m-2">Order Amount :</strong>{group.orders.reduce((total, order) => total + order.totalPrice, 0)} Dh
+                                                        <strong className="m-2">Order Amount
+                                                            :</strong>{group.orders.reduce((total, order) => total + order.totalPrice, 0)} Dh
                                                     </Tag>
                                                 </div>
                                                 {group.orders[0].status === 'Pending' && (
@@ -360,7 +375,6 @@ export default function ClientOrders() {
                     )}
                     {value === 1 && (
                         <div>
-                            {/* Display pending orders */}
                             {groupOrdersByCreatedDate().some((group) => group.orders.some((order) => order.status === 'Pending')) ? (
                                 groupOrdersByCreatedDate().map((group) =>
                                     renderOrderDetails(group, 'Pending', updateStatus)
@@ -382,10 +396,9 @@ export default function ClientOrders() {
 
                     {value === 2 && (
                         <div>
-                            {/* Display cancelled orders */}
-                            {groupOrdersByCreatedDate().some((group) => group.orders.some((order) => order.status === 'Cancelled'))? (
-                            groupOrdersByCreatedDate().map((group) => renderOrderDetails(group, 'Cancelled', updateStatus))
-                                ):(
+                            {groupOrdersByCreatedDate().some((group) => group.orders.some((order) => order.status === 'Cancelled')) ? (
+                                groupOrdersByCreatedDate().map((group) => renderOrderDetails(group, 'Cancelled', updateStatus))
+                            ) : (
 
                                 <div className="order-group">
                                     <div className="content mt-5">
@@ -397,15 +410,14 @@ export default function ClientOrders() {
                                         </Fieldset>
                                     </div>
                                 </div>
-                                    )}
+                            )}
                         </div>
                     )}
                     {value === 3 && (
                         <div>
-                            {/* Display shipped orders */}
-                            {groupOrdersByCreatedDate().some((group) => group.orders.some((order) => order.status === 'Shipped'))? (
+                            {groupOrdersByCreatedDate().some((group) => group.orders.some((order) => order.status === 'Shipped')) ? (
                                 groupOrdersByCreatedDate().map((group) => renderOrderDetails(group, 'Shipped', updateStatus))
-                            ):(
+                            ) : (
                                 <div className="order-group">
                                     <div className="content mt-5">
                                         <Fieldset legend="No Shipped Orders">
@@ -416,15 +428,14 @@ export default function ClientOrders() {
                                         </Fieldset>
                                     </div>
                                 </div>
-                                )}
+                            )}
                         </div>
                     )}
                     {value === 4 && (
                         <div>
-                            {/* Display delivered orders */}
                             {groupOrdersByCreatedDate().some((group) => group.orders.some((order) => order.status === 'Delivered')) ? (
                                 groupOrdersByCreatedDate().map((group) => renderOrderDetails(group, 'Delivered', updateStatus))
-                            ):(
+                            ) : (
                                 <div className="order-group">
                                     <div className="content mt-5">
                                         <Fieldset legend="No Delivered Orders">
