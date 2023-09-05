@@ -15,7 +15,6 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import RailwayAlertRoundedIcon from '@mui/icons-material/RailwayAlertRounded';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import PendingRoundedIcon from '@mui/icons-material/PendingRounded';
-import PriceCheckIcon from '@mui/icons-material/PriceCheck';
 import IconButton from '@mui/material/IconButton';
 import Tab from '@mui/material/Tab';
 import Tabs, { tabsClasses } from '@mui/material/Tabs';
@@ -208,10 +207,8 @@ export default function ClientOrders() {
                                 <div>
                                     {groupOrdersByCreatedDate().some((group) => group.orders.some((order) => order.status === 'Pending')) && (
                                         <Button
-                                            icon="pi pi-times"
                                             className="p-1 mx-1"
                                             label="cancel"
-
                                             severity="danger"
                                             onClick={() => {
                                                 updateStatus(group);
@@ -305,15 +302,15 @@ export default function ClientOrders() {
                                                 </div>
                                             ))}
                                             <div className="d-flex justify-content-end align-items-center">
-                                                <div className="m-3">
+                                                <div className="mx-2 ">
                                                     {group.orders[0].status && (
                                                         <div>
                                                             {group.orders[0].status === 'Pending' && (
                                                                 <div>
-                                                                    <IconButton color="warning" className="mt-2">
+                                                                    <IconButton color="warning" className="mt-2 ">
                                                                         <PendingRoundedIcon />
                                                                     </IconButton>
-                                                                    <Tag severity="warning" rounded>
+                                                                    <Tag severity="warning"  className="p-2" rounded>
                                                                         {group.orders[0].status}
                                                                     </Tag>
                                                                 </div>
@@ -323,7 +320,7 @@ export default function ClientOrders() {
                                                                     <IconButton color="error" className="mt-2">
                                                                         <RailwayAlertRoundedIcon />
                                                                     </IconButton>
-                                                                    <Tag severity="danger" rounded>
+                                                                    <Tag severity="danger" className="p-2" rounded>
                                                                         {group.orders[0].status}
                                                                     </Tag>
                                                                 </div>
@@ -333,7 +330,7 @@ export default function ClientOrders() {
                                                                     <IconButton color="info" className="mt-2">
                                                                         <LocalShippingIcon />
                                                                     </IconButton>
-                                                                    <Tag severity="info" rounded>
+                                                                    <Tag severity="info" className="p-2" rounded>
                                                                         {group.orders[0].status}
                                                                     </Tag>
                                                                 </div>
@@ -343,7 +340,7 @@ export default function ClientOrders() {
                                                                     <IconButton color="success" className="mt-2">
                                                                         <CheckCircleOutlineIcon />
                                                                     </IconButton>
-                                                                    <Tag severity="success" rounded>
+                                                                    <Tag severity="success" className="p-2" rounded>
                                                                         {group.orders[0].status}
                                                                     </Tag>
                                                                 </div>
@@ -351,9 +348,11 @@ export default function ClientOrders() {
                                                         </div>
                                                     )}
                                                 </div>
-                                                <div className="mt-2">
-                                                    <strong>Order Amount :</strong>{" "}
-                                                    {group.orders.reduce((total, order) => total + order.totalPrice, 0)} Dh
+
+                                                <div >
+                                                    <Tag severity="danger" className="mt-1 p-2" rounded>
+                                                        <strong className="m-2">Order Amount :</strong>{group.orders.reduce((total, order) => total + order.totalPrice, 0)} Dh
+                                                    </Tag>
                                                 </div>
                                                 {group.orders[0].status === 'Pending' && (
                                                     <div>
@@ -361,11 +360,10 @@ export default function ClientOrders() {
                                                             group.orders.some((order) => order.status === 'Pending')
                                                         ) && (
                                                             <Button
-                                                                icon="pi pi-times"
-                                                                label="cancel"
-                                                                className="mx-1 mt-2"
-                                                                rounded
-                                                                severity="danger"
+                                                                 raised severity="danger"
+                                                                className="mx-1 p-1"
+                                                                label="Cancel"
+
                                                                 onClick={() => {
                                                                     updateStatus(group);
                                                                 }}
