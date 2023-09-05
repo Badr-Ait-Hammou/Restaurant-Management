@@ -15,11 +15,14 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import RailwayAlertRoundedIcon from '@mui/icons-material/RailwayAlertRounded';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import PendingRoundedIcon from '@mui/icons-material/PendingRounded';
+import PriceCheckIcon from '@mui/icons-material/PriceCheck';
 import IconButton from '@mui/material/IconButton';
-import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
+import Tabs, { tabsClasses } from '@mui/material/Tabs';
+
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
+import Box from "@mui/material/Box";
 
 
 export default function ClientOrders() {
@@ -177,48 +180,38 @@ export default function ClientOrders() {
                                 </Grid>
                             </div>
                         ))}
-                            <div className="d-flex justify-content-end align-items-center">
-                            <div className="m-3">
+                        <Divider component="" className="m-2" />
+
+                        <div className="d-flex justify-content-center align-items-center ">
+                            <div className="m-1">
                                 {filteredOrders[0].status === statusFilter && (
                                     <div>
-                                        {statusFilter === 'Pending' && (
-                                            <IconButton color="warning" className="mt-2">
-                                                <PendingRoundedIcon />
-                                            </IconButton>
-                                        )}
-                                        {statusFilter === 'Cancelled' && (
-                                            <IconButton color="error" className="mt-2">
-                                                <RailwayAlertRoundedIcon />
-                                            </IconButton>
-                                        )}
-                                        {statusFilter === 'Shipped' && (
-                                            <IconButton color="info" className="mt-2">
-                                                <LocalShippingIcon />
-                                            </IconButton>
-                                        )}
-                                        {statusFilter === 'Delivered' && (
-                                            <IconButton color="success" className="mt-2">
-                                                <CheckCircleOutlineIcon />
-                                            </IconButton>
-                                        )}
-                                        <Tag severity={statusFilter === 'Delivered' ? 'success' : statusFilter === 'Cancelled' ? 'danger' : statusFilter === 'Shipped' ? 'info' : 'warning'} rounded>
+
+                                        <Tag  severity={statusFilter === 'Delivered' ? 'success' : statusFilter === 'Cancelled' ? 'danger' : statusFilter === 'Shipped' ? 'info' : 'warning'} rounded>
+                                            {statusFilter === 'Delivered' && <CheckCircleOutlineIcon className="mx-1" />}
+                                            {statusFilter === 'Cancelled' && <RailwayAlertRoundedIcon className="mx-1" />}
+                                            {statusFilter === 'Shipped' && <LocalShippingIcon  className="mx-1"/>}
+                                            {statusFilter === 'Pending' && <PendingRoundedIcon className="mx-1" />}
                                             {filteredOrders[0].status}
                                         </Tag>
+
                                     </div>
                                 )}
+
                             </div>
-                            <div className="mt-3">
-                                <strong>Order Amount :</strong>{" "}
-                                {filteredOrders.reduce((total, order) => total + order.totalPrice, 0)} Dh
+                            <div >
+                                <Tag className=" p-2" rounded>
+                                    <strong className="m-2">Order Amount :</strong> {filteredOrders.reduce((total, order) => total + order.totalPrice, 0)} Dh
+                                </Tag>
                             </div>
                             {statusFilter === 'Pending' && (
                                 <div>
                                     {groupOrdersByCreatedDate().some((group) => group.orders.some((order) => order.status === 'Pending')) && (
                                         <Button
                                             icon="pi pi-times"
+                                            className="p-1 mx-1"
                                             label="cancel"
-                                            className="mx-3"
-                                            rounded
+
                                             severity="danger"
                                             onClick={() => {
                                                 updateStatus(group);
@@ -250,15 +243,29 @@ export default function ClientOrders() {
                 </CardContent>
 
                 <div className="mt-5">
-                    <Tabs value={value} onChange={(event, newValue) => setValue(newValue)} centered>
-                        <Tab label="All" />
-                        <Tab label="Pending" />
-                        <Tab label="Cancelled" />
-                        <Tab label="Shipped" />
-                        <Tab label="Delivered" />
-                    </Tabs>
 
-                    {/* Render orders based on the selected tab */}
+                    <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                        <Tabs
+                            value={value}
+                            onChange={(event, newValue) => setValue(newValue)}
+                            variant="scrollable"
+                            scrollButtons
+                            aria-label="visible arrows tabs example"
+                            sx={{
+                                [`& .${tabsClasses.scrollButtons}`]: {
+                                    '&.Mui-disabled': { opacity: 0.3 },
+                                },
+                                overflowX: 'auto',
+                            }}
+                        >
+                            <Tab label="All" />
+                            <Tab label="Pending" />
+                            <Tab label="Cancelled" />
+                            <Tab label="Shipped" />
+                            <Tab label="Delivered" />
+                        </Tabs>
+                    </Box>
+
                     {value === 0 && (
                         <div>
                             {/* Display all orders */}
@@ -356,7 +363,7 @@ export default function ClientOrders() {
                                                             <Button
                                                                 icon="pi pi-times"
                                                                 label="cancel"
-                                                                className="mx-3 mt-2"
+                                                                className="mx-1 mt-2"
                                                                 rounded
                                                                 severity="danger"
                                                                 onClick={() => {
