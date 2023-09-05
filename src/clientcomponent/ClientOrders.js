@@ -78,7 +78,7 @@ export default function ClientOrders() {
 
     useEffect(() => {
         loadOrders();
-    }, [userId]);
+    }, );
 
     const loadOrders = () => {
         axios.get(`/api/controller/orders/userorder/${userId}`).then((response) => {
