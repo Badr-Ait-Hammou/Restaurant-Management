@@ -3,7 +3,6 @@ import axios from '../service/callerService';
 import React,{useState,useEffect} from "react";
 import RestaurantDetails from "./RestaurantDetails";
 import { Link, useParams } from 'react-router-dom';
-import moment from "moment";
 import { AiOutlineFieldTime } from "react-icons/ai";
 
 
