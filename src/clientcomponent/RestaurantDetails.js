@@ -21,16 +21,33 @@ export default function RestaurantDetails() {
     const [restaurant, setRestaurant] = useState(null);
     const [products, setProducts] = useState([]);
     const [userId, setUserId] = useState("");
-    const [addedProducts, setAddedProducts] = useState([]);
     const toast = useRef(null);
+    const [productInCart, setProductInCart] = useState({});
 
+    const loadProductsUser = () => {
+        const checkProductInCart = (productId) => {
+            if (userId) {
+                axios.get(`/api/controller/carts/incart/${userId}/${productId}`)
+                    .then(response => {
+                        setProductInCart(prevProductInCart => ({
+                            ...prevProductInCart,
+                            [productId]: response.data,
+                        }));
+                    })
+                    .catch(error => {
+                        console.error('Error checking product in cart:', error);
+                    });
+            }
+        };
 
+        products.forEach((product) => {
+            checkProductInCart(product.id);
+        });
+    };
 
-
-
-
-
-
+    useEffect(() => {
+        loadProductsUser();
+    }, [userId, products]);
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -70,8 +87,8 @@ export default function RestaurantDetails() {
         axios.post('/api/controller/carts/', cartItem)
             .then(response => {
                     console.log('Product added to cart successfully!');
-                    setAddedProducts(prevProducts => [...prevProducts, product.id]);
                     showSuccess();
+                    loadProductsUser();
             })
             .catch(error => {
                 console.error('Error adding product to cart:', error);
@@ -116,6 +133,8 @@ export default function RestaurantDetails() {
 
     return (
         <>
+            <Toast ref={toast}/>
+
             <Button  icon="pi pi-shopping-cart"
                      raised
                      className="mx-2 mt-2"  style={{backgroundColor:"transparent",color:"lightseagreen",fontSize:"20px"}} />
@@ -149,97 +168,86 @@ export default function RestaurantDetails() {
         </Card>
 
 
-            <div className="mt-2">
-                <Toast ref={toast} position="top-center" />
-                <h1 className="mt-3">Products</h1>
-                <div className="container mt-5">
-                    <div className="row row-cols-2 row-cols-md-2 row-cols-lg-4 g-4">
-                        {products.map((product) => (
-                            <div key={product.id} className={`col mb-4 ${product.stock <= 0 ? "out-of-stock" : ""}`}>
-                                <div className="card h-100">
-                                    <Link to={`products/${product.id}`}>
-                                        <div style={{ position: "relative" }}>
-                                            <img
-                                                src={product.photo}
-                                                className="card-img-top"
-                                                alt="rest"
-                                                style={{ objectFit: "cover", height: "auto" }}
+            <div className="container mt-5">
+                <div className="row row-cols-2 row-cols-md-2 row-cols-lg-4 g-4">
+                    {products.map((product) => (
+                        <div key={product.id} className={`col mb-4 ${product.stock <= 0 ? "out-of-stock" : ""}`}>
+                            <div className="card h-100">
+                                <Link to={`products/${product.id}`}>
+                                    <div style={{ position: "relative" }}>
+                                        <img
+                                            src={product.photo}
+                                            className="card-img-top"
+                                            alt="rest"
+                                            style={{ objectFit: "cover", height: "auto" }}
+                                        />
+                                        {product.stock <= 0 ? (
+                                            <Tag
+                                                severity="warning"
+                                                value="Out of Stock"
+                                                className="stock-tag"
+                                                style={{
+                                                    position: "absolute",
+                                                    top: "10px",
+                                                    right: "10px",
+                                                }}
                                             />
-                                            {product.stock <= 0 ? (
-                                                <Tag
-                                                    severity="warning"
-                                                    value="Out of Stock"
-                                                    className="stock-tag"
-                                                    style={{
-                                                        position: "absolute",
-                                                        top: "10px",
-                                                        right: "10px",
-                                                    }}
-                                                />
-                                            ) : (
-                                                <Tag
-                                                    severity="success"
-                                                    value="In Stock"
-                                                    className="stock-tag"
-                                                    style={{
-                                                        position: "absolute",
-                                                        top: "10px",
-                                                        right: "10px",
-                                                    }}
-                                                />
-                                            )}
-                                        </div>
-                                    </Link>
-                                    <div className="card-body">
-                                        <h5 className="card-title">{product.nom}</h5>
-                                        <p className="card-text">Prix: {product.prix}</p>
-                                        <p className="card-text">Stock: {product.stock}</p>
-
-                                        <Button
-                                            raised
-                                            className="mx-2"
-                                            onClick={() => handleAddToCart(product)}
-                                            disabled={product.stock <= 0 || addedProducts.includes(product.id)}
-                                            style={{
-                                                backgroundColor: addedProducts.includes(product.id) ? 'lightseagreen' : 'lightgreen',
-                                                cursor: product.stock <= 0 || addedProducts.includes(product.id) ? 'not-allowed' : 'pointer',
-                                                alignItems: 'center',
-                                                justifyContent: 'center',
-                                                gap: '0.5rem',
-                                                padding: '0.5rem',
-                                                borderRadius: '4px',
-                                                border: 'none',
-                                                color: '#fff',
-                                            }}
-                                        >
-                                            {addedProducts.includes(product.id) ? (
-                                                <>
-                                                    <ShoppingCartIcon />
-                                                    Added
-                                                </>
-                                            ) : (
-                                                <>
-                                                    <ShoppingCartIcon />
-                                                    Add to Cart
-                                                </>
-                                            )}
-                                        </Button>
+                                        ) : (
+                                            <Tag
+                                                severity="success"
+                                                value="In Stock"
+                                                className="stock-tag"
+                                                style={{
+                                                    position: "absolute",
+                                                    top: "10px",
+                                                    right: "10px",
+                                                }}
+                                            />
+                                        )}
                                     </div>
+                                </Link>
+                                <div className="card-body">
+                                    <h5 className="card-title">{product.nom}</h5>
+                                    <p className="card-text">Prix: {product.prix}</p>
+                                    <p className="card-text">Stock: {product.stock}</p>
+
+                                    <Button
+                                        raised
+                                        className="mx-2"
+                                        onClick={() => handleAddToCart(product)}
+                                        disabled={product.stock <= 0 || productInCart[product.id]}
+                                        style={{
+                                            backgroundColor: productInCart[product.id] ? 'lightseagreen' : 'lightgreen',
+                                            cursor: product.stock <= 0 || productInCart[product.id] ? 'not-allowed' : 'pointer',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            gap: '0.5rem',
+                                            padding: '0.5rem',
+                                            borderRadius: '4px',
+                                            border: 'none',
+                                            color: '#fff',
+                                        }}
+                                    >
+                                        {productInCart[product.id] ? (
+                                            <>
+                                                <ShoppingCartIcon />
+                                                Added
+                                            </>
+                                        ) : (
+                                            <>
+                                                <ShoppingCartIcon />
+                                                Add to Cart
+                                            </>
+                                        )}
+                                    </Button>
                                 </div>
                             </div>
-                        ))}
-                    </div>
-
-
-
-
+                        </div>
+                    ))}
                 </div>
             </div>
-
-
-</>
+        </>
     );
 }
-
 
 
