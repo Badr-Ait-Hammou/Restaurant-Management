@@ -1,10 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import {Button} from 'primereact/button';
-
 import axios from '../service/callerService';
 import {accountService} from "../service/accountService";
 import {InputNumber} from "primereact/inputnumber";
-import { Dialog } from 'primereact/dialog';
+import {Dialog} from 'primereact/dialog';
 import {Toast} from "primereact/toast";
 import {useRef} from "react";
 
@@ -24,8 +23,8 @@ export default function Cart() {
     };
 
     const handleConfirmPayment = () => {
-          handleProceedToPay();
-          setDialogVisible(false);
+        handleProceedToPay();
+        setDialogVisible(false);
     };
 
     const opendialog = () => {
@@ -33,29 +32,29 @@ export default function Cart() {
     };
 
 
-        const fetchUserData = async () => {
-            const tokenInfo = accountService.getTokenInfo();
-            if (tokenInfo) {
-                try {
-                    const user = await accountService.getUserByEmail(tokenInfo.sub);
-                    setUserId(user.id);
-                    console.log('user', user.id);
-                } catch (error) {
-                    console.log('Error retrieving user:', error);
-                }
+    const fetchUserData = async () => {
+        const tokenInfo = accountService.getTokenInfo();
+        if (tokenInfo) {
+            try {
+                const user = await accountService.getUserByEmail(tokenInfo.sub);
+                setUserId(user.id);
+                console.log('user', user.id);
+            } catch (error) {
+                console.log('Error retrieving user:', error);
             }
-        };
+        }
+    };
 
 
     const loadCartProducts = () => {
         if (userId) {
-                axios.get(`/api/controller/carts/userid/${userId}`)
+            axios.get(`/api/controller/carts/userid/${userId}`)
                 .then(response => {
                     setCartProducts(response.data);
                 })
                 .catch(error => {
                     console.error('Error fetching cart products:', error);
-             });
+                });
         }
     };
 
@@ -80,7 +79,12 @@ export default function Cart() {
     };
 
     const showSuccess = () => {
-        toast.current.show({severity:'success', summary: 'Success', detail:'order submitted successfully', life: 1000});
+        toast.current.show({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'order submitted successfully',
+            life: 1000
+        });
     }
 
     const getTotalAmount = () => {
@@ -106,12 +110,12 @@ export default function Cart() {
     function saveOrder(cartProducts, userId) {
         const orderPromises = cartProducts.map((product) => {
             const orderItem = {
-                user: {id:userId},
+                user: {id: userId},
                 totalPrice: product.totalprice * (productQuantities[product.id] || 1),
-                status:"Pending",
+                status: "Pending",
                 productQuantity: productQuantities[product.id] || 1,
-                produit:{
-                    id:product.produit.id,
+                produit: {
+                    id: product.produit.id,
                 }
             };
             return axios.post('/api/controller/orders/save', orderItem)
@@ -160,99 +164,103 @@ export default function Cart() {
 
     return (
         <>
-            <Toast ref={toast} />
+            <Toast ref={toast}/>
 
             <div className="card mt-5 mx-2">
-            <section style={{ backgroundColor: "#eee" }}>
-                <div className="container mt-2 ">
-                    <div className="row d-flex justify-content-center align-items-center h-100">
-                        <div className="col-12 col-md-10">
-                            <div className="d-flex justify-content-between align-items-center mb-4">
-                                <h3 className="fw-normal mb-0 text-black">Shopping Cart</h3>
-                            </div>
-                            {cartProducts.length === 0 ? (
-                                <div className="alert alert-secondary">
-                                    oops! There are no products in the cart.
+                <section style={{backgroundColor: "#eee"}}>
+                    <div className="container mt-2 ">
+                        <div className="row d-flex justify-content-center align-items-center h-100">
+                            <div className="col-12 col-md-10">
+                                <div className="d-flex justify-content-between align-items-center mb-4">
+                                    <h3 className="fw-normal mb-0 text-black">Shopping Cart</h3>
                                 </div>
-                            ) : (
-                                <>
-                                {cartProducts.map((product) => (
-                                <div className="card rounded-3 mb-2" key={product.id}>
-                                    <div className="card-body p-3 ">
-                                        <div className="row d-flex justify-content-between align-items-center">
-                                            <div className="col-4 col-md-2 col-lg-2 col-xl-2">
-                                                <img
-                                                    src={product.produit.photo}
-                                                    className="img-fluid rounded-3"
-                                                    alt={product.produit.nom}
-                                                />
-                                            </div>
-                                            <div className="col-8 col-md-3 col-lg-3 col-xl-3">
-                                                <p className="lead fw-normal mb-2">{product.produit.nom}</p>
-
-                                                <p>
-                                                    <span className="text-muted">Price:</span>
-                                                    <strong>{product.totalprice}Dh</strong><br/>
-                                                    <span className="text-muted">In stock: </span>
-                                                    {product.produit.stock}<br/>
-                                                    <span className="text-muted">Restaurant: </span>
-                                                    {product.produit.restaurant.nom}
-                                                </p>
-
-                                            </div>
-                                            <div className="col-8 col-md-3 col-lg-3 col-xl-2 d-flex mt-3 mt-md-0">
-                                                <InputNumber
-                                                    value= {productQuantities[product.id] || product.quantity}
-                                                    mode="decimal"
-                                                    showButtons
-                                                    min={1}
-                                                    max={product.produit.stock}
-                                                    onChange={(e) => {
-                                                        const newQuantity = parseInt(e.value, 10);
-                                                        if (newQuantity >= 0 && newQuantity <= product.produit.stock) {
-                                                            updateQuantity(product.id, newQuantity);
-                                                        }
-                                                    }}
-                                                />
-                                            </div>
-                                            <div className="col-4 col-md-3 col-lg-2 col-xl-2 offset-md-1 mt-3 mt-md-0">
-                                                <h5 className="mb-0"> {product.totalprice * (productQuantities[product.id] || 1)}Dh</h5>
-                                            </div>
-                                            <div className="col-3 col-md-1 col-lg-1 col-xl-1 text-end mt-3 mt-md-0">
-                                                <Button
-                                                    icon="pi pi-trash"
-                                                    severity="danger"
-                                                    aria-label="Cancel"
-                                                    onClick={() => deleteProduct(product.id)}
-                                                />
-                                            </div>
-                                        </div>
+                                {cartProducts.length === 0 ? (
+                                    <div className="alert alert-secondary">
+                                        oops! There are no products in the cart.
                                     </div>
-                                </div>
-                                ))}
-                            <div className="card mb-2">
-                                <div className="card-body">
-                                    <div className="row d-flex justify-content-between align-items-center">
-                                        <div className="col-12 col-md-6">
-                                            <p className="mb-1">Total Quantity: {getTotalQuantity()}</p>
-                                            <p className="mb-0">Total Amount: {getTotalAmount()}Dh</p>
+                                ) : (
+                                    <>
+                                        {cartProducts.map((product) => (
+                                            <div className="card rounded-3 mb-2" key={product.id}>
+                                                <div className="card-body p-3 ">
+                                                    <div
+                                                        className="row d-flex justify-content-between align-items-center">
+                                                        <div className="col-4 col-md-2 col-lg-2 col-xl-2">
+                                                            <img
+                                                                src={product.produit.photo}
+                                                                className="img-fluid rounded-3"
+                                                                alt={product.produit.nom}
+                                                            />
+                                                        </div>
+                                                        <div className="col-8 col-md-3 col-lg-3 col-xl-3">
+                                                            <p className="lead fw-normal mb-2">{product.produit.nom}</p>
+
+                                                            <p>
+                                                                <span className="text-muted">Price:</span>
+                                                                <strong>{product.totalprice}Dh</strong><br/>
+                                                                <span className="text-muted">In stock: </span>
+                                                                {product.produit.stock}<br/>
+                                                                <span className="text-muted">Restaurant: </span>
+                                                                {product.produit.restaurant.nom}
+                                                            </p>
+
+                                                        </div>
+                                                        <div
+                                                            className="col-8 col-md-3 col-lg-3 col-xl-2 d-flex mt-3 mt-md-0">
+                                                            <InputNumber
+                                                                value={productQuantities[product.id] || product.quantity}
+                                                                mode="decimal"
+                                                                showButtons
+                                                                min={1}
+                                                                max={product.produit.stock}
+                                                                onChange={(e) => {
+                                                                    const newQuantity = parseInt(e.value, 10);
+                                                                    if (newQuantity >= 0 && newQuantity <= product.produit.stock) {
+                                                                        updateQuantity(product.id, newQuantity);
+                                                                    }
+                                                                }}
+                                                            />
+                                                        </div>
+                                                        <div
+                                                            className="col-4 col-md-3 col-lg-2 col-xl-2 offset-md-1 mt-3 mt-md-0">
+                                                            <h5 className="mb-0"> {product.totalprice * (productQuantities[product.id] || 1)}Dh</h5>
+                                                        </div>
+                                                        <div
+                                                            className="col-3 col-md-1 col-lg-1 col-xl-1 text-end mt-3 mt-md-0">
+                                                            <Button
+                                                                icon="pi pi-trash"
+                                                                severity="danger"
+                                                                aria-label="Cancel"
+                                                                onClick={() => deleteProduct(product.id)}
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                        <div className="card mb-2">
+                                            <div className="card-body">
+                                                <div className="row d-flex justify-content-between align-items-center">
+                                                    <div className="col-12 col-md-6">
+                                                        <p className="mb-1">Total Quantity: {getTotalQuantity()}</p>
+                                                        <p className="mb-0">Total Amount: {getTotalAmount()}Dh</p>
+                                                    </div>
+                                                    <div className="col-12 col-md-6 text-md-end mt-5 mt-md-0">
+                                                        <Button label="Proceed to Pay"
+                                                                disabled={isProceedToPayDisabled}
+                                                                severity="info" onClick={opendialog}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div className="col-12 col-md-6 text-md-end mt-5 mt-md-0">
-                                            <Button label="Proceed to Pay"
-                                                    disabled={isProceedToPayDisabled}
-                                                    severity="info" onClick={opendialog}
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
+                                    </>
+                                )}
                             </div>
-                                </>
-                            )}
                         </div>
                     </div>
-                </div>
-            </section>
-        </div>
+                </section>
+            </div>
 
             <Dialog
                 visible={isDialogVisible}
@@ -260,9 +268,9 @@ export default function Cart() {
                 header="Confirm Payment"
             >
                 <p>Are you sure you want to proceed with the payment?</p>
-                <Button label="Confirm" onClick={handleConfirmPayment} />
-                <Button label="Cancel" onClick={() => setDialogVisible(false)} className="p-button-secondary" />
+                <Button label="Confirm" onClick={handleConfirmPayment}/>
+                <Button label="Cancel" onClick={() => setDialogVisible(false)} className="p-button-secondary"/>
             </Dialog>
-</>
+        </>
     );
 }
