@@ -47,34 +47,6 @@ export default function ClientOrders() {
         fetchUserData();
     }, []);
 
-    const handleDelete = (reservationIds) => {
-        const confirmDelete = () => {
-            const promises = reservationIds.map((reservationId) => {
-                return axios.delete(`/api/controller/orders/${reservationId}`);
-            });
-
-            Promise.all(promises).then(() => {
-                const updatedOrders = orders.filter((order) => !reservationIds.includes(order.id));
-                setOrders(updatedOrders);
-                toast.current.show({
-                    severity: 'success',
-                    summary: 'Success',
-                    detail: 'Order canceled successfully',
-                    life: 3000
-                });
-            });
-        };
-
-        confirmDialog({
-            message: 'Are you sure you want to Cancel this Order?',
-            header: 'Confirmation',
-            icon: 'pi pi-exclamation-triangle',
-            acceptLabel: 'Yes',
-            rejectLabel: 'No',
-            acceptClassName: 'p-button-danger',
-            accept: confirmDelete
-        });
-    };
 
     useEffect(() => {
         loadOrders();
@@ -276,7 +248,9 @@ export default function ClientOrders() {
                     {value === 0 && (
                         <div>
                             {/* Display all orders */}
-                            {groupOrdersByCreatedDate().map((group, index) => (
+                            {groupOrdersByCreatedDate().some((group) => group.orders.some((order) => order.length !== 0)) ? (
+
+                                groupOrdersByCreatedDate().map((group, index) => (
                                 <div key={index} className="order-group">
                                     <div className="content mt-5">
                                         <Fieldset legend={`Order Details (${group.createdDate})`} toggleable>
@@ -370,7 +344,19 @@ export default function ClientOrders() {
                                         </Fieldset>
                                     </div>
                                 </div>
-                            ))}
+                            ))
+                                ):(
+                                <div className="order-group">
+                                    <div className="content mt-5">
+                                        <Fieldset legend="No  Orders">
+                                            <Alert severity="error">
+                                                <AlertTitle>Info</AlertTitle>
+                                                <strong>oops!</strong> — There is No  Orders —
+                                            </Alert>
+                                        </Fieldset>
+                                    </div>
+                                </div>
+                                )}
                         </div>
                     )}
                     {value === 1 && (

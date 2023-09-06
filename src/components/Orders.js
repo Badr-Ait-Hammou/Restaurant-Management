@@ -18,6 +18,7 @@ import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import PendingRoundedIcon from '@mui/icons-material/PendingRounded';
 import IconButton from "@mui/material/IconButton";
 import {Fade} from "@mui/material";
+import {ConfirmDialog, confirmDialog} from "primereact/confirmdialog";
 
 
 
@@ -145,6 +146,10 @@ export default function Orders( )  {
                         direction="up"
                         style={{ left: 'calc(50% - 2rem)', bottom: 6, transform: 'scale(0.7)' }}
                     />
+
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
+                    <Button severity="danger" onClick={()=>{handleDelete(rowData)}}  />
                 </div>
             </React.Fragment>
         );
@@ -168,6 +173,7 @@ export default function Orders( )  {
     const imageBodyTemplate = (rowData) => {
         return (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '5px', justifyContent: 'center' }}>
+
                 {rowData.orders.map((order) => (
                     <div key={order.produit.id}>
                          <Tooltip   TransitionComponent={Fade}
@@ -201,6 +207,42 @@ export default function Orders( )  {
     };
 
 
+    const handleDelete = (rowData) => {
+        const confirmDelete = () => {
+            const orderIdsToDelete = rowData.orders.map((order) => order.id);
+
+            const promises = orderIdsToDelete.map((orderId) => {
+                return axios.delete(`/api/controller/orders/${orderId}`);
+            });
+
+            Promise.all(promises)
+                .then(() => {
+                    const updatedOrders = orders.filter(
+                        (order) => !orderIdsToDelete.includes(order.id)
+                    );
+                    setOrders(updatedOrders);
+                    toast.current.show({
+                        severity: 'success',
+                        summary: 'Success',
+                        detail: 'Orders canceled successfully',
+                        life: 3000,
+                    });
+                })
+                .catch((error) => {
+                    console.error('Error deleting orders:', error);
+                });
+        };
+
+        confirmDialog({
+            message: 'Are you sure you want to delete these orders?',
+            header: 'Confirmation',
+            icon: 'pi pi-exclamation-triangle',
+            acceptLabel: 'Yes',
+            rejectLabel: 'No',
+            acceptClassName: 'p-button-danger',
+            accept: confirmDelete,
+        });
+    };
 
 
     const groupOrdersByUserAndTime = () => {
@@ -223,6 +265,8 @@ export default function Orders( )  {
 
     return (
         <MainCard sx={{ margin: '20px' }}>
+            <Toast ref={toast}/>
+            <ConfirmDialog/>
             <div>
                 <Toast ref={toast} />
                 <div className="card">
