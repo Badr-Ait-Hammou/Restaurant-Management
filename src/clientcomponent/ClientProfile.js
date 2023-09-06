@@ -11,6 +11,7 @@ import Badge from "@mui/material/Badge";
 import Avatar from "@mui/material/Avatar";
 import {TextField, Grid} from "@mui/material";
 import PersonPinIcon from '@mui/icons-material/PersonPin';
+import { Skeleton } from 'primereact/skeleton';
 
 
 export default function ClientProfile() {
@@ -25,6 +26,7 @@ export default function ClientProfile() {
     const [telephone, setTelephone] = useState('');
     const [area, setArea] = useState('');
     const [postcode, setpostcode] = useState('');
+
 
 
     const SmallAvatar = styled(Avatar)(({ theme }) => ({
@@ -43,7 +45,6 @@ export default function ClientProfile() {
                     const user = await accountService.getUserByEmail(tokenInfo.sub);
                     setUserId(user.id);
                     console.log('user',user.id);
-                    // console.log(getProfile());
                 } catch (error) {
                     console.log('Error retrieving user:', error);
                 }
@@ -54,7 +55,6 @@ export default function ClientProfile() {
     }, []);
 
     useEffect(() => {
-        console.log(userId);
         axios.get(`/api/controller/users/${userId}`).then((response) => {
             setUser(response.data);
             loadUser();
@@ -91,6 +91,8 @@ export default function ClientProfile() {
                 console.error("Error while saving project:", error);
             });
     };
+
+
 
     const loadUser = async () => {
         axios.get(`/api/controller/users/${userId}`).then((response) => {
@@ -129,6 +131,7 @@ export default function ClientProfile() {
         }
     };
 
+
     return (
         <MainCard sx={{ margin: '20px' }} title={<div style={{display:"flex",justifyContent:"center", alignItems:"center"}}><PersonPinIcon /> {user.username}'s Profile </div>} >
             <Toast ref={toast} />
@@ -157,16 +160,8 @@ export default function ClientProfile() {
                                     }}  />
                                 </Badge>
                             ) : (
-                                <Badge
+                                <Skeleton shape="circle" size="9rem"  className="mr-2"></Skeleton>
 
-                                    overlap="circular"
-                                    anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-                                    badgeContent={
-                                        <SmallAvatar  alt="Remy Sharp" src={Addphoto}  />
-                                    }
-                                >
-                                    <Avatar alt="AH"  style={{ width: '150px',height:'145px', cursor: 'pointer',padding:"30px",alignItems:"center",justifyContent:"center" }}  />
-                                </Badge>
                             )}
                         </Box>
                     </label>
