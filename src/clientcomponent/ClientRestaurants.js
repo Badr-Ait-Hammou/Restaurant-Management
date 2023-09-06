@@ -1,14 +1,13 @@
 import axios from '../service/callerService';
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect} from "react";
 import RestaurantDetails from "./RestaurantDetails";
-import { Link, useParams } from 'react-router-dom';
-import { AiOutlineFieldTime } from "react-icons/ai";
-import { Dropdown } from 'primereact/dropdown';
-import Button from "@mui/material/Button";
+import {Link, useParams} from 'react-router-dom';
+import {AiOutlineFieldTime} from "react-icons/ai";
+import {Dropdown} from 'primereact/dropdown';
 
 export default function ClientRestaurants() {
     const [restaurants, setRestaurants] = useState([]);
-    const { id } = useParams();
+    const {id} = useParams();
     const [cities, setCities] = useState([]);
     const [zones, setZones] = useState([]);
     const [selectedCity, setSelectedCity] = useState(null);
@@ -72,22 +71,20 @@ export default function ClientRestaurants() {
     };
 
 
-
     return (
         <div className="container mt-5 ">
             <div className="col-md-12   mb-3">
                 <Dropdown
                     className="mr-2"
                     value={selectedCity}
-                    options={cities.map((ville) => ({ label: ville.nom, value: ville.nom }))}
+                    options={cities.map((ville) => ({label: ville.nom, value: ville.nom}))}
                     onChange={handleCityChange}
                     placeholder="Select a city"
                 />
-
                 {selectedCity && (
                     <Dropdown
                         value={selectedZone}
-                        options={zones.map((zone) => ({ label: zone.nom, value: zone.nom }))}
+                        options={zones.map((zone) => ({label: zone.nom, value: zone.nom}))}
                         onChange={handleZoneChange}
                         placeholder="Select a zone"
                     />
@@ -96,7 +93,7 @@ export default function ClientRestaurants() {
                 <Dropdown
                     className="ml-2"
                     value={selectedSpecialite}
-                    options={specialites.map((specialite) => ({ label: specialite.nom, value: specialite.nom }))}
+                    options={specialites.map((specialite) => ({label: specialite.nom, value: specialite.nom}))}
                     onChange={handleSpecialiteChange}
                     placeholder="Select a specialite"
                 />
@@ -120,13 +117,13 @@ export default function ClientRestaurants() {
                                         src={restaurant.photo}
                                         className="card-img-top"
                                         alt="Restaurant"
-                                        style={{ objectFit: "cover", height: "auto" }}
+                                        style={{objectFit: "cover", height: "auto"}}
                                     />
                                 </Link>
                                 <div className="card-body">
                                     <h6 className="card-title">{restaurant.nom}</h6>
                                     <h6 className="card-title">
-                                        <AiOutlineFieldTime style={{ color: 'lightseagreen', fontSize: '20px' }} />
+                                        <AiOutlineFieldTime style={{color: 'lightseagreen', fontSize: '20px'}}/>
                                         {restaurant.dateOuverture} / {restaurant.dateFermeture}
                                     </h6>
                                     <h6 className="card-text">Address: {restaurant.adresse}</h6>
@@ -138,7 +135,7 @@ export default function ClientRestaurants() {
                     ))
                 )}
             </div>
-            {id && <RestaurantDetails id={id} />}
+            {id && <RestaurantDetails id={id}/>}
         </div>
     );
 }
