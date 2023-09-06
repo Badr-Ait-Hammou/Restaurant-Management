@@ -11,6 +11,7 @@ import "primereact/resources/themes/lara-light-indigo/theme.css";
 import 'primeicons/primeicons.css';
 import "primereact/resources/primereact.min.css";
 import {Tag} from "primereact/tag";
+import Skeleton from "../skeleton/ProfileSkeleton"
 
 
 export default function RestaurantDetails() {
@@ -22,6 +23,7 @@ export default function RestaurantDetails() {
     const [userId, setUserId] = useState("");
     const toast = useRef(null);
     const [productInCart, setProductInCart] = useState({});
+
 
 
     const loadProductsUser = () => {
@@ -46,7 +48,7 @@ export default function RestaurantDetails() {
     };
 
     useEffect(() => {
-        loadProductsUser();
+       loadProductsUser();
     }, [userId, products]);
 
     useEffect(() => {
@@ -116,7 +118,7 @@ export default function RestaurantDetails() {
 
 
     if (!restaurant) {
-        return <div>Loading...</div>;
+        return <Skeleton/>;
     }
 
     const showSuccess = () => {
@@ -131,37 +133,37 @@ export default function RestaurantDetails() {
         return (
             <div key={product.id} className={`col mb-4 ${product.stock <= 0 ? 'out-of-stock' : ''}`}>
                 <div className="card h-100">
-                    <div className="flex flex-column xl:flex-row xl:align-items-start p-4 gap-4">
+                    <div className="flex flex-column xl:flex-row xl:align-items-start p-2 gap-4">
                         <Link to={`products/${product.id}`}>
                             <div style={{position: 'relative'}}>
-                                <img className="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round"
+                                <img className="w-90 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round"
                                      src={product.photo}
                                      alt={product.nom}
                                      style={{
-                                         width: '100px',
-                                         height: '100px',
+                                         width: '180px',
+                                         height: '140px',
                                          borderRadius: '8px'
                                      }}/>
                                 {product.stock <= 0 ? (
                                     <Tag
                                         severity="warning"
                                         value="Out of Stock"
-                                        className="stock-tag"
                                         style={{
+                                            fontSize:"10px",
                                             position: 'absolute',
-                                            top: '10px',
-                                            right: '10px',
+                                            top: '3px',
+                                            right: '11px',
                                         }}
                                     />
                                 ) : (
                                     <Tag
                                         severity="success"
                                         value="In Stock"
-                                        className="stock-tag"
                                         style={{
+                                            fontSize:"10px",
                                             position: 'absolute',
-                                            top: '10px',
-                                            right: '10px',
+                                            top: '3px',
+                                            right: '11px',
                                         }}
                                     />
                                 )}
@@ -170,23 +172,24 @@ export default function RestaurantDetails() {
                         <div
                             className="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4">
                             <div className="flex flex-column align-items-center sm:align-items-start gap-3">
-
                                 <div className="text-2xl font-bold text-900">{product.nom}</div>
                                 <Rating value={product.id} readOnly cancel={false}></Rating>
                                 <div className="flex align-items-center gap-3">
+                                    {product.promotion === true && (
+                                        <Tag value="On Sale" severity="danger" icon="pi pi-tag" />
+                                    )}
                                 <span className="flex align-items-center gap-2">
-                                    <i className="pi pi-tag"></i>
-                                    <span className="font-semibold">{product.prix}</span>
+                                    <span className="font-semibold">{product.stock} Pcs</span>
                                 </span>
-                                    <Tag value={product.stock}></Tag>
                                 </div>
                             </div>
                             <div className="d-flex justify-content-lg-between gap-3 align-items-center mt-3">
-                                <span className="text-2xl font-semibold">${product.prix}</span>
+                                <span className="text-2xl font-semibold">{product.prix} Dh</span>
 
                                 {productInCart[product.id] ? (
                                     <Link to="/admin/cart">
                                         <Button
+                                            style={{background: 'linear-gradient(-225deg,#AC32E4 0%,#7918F2 48%,#4801FF 100%)'}}
                                             icon="pi pi-external-link"
                                             className="p-button-rounded mt-2"
                                             disabled={product.stock <= 0}
