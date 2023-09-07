@@ -308,7 +308,7 @@ export default function ClientRestaurants() {
         );
     };
 
-
+    
 
     const groupedRestaurants = [];
     for (let i = 0; i < restaurants.length; i += 4) {

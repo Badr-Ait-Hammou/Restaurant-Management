@@ -16,7 +16,7 @@ import {Link} from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import {accountService} from "../service/accountService";
 
-const pages = ['home','restaurants','profile','reservation','orders','cart'];
+const pages = ['home','restaurants','profile','reservation','orders','cart','all_products'];
 
 export default function ClientHeader() {
     const [anchorElNav, setAnchorElNav] = React.useState(null);

@@ -20,6 +20,7 @@ import Reservation from "../clientcomponent/ClientReservation"
 import Reservations from "../components/Reservations"
 import ClientOrders from "../clientcomponent/ClientOrders"
 import Cart from "../clientcomponent/Cart"
+import AllProducts from "../clientcomponent/AllProducts"
 const AdminRoute = () => {
 
     return (
@@ -68,6 +69,7 @@ const AdminRoute = () => {
                 <Route path="/orders" element={<ClientOrders/>}/>
                 <Route path="/reservation" element={<Reservation/>}/>
                 <Route path="/profile" element={<Profile/>}/>
+                <Route path="/all_products" element={<AllProducts/>}/>
                 <Route exact path="/restaurants/restaurants/:id" element={<RestaurantDetails/>}/>
                 <Route exact path="/home/restaurants/restaurants/:id" element={<RestaurantDetails/>}/>
             </Route>
