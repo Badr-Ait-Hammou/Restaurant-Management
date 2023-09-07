@@ -1,7 +1,6 @@
 import axios from '../service/callerService';
 import React, {useState, useEffect} from "react";
 import {Link} from 'react-router-dom';
-import {AiOutlineFieldTime} from "react-icons/ai";
 import {Dropdown} from 'primereact/dropdown';
 import {Tag} from "primereact/tag";
 import {DataView, DataViewLayoutOptions} from "primereact/dataview";
@@ -102,13 +101,17 @@ export default function ClientRestaurants() {
                                 </Link>
                                 <div className="card-body">
                                     <h6 className="card-title">{restaurant.nom}</h6>
-                                    <h6 className="card-title">
-                                        <AiOutlineFieldTime style={{color: 'lightseagreen', fontSize: '20px'}}/>
+                                    <Tag severity="success" icon="pi pi-clock">
+
                                         {restaurant.dateOuverture} / {restaurant.dateFermeture}
-                                    </h6>
-                                    <h6 className="card-text">Address: {restaurant.adresse}</h6>
-                                    <h6 className="card-text">specialite: {restaurant.specialite.nom}</h6>
+                                    </Tag>
+                                    <div>
+                                    <strong className="card-text">Address: </strong> {restaurant.adresse}
+                                    </div>
+                                    <div>
+                                    <strong className="card-text">specialite:</strong> {restaurant.specialite.nom}
                                     <h6 className="card-text">zone: {restaurant.zone.nom}</h6>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -207,7 +210,7 @@ export default function ClientRestaurants() {
                         placeholder="Select a specialite"
                     />
                 </div>
-            <div className="card" >
+            <div className="card mx-2" >
                 <DataView value={restaurants} itemTemplate={itemTemplate} layout={layout} header={header()}/>
             </div>
         </>
