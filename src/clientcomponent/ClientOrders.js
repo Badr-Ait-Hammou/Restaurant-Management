@@ -17,7 +17,7 @@ import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import PendingRoundedIcon from '@mui/icons-material/PendingRounded';
 import Tab from '@mui/material/Tab';
 import Tabs, {tabsClasses} from '@mui/material/Tabs';
-
+import Skeleton from "../skeleton/ProfileSkeleton"
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
 import Box from "@mui/material/Box";
@@ -206,6 +206,8 @@ export default function ClientOrders() {
             </div>
         );
     }
+
+
 
     return (
         <div>
