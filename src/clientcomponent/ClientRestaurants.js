@@ -18,6 +18,13 @@ export default function ClientRestaurants() {
     const [specialites, setSpecialites] = useState([]);
     const [noResults, setNoResults] = useState(false);
     const [layout, setLayout] = useState('grid');
+    const [sortKey, setSortKey] = useState('');
+    const [sortOrder, setSortOrder] = useState(0);
+    const [sortField, setSortField] = useState('');
+    const sortOptions = [
+        { label: 'Id High to Low', value: '!id' },
+        { label: 'Id Low to High', value: 'id' }
+    ];
 
 
     useEffect(() => {
@@ -253,15 +260,54 @@ export default function ClientRestaurants() {
         </div>);
     };
 
+    const onSortChange = (event) => {
+        const value = event.value;
+
+        if (value.indexOf('!') === 0) {
+            setSortOrder(-1);
+            setSortField(value.substring(1, value.length));
+            setSortKey(value);
+        } else {
+            setSortOrder(1);
+            setSortField(value);
+            setSortKey(value);
+        }
+    };
 
 
     const header = () => {
         return (
-            <div className="flex justify-content-end">
-                <DataViewLayoutOptions layout={layout} onChange={(e) => setLayout(e.value)}/>
+            <div className="flex justify-between items-center">
+                <div>
+                    <Dropdown
+                        options={sortOptions}
+                        value={sortKey}
+                        optionLabel="label"
+                        placeholder="Sort By Price"
+                        onChange={onSortChange}
+                        className="w-full sm:w-14rem"
+                    />
+                </div>
+                <div>
+                    <DataViewLayoutOptions
+                        layout={layout}
+                        onChange={(e) => setLayout(e.value)}
+                    />
+                </div>
             </div>
         );
     };
+    const header2 = () => {
+        return (
+            <div className="flex justify-content-end">
+                    <DataViewLayoutOptions
+                        layout={layout}
+                        onChange={(e) => setLayout(e.value)}
+                    />
+            </div>
+        );
+    };
+
 
 
     const groupedRestaurants = [];
@@ -302,13 +348,13 @@ export default function ClientRestaurants() {
             <div className="card mx-2">
                 {layout === 'list' && (
                     <div >
-                        <DataView value={restaurants} itemTemplate={listItem} layout={layout} header={header()} />
+                        <DataView value={restaurants} itemTemplate={listItem} layout={layout} header={header()} sortField={sortField} sortOrder={sortOrder}/>
                     </div>
                 )}
 
                 {layout === 'grid' && (
                     <div >
-                        <DataView value={groupedRestaurants} itemTemplate={itemTemplate} layout={layout} header={header()}/>
+                        <DataView value={groupedRestaurants} itemTemplate={itemTemplate} layout={layout} header={header2()} sortField={sortField} sortOrder={sortOrder}/>
                     </div>
                 )}
             </div>
