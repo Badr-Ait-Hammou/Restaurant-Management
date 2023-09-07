@@ -87,10 +87,10 @@ export default function ClientRestaurants() {
                     </div>
                 ) : (
                         <div key={restaurant.id} className="col mb-4 card h-100">
-                            <div className="row row-cols-2 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+                            <div className="row  row-cols-1  row-cols-sm-4 row-cols-md-4 row-cols-lg-4 g-4 ">
                                 <Link to={`restaurants/${restaurant.id}`}>
                                         <img
-                                            className="w-90 mt-2  sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round"
+                                            className="card-img-top mx-auto mt-2 "
                                             src={restaurant.photo}
                                             alt={restaurant.nom}
                                             style={{
@@ -134,7 +134,7 @@ export default function ClientRestaurants() {
                         </div>
                     </div>
                 ) : (
-            <div key={restaurant.id} className="col mb-4 card ">
+            <div key={restaurant.id} className="col mb-4 card h-100">
                 <div className="card p-2">
                     <Link to={`restaurants/${restaurant.id}`}>
                             <img
@@ -211,7 +211,7 @@ export default function ClientRestaurants() {
                     />
                 </div>
             <div className="card mx-2" >
-                <DataView value={restaurants} itemTemplate={itemTemplate} layout={layout} header={header()}/>
+                <DataView value={restaurants} itemTemplate={itemTemplate} layout={layout} header={header()} />
             </div>
         </>
     );

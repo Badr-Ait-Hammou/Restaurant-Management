@@ -3,8 +3,8 @@ import { Skeleton } from 'primereact/skeleton';
 
 export default function ProfileSkeleton() {
     return (
-        <div className="card">
-            <div className="border-round border-1 surface-border p-4 surface-card">
+        <div className="card mt-5">
+            <div className="border-round border-1 surface-border p-4 surface-card mt-2">
                 <div className="flex mb-3">
                     <div
                         style={{
