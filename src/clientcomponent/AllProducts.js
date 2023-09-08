@@ -272,19 +272,20 @@ export default function AllProduct(){
     };
 
 
-    const itemTemplate = (product) => {
-        if (!product) {
-            return <Skeleton/>;
+    const itemTemplate = (group) => {
+        if (!group || group.length === 0) {
+            return <Skeleton />;
         }
 
-        return (<div className="container mt-5">
-            {groupedRestaurants.map((group) => (
+        return (
+            <div className="container mt-5">
                 <div className="row row-cols-2 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
                     {group.map((product) => gridItem(product))}
                 </div>
-            ))}
-        </div>);
+            </div>
+        );
     };
+
 
     const onSortChange = (event) => {
         const value = event.value;
@@ -340,9 +341,6 @@ export default function AllProduct(){
     for (let i = 0; i < products.length; i += 4) {
         groupedRestaurants.push(products.slice(i, i + 4));
     }
-
-
-
 
 
     return(
