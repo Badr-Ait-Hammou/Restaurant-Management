@@ -1,38 +1,41 @@
 import React from "react";
-import {useEffect, useState,useRef} from "react";
+import {useEffect, useState, useRef} from "react";
 import axios from "../service/callerService";
 import {Link} from "react-router-dom";
 import {Tag} from "primereact/tag";
 import {Rating} from "@mui/material";
-import Skeleton from "../skeleton/ProfileSkeleton";
 import {Dropdown} from "primereact/dropdown";
+import {Skeleton} from "primereact/skeleton";
 import {DataView, DataViewLayoutOptions} from "primereact/dataview";
 import {Button} from "primereact/button";
 import {accountService} from "../service/accountService";
 import {Toast} from "primereact/toast";
 import RestaurantMenuRoundedIcon from '@mui/icons-material/RestaurantMenuRounded';
+import DataviewSkeleton from "../skeleton/DataviewSkeleton"
 
 
-export default function AllProduct(){
+export default function AllProduct() {
     const [products, setProducts] = useState([]);
     const [userId, setUserId] = useState("");
     const toast = useRef(null);
-    const [layout, setLayout] = useState('grid');
+    const [layout, setLayout] = useState('list');
     const [sortKey, setSortKey] = useState('');
     const [sortOrder, setSortOrder] = useState(0);
     const [sortField, setSortField] = useState('');
     const [productInCart, setProductInCart] = useState({});
+    const [loading, setLoading] = useState(true); // Track loading state
+
 
     const sortOptions = [
-        { label: 'Price High to Low', value: '!prix' },
-        { label: 'Price Low to High', value: 'prix' }
+        {label: 'Price High to Low', value: '!prix'},
+        {label: 'Price Low to High', value: 'prix'}
     ];
-
 
 
     useEffect(() => {
         axios.get("/api/controller/produits/").then((response) => {
             setProducts(response.data);
+            setLoading(false);
         });
     }, []);
 
@@ -106,13 +109,23 @@ export default function AllProduct(){
         toast.current.show({severity: 'success', summary: 'Success', detail: 'item added to cart', life: 1000});
     }
 
+
+
+    if (loading) {
+        return (
+            <>
+                <DataviewSkeleton/>
+            </>
+        );
+    }
+
     const listItem = (product) => {
         return (
             <div className="flex flex-column xl:flex-row xl:align-items-start p-2 gap-4">
                 <div key={product.id} className="col mb-4 card h-100">
                     <div className="row  row-cols-1  row-cols-sm-4 row-cols-md-4 row-cols-lg-4 g-4 ">
                         <div style={{position: 'relative'}}>
-                        <img
+                            <img
                                 className="card-img-top mx-auto p-2 "
                                 src={product.photo}
                                 alt={product.nom}
@@ -121,69 +134,76 @@ export default function AllProduct(){
                                     height: '140px',
                                     borderRadius: '18px'
                                 }}/>
-                        {product.stock <= 0 ? (
-                            <Tag
-                                severity="warning"
-                                value="Out of Stock"
-                                style={{
-                                    fontSize:"10px",
-                                    position: 'absolute',
-                                    top: '3px',
-                                    right: '11px',
-                                }}
-                            />
-                        ) : (
-                            <Tag
-                                severity="success"
-                                value="In Stock"
-                                style={{
-                                    fontSize:"10px",
-                                    position: 'absolute',
-                                    top: '3px',
-                                    right: '11px',
-                                }}
-                            />
-                        )}
+                            {product.stock <= 0 ? (
+                                <Tag
+                                    severity="warning"
+                                    value="Out of Stock"
+                                    style={{
+                                        fontSize: "10px",
+                                        position: 'absolute',
+                                        top: '3px',
+                                        right: '11px',
+                                    }}
+                                />
+                            ) : (
+                                <Tag
+                                    severity="success"
+                                    value="In Stock"
+                                    style={{
+                                        fontSize: "10px",
+                                        position: 'absolute',
+                                        top: '3px',
+                                        right: '11px',
+                                    }}
+                                />
+                            )}
                         </div>
 
                         <div className="card-body">
                             <span className="text-2xl font-semibold  mx-2">{product.nom}</span>
                             <div className="mt-1">
-                                <strong className="card-text ">Description: </strong><small>{product.description}</small>
+                                <strong
+                                    className="card-text ">Description: </strong><small>{product.description}</small>
                             </div>
 
                             <div className=" align-items-center gap-3 mt-2">
                                 {product.promotion === true && (
-                                    <Tag value="On Sale" severity="danger" icon="pi pi-tag" />
+                                    <Tag value="On Sale" severity="danger" icon="pi pi-tag"/>
                                 )}
                                 <span className=" align-items-center mx-2">
                                     <span className="font-semibold">{product.stock} Pcs</span>
                                 </span>
                             </div>
                             <div className="mt-2">
-                                <Tag style={{background: 'linear-gradient(-225deg,#AC32E4 0%,#7918F2 48%,#4801FF 100%)'}}
-                                     icon={<RestaurantMenuRoundedIcon style={{ fontSize: '16px' }}/>}> {product.restaurant.nom} --{product.restaurant.zone.ville.nom}</Tag>
+                                <Tag
+                                    style={{background: 'linear-gradient(-225deg,#AC32E4 0%,#7918F2 48%,#4801FF 100%)'}}
+                                    icon={<RestaurantMenuRoundedIcon
+                                        style={{fontSize: '16px'}}/>}> {product.restaurant.nom} --{product.restaurant.zone.ville.nom}</Tag>
                             </div>
                             <div className="d-flex  justify-between align-items-center">
-                            <Tag  style={{backgroundColor:"rgba(141,136,136,0.13)",color:"black",fontSize:"large"}}>{product.prix} Dh</Tag>
+                                <Tag style={{
+                                    backgroundColor: "rgba(141,136,136,0.13)",
+                                    color: "black",
+                                    fontSize: "large"
+                                }}>{product.prix} Dh</Tag>
 
-                            {productInCart[product.id] ? (
-                                <Link to="/admin/cart">
+                                {productInCart[product.id] ? (
+                                    <Link to="/admin/cart">
+                                        <Button
+                                            style={{background: 'linear-gradient(-225deg,#AC32E4 0%,#7918F2 48%,#4801FF 100%)'}}
+                                            icon="pi pi-external-link"
+                                            className="p-button-rounded mt-2"
+                                            disabled={product.stock <= 0}
+                                        />
+                                    </Link>
+                                ) : (
                                     <Button
-                                        style={{background: 'linear-gradient(-225deg,#AC32E4 0%,#7918F2 48%,#4801FF 100%)'}}
-                                        icon="pi pi-external-link"
+                                        icon="pi pi-shopping-cart"
                                         className="p-button-rounded mt-2"
-                                        disabled={product.stock <= 0}
+                                        onClick={() => handleAddToCart(product)}
+                                        disabled={product.stock <= 0 || productInCart[product.id]}
                                     />
-                                </Link>
-                            ) : (
-                                <Button
-                                    icon="pi pi-shopping-cart"
-                                    className="p-button-rounded mt-2"
-                                    onClick={() => handleAddToCart(product)}
-                                    disabled={product.stock <= 0 || productInCart[product.id]}
-                                />
-                            )}
+                                )}
                             </div>
 
                         </div>
@@ -192,8 +212,6 @@ export default function AllProduct(){
             </div>
         );
     };
-
-
 
 
     const gridItem = (product) => {
@@ -216,7 +234,7 @@ export default function AllProduct(){
                                         severity="warning"
                                         value="Out of Stock"
                                         style={{
-                                            fontSize:"10px",
+                                            fontSize: "10px",
                                             position: 'absolute',
                                             top: '3px',
                                             right: '11px',
@@ -227,7 +245,7 @@ export default function AllProduct(){
                                         severity="success"
                                         value="In Stock"
                                         style={{
-                                            fontSize:"10px",
+                                            fontSize: "10px",
                                             position: 'absolute',
                                             top: '3px',
                                             right: '11px',
@@ -243,7 +261,7 @@ export default function AllProduct(){
                                 <Rating value={product.id} readOnly cancel={false}></Rating>
                                 <div className="flex align-items-center gap-3">
                                     {product.promotion === true && (
-                                        <Tag value="On Sale" severity="danger" icon="pi pi-tag" />
+                                        <Tag value="On Sale" severity="danger" icon="pi pi-tag"/>
                                     )}
                                     <span className="flex align-items-center gap-2">
                                     <span className="font-semibold">{product.stock} Pcs</span>
@@ -281,7 +299,7 @@ export default function AllProduct(){
 
     const itemTemplate = (group) => {
         if (!group || group.length === 0) {
-            return <Skeleton />;
+            return <Skeleton/>;
         }
 
         return (
@@ -292,7 +310,6 @@ export default function AllProduct(){
             </div>
         );
     };
-
 
 
     const onSortChange = (event) => {
@@ -344,27 +361,28 @@ export default function AllProduct(){
     };
 
 
-
     const groupedRestaurants = [];
     for (let i = 0; i < products.length; i += 4) {
         groupedRestaurants.push(products.slice(i, i + 4));
     }
 
 
-    return(
+    return (
         <div>
             <Toast ref={toast}/>
 
             <div className="card mx-2 mt-5">
                 {layout === 'list' && (
-                    <div >
-                        <DataView value={products} itemTemplate={listItem} layout={layout} header={header()} sortField={sortField} sortOrder={sortOrder}/>
+                    <div>
+                        <DataView value={products} itemTemplate={listItem} layout={layout} header={header()}
+                                  sortField={sortField} sortOrder={sortOrder}/>
                     </div>
                 )}
 
                 {layout === 'grid' && (
-                    <div >
-                        <DataView value={groupedRestaurants} itemTemplate={itemTemplate} layout={layout} header={header2()} sortField={sortField} />
+                    <div>
+                        <DataView value={groupedRestaurants} itemTemplate={itemTemplate} layout={layout}
+                                  header={header2()} sortField={sortField}/>
                     </div>
                 )}
             </div>
