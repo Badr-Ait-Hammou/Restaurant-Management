@@ -4,8 +4,6 @@ import {Link} from 'react-router-dom';
 import {Dropdown} from 'primereact/dropdown';
 import {Tag} from "primereact/tag";
 import {DataView, DataViewLayoutOptions} from "primereact/dataview";
-import AlertTitle from "@mui/material/AlertTitle";
-import Alert from "@mui/material/Alert";
 import {Rating} from "@mui/material";
 import Skeleton from "../skeleton/ProfileSkeleton"
 export default function ClientRestaurants() {
@@ -104,19 +102,6 @@ export default function ClientRestaurants() {
     const listItem = (restaurant) => {
         return (
             <div className="flex flex-column xl:flex-row xl:align-items-start p-2 gap-4">
-
-                {noResults ? (
-                    <div className="col mb-4">
-                        <div className="card h-100">
-                            <div className="card-body">
-                                <Alert severity="info">
-                                    <AlertTitle>Info</AlertTitle>
-                                    <strong>oops...!</strong> — No Restaurant Found
-                                </Alert>
-                            </div>
-                        </div>
-                    </div>
-                ) : (
                     <div key={restaurant.id} className="col mb-4 card h-100">
                         <div className="row  row-cols-1  row-cols-sm-4 row-cols-md-4 row-cols-lg-4 g-4 ">
                             <Link to={`restaurants/${restaurant.id}`}>
@@ -174,8 +159,6 @@ export default function ClientRestaurants() {
                             </div>
                         </div>
                     </div>
-
-                )}
             </div>
         );
     };

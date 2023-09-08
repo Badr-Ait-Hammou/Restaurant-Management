@@ -109,84 +109,81 @@ export default function AllProduct(){
     const listItem = (product) => {
         return (
             <div className="flex flex-column xl:flex-row xl:align-items-start p-2 gap-4">
-                    <div key={product.id} className="col mb-4 card h-100">
-                        <div className="row  row-cols-1  row-cols-sm-4 row-cols-md-4 row-cols-lg-4 g-4 ">
-                                <img
-                                    className="card-img-top mx-auto mt-3 "
-                                    src={product.photo}
-                                    alt={product.nom}
-                                    style={{
-                                        width: '180px',
-                                        height: '140px',
-                                        borderRadius: '8px'
-                                    }}/>
-                            <div className="card-body">
-                                {product.stock <= 0 ? (
-                                    <Tag
-                                        severity="warning"
-                                        value="Out of Stock"
-                                        style={{
-                                            fontSize:"10px",
-                                            position: 'absolute',
-                                            top: '3px',
-                                            right: '11px',
-                                        }}
-                                    />
-                                ) : (
-                                    <Tag
-                                        severity="success"
-                                        value="In Stock"
-                                        style={{
-                                            fontSize:"10px",
-                                            position: 'absolute',
-                                            top: '3px',
-                                            right: '11px',
-                                        }}
-                                    />
-                                )}
-                                <div
-                                    className="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4">
-                                    <div className="flex flex-column align-items-center sm:align-items-start gap-3">
-                                        <div className="text-2xl font-bold text-900">{product.nom}</div>
-                                        <Rating value={product.id} readOnly cancel={false}></Rating>
-                                        <div className="flex align-items-center gap-3">
-                                            {product.promotion === true && (
-                                                <Tag value="On Sale" severity="danger" icon="pi pi-tag" />
-                                            )}
-                                            <span className="flex align-items-center gap-2">
-                                    <span className="font-semibold">{product.stock} Pcs</span>
-                                </span>
-                                        </div>
-                                    </div>
-                                    <div className="d-flex justify-content-lg-between gap-3 align-items-center mt-3">
-                                        <span className="text-2xl font-semibold">{product.prix} Dh</span>
-
-                                        {productInCart[product.id] ? (
-                                            <Link to="/admin/cart">
-                                                <Button
-                                                    style={{background: 'linear-gradient(-225deg,#AC32E4 0%,#7918F2 48%,#4801FF 100%)'}}
-                                                    icon="pi pi-external-link"
-                                                    className="p-button-rounded mt-2"
-                                                    disabled={product.stock <= 0}
-                                                />
-                                            </Link>
-                                        ) : (
-                                            <Button
-                                                icon="pi pi-shopping-cart"
-                                                className="p-button-rounded mt-2"
-                                                onClick={() => handleAddToCart(product)}
-                                                disabled={product.stock <= 0 || productInCart[product.id]}
-                                            />
-                                        )}
-                                    </div>
-                                </div>
-                            </div>
-                            </div>
+                <div key={product.id} className="col mb-4 card h-100">
+                    <div className="row  row-cols-1  row-cols-sm-4 row-cols-md-4 row-cols-lg-4 g-4 ">
+                        <div style={{position: 'relative'}}>
+                        <img
+                                className="card-img-top mx-auto p-2 "
+                                src={product.photo}
+                                alt={product.nom}
+                                style={{
+                                    width: '180px',
+                                    height: '140px',
+                                    borderRadius: '18px'
+                                }}/>
+                        {product.stock <= 0 ? (
+                            <Tag
+                                severity="warning"
+                                value="Out of Stock"
+                                style={{
+                                    fontSize:"10px",
+                                    position: 'absolute',
+                                    top: '3px',
+                                    right: '11px',
+                                }}
+                            />
+                        ) : (
+                            <Tag
+                                severity="success"
+                                value="In Stock"
+                                style={{
+                                    fontSize:"10px",
+                                    position: 'absolute',
+                                    top: '3px',
+                                    right: '11px',
+                                }}
+                            />
+                        )}
                         </div>
 
+                        <div className="card-body">
+                            <h6 className="card-title">{product.nom}</h6>
+                            <div className=" align-items-center gap-3">
+                                {product.promotion === true && (
+                                    <Tag value="On Sale" severity="danger" icon="pi pi-tag" />
+                                )}
+                                <span className=" align-items-center mx-2">
+                                    <span className="font-semibold">{product.stock} Pcs</span>
+                                </span>
+                            </div>
+                            <span className="text-2xl font-semibold  mx-2">{product.prix} Dh</span>
+
+                            {productInCart[product.id] ? (
+                                <Link to="/admin/cart">
+                                    <Button
+                                        style={{background: 'linear-gradient(-225deg,#AC32E4 0%,#7918F2 48%,#4801FF 100%)'}}
+                                        icon="pi pi-external-link"
+                                        className="p-button-rounded mt-2"
+                                        disabled={product.stock <= 0}
+                                    />
+                                </Link>
+                            ) : (
+                                <Button
+                                    icon="pi pi-shopping-cart"
+                                    className="p-button-rounded mt-2"
+                                    onClick={() => handleAddToCart(product)}
+                                    disabled={product.stock <= 0 || productInCart[product.id]}
+                                />
+                            )}
+
+                        </div>
+                    </div>
+                </div>
             </div>
         );
     };
+
+
 
 
     const gridItem = (product) => {
@@ -287,6 +284,7 @@ export default function AllProduct(){
     };
 
 
+
     const onSortChange = (event) => {
         const value = event.value;
 
@@ -356,7 +354,7 @@ export default function AllProduct(){
 
                 {layout === 'grid' && (
                     <div >
-                        <DataView value={groupedRestaurants} itemTemplate={itemTemplate} layout={layout} header={header2()} sortField={sortField} sortOrder={sortOrder}/>
+                        <DataView value={groupedRestaurants} itemTemplate={itemTemplate} layout={layout} header={header2()} sortField={sortField} />
                     </div>
                 )}
             </div>
