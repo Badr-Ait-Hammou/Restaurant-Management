@@ -6,6 +6,8 @@ import {Tag} from "primereact/tag";
 import {DataView, DataViewLayoutOptions} from "primereact/dataview";
 import {Rating} from "@mui/material";
 import Skeleton from "../skeleton/ProfileSkeleton"
+import DataviewSkeleton from "../skeleton/DataviewSkeleton"
+
 export default function ClientRestaurants() {
     const [restaurants, setRestaurants] = useState([]);
     const [cities, setCities] = useState([]);
@@ -14,11 +16,12 @@ export default function ClientRestaurants() {
     const [selectedZone, setSelectedZone] = useState(null);
     const [selectedSpecialite, setSelectedSpecialite] = useState(null);
     const [specialites, setSpecialites] = useState([]);
-    const [noResults, setNoResults] = useState(false);
     const [layout, setLayout] = useState('grid');
     const [sortKey, setSortKey] = useState('');
     const [sortOrder, setSortOrder] = useState(0);
     const [sortField, setSortField] = useState('');
+    const [loading, setLoading] = useState(true); // Track loading state
+
     const sortOptions = [
         { label: 'Id High to Low', value: '!id' },
         { label: 'Id Low to High', value: 'id' }
@@ -40,6 +43,7 @@ export default function ClientRestaurants() {
     const loadRestaurants = () => {
         axios.get("/api/controller/restaurants/").then((response) => {
             setRestaurants(response.data);
+            setLoading(false);
             console.log(response.data);
         });
     };
@@ -58,10 +62,9 @@ export default function ClientRestaurants() {
                 `/api/controller/restaurants/${selectedCity}/${selectedZone}/${selectedSpecialite}`
             ).then((response) => {
                 setRestaurants(response.data);
-                setNoResults(response.data.length === 0);
             });
         } else {
-            setNoResults(false);
+
         }
     }, [selectedCity, selectedZone, selectedSpecialite]);
 
@@ -162,6 +165,10 @@ export default function ClientRestaurants() {
             </div>
         );
     };
+
+    if(loading){
+        return(<DataviewSkeleton/>)
+    }
 
 
     const gridItem = (restaurant) => {

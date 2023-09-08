@@ -18,7 +18,7 @@ export default function AllProduct() {
     const [products, setProducts] = useState([]);
     const [userId, setUserId] = useState("");
     const toast = useRef(null);
-    const [layout, setLayout] = useState('list');
+    const [layout, setLayout] = useState('grid');
     const [sortKey, setSortKey] = useState('');
     const [sortOrder, setSortOrder] = useState(0);
     const [sortField, setSortField] = useState('');
@@ -303,7 +303,7 @@ export default function AllProduct() {
         }
 
         return (
-            <div className="container mt-5">
+            <div className="container mt-2">
                 <div className="row row-cols-2 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
                     {group.map((product) => gridItem(product))}
                 </div>
