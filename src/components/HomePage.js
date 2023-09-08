@@ -354,7 +354,7 @@ export default function HomePage() {
 
     const itemTemplate = (image) => {
         return (
-            <div style={{ width: '100%', height: '200px' }}>
+            <div style={{ width: '100%', height: '230px',marginTop:"20px" }}>
                     <img
                         src={image.src}
                         alt={image.alt}
@@ -376,7 +376,7 @@ export default function HomePage() {
                     <div className="flex mb-1 mt-1">
                         <Skeleton width="100%" height="80px" />
                     </div>
-                    <div style={{ width: '100%', height: '200px', marginBottom: '1rem' }}>
+                    <div style={{ width: '100%', height: '200px'}}>
                         <Carousel
                            prevIcon
                            nextIcon
@@ -393,15 +393,15 @@ export default function HomePage() {
                                 top: 82,
                                 left: 0,
                                 width: '100%',
-                                height: '95%',
+                                height: '100%',
                                 backgroundColor: 'black',
                                 opacity: 0.6,
                             }}
                         >
                         </div>
-                        <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
-                            <Button label="Best Offers" severity="help" raised className="m-1 p-1" />
-                            <Button label="Today's Deals " severity="warning" raised className="m-1 p-1" />
+                        <div style={{ position: 'absolute',display:'flex', top: '90%', left: '50%', transform: 'translate(-50%, -50%)' }}>
+                            <Button label="Best Offers" severity="help" raised className="m-1 p-1" style={{fontSize:"11px"}}/>
+                            <Button label="Today's Deals " severity="warning" raised className="m-1 p-1" style={{fontSize:"11px"}} />
                         </div>
 
                     </div>
@@ -410,7 +410,7 @@ export default function HomePage() {
 
             </>
             <>
-                <div style={{marginTop:"80px"}}>
+                <div style={{marginTop:"90px"}}>
                     <h2 className="promotion-title">PROMOTION</h2>
                     <div className=" mt-5">
                         <Carousel
