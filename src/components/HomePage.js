@@ -14,6 +14,13 @@ import SkipPreviousRoundedIcon from '@mui/icons-material/SkipPreviousRounded';
 import SkipNextRoundedIcon from '@mui/icons-material/SkipNextRounded';
 import HomPageSkeleton from "../skeleton/HomePageSkeleton"
 import {Skeleton} from "primereact/skeleton";
+import Image from "../images/place.jpg";
+import Image1 from "../images/place.jpg";
+import Image2 from "../images/place.jpg";
+
+
+
+
 export default function HomePage() {
     const [products, setProducts] = useState([]);
     const [productsno, setProductsno] = useState([]);
@@ -21,6 +28,11 @@ export default function HomePage() {
     const toast = useRef(null);
     const [productInCart, setProductInCart] = useState({});
     const [loading, setLoading] = useState(true);
+    const images = [
+        { src: Image, alt: 'Image 1' },
+        { src: Image1, alt: 'Image 2' },
+        { src: Image2, alt: 'Image 3' },
+    ];
 
 
     useEffect(() => {
@@ -339,28 +351,68 @@ export default function HomePage() {
         return(<HomPageSkeleton/>)
     }
 
+
+    const itemTemplate = (image) => {
+        return (
+            <div style={{ width: '100%', height: '200px' }}>
+                    <img
+                        src={image.src}
+                        alt={image.alt}
+                        className="carousel-image"
+                    />
+                    <div className="image-overlay"></div>
+                </div>
+        );
+    };
+
+
+
+
     return (
         <div>
             <Toast ref={toast}/>
-
             <>
-                <div >
-                    <div className=" p-1 surface-card ">
-                        <div className="flex mb-3">
-                        </div>
-                        <Skeleton width="100%" height="200px" className="mb-1" />
-                        <div className="flex justify-content-center">
-                            <Button label="Make A Reservation" severity="help" raised className="mx-1" />
-                            <Button label="Discover Our Restaurants" severity="warning" raised className="mx-1"/>
-                            <Button label="More About Us" severity="success" raised className="mx-1"/>
-                        </div>
+                <div className="surface-card" style={{ position: 'relative' }}>
+                    <div className="flex mb-1 mt-1">
+                        <Skeleton width="100%" height="80px" />
                     </div>
+                    <div style={{ width: '100%', height: '200px', marginBottom: '1rem' }}>
+                        <Carousel
+                           prevIcon
+                           nextIcon
+                            value={images}
+                            numVisible={1}
+                            numScroll={1}
+                            itemTemplate={itemTemplate}
+                            circular={true}
+                            autoplayInterval={5000}
+                        />
+                        <div
+                            style={{
+                                position: 'absolute',
+                                top: 82,
+                                left: 0,
+                                width: '100%',
+                                height: '95%',
+                                backgroundColor: 'black',
+                                opacity: 0.6,
+                            }}
+                        >
+                        </div>
+                        <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
+                            <Button label="Best Offers" severity="help" raised className="m-1 p-1" />
+                            <Button label="Today's Deals " severity="warning" raised className="m-1 p-1" />
+                        </div>
+
+                    </div>
+
                 </div>
+
             </>
             <>
-                <div className="mt-2">
+                <div style={{marginTop:"80px"}}>
                     <h2 className="promotion-title">PROMOTION</h2>
-                    <div className="container mt-5">
+                    <div className=" mt-5">
                         <Carousel
                             prevIcon={<SkipPreviousRoundedIcon/>}
                             nextIcon={<SkipNextRoundedIcon/>}
@@ -373,21 +425,14 @@ export default function HomePage() {
                             itemTemplate={carouselItemTemplate}
                         />
                     </div>
-                    {/* <div className="container mt-5">
-                        <div className="row row-cols-2 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-                            {groupedProducts.map((group) =>
-                                group.map((product) => itemTemplate(product))
-                            )}
-                        </div>
-                    </div>
-                    */}
+
                 </div>
             </>
 
             <>
                 <div className="mt-2">
                     <h2 className="promotion-title">OUR BEST PLANS</h2>
-                    <div className="container mt-5">
+                    <div className=" mt-5">
                         <Carousel
                             prevIcon={<SkipPreviousRoundedIcon/>}
                             nextIcon={<SkipNextRoundedIcon/>}
