@@ -12,14 +12,15 @@ import {accountService} from "../service/accountService";
 import {Carousel} from 'primereact/carousel';
 import SkipPreviousRoundedIcon from '@mui/icons-material/SkipPreviousRounded';
 import SkipNextRoundedIcon from '@mui/icons-material/SkipNextRounded';
-
+import HomPageSkeleton from "../skeleton/HomePageSkeleton"
+import {Skeleton} from "primereact/skeleton";
 export default function HomePage() {
     const [products, setProducts] = useState([]);
     const [productsno, setProductsno] = useState([]);
     const [userId, setUserId] = useState("");
     const toast = useRef(null);
     const [productInCart, setProductInCart] = useState({});
-    const [loading, setLoading] = useState(true); // Add loading state
+    const [loading, setLoading] = useState(true);
 
 
     useEffect(() => {
@@ -31,6 +32,8 @@ export default function HomePage() {
     useEffect(() => {
         axios.get("/api/controller/produits/nopromotion").then((response) => {
             setProductsno(response.data);
+
+
         });
     }, []);
 
@@ -332,25 +335,27 @@ export default function HomePage() {
         );
     };
 
+    if(loading){
+        return(<HomPageSkeleton/>)
+    }
 
     return (
         <div>
             <Toast ref={toast}/>
 
             <>
-                <main>
-                    <section id="home">
-
-                        <h1>PLANET FOOD</h1>
-                        <strong className="text-white">We have what you need</strong>
-
-                        <div className="mt-5">
-                            <Button label="Make A Reservation" severity="help" raised className="mx-1"/>
+                <div >
+                    <div className=" p-1 surface-card ">
+                        <div className="flex mb-3">
+                        </div>
+                        <Skeleton width="100%" height="200px" className="mb-1" />
+                        <div className="flex justify-content-center">
+                            <Button label="Make A Reservation" severity="help" raised className="mx-1" />
                             <Button label="Discover Our Restaurants" severity="warning" raised className="mx-1"/>
                             <Button label="More About Us" severity="success" raised className="mx-1"/>
                         </div>
-                    </section>
-                </main>
+                    </div>
+                </div>
             </>
             <>
                 <div className="mt-2">

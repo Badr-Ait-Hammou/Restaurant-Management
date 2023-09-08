@@ -3,7 +3,7 @@ import { DataView, DataViewLayoutOptions } from 'primereact/dataview';
 import { Skeleton } from 'primereact/skeleton';
 import {Dropdown} from "primereact/dropdown";
 
-export default function BasicDemo() {
+export default function DataviewSkeleton() {
     const [layout, setLayout] = useState('grid');
 
     const products = [
