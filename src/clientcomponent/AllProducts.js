@@ -10,7 +10,7 @@ import {DataView, DataViewLayoutOptions} from "primereact/dataview";
 import {Button} from "primereact/button";
 import {accountService} from "../service/accountService";
 import {Toast} from "primereact/toast";
-
+import RestaurantMenuRoundedIcon from '@mui/icons-material/RestaurantMenuRounded';
 
 
 export default function AllProduct(){
@@ -147,8 +147,12 @@ export default function AllProduct(){
                         </div>
 
                         <div className="card-body">
-                            <h6 className="card-title">{product.nom}</h6>
-                            <div className=" align-items-center gap-3">
+                            <span className="text-2xl font-semibold  mx-2">{product.nom}</span>
+                            <div className="mt-1">
+                                <strong className="card-text ">Description: </strong><small>{product.description}</small>
+                            </div>
+
+                            <div className=" align-items-center gap-3 mt-2">
                                 {product.promotion === true && (
                                     <Tag value="On Sale" severity="danger" icon="pi pi-tag" />
                                 )}
@@ -156,7 +160,12 @@ export default function AllProduct(){
                                     <span className="font-semibold">{product.stock} Pcs</span>
                                 </span>
                             </div>
-                            <span className="text-2xl font-semibold  mx-2">{product.prix} Dh</span>
+                            <div className="mt-2">
+                                <Tag style={{background: 'linear-gradient(-225deg,#AC32E4 0%,#7918F2 48%,#4801FF 100%)'}}
+                                     icon={<RestaurantMenuRoundedIcon style={{ fontSize: '16px' }}/>}> {product.restaurant.nom} --{product.restaurant.zone.ville.nom}</Tag>
+                            </div>
+                            <div className="d-flex  justify-between align-items-center">
+                            <Tag  style={{backgroundColor:"rgba(141,136,136,0.13)",color:"black",fontSize:"large"}}>{product.prix} Dh</Tag>
 
                             {productInCart[product.id] ? (
                                 <Link to="/admin/cart">
@@ -175,6 +184,7 @@ export default function AllProduct(){
                                     disabled={product.stock <= 0 || productInCart[product.id]}
                                 />
                             )}
+                            </div>
 
                         </div>
                     </div>
