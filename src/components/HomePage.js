@@ -20,8 +20,6 @@ import PhoneRoundedIcon from '@mui/icons-material/PhoneRounded';
 import logo from "../images/logo.svg";
 import { Card, CardContent, Avatar, Grid, Box, IconButton, createTheme } from '@mui/material';
 import Typography from "@mui/material/Typography";
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 
 
@@ -370,7 +368,7 @@ export default function HomePage() {
                         <Grid container alignItems="center">
                             <Grid item xs={1} container justifyContent="flex-start">
                                 <IconButton onClick={handlePrevPage}>
-                                    <ArrowBackIcon />
+                                    <SkipPreviousRoundedIcon />
                                 </IconButton>
                             </Grid>
                             <Grid item xs={10}>
@@ -387,7 +385,7 @@ export default function HomePage() {
                             </Grid>
                             <Grid item xs={1} container justifyContent="flex-end">
                                 <IconButton onClick={handleNextPage}>
-                                    <ArrowForwardIcon />
+                                    <SkipNextRoundedIcon />
                                 </IconButton>
                             </Grid>
                         </Grid>
