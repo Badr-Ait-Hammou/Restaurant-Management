@@ -125,100 +125,7 @@ export default function HomePage() {
     const showSuccess = () => {
         toast.current.show({severity: 'success', summary: 'Success', detail: 'item added to cart', life: 1000});
     }
-/*
-    const itemTemplate = (product) => {
-        if (!product) {
-            return;
-        }
-        return (
-            <div key={product.id} className={`col mb-4 ${product.stock <= 0 ? 'out-of-stock' : ''}`}>
-                <div className="card h-100">
-                    <div className="flex flex-column xl:flex-row xl:align-items-start p-2 gap-4">
-                        <Link to={`products/${product.id}`}>
-                            <div style={{position: 'relative'}}>
-                                <img className="w-90 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round"
-                                     src={product.photo}
-                                     alt={product.nom}
-                                     style={{
-                                         width: '180px',
-                                         height: '140px',
-                                         borderRadius: '8px'
-                                     }}/>
-                                {product.stock <= 0 ? (
-                                    <Tag
-                                        severity="warning"
-                                        value="Out of Stock"
-                                        style={{
-                                            fontSize: "10px",
-                                            position: 'absolute',
-                                            top: '3px',
-                                            right: '11px',
-                                        }}
-                                    />
-                                ) : (
-                                    <Tag
-                                        severity="success"
-                                        value="In Stock"
-                                        style={{
-                                            fontSize: "10px",
-                                            position: 'absolute',
-                                            top: '3px',
-                                            right: '11px',
-                                        }}
-                                    />
-                                )}
-                            </div>
-                        </Link>
-                        <div
-                            className="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4">
-                            <div className="flex flex-column align-items-center sm:align-items-start gap-3">
-                                <div className="text-2xl font-bold text-900">{product.nom}</div>
-                                <Rating value={product.id} readOnly cancel={false}></Rating>
-                                <div className="flex align-items-center gap-3">
-                                    {product.promotion === true && (
-                                        <Tag value="On Sale" severity="danger" icon="pi pi-tag"/>
-                                    )}
-                                    <span className="flex align-items-center gap-2">
-                                    <span className="font-semibold">{product.stock} Pcs</span>
-                                </span>
-                                </div>
-                            </div>
-                            <div className="d-flex justify-content-lg-between gap-3 align-items-center mt-3">
-                                <span className="text-2xl font-semibold">{product.prix} Dh</span>
 
-                                {productInCart[product.id] ? (
-                                    <Link to="/admin/cart">
-                                        <Button
-                                            style={{background: 'linear-gradient(-225deg,#AC32E4 0%,#7918F2 48%,#4801FF 100%)'}}
-                                            icon="pi pi-external-link"
-                                            className="p-button-rounded mt-2"
-                                            disabled={product.stock <= 0}
-                                        />
-                                    </Link>
-                                ) : (
-                                    <Button
-                                        icon="pi pi-shopping-cart"
-                                        className="p-button-rounded mt-2"
-                                        onClick={() => handleAddToCart(product)}
-                                        disabled={product.stock <= 0 || productInCart[product.id]}
-                                    />
-                                )}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        );
-    };
-
- const groupedProducts = [];
-     for (let i = 0; i < products.length; i += 4) {
-         groupedProducts.push(products.slice(i, i + 4));
-     }
-    const groupedProductsNopro = [];
-    for (let i = 0; i < productsno.length; i += 4) {
-        groupedProductsNopro.push(productsno.slice(i, i + 4));
-    }*/
 
     const chunkArray = (myArray, chunkSize) => {
         const arrayCopy = [...myArray];
@@ -377,26 +284,22 @@ export default function HomePage() {
 
 
     return (
-        <div>
+        <>
             <Toast ref={toast}/>
-            <>
+
                 <div  style={{ position: 'relative'}}>
                     <Grid container spacing={2} >
-                        <Grid item xs={4}>
-                            <Box display="flex" justifyContent="center" alignItems="center">
-                                <Avatar src={logo} />
+                        <Grid item xs={6} className="mt-2 mb-2  ">
+                            <Box display="flex" justifyContent="start" alignItems="center">
+                                <Avatar src={logo} sx={{width: 84 ,height:34 ,marginX:1}}/>
                             </Box>
                         </Grid>
 
-                        <Grid item xs={4} className="mt-2">
-                            <Box display="flex" justifyContent="center" alignItems="center">
-                                <span>Your Text Here</span>
-                            </Box>
-                        </Grid>
 
-                        <Grid item xs={4} className="mt-2">
-                            <Box display="flex" justifyContent="center" alignItems="center">
-                                <PhoneRoundedIcon/><small>+212066699</small>
+
+                        <Grid item xs={6} className="mt-2 mb-2">
+                            <Box display="flex" justifyContent="end" alignItems="center">
+                               <Tag className="mx-1" icon={<PhoneRoundedIcon/>} severity="success" value="+212 0666995588"/>
                             </Box>
                         </Grid>
                     </Grid>
@@ -415,10 +318,10 @@ export default function HomePage() {
                         <div
                             style={{
                                 position: 'absolute',
-                                top: 63,
+                                top: 62,
                                 left: 0,
                                 width: '100%',
-                                height: '330px',
+                                height: '350px',
                                 backgroundColor: 'black',
                                 opacity: 0.6,
                             }}
@@ -437,15 +340,16 @@ export default function HomePage() {
 
 
 
+
                     </div>
 
                 </div>
 
-            </>
-            <>
-                <div style={{marginTop:"90px"}}>
+
+
+            <div style={{marginTop:"150px"}}>
                     <h2 className="promotion-title">PROMOTION</h2>
-                    <div className=" mt-5">
+                    <div style={{marginTop:"50px"}}>
                         <Carousel
                             prevIcon={<SkipPreviousRoundedIcon/>}
                             nextIcon={<SkipNextRoundedIcon/>}
@@ -460,9 +364,9 @@ export default function HomePage() {
                     </div>
 
                 </div>
-            </>
 
-            <>
+
+
                 <div className="mt-2">
                     <h2 className="promotion-title">OUR BEST PLANS</h2>
                     <div className=" mt-5">
@@ -480,6 +384,6 @@ export default function HomePage() {
                     </div>
                 </div>
             </>
-        </div>
+
     );
 }
