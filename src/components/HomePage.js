@@ -13,9 +13,9 @@ import {Carousel} from 'primereact/carousel';
 import SkipPreviousRoundedIcon from '@mui/icons-material/SkipPreviousRounded';
 import SkipNextRoundedIcon from '@mui/icons-material/SkipNextRounded';
 import HomPageSkeleton from "../skeleton/HomePageSkeleton"
-import Image from "../images/place.jpg";
-import Image1 from "../images/place.jpg";
-import Image2 from "../images/place.jpg";
+import Image from "../images/restaurant.jpg";
+import Image1 from "../images/deliver.jpg";
+import Image2 from "../images/food.jpg";
 import PhoneRoundedIcon from '@mui/icons-material/PhoneRounded';
 import logo from "../images/logo.svg"
 import Box from "@mui/material/Box";
@@ -359,13 +359,16 @@ export default function HomePage() {
 
     const itemTemplate = (image) => {
         return (
-            <div style={{ width: '100%', height: '230px',marginTop:"20px" }}>
+            <div style={{ width: '100%', height: '280px',marginTop:"20px" }}>
                     <img
                         src={image.src}
                         alt={image.alt}
-                        className="carousel-image"
+                        style={{position: 'absolute',
+
+                            width: '100%',
+                            height: '100%',
+                            objectFit: 'fill'}}
                     />
-                    <div className="image-overlay"></div>
                 </div>
         );
     };
@@ -377,7 +380,7 @@ export default function HomePage() {
         <div>
             <Toast ref={toast}/>
             <>
-                <div className="surface-card" style={{ position: 'relative' }}>
+                <div  style={{ position: 'relative'}}>
                     <Grid container spacing={2} >
                         <Grid item xs={4}>
                             <Box display="flex" justifyContent="center" alignItems="center">
@@ -412,10 +415,10 @@ export default function HomePage() {
                         <div
                             style={{
                                 position: 'absolute',
-                                top: 55,
+                                top: 63,
                                 left: 0,
                                 width: '100%',
-                                height: '100%',
+                                height: '330px',
                                 backgroundColor: 'black',
                                 opacity: 0.6,
                             }}
