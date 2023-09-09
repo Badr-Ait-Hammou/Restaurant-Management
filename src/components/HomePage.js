@@ -1,33 +1,33 @@
 import React from 'react';
-import "../styles/homepage.css"
+import "../styles/homepage.css";
 import {Toast} from "primereact/toast";
 import {Link} from "react-router-dom";
 import {Button} from "primereact/button";
 import {useEffect, useState} from "react";
 import axios from "../service/callerService";
 import {Tag} from "primereact/tag";
-import {Rating} from "@mui/material";
+import {Rating, useMediaQuery} from "@mui/material";
 import {useRef} from "react";
 import {accountService} from "../service/accountService";
 import {Carousel} from 'primereact/carousel';
 import SkipPreviousRoundedIcon from '@mui/icons-material/SkipPreviousRounded';
 import SkipNextRoundedIcon from '@mui/icons-material/SkipNextRounded';
-import HomPageSkeleton from "../skeleton/HomePageSkeleton"
+import HomPageSkeleton from "../skeleton/HomePageSkeleton";
 import Image from "../images/restaurant.jpg";
 import Image1 from "../images/deliver.jpg";
 import Image2 from "../images/food.jpg";
 import PhoneRoundedIcon from '@mui/icons-material/PhoneRounded';
-import logo from "../images/logo.svg"
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
-import Avatar from "@mui/material/Avatar";
+import logo from "../images/logo.svg";
+import { Card, CardContent, Avatar, Grid, Box, IconButton, createTheme } from '@mui/material';
 import Typography from "@mui/material/Typography";
-
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 
 
 export default function HomePage() {
     const [products, setProducts] = useState([]);
+    const [restaurants, setRestaurants] = useState([]);
     const [productsno, setProductsno] = useState([]);
     const [userId, setUserId] = useState("");
     const toast = useRef(null);
@@ -38,7 +38,16 @@ export default function HomePage() {
         { src: Image1, alt: 'Image 2' },
         { src: Image2, alt: 'Image 3' },
     ];
-
+    const theme = createTheme();
+    const avatarsPerPage = 6;
+    const [currentPage, setCurrentPage] = React.useState(0);
+    const totalPages = Math.ceil(restaurants.length / avatarsPerPage);
+    const handleNextPage = () => {setCurrentPage((prevPage) => (prevPage + 1) % totalPages);};
+    const handlePrevPage = () => {setCurrentPage((prevPage) => (prevPage - 1 + totalPages) % totalPages);};
+    const displayedProducts = restaurants.slice(currentPage * avatarsPerPage, (currentPage + 1) * avatarsPerPage);
+    const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
+    const avatarsToDisplay = isSmallScreen ? displayedProducts.slice(0, 5) : displayedProducts;
+    const avatarSize = isSmallScreen ? 28 : 84;
 
     useEffect(() => {
         axios.get("/api/controller/produits/promotion").then((response) => {
@@ -47,10 +56,14 @@ export default function HomePage() {
     }, []);
 
     useEffect(() => {
+        axios.get("/api/controller/restaurants/").then((response) => {
+            setRestaurants(response.data);
+        });
+    }, []);
+
+    useEffect(() => {
         axios.get("/api/controller/produits/nopromotion").then((response) => {
             setProductsno(response.data);
-
-
         });
     }, []);
 
@@ -156,6 +169,10 @@ export default function HomePage() {
 
     const groupedProducts = chunkArray(products, 1);
     const groupedProductsNo = chunkArray(productsno, 1);
+
+
+
+
 
     const carouselItemTemplate = (productsGroup) => {
         if (!productsGroup || !Array.isArray(productsGroup)) {
@@ -348,7 +365,35 @@ export default function HomePage() {
 
 
             <div style={{marginTop:"150px"}}>
-                    <h2 className="promotion-title">PROMOTION</h2>
+                <Card  variant="outlined" sx={{ width: '100%', marginBottom: 2 ,backgroundColor:"rgba(239,230,236,0.29)" }}>
+                    <CardContent>
+                        <Grid container alignItems="center">
+                            <Grid item xs={1} container justifyContent="flex-start">
+                                <IconButton onClick={handlePrevPage}>
+                                    <ArrowBackIcon />
+                                </IconButton>
+                            </Grid>
+                            <Grid item xs={10}>
+                                <Box display="flex" justifyContent="space-between" alignItems="center" overflowX="auto">
+                                    {avatarsToDisplay.map((restaurant) => (
+                                        <Avatar
+                                            key={restaurant.id}
+                                            src={restaurant.photo}
+                                            alt={restaurant.nom}
+                                            sx={{ width: avatarSize, height: avatarSize, marginX: 2 }}
+                                        />
+                                    ))}
+                                </Box>
+                            </Grid>
+                            <Grid item xs={1} container justifyContent="flex-end">
+                                <IconButton onClick={handleNextPage}>
+                                    <ArrowForwardIcon />
+                                </IconButton>
+                            </Grid>
+                        </Grid>
+                    </CardContent>
+                </Card>
+                <h2 className="promotion-title">PROMOTION</h2>
                     <div style={{marginTop:"50px"}}>
                         <Carousel
                             prevIcon={<SkipPreviousRoundedIcon/>}
