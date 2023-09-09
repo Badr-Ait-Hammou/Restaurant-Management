@@ -13,10 +13,15 @@ import {Carousel} from 'primereact/carousel';
 import SkipPreviousRoundedIcon from '@mui/icons-material/SkipPreviousRounded';
 import SkipNextRoundedIcon from '@mui/icons-material/SkipNextRounded';
 import HomPageSkeleton from "../skeleton/HomePageSkeleton"
-import {Skeleton} from "primereact/skeleton";
 import Image from "../images/place.jpg";
 import Image1 from "../images/place.jpg";
 import Image2 from "../images/place.jpg";
+import PhoneRoundedIcon from '@mui/icons-material/PhoneRounded';
+import logo from "../images/logo.svg"
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import Avatar from "@mui/material/Avatar";
+import Typography from "@mui/material/Typography";
 
 
 
@@ -373,13 +378,30 @@ export default function HomePage() {
             <Toast ref={toast}/>
             <>
                 <div className="surface-card" style={{ position: 'relative' }}>
-                    <div className="flex mb-1 mt-1">
-                        <Skeleton width="100%" height="80px" />
-                    </div>
-                    <div style={{ width: '100%', height: '200px'}}>
+                    <Grid container spacing={2} >
+                        <Grid item xs={4}>
+                            <Box display="flex" justifyContent="center" alignItems="center">
+                                <Avatar src={logo} />
+                            </Box>
+                        </Grid>
+
+                        <Grid item xs={4} className="mt-2">
+                            <Box display="flex" justifyContent="center" alignItems="center">
+                                <span>Your Text Here</span>
+                            </Box>
+                        </Grid>
+
+                        <Grid item xs={4} className="mt-2">
+                            <Box display="flex" justifyContent="center" alignItems="center">
+                                <PhoneRoundedIcon/><small>+212066699</small>
+                            </Box>
+                        </Grid>
+                    </Grid>
+
+                    <div style={{ width: '100%', height: '250px'}}>
                         <Carousel
-                           prevIcon
-                           nextIcon
+                            prevIcon
+                            nextIcon
                             value={images}
                             numVisible={1}
                             numScroll={1}
@@ -390,7 +412,7 @@ export default function HomePage() {
                         <div
                             style={{
                                 position: 'absolute',
-                                top: 82,
+                                top: 62,
                                 left: 0,
                                 width: '100%',
                                 height: '100%',
@@ -399,10 +421,18 @@ export default function HomePage() {
                             }}
                         >
                         </div>
-                        <div style={{ position: 'absolute',display:'flex', top: '90%', left: '50%', transform: 'translate(-50%, -50%)' }}>
+                        <div style={{ position: 'absolute',display:'flex', top: '95%', left: '50%', transform: 'translate(-50%, -50%)' }}>
+
                             <Button label="Best Offers" severity="help" raised className="m-1 p-1" style={{fontSize:"11px"}}/>
                             <Button label="Today's Deals " severity="warning" raised className="m-1 p-1" style={{fontSize:"11px"}} />
                         </div>
+                        <div style={{ position: 'absolute', top: '55%', left: '50%', transform: 'translateX(-50%)' }}>
+                            <Typography variant="h4" align="center" gutterBottom style={{color:"white"}}>
+                               Welcome
+                            </Typography>
+                        </div>
+
+
 
                     </div>
 
