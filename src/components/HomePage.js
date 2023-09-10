@@ -1,5 +1,4 @@
 import React from 'react';
-import "../styles/homepage.css";
 import {Toast} from "primereact/toast";
 import {Link} from "react-router-dom";
 import {Button} from "primereact/button";
@@ -20,12 +19,12 @@ import PhoneRoundedIcon from '@mui/icons-material/PhoneRounded';
 import logo from "../images/logo.svg";
 import { Card, CardContent, Avatar, Grid, Box } from '@mui/material';
 import Typography from "@mui/material/Typography";
+import RestaurantSlick from "../components/RestaurantSlick"
 
 
 
 export default function HomePage() {
     const [products, setProducts] = useState([]);
-    const [restaurants, setRestaurants] = useState([]);
     const [productsno, setProductsno] = useState([]);
     const [userId, setUserId] = useState("");
     const toast = useRef(null);
@@ -40,17 +39,14 @@ export default function HomePage() {
 
 
 
+
     useEffect(() => {
         axios.get("/api/controller/produits/promotion").then((response) => {
             setProducts(response.data);
         });
     }, []);
 
-    useEffect(() => {
-        axios.get("/api/controller/restaurants/").then((response) => {
-            setRestaurants(response.data);
-        });
-    }, []);
+
 
     useEffect(() => {
         axios.get("/api/controller/produits/nopromotion").then((response) => {
@@ -358,27 +354,8 @@ export default function HomePage() {
             <div style={{marginTop:"150px"}}>
                 <Card variant="outlined" sx={{ width: '100%', marginBottom: 2, backgroundColor: 'rgba(239,230,236,0.29)' }}>
                     <CardContent>
-                        <div className="container h-100">
-                            <div className="row align-items-center h-100">
-                                <div className="container rounded">
-                                    <div className="slider">
-                                        {products.map((restaurant, index) => (
+                        <RestaurantSlick/>
 
-                                            <div className="logos" key={index}>
-                                                <Avatar
-                                                        src={restaurant.photo}
-                                                        alt={`Avatar ${index + 1}`}
-                                                        sx={{ width: 50, height: 54 }}
-                                                />
-                                            </div>
-                                        ))}
-
-                                    </div>
-
-
-                                </div>
-                            </div>
-                        </div>
                     </CardContent>
                 </Card>
 
@@ -418,6 +395,7 @@ export default function HomePage() {
                         />
                     </div>
                 </div>
+
             </>
 
     );
