@@ -325,16 +325,12 @@ export default function HomePage() {
 
 
             <div style={{marginTop: "190px"}}>
-                <Card variant="outlined" style={{backgroundColor: 'rgb(23,113,122)'}}>
-                    <CardContent>
-                        <strong style={{color: "white"}}>Our Restaurants</strong>
-                    </CardContent>
-                </Card>
-                <div className="flex ">
-                    <strong className="font-burtons ">Our Restaurants</strong>
+
+                <div className=" mx-3 mb-2 text-lg-start text-2xl ">
+                    <strong className="font-serif ">Our Restaurants</strong>
                 </div>
                 <Card variant="outlined"
-                      sx={{width: '100%', marginBottom: 2, backgroundColor: 'rgba(239,230,236,0.29)'}}>
+                      sx={{ marginX: 2, backgroundColor: 'rgba(239,230,236,0.29)'}}>
                     <CardContent>
                         <RestaurantSlick/>
                     </CardContent>
@@ -342,11 +338,9 @@ export default function HomePage() {
 
 
                 <div style={{marginTop: "50px"}}>
-                    <Card variant="outlined" style={{backgroundColor: "red"}}>
-                        <CardContent>
-                            <strong style={{color: "white"}}>On Sale</strong>
-                        </CardContent>
-                    </Card>
+                    <div className=" mx-3 mb-2 text-lg-start text-2xl ">
+                        <strong className="font-serif ">On Sale</strong>
+                    </div>
                     <Carousel
                         prevIcon={<SkipPreviousRoundedIcon/>}
                         nextIcon={<SkipNextRoundedIcon/>}
@@ -364,7 +358,9 @@ export default function HomePage() {
 
 
             <div className="mt-2">
-                <h2 className="promotion-title">OUR BEST PLANS</h2>
+                <div className=" mx-3 mb-2 text-lg-start text-2xl ">
+                    <strong className="font-serif ">Best Plans</strong>
+                </div>
                 <div className=" mt-5">
                     <Carousel
                         prevIcon={<SkipPreviousRoundedIcon/>}
