@@ -19,7 +19,8 @@ import PhoneRoundedIcon from '@mui/icons-material/PhoneRounded';
 import logo from "../images/logo.svg";
 import { Card, CardContent, Avatar, Grid, Box } from '@mui/material';
 import Typography from "@mui/material/Typography";
-import RestaurantSlick from "../components/RestaurantSlick"
+import RestaurantSlick from "../slick-Slider/RestaurantSlick"
+import HomeImgSlick from "../slick-Slider/HomeImgSlick";
 
 
 
@@ -309,23 +310,14 @@ export default function HomePage() {
                     </Grid>
 
                     <div style={{ width: '100%', height: '250px'}}>
-                        <Carousel
-                            prevIcon
-                            nextIcon
-                            value={images}
-                            numVisible={1}
-                            numScroll={1}
-                            itemTemplate={itemTemplate}
-                            circular={true}
-                            autoplayInterval={5000}
-                        />
+                       <HomeImgSlick/>
                         <div
                             style={{
                                 position: 'absolute',
-                                top: 62,
+                                top: 60,
                                 left: 0,
                                 width: '100%',
-                                height: '350px',
+                                height: '410px',
                                 backgroundColor: 'black',
                                 opacity: 0.6,
                             }}
@@ -351,11 +343,10 @@ export default function HomePage() {
 
 
 
-            <div style={{marginTop:"150px"}}>
+            <div style={{marginTop:"190px"}}>
                 <Card variant="outlined" sx={{ width: '100%', marginBottom: 2, backgroundColor: 'rgba(239,230,236,0.29)' }}>
                     <CardContent>
                         <RestaurantSlick/>
-
                     </CardContent>
                 </Card>
 

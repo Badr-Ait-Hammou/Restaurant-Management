@@ -1,0 +1,27 @@
+.carousel-container {
+    max-width: 100%;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.slide {
+    position: relative;
+    max-width: 100%;
+    width: 100%;
+    height: auto;
+}
+
+.slide-image {
+    width: 100%;
+    height: 400px;
+    object-fit: fill;
+}
+
+/* Media query for responsiveness */
+@media (max-width: 768px) {
+    .carousel-container {
+        max-width: 100%;
+        width: 100%;
+    }
+}
