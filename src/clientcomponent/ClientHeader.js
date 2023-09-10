@@ -45,7 +45,7 @@ export default function ClientHeader() {
     };
 
     return (
-        <AppBar position="static" style={{backgroundColor:"lightseagreen"}}>
+        <AppBar position="static" style={{backgroundColor: 'rgb(23,113,122)'}}>
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
                     <Restaurant sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />

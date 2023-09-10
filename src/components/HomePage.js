@@ -12,16 +12,13 @@ import {Carousel} from 'primereact/carousel';
 import SkipPreviousRoundedIcon from '@mui/icons-material/SkipPreviousRounded';
 import SkipNextRoundedIcon from '@mui/icons-material/SkipNextRounded';
 import HomPageSkeleton from "../skeleton/HomePageSkeleton";
-import Image from "../images/restaurant.jpg";
-import Image1 from "../images/deliver.jpg";
-import Image2 from "../images/food.jpg";
 import PhoneRoundedIcon from '@mui/icons-material/PhoneRounded';
 import logo from "../images/logo.svg";
-import { Card, CardContent, Avatar, Grid, Box } from '@mui/material';
+import {Card, CardContent, Avatar, Grid, Box} from '@mui/material';
 import Typography from "@mui/material/Typography";
 import RestaurantSlick from "../slick-Slider/RestaurantSlick"
 import HomeImgSlick from "../slick-Slider/HomeImgSlick";
-
+import LocalShippingRoundedIcon from '@mui/icons-material/LocalShippingRounded';
 
 
 export default function HomePage() {
@@ -31,14 +28,6 @@ export default function HomePage() {
     const toast = useRef(null);
     const [productInCart, setProductInCart] = useState({});
     const [loading, setLoading] = useState(true);
-    const images = [
-        { src: Image, alt: 'Image 1' },
-        { src: Image1, alt: 'Image 2' },
-        { src: Image2, alt: 'Image 3' },
-    ];
-
-
-
 
 
     useEffect(() => {
@@ -46,7 +35,6 @@ export default function HomePage() {
             setProducts(response.data);
         });
     }, []);
-
 
 
     useEffect(() => {
@@ -159,9 +147,6 @@ export default function HomePage() {
     const groupedProductsNo = chunkArray(productsno, 1);
 
 
-
-
-
     const carouselItemTemplate = (productsGroup) => {
         if (!productsGroup || !Array.isArray(productsGroup)) {
             return;
@@ -264,130 +249,138 @@ export default function HomePage() {
         );
     };
 
-    if(loading){
-        return(<HomPageSkeleton/>)
+    if (loading) {
+        return (<HomPageSkeleton/>)
     }
-
-
-    const itemTemplate = (image) => {
-        return (
-            <div style={{ width: '100%', height: '280px',marginTop:"20px" }}>
-                    <img
-                        src={image.src}
-                        alt={image.alt}
-                        style={{position: 'absolute',
-
-                            width: '100%',
-                            height: '100%',
-                            objectFit: 'fill'}}
-                    />
-                </div>
-        );
-    };
-
-
 
 
     return (
         <>
             <Toast ref={toast}/>
+            <Grid container spacing={1} style={{backgroundColor: 'rgb(13,77,84)'}} justifyContent="center">
+                <Box style={{display: 'flex', alignItems: 'center',fontSize:"9px"}}>
+                    <span style={{color: 'white'}}>
+                        <LocalShippingRoundedIcon/>
+                    </span>
+                    <span className="mx-2 text-amber-300">Free Shipping on Orders Over 100 Dh</span>
+                    <span className=" text-white"> * Estimated Delivery: 10-30 Minutes </span>
+                </Box>
 
-                <div  style={{ position: 'relative'}}>
-                    <Grid container spacing={2} >
-                        <Grid item xs={6} className="mt-2 mb-2  ">
-                            <Box display="flex" justifyContent="start" alignItems="center">
-                                <Avatar src={logo} sx={{width: 84 ,height:34 ,marginX:1}}/>
-                            </Box>
-                        </Grid>
+            </Grid>
+            <div style={{position: 'relative'}}>
 
-
-
-                        <Grid item xs={6} className="mt-2 mb-2">
-                            <Box display="flex" justifyContent="end" alignItems="center">
-                               <Tag className="mx-1" icon={<PhoneRoundedIcon/>} severity="success" value="+212 0666995588"/>
-                            </Box>
-                        </Grid>
+                <Grid container spacing={2}>
+                    <Grid item xs={6} className="mt-2 mb-2  ">
+                        <Box display="flex" justifyContent="start" alignItems="center">
+                            <Avatar src={logo} sx={{width: 84, height: 34, marginX: 1}}/>
+                        </Box>
                     </Grid>
 
-                    <div style={{ width: '100%', height: '250px'}}>
-                       <HomeImgSlick/>
-                        <div
-                            style={{
-                                position: 'absolute',
-                                top: 60,
-                                left: 0,
-                                width: '100%',
-                                height: '410px',
-                                backgroundColor: 'black',
-                                opacity: 0.6,
-                            }}
-                        >
-                        </div>
-                        <div style={{ position: 'absolute',display:'flex', top: '95%', left: '50%', transform: 'translate(-50%, -50%)' }}>
 
-                            <Button label="Best Offers" severity="help" raised className="m-1 p-1" style={{fontSize:"11px"}}/>
-                            <Button label="Today's Deals " severity="warning" raised className="m-1 p-1" style={{fontSize:"11px"}} />
-                        </div>
-                        <div style={{ position: 'absolute', top: '55%', left: '50%', transform: 'translateX(-50%)' }}>
-                            <Typography variant="h4" align="center" gutterBottom style={{color:"white"}}>
-                               Welcome
-                            </Typography>
-                        </div>
+                    <Grid item xs={6} className="mt-2 mb-2">
+                        <Box display="flex" justifyContent="end" alignItems="center">
+                            <Tag className="mx-1" icon={<PhoneRoundedIcon/>} severity="success"
+                                 value="+212 0666995588"/>
+                        </Box>
+                    </Grid>
+                </Grid>
 
-
-
-
+                <div style={{width: '100%', height: '250px'}}>
+                    <HomeImgSlick/>
+                    <div
+                        style={{
+                            position: 'absolute',
+                            top: 60,
+                            left: 0,
+                            width: '100%',
+                            height: '410px',
+                            backgroundColor: 'black',
+                            opacity: 0.6,
+                        }}
+                    >
                     </div>
+                    <div style={{
+                        position: 'absolute',
+                        display: 'flex',
+                        top: '95%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)'
+                    }}>
+
+                        <Button label="Best Offers" severity="help" raised className="m-1 p-1"
+                                style={{fontSize: "11px"}}/>
+                        <Button label="Today's Deals " severity="warning" raised className="m-1 p-1"
+                                style={{fontSize: "11px"}}/>
+                    </div>
+                    <div style={{position: 'absolute', top: '55%', left: '50%', transform: 'translateX(-50%)'}}>
+                        <Typography variant="h4" align="center" gutterBottom style={{color: "white"}}>
+                            Welcome
+                        </Typography>
+                    </div>
+
 
                 </div>
 
+            </div>
 
 
-            <div style={{marginTop:"190px"}}>
-                <Card variant="outlined" sx={{ width: '100%', marginBottom: 2, backgroundColor: 'rgba(239,230,236,0.29)' }}>
+            <div style={{marginTop: "190px"}}>
+                <Card variant="outlined" style={{backgroundColor: 'rgb(23,113,122)'}}>
+                    <CardContent>
+                        <strong style={{color: "white"}}>Our Restaurants</strong>
+                    </CardContent>
+                </Card>
+                <div className="flex ">
+                    <strong className="font-burtons ">Our Restaurants</strong>
+                </div>
+                <Card variant="outlined"
+                      sx={{width: '100%', marginBottom: 2, backgroundColor: 'rgba(239,230,236,0.29)'}}>
                     <CardContent>
                         <RestaurantSlick/>
                     </CardContent>
                 </Card>
 
 
-                <h2 className="promotion-title">PROMOTION</h2>
-                    <div style={{marginTop:"50px"}}>
-                        <Carousel
-                            prevIcon={<SkipPreviousRoundedIcon/>}
-                            nextIcon={<SkipNextRoundedIcon/>}
-                            value={groupedProducts}
-                            numVisible={3}
-                            numScroll={1}
-                            circular
-                            responsiveOptions={responsiveOptions}
-                            autoplayInterval={3000}
-                            itemTemplate={carouselItemTemplate}
-                        />
-                    </div>
-
+                <div style={{marginTop: "50px"}}>
+                    <Card variant="outlined" style={{backgroundColor: "red"}}>
+                        <CardContent>
+                            <strong style={{color: "white"}}>On Sale</strong>
+                        </CardContent>
+                    </Card>
+                    <Carousel
+                        prevIcon={<SkipPreviousRoundedIcon/>}
+                        nextIcon={<SkipNextRoundedIcon/>}
+                        value={groupedProducts}
+                        numVisible={3}
+                        numScroll={1}
+                        circular
+                        responsiveOptions={responsiveOptions}
+                        autoplayInterval={3000}
+                        itemTemplate={carouselItemTemplate}
+                    />
                 </div>
 
+            </div>
 
 
-                <div className="mt-2">
-                    <h2 className="promotion-title">OUR BEST PLANS</h2>
-                    <div className=" mt-5">
-                        <Carousel
-                            prevIcon={<SkipPreviousRoundedIcon/>}
-                            nextIcon={<SkipNextRoundedIcon/>}
-                            value={groupedProductsNo}
-                            numVisible={3}
-                            numScroll={1}
-                            circular
-                            responsiveOptions={responsiveOptions}
-                            autoplayInterval={3000}
-                            itemTemplate={carouselItemTemplate}
-                        />
-                    </div>
+            <div className="mt-2">
+                <h2 className="promotion-title">OUR BEST PLANS</h2>
+                <div className=" mt-5">
+                    <Carousel
+                        prevIcon={<SkipPreviousRoundedIcon/>}
+                        nextIcon={<SkipNextRoundedIcon/>}
+                        value={groupedProductsNo}
+                        numVisible={3}
+                        numScroll={1}
+                        circular
+                        responsiveOptions={responsiveOptions}
+                        autoplayInterval={3000}
+                        itemTemplate={carouselItemTemplate}
+                    />
                 </div>
+            </div>
 
-            </>
+        </>
 
     );
 }
