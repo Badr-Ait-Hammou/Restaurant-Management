@@ -18,7 +18,6 @@ import {Card, CardContent, Avatar, Grid, Box} from '@mui/material';
 import Typography from "@mui/material/Typography";
 import RestaurantSlick from "../slick-Slider/RestaurantSlick"
 import HomeImgSlick from "../slick-Slider/HomeImgSlick";
-import LocalShippingRoundedIcon from '@mui/icons-material/LocalShippingRounded';
 
 
 export default function HomePage() {
@@ -257,16 +256,7 @@ export default function HomePage() {
     return (
         <>
             <Toast ref={toast}/>
-            <Grid container spacing={1} style={{backgroundColor: 'rgb(13,77,84)'}} justifyContent="center">
-                <Box style={{display: 'flex', alignItems: 'center',fontSize:"9px"}}>
-                    <span style={{color: 'white'}}>
-                        <LocalShippingRoundedIcon/>
-                    </span>
-                    <span className="mx-2 text-amber-300">Free Shipping on Orders Over 100 Dh</span>
-                    <span className=" text-white"> * Estimated Delivery: 10-30 Minutes </span>
-                </Box>
 
-            </Grid>
             <div style={{position: 'relative'}}>
 
                 <Grid container spacing={2}>
