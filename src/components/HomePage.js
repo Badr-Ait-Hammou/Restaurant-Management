@@ -6,7 +6,7 @@ import {Button} from "primereact/button";
 import {useEffect, useState} from "react";
 import axios from "../service/callerService";
 import {Tag} from "primereact/tag";
-import {Rating, useMediaQuery} from "@mui/material";
+import {Rating} from "@mui/material";
 import {useRef} from "react";
 import {accountService} from "../service/accountService";
 import {Carousel} from 'primereact/carousel';
@@ -18,7 +18,7 @@ import Image1 from "../images/deliver.jpg";
 import Image2 from "../images/food.jpg";
 import PhoneRoundedIcon from '@mui/icons-material/PhoneRounded';
 import logo from "../images/logo.svg";
-import { Card, CardContent, Avatar, Grid, Box, IconButton, createTheme } from '@mui/material';
+import { Card, CardContent, Avatar, Grid, Box } from '@mui/material';
 import Typography from "@mui/material/Typography";
 
 
@@ -36,16 +36,9 @@ export default function HomePage() {
         { src: Image1, alt: 'Image 2' },
         { src: Image2, alt: 'Image 3' },
     ];
-    const theme = createTheme();
-    const avatarsPerPage = 6;
-    const [currentPage, setCurrentPage] = React.useState(0);
-    const totalPages = Math.ceil(restaurants.length / avatarsPerPage);
-    const handleNextPage = () => {setCurrentPage((prevPage) => (prevPage + 1) % totalPages);};
-    const handlePrevPage = () => {setCurrentPage((prevPage) => (prevPage - 1 + totalPages) % totalPages);};
-    const displayedProducts = restaurants.slice(currentPage * avatarsPerPage, (currentPage + 1) * avatarsPerPage);
-    const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
-    const avatarsToDisplay = isSmallScreen ? displayedProducts.slice(0, 5) : displayedProducts;
-    const avatarSize = isSmallScreen ? 28 : 84;
+
+
+
 
     useEffect(() => {
         axios.get("/api/controller/produits/promotion").then((response) => {
@@ -363,34 +356,33 @@ export default function HomePage() {
 
 
             <div style={{marginTop:"150px"}}>
-                <Card  variant="outlined" sx={{ width: '100%', marginBottom: 2 ,backgroundColor:"rgba(239,230,236,0.29)" }}>
+                <Card variant="outlined" sx={{ width: '100%', marginBottom: 2, backgroundColor: 'rgba(239,230,236,0.29)' }}>
                     <CardContent>
-                        <Grid container alignItems="center">
-                            <Grid item xs={1} container justifyContent="flex-start">
-                                <IconButton onClick={handlePrevPage}>
-                                    <SkipPreviousRoundedIcon />
-                                </IconButton>
-                            </Grid>
-                            <Grid item xs={10}>
-                                <Box display="flex" justifyContent="space-between" alignItems="center" overflowX="auto">
-                                    {avatarsToDisplay.map((restaurant) => (
-                                        <Avatar
-                                            key={restaurant.id}
-                                            src={restaurant.photo}
-                                            alt={restaurant.nom}
-                                            sx={{ width: avatarSize, height: avatarSize, marginX: 2 }}
-                                        />
-                                    ))}
-                                </Box>
-                            </Grid>
-                            <Grid item xs={1} container justifyContent="flex-end">
-                                <IconButton onClick={handleNextPage}>
-                                    <SkipNextRoundedIcon />
-                                </IconButton>
-                            </Grid>
-                        </Grid>
+                        <div className="container h-100">
+                            <div className="row align-items-center h-100">
+                                <div className="container rounded">
+                                    <div className="slider">
+                                        {products.map((restaurant, index) => (
+
+                                            <div className="logos" key={index}>
+                                                <Avatar
+                                                        src={restaurant.photo}
+                                                        alt={`Avatar ${index + 1}`}
+                                                        sx={{ width: 50, height: 54 }}
+                                                />
+                                            </div>
+                                        ))}
+
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
                     </CardContent>
                 </Card>
+
+
                 <h2 className="promotion-title">PROMOTION</h2>
                     <div style={{marginTop:"50px"}}>
                         <Carousel
