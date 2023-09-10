@@ -55,8 +55,8 @@ export default function ClientHeader() {
                         <Typography
                             variant="h6"
                             noWrap
-                            component="a"
-                            href="/"
+                            component={Link}
+                            to="/admin/home"
                             sx={{
                                 mr: 2,
                                 display: {xs: "none", md: "flex"},
@@ -101,24 +101,27 @@ export default function ClientHeader() {
                                 }}
                             >
                                 {pages.map((page) => (
-                                    <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                        <Typography textAlign="center">{page}</Typography>
+                                    <MenuItem key={page} className="font-serif text-black">
                                         <Link
-                                            style={{textDecoration: "none", color: "white"}}
-                                            to={`admin/${page}`}
+                                            style={{ textDecoration: "none", color: "inherit" }}
+                                            to={`${page}`}
+                                            onClick={handleCloseNavMenu} // Close the mobile menu on click
+
+
                                         >
                                             {page}
                                         </Link>
                                     </MenuItem>
                                 ))}
+
                             </Menu>
                         </Box>
                         <Restaurant sx={{display: {xs: "flex", md: "none"}, mr: 1}}/>
                         <Typography
                             variant="h5"
                             noWrap
-                            component="a"
-                            href=""
+                            component={Link}
+                            to="/admin/home"
                             sx={{
                                 mr: 2,
                                 display: {xs: "flex", md: "none"},
@@ -134,18 +137,19 @@ export default function ClientHeader() {
                         </Typography>
                         <Box sx={{flexGrow: 1, display: {xs: "none", md: "flex"}}}>
                             {pages.map((page) => (
-                                <Button
-                                    key={page}
-                                    onClick={handleCloseNavMenu}
-                                    sx={{my: 2, color: "white", display: "block"}}
-                                >
+
                                     <Link
                                         style={{textDecoration: "none", color: "white"}}
                                         to={`${page}`}
                                     >
+                                        <Button
+                                            key={page}
+                                            //onClick={handleCloseNavMenu}
+                                            sx={{my: 2, color: "white", display: "block"}}
+                                        >
                                         {page}
+                                        </Button>
                                     </Link>
-                                </Button>
                             ))}
                         </Box>
 
@@ -187,7 +191,7 @@ export default function ClientHeader() {
                         <LocalShippingRoundedIcon/>
                     </span>
                     <span className="mx-2 text-amber-300">Free Shipping on Orders Over 100 Dh</span>
-                    <span className=" text-white"> * Estimated Delivery: 10-30 Minutes </span>
+                    <span className=" text-white"> *  Estimated Delivery: 10-30 Minutes </span>
                 </Box>
 
             </Grid>
