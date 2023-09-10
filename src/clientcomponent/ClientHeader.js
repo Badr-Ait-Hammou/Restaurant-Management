@@ -17,7 +17,7 @@ import {useNavigate} from "react-router-dom";
 import {accountService} from "../service/accountService";
 import {Grid} from "@mui/material";
 import LocalShippingRoundedIcon from "@mui/icons-material/LocalShippingRounded";
-
+import Ifoulkilogo from "../images/IFOULKIlogo2.svg";
 const pages = ['home', 'restaurants', 'profile', 'reservation', 'orders', 'cart', 'all_products'];
 
 export default function ClientHeader() {
@@ -51,24 +51,24 @@ export default function ClientHeader() {
             <AppBar position="static" style={{backgroundColor: 'rgb(23,113,122)'}}>
                 <Container maxWidth="xl">
                     <Toolbar disableGutters>
-                        <Restaurant sx={{display: {xs: "none", md: "flex"}, mr: 1}}/>
+                        <Avatar src={Ifoulkilogo} variant="square"  sx={{display: {xs: "none", md: "flex"}, mr: 1}}/>
+                        <Link to="/admin/home" style={{ textDecoration: 'none', color: 'inherit' }}>
                         <Typography
                             variant="h6"
                             noWrap
-                            component={Link}
-                            to="/admin/home"
                             sx={{
-                                mr: 2,
+                                mr: 1,
                                 display: {xs: "none", md: "flex"},
                                 fontFamily: "monospace",
-                                fontWeight: 700,
-                                letterSpacing: ".3rem",
+                                fontWeight: 800,
+                                letterSpacing: ".0rem",
                                 color: "inherit",
                                 textDecoration: "none",
                             }}
                         >
-                            Restaurant
+                            Ifoulki_Meals
                         </Typography>
+                        </Link>
 
                         <Box sx={{flexGrow: 1, display: {xs: "flex", md: "none"}}}>
                             <IconButton
@@ -116,24 +116,26 @@ export default function ClientHeader() {
 
                             </Menu>
                         </Box>
-                        <Restaurant sx={{display: {xs: "flex", md: "none"}, mr: 1}}/>
+                        <Avatar src={Ifoulkilogo} variant="square"  sx={{display: {xs: "flex", md: "none"}, mr: 1,width:34,height:34}}/>
+
                         <Typography
-                            variant="h5"
+                            variant="h6"
                             noWrap
-                            component={Link}
-                            to="/admin/home"
                             sx={{
                                 mr: 2,
                                 display: {xs: "flex", md: "none"},
                                 flexGrow: 1,
                                 fontFamily: "monospace",
                                 fontWeight: 700,
-                                letterSpacing: ".3rem",
+                                letterSpacing: ".1rem",
                                 color: "inherit",
                                 textDecoration: "none",
                             }}
                         >
-                            Rs
+                            <Link to="/admin/home" style={{ textDecoration: 'none', color: 'inherit' }}>
+
+                            Ifoulki_Meals
+                            </Link>
                         </Typography>
                         <Box sx={{flexGrow: 1, display: {xs: "none", md: "flex"}}}>
                             {pages.map((page) => (
