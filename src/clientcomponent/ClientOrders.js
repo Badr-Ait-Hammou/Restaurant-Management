@@ -17,7 +17,6 @@ import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import PendingRoundedIcon from '@mui/icons-material/PendingRounded';
 import Tab from '@mui/material/Tab';
 import Tabs, {tabsClasses} from '@mui/material/Tabs';
-import Skeleton from "../skeleton/ProfileSkeleton"
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
 import Box from "@mui/material/Box";
@@ -29,6 +28,8 @@ export default function ClientOrders() {
     const [alertMessage] = useState("Once you make an order one of our agents will contact you asap");
     const toast = useRef(null);
     const [value, setValue] = React.useState(0);
+    const shippingfee=30;
+
 
 
     useEffect(() => {
@@ -152,6 +153,15 @@ export default function ClientOrders() {
                                             <strong className="mt-2 mx-2">Total
                                                 amount:</strong> {order.totalPrice} Dh<br/>
                                             <strong className="mt-2 mx-2">Quantity:</strong> {order.productQuantity} Pcs<br/>
+                                            { order.totalPrice < 100 ? (
+                                                <p className="mb-0">
+                                                    <strong className="mt-2 mx-2">Shipping fee:</strong> {shippingfee} Dh<br/>
+                                                </p>
+                                            ) : (
+                                                <p className="mb-0">
+                                                    <strong className="mt-2 mx-2">Shipping fee:</strong> 0 Dh<br/>
+                                                </p>
+                                            )}
                                         </p>
                                     </Grid>
                                 </Grid>
@@ -287,6 +297,7 @@ export default function ClientOrders() {
                                                                     amount:</strong> {order.totalPrice} Dh<br/>
                                                                 <strong
                                                                     className="mt-2 mx-2">Quantity:</strong> {order.productQuantity} Pcs<br/>
+
                                                             </p>
                                                         </Grid>
                                                     </Grid>
@@ -321,8 +332,18 @@ export default function ClientOrders() {
 
                                                 <div>
                                                     <Tag severity="secondary" className=" p-2" rounded>
-                                                        <strong className="m-2">Order Amount
-                                                            :</strong>{group.orders.reduce((total, order) => total + order.totalPrice, 0)} Dh
+                                                        <strong className="m-2">Order Amount :</strong>{group.orders.reduce((total, order) => total + order.totalPrice, 0)} Dh
+                                                    </Tag>
+                                                    <Tag severity="secondary" className=" p-2" rounded>
+                                                        {group.orders.reduce((total, order) => total + order.totalPrice, 0) < 100 ? (
+                                                            <p className="mb-0">
+                                                                <strong className="mt-2 mx-2">Shipping fee:</strong> {shippingfee} Dh<br/>
+                                                            </p>
+                                                        ) : (
+                                                            <p className="mb-0">
+                                                                <strong className="mt-2 mx-2">Shipping fee:</strong> 0 Dh<br/>
+                                                            </p>
+                                                        )}
                                                     </Tag>
                                                 </div>
                                                 {group.orders[0].status === 'Pending' && (

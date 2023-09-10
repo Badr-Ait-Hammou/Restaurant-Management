@@ -14,6 +14,7 @@ export default function Cart() {
     const [userId, setUserId] = useState("");
     const [productQuantities, setProductQuantities] = useState({});
     const toast = useRef(null);
+    const shippingfee=30;
 
     const updateQuantity = (productId, newQuantity) => {
         setProductQuantities((prevQuantities) => ({
@@ -88,11 +89,13 @@ export default function Cart() {
     }
 
     const getTotalAmount = () => {
-        let totalAmount = 0;
-        cartProducts.forEach((product) => {
-            totalAmount += (product.totalprice * (productQuantities[product.id] || 1));
-        });
-        return totalAmount;
+        const orderTotal = cartProducts.reduce((total, product) => {
+            total += product.totalprice * (productQuantities[product.id] || 1);
+            return total;
+        }, 0);
+
+        const shippingFee = calculateShippingFee(orderTotal);
+        return orderTotal + shippingFee;
     };
 
     const getTotalQuantity = () => {
@@ -111,7 +114,7 @@ export default function Cart() {
         const orderPromises = cartProducts.map((product) => {
             const orderItem = {
                 user: {id: userId},
-                totalPrice: product.totalprice * (productQuantities[product.id] || 1),
+                totalPrice: (product.totalprice * (productQuantities[product.id] || 1)) + calculateShippingFee(getTotalAmount()),
                 status: "Pending",
                 productQuantity: productQuantities[product.id] || 1,
                 produit: {
@@ -160,6 +163,15 @@ export default function Cart() {
             .catch((error) => {
                 console.error('Error saving orders or updating product stocks:', error);
             });
+    };
+
+    const calculateShippingFee = (totalAmount) => {
+
+        if (totalAmount >= 100) {
+            return 0;
+        } else {
+            return shippingfee;
+        }
     };
 
     return (
@@ -243,6 +255,7 @@ export default function Cart() {
                                                 <div className="row d-flex justify-content-between align-items-center">
                                                     <div className="col-12 col-md-6">
                                                         <p className="mb-1">Total Quantity: {getTotalQuantity()}</p>
+                                                        <p className="mb-0">Shipping Fee: {calculateShippingFee(getTotalAmount())}Dh</p>
                                                         <p className="mb-0">Total Amount: {getTotalAmount()}Dh</p>
                                                     </div>
                                                     <div className="col-12 col-md-6 text-md-end mt-5 mt-md-0">
