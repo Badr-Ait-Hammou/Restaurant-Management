@@ -19,6 +19,7 @@ import PendingRoundedIcon from '@mui/icons-material/PendingRounded';
 import IconButton from "@mui/material/IconButton";
 import {Fade} from "@mui/material";
 import {ConfirmDialog, confirmDialog} from "primereact/confirmdialog";
+import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 
 
 
@@ -148,8 +149,8 @@ export default function Orders( )  {
                     />
 
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
-                    <Button severity="danger" onClick={()=>{handleDelete(rowData)}}  />
+                <div style={{ display: 'flex', justifyContent: 'center',alignItems:"center", marginTop: '10px' }}>
+                    <Button severity="danger" label={<DeleteRoundedIcon/>} onClick={()=>{handleDelete(rowData)}}  />
                 </div>
             </React.Fragment>
         );
@@ -174,8 +175,8 @@ export default function Orders( )  {
         return (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '5px', justifyContent: 'center' }}>
 
-                {rowData.orders.map((order) => (
-                    <div key={order.produit.id}>
+                {rowData.orders.map((order, index) => (
+                    <div key={`${order.produit.id}_${index}`}>
                          <Tooltip   TransitionComponent={Fade}
                                     TransitionProps={{ timeout: 600 }}
                                     placement="top"
