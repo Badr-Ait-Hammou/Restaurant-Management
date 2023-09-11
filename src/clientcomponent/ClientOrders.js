@@ -207,7 +207,7 @@ export default function ClientOrders() {
                                     )}
                                 </Tag>
                             </div>
-                            {statusFilter === 'Pending' && (
+                            {statusFilter === 'Pending' ? (
                                 <div>
                                     {groupOrdersByCreatedDate().some((group) => group.orders.some((order) => order.status === 'Pending')) && (
                                         <Button
@@ -220,7 +220,20 @@ export default function ClientOrders() {
                                         />
                                     )}
                                 </div>
-                            )}
+                            ):(statusFilter === 'Delivered')?
+                                (
+                                    <div>
+                                        {groupOrdersByCreatedDate().some((group) => group.orders.some((order) => order.status === 'Delivered')) && (
+                                            <Button
+                                                className="p-1 mx-1"
+                                                label="feedback"
+                                                severity="info"
+
+                                            />
+                                        )}
+                                    </div>
+                                    ):("")
+                            }
                         </div>
 
                     </Fieldset>
@@ -360,7 +373,7 @@ export default function ClientOrders() {
                                                             )}
                                                         </Tag>
                                                     </div>
-                                                    {group.orders[0].status === 'Pending' && (
+                                                    {group.orders[0].status === 'Pending' ? (
                                                         <div>
                                                             {groupOrdersByCreatedDate().some((group) =>
                                                                 group.orders.some((order) => order.status === 'Pending')
@@ -375,7 +388,20 @@ export default function ClientOrders() {
                                                                 />
                                                             )}
                                                         </div>
-                                                    )}
+                                                    ):(group.orders[0].status === 'Delivered' ?(<div>
+                                                        {groupOrdersByCreatedDate().some((group) =>
+                                                            group.orders.some((order) => order.status === 'Delivered')
+                                                        ) && (
+                                                            <Button
+                                                                className="p-1 mx-1"
+                                                                label="feedback"
+                                                                severity="info"
+                                                                // onClick={() => {
+                                                                //     updateStatus(group);
+                                                                // }}
+                                                            />
+                                                        )}
+                                                    </div>):(""))}
                                                 </div>
 
                                             </Fieldset>
