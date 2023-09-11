@@ -34,14 +34,14 @@ export default function HomePage() {
         axios.get("/api/controller/produits/promotion").then((response) => {
             setProducts(response.data);
         });
-    }, []);
-
-
-    useEffect(() => {
         axios.get("/api/controller/produits/nopromotion").then((response) => {
             setProductsno(response.data);
         });
+        loadProductsUser();
+        setLoading(false);
     }, []);
+
+
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -81,11 +81,11 @@ export default function HomePage() {
         });
     };
 
-    useEffect(() => {
-        loadProductsUser();
-        setLoading(false);
-
-    }, [userId, products]);
+    // useEffect(() => {
+    //     loadProductsUser();
+    //     setLoading(false);
+    //
+    // }, [userId, products]);
 
 
     const handleAddToCart = (product) => {

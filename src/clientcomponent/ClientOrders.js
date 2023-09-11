@@ -52,7 +52,7 @@ export default function ClientOrders() {
 
     useEffect(() => {
         loadOrders();
-    },);
+    },[userId]);
 
     const loadOrders = () => {
         axios.get(`/api/controller/orders/userorder/${userId}`)
@@ -60,15 +60,6 @@ export default function ClientOrders() {
                 setOrders(response.data);
                 setLoading(false);
             })
-            .catch((error) => {
-                if (error.response && error.response.status === 403) {
-                    // Handle 403 Forbidden error, e.g., display an error message to the user.
-                    console.error("Access to orders is forbidden.");
-                } else {
-                    // Handle other errors.
-                    console.error("An error occurred while loading orders:", error);
-                }
-            });
     };
 
 
