@@ -249,7 +249,7 @@ export default function HomePage() {
         );
     };
 
-    if (loading) {
+    if (loading ||products.length===0) {
         return (<HomPageSkeleton/>)
     }
 

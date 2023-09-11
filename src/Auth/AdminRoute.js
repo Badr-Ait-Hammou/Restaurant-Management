@@ -21,6 +21,7 @@ import Reservations from "../components/Reservations"
 import ClientOrders from "../clientcomponent/ClientOrders"
 import Cart from "../clientcomponent/Cart"
 import AllProducts from "../clientcomponent/AllProducts"
+import RestaurantBySpeciality from "../clientcomponent/RestaurantSpeciality";
 const AdminRoute = () => {
 
     return (
@@ -63,6 +64,9 @@ const AdminRoute = () => {
                 {accountService.isLogged && accountService.getRole() === 'ADMIN' && (
                     <Route path="/orders" element={<Orders/>}/>
                     )}
+                {accountService.isLogged && accountService.getRole() === 'ADMIN' && (
+                    <Route exact path="/restaurants_speciality/:id" element={<RestaurantBySpeciality/>}/>
+                    )}
                 <Route path="/restaurants" element={<CltRest/>}/>
                 <Route path="/home/restaurants" element={<CltRest/>}/>
                 <Route path="/cart" element={<Cart/>}/>
@@ -71,6 +75,7 @@ const AdminRoute = () => {
                 <Route path="/profile" element={<Profile/>}/>
                 <Route path="/all_products" element={<AllProducts/>}/>
                 <Route exact path="/restaurants/:id" element={<RestaurantDetails/>}/>
+                <Route exact path="/home/restaurants_speciality/:id" element={<RestaurantBySpeciality/>}/>
                 <Route exact path="/home/restaurants/:id" element={<RestaurantDetails/>}/>
             </Route>
         </Routes>

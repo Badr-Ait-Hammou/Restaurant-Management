@@ -6,14 +6,18 @@ import "../styles/RestaurantSlick.css";
 import axios from "../service/callerService";
 import { Avatar } from "@mui/material";
 import {Link} from 'react-router-dom';
+import {Skeleton} from "primereact/skeleton";
 
 
 function RestaurantSlick() {
     const [restaurants, setRestaurants] = useState([]);
+    const [loading, setLoading] = useState(true);
+
 
     useEffect(() => {
         axios.get("/api/controller/restaurants/").then((response) => {
             setRestaurants(response.data);
+            setLoading(false);
         });
     }, []);
 
@@ -29,6 +33,14 @@ function RestaurantSlick() {
         pauseOnHover: true,
 
     };
+
+    if(loading || !restaurants){
+        return ( <div className="mainContainer">
+            <Skeleton width="100%" height="100px"  />
+
+        </div>);
+    }
+
 
     return (
         <div className="mainContainer">

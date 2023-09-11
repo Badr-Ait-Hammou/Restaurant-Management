@@ -137,9 +137,9 @@ export default function ClientHeader() {
                             </Link>
                         </Typography>
                         <Box sx={{flexGrow: 1, display: {xs: "none", md: "flex"}}}>
-                            {pages.map((page) => (
-
-                                    <Link
+                            {pages.map((page, index) => (
+                                <Link
+                                    key={index}
                                         style={{textDecoration: "none", color: "white"}}
                                         to={`${page}`}
                                     >

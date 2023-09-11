@@ -65,8 +65,14 @@ export default function HomePageSkeleton() {
             <div >
                 <div className=" p-1 surface-card ">
 
-                    <Skeleton width="100%" height="200px" className="mb-1" />
-                    <div className="flex justify-content-center">
+                    <div className="flex justify-content-between mt-1 mb-1">
+                        <Skeleton width="4rem" height="2rem" className="mx-2" />
+                        <Skeleton width="4rem" height="2rem" className="mx-2" />
+                    </div>
+                    <Skeleton width="100%" height="400px" className="mb-1" />
+                    <Skeleton width="100%" height="100px"  />
+                    <Skeleton width="100%" height="100px" className="mt-3"  />
+                    <div className="flex justify-content-center mt-1">
                         <Skeleton width="4rem" height="2rem" className="mx-2" />
                         <Skeleton width="4rem" height="2rem" />
                         <Skeleton width="4rem" height="2rem" className="mx-2" />

@@ -17,7 +17,8 @@ import {accountService} from "../service/accountService";
 import {Grid} from "@mui/material";
 import LocalShippingRoundedIcon from "@mui/icons-material/LocalShippingRounded";
 import Ifoulkilogo from "../images/IFOULKIlogo2.svg";
-const pages = ['city' ,'zone','serie','specialite', 'restaurant','produit','user','orders','reservations'];
+
+const pages = ['city', 'zone', 'serie', 'specialite', 'restaurant', 'produit', 'user', 'orders', 'reservations'];
 
 export default function Header() {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -50,8 +51,8 @@ export default function Header() {
             <AppBar position="static" style={{backgroundColor: 'rgb(23,113,122)'}}>
                 <Container maxWidth="xl">
                     <Toolbar disableGutters>
-                        <Avatar src={Ifoulkilogo} variant="square"  sx={{display: {xs: "none", md: "flex"}, mr: 1}}/>
-                        <Link to="/admin/home" style={{ textDecoration: 'none', color: 'inherit' }}>
+                        <Avatar src={Ifoulkilogo} variant="square" sx={{display: {xs: "none", md: "flex"}, mr: 1}}/>
+                        <Link to="/admin/home" style={{textDecoration: 'none', color: 'inherit'}}>
                             <Typography
                                 variant="h6"
                                 noWrap
@@ -102,7 +103,7 @@ export default function Header() {
                                 {pages.map((page, index) => (
                                     <MenuItem key={index} className="font-serif text-black">
                                         <Link
-                                            style={{ textDecoration: "none", color: "inherit" }}
+                                            style={{textDecoration: "none", color: "inherit"}}
                                             to={`${page}`}
                                             onClick={handleCloseNavMenu} // Close the mobile menu on click
 
@@ -115,7 +116,8 @@ export default function Header() {
 
                             </Menu>
                         </Box>
-                        <Avatar src={Ifoulkilogo} variant="square"  sx={{display: {xs: "flex", md: "none"}, mr: 1,width:34,height:34}}/>
+                        <Avatar src={Ifoulkilogo} variant="square"
+                                sx={{display: {xs: "flex", md: "none"}, mr: 1, width: 34, height: 34}}/>
 
                         <Typography
                             variant="h6"
@@ -131,15 +133,15 @@ export default function Header() {
                                 textDecoration: "none",
                             }}
                         >
-                            <Link to="/admin/home" style={{ textDecoration: 'none', color: 'inherit' }}>
+                            <Link to="/admin/home" style={{textDecoration: 'none', color: 'inherit'}}>
 
                                 Ifoulki_Meals
                             </Link>
                         </Typography>
                         <Box sx={{flexGrow: 1, display: {xs: "none", md: "flex"}}}>
-                            {pages.map((page) => (
-
+                            {pages.map((page, index) => (
                                 <Link
+                                    key={index}
                                     style={{textDecoration: "none", color: "white"}}
                                     to={`${page}`}
                                 >
