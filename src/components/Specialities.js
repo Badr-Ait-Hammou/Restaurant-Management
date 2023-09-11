@@ -225,7 +225,7 @@ export default function Specialities() {
     };
     const centerToolbarTemplate = () => {
         return <div className="flex flex-wrap gap-2 align-items-center justify-content-between">
-            <h4 className="m-0 font-bold">Manage Series</h4>
+            <h4 className="m-0 font-bold">Manage Specialities</h4>
         </div>;
     };
 
@@ -316,11 +316,11 @@ export default function Specialities() {
                         <DataTable ref={dt} value={sepeciality}
                                    dataKey="id"  paginator rows={10} rowsPerPageOptions={[5, 10, 25]}
                                    paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-                                   currentPageReportTemplate="Showing {first} to {last} of {totalRecords} Images" globalFilter={globalFilter} header={header}>
-                            <Column field="id"  header="ID" sortable style={{ minWidth: '7rem' }}></Column>
-                            <Column field="photo" header="Photo" body={photoBodyTemplate} sortable style={{ minWidth: '12rem' }}></Column>
-                            <Column field="nom"   filter filterPlaceholder="Search Name ..." header="Name" sortable style={{ minWidth: '7rem' }}></Column>
-                            <Column header="Action" body={actionBodyTemplate} exportable={false} style={{ minWidth: '12rem' }}></Column>
+                                   currentPageReportTemplate="Showing {first} to {last} of {totalRecords} Specialities" globalFilter={globalFilter} header={header}>
+                            <Column field="id"  header="ID" sortable style={{ minWidth: '10rem' }}></Column>
+                            <Column field="nom"   filter filterPlaceholder="Search Name ..." header="Name" sortable style={{ minWidth: '18rem' }}></Column>
+                            <Column field="photo" header="Photo" body={photoBodyTemplate} sortable style={{ minWidth: '18rem' }}></Column>
+                            <Column header="Action" body={actionBodyTemplate} exportable={false} style={{ minWidth: '10rem' }}></Column>
                         </DataTable>
                     ):(
                         <SkeletonPr/>
@@ -328,7 +328,7 @@ export default function Specialities() {
                 </div>
             </MainCard>
 
-            <Dialog visible={specialityDialog} style={{ width: '40rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} header="Add Serie" modal className="p-fluid" footer={specialityDialogFooter} onHide={hideDialog}>
+            <Dialog visible={specialityDialog} style={{ width: '40rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} header="Add Speciality" modal className="p-fluid" footer={specialityDialogFooter} onHide={hideDialog}>
                 <Grid container spacing={2}>
                     <Grid item xs={12} >
                         <Box className="field">
@@ -366,7 +366,7 @@ export default function Specialities() {
 
             </Dialog>
 
-            <Dialog visible={editspecialityDialog} style={{ width: '40rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} header="Edit Serie" modal className="p-fluid" footer={editimageDialogFooter} onHide={hideDialog}>
+            <Dialog visible={editspecialityDialog} style={{ width: '40rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} header="Edit Speciality" modal className="p-fluid" footer={editimageDialogFooter} onHide={hideDialog}>
                 <Grid container spacing={2}>
                     <Grid item xs={12} >
                         <Box className="field">
