@@ -18,6 +18,8 @@ import EmptyImg from "../images/empty.png";
 import axios from '../service/callerService';
 import MainCard from "../ui-component/MainCard";
 import SkeletonPr from "../skeleton/ProfileSkeleton"
+import { Avatar } from "@mui/material";
+
 
 
 
@@ -273,25 +275,17 @@ export default function Specialities() {
     const photoBodyTemplate = (rowData) => {
         if (rowData.photo) {
             return (
-                <img
+                <Avatar
                     src={rowData.photo}
                     alt={rowData.photo}
-                    className="enlarge-on-hover"
-                    style={{
-                        width: '10%',
-                        height: '10%',
-                        objectFit: 'cover',
-                        borderRadius: '8px',
-                        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-                        cursor: 'pointer',
-                        transform: "scale(1.3)",
-
-                    }}
+                    variant="square"
+                    sx={{width:55,height:55,borderRadius:2}}
                     onError={() => console.error(`Failed to load image for row with ID: ${rowData.id}`)}
                 />
             );
         }
-        return <img src={EmptyImg} alt="No" style={{ width: '50px', height: 'auto' }} />;
+        return <Avatar src={EmptyImg} alt="No"  variant="square"                     sx={{width:55,height:55,borderRadius:2}}
+        />;
     };
 
 
