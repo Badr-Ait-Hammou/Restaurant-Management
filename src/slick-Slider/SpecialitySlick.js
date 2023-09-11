@@ -18,7 +18,7 @@ function SpecialitySlick() {
     const settings = {
         dots: false,
         infinite: true,
-        slidesToShow: 5,
+        slidesToShow: 4,
         slidesToScroll: 1,
         autoplay: true,
         speed: 1000,
@@ -30,10 +30,12 @@ function SpecialitySlick() {
 
     return (
         <div className="mainContainer">
+            <p className="font-monospace ">Specialities</p>
+
             <Slider {...settings}>
                 {specialities.map((specialite) => (
                     <div className="container" key={specialite.id}>
-                        <Avatar src={specialite.photo} alt={specialite.nom}   sx={{ width: 80, height: 80 }} style={{
+                        <Avatar src={specialite.photo} alt={specialite.nom}   sx={{ width: 80, height: 80,borderRadius:6,backgroundColor:"rgb(94,180,163)" }} style={{
                             alignItems: "center",
                             justifyContent: "center",
                             margin: "0 auto",

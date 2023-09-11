@@ -16,9 +16,9 @@ function RestaurantSlick() {
     }, []);
 
     const settings = {
-        dots: true,
+        dots: false,
         infinite: true,
-        slidesToShow: 3,
+        slidesToShow: 4,
         slidesToScroll: 1,
         autoplay: true,
         speed: 1000,
@@ -33,7 +33,7 @@ function RestaurantSlick() {
             <Slider {...settings}>
                 {restaurants.map((restaurant) => (
                     <div className="container" key={restaurant.id}>
-                        <Avatar src={restaurant.photo} alt={restaurant.nom}   sx={{ width: 80, height: 80 }} style={{
+                        <Avatar src={restaurant.photo} alt={restaurant.nom}   sx={{ width: 70, height: 70,borderRadius:6,backgroundColor:"rgba(94,180,163,0.18)" }} style={{
                             alignItems: "center",
                             justifyContent: "center",
                             margin: "0 auto",

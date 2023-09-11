@@ -316,7 +316,7 @@ export default function HomePage() {
 
             <div style={{marginTop: "135px"}}>
                 <Card variant="outlined"
-                      sx={{ borderColor:"white", backgroundColor: 'rgba(239,230,236,0)'}}>
+                      sx={{borderColor: "white", backgroundColor: 'rgba(234,230,233,0.27)'}}>
                     <CardContent>
                         <SpecialitySlick/>
                     </CardContent>
@@ -324,13 +324,13 @@ export default function HomePage() {
 
             </div>
 
-                <div style={{marginTop: "190px"}}>
+            <div className="mt-3">
 
                 <div className=" mx-3 mb-2 text-lg-start text-2xl ">
                     <strong className="font-serif ">Our Restaurants</strong>
                 </div>
                 <Card variant="outlined"
-                      sx={{ marginX: 2, backgroundColor: 'rgba(239,230,236,0.29)'}}>
+                      sx={{marginX: 2, backgroundColor: 'rgba(239,230,236,0.29)'}}>
                     <CardContent>
                         <RestaurantSlick/>
                     </CardContent>

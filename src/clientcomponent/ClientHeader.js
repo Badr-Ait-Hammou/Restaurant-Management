@@ -11,7 +11,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import {Restaurant} from "@mui/icons-material";
 import {Link} from "react-router-dom";
 import {useNavigate} from "react-router-dom";
 import {accountService} from "../service/accountService";
@@ -100,8 +99,8 @@ export default function ClientHeader() {
                                     display: {xs: "block", md: "none"},
                                 }}
                             >
-                                {pages.map((page) => (
-                                    <MenuItem key={page} className="font-serif text-black">
+                                {pages.map((page, index) => (
+                                    <MenuItem key={index} className="font-serif text-black">
                                         <Link
                                             style={{ textDecoration: "none", color: "inherit" }}
                                             to={`${page}`}
