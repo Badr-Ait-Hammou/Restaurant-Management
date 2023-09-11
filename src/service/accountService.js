@@ -44,6 +44,9 @@ let getUserByEmail = (email) => {
 let getUserById = (userId) => {
     return Axios.get(`http://localhost:8080/api/controller/paniers/userproductsinbasket/${userId}`).then(res => res.data)
 }
+let getOrdersByUserId = (userId) => {
+    return Axios.get(`http://localhost:8080/api/controller/orders/userorder/${userId}`).then(res => res.data)
+}
 
 let saveRole = (role) =>{
     localStorage.setItem('role', role)
@@ -53,6 +56,6 @@ let getRole = () => {
     return localStorage.getItem('role')
 }
 export const accountService = {
-    login, saveToken, logout, isLogged, getToken,getTokenInfo,getUserByEmail,getUserById,getRole,saveRole
+    login, saveToken, logout, isLogged, getToken,getTokenInfo,getUserByEmail,getUserById,getRole,saveRole,getOrdersByUserId
 }
 

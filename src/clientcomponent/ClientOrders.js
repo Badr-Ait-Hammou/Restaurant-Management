@@ -55,10 +55,20 @@ export default function ClientOrders() {
     },);
 
     const loadOrders = () => {
-        axios.get(`/api/controller/orders/userorder/${userId}`).then((response) => {
-            setOrders(response.data);
-            setLoading(false);
-        });
+        axios.get(`/api/controller/orders/userorder/${userId}`)
+            .then((response) => {
+                setOrders(response.data);
+                setLoading(false);
+            })
+            .catch((error) => {
+                if (error.response && error.response.status === 403) {
+                    // Handle 403 Forbidden error, e.g., display an error message to the user.
+                    console.error("Access to orders is forbidden.");
+                } else {
+                    // Handle other errors.
+                    console.error("An error occurred while loading orders:", error);
+                }
+            });
     };
 
 
@@ -68,11 +78,15 @@ export default function ClientOrders() {
         for (const order of orders) {
             const createdDate = moment(order.dateCreated);
             if (!currentGroup || createdDate.diff(moment(currentGroup.createdDate), 'seconds') > 2) {
-                currentGroup = {createdDate: createdDate.format("YYYY-MM-DD HH:mm:ss"), orders: []};
+                currentGroup = { createdDate: createdDate.format("YYYY-MM-DD HH:mm:ss"), orders: [] };
                 grouped.push(currentGroup);
             }
             currentGroup.orders.push(order);
         }
+
+        // Sort the groups by created date in descending order
+        grouped.sort((a, b) => moment(b.createdDate).diff(moment(a.createdDate)));
+
         return grouped;
     };
 
