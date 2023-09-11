@@ -21,6 +21,10 @@ import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
 import Box from "@mui/material/Box";
 import ClientOrdersSkeleton from "../skeleton/ClientOrdersSkeleton";
+import {Dialog} from "primereact/dialog";
+import {Rating} from "primereact/rating";
+import {InputTextarea} from "primereact/inputtextarea";
+import Avatar from "@mui/material/Avatar";
 
 
 export default function ClientOrders() {
@@ -29,8 +33,26 @@ export default function ClientOrders() {
     const toast = useRef(null);
     const [value, setValue] = React.useState(0);
     const [loading, setLoading] = useState(true);
+    const [comments, setComments] = useState([]);
+    const [commentDialog, setCommentDialog] = useState(false);
+
+    const [selectedProducts, setSelectedProducts] = useState([]);
+    const [feedbackData, setFeedbackData] = useState([]);
+    const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(false);
+
+
 
     const shippingfee = 30;
+
+    const loadComments = () => {
+        axios.get(`/api/controller/avis/`)
+            .then((response) => {
+                setComments(response.data);
+            })
+            .catch((error) => {
+                console.error("Error loading comments:", error);
+            });
+    };
 
 
     useEffect(() => {
@@ -52,6 +74,7 @@ export default function ClientOrders() {
 
     useEffect(() => {
         loadOrders();
+        loadComments();
     },[userId]);
 
     const loadOrders = () => {
@@ -74,12 +97,148 @@ export default function ClientOrders() {
             }
             currentGroup.orders.push(order);
         }
-
-        // Sort the groups by created date in descending order
         grouped.sort((a, b) => moment(b.createdDate).diff(moment(a.createdDate)));
-
         return grouped;
     };
+
+
+
+
+    const hideDialog = () => {
+        setCommentDialog(false);
+    };
+    /******************************************************* Save comment **************************************/
+
+    const openFeedbackDialog = (productsGroup) => {
+        setSelectedProducts(productsGroup);
+
+        const initialFeedbackData = productsGroup.map((product) => {
+            const existingComment = comments.find((comment) => comment.produit.id === product.produit.id);
+            return {
+                id: product.produit.id,
+                nom: product.produit.nom,
+                photo:product.produit.photo,
+                rating: existingComment ? existingComment.rating : null,
+                note: existingComment ? existingComment.note : '',
+            };
+        });
+
+        setFeedbackData(initialFeedbackData);
+
+        const allProductsHaveComments = productsGroup.every((product) => {
+            return comments.some((comment) => comment.produit.id === product.produit.id);
+        });
+
+        // Update isSaveButtonDisabled based on the condition
+        setIsSaveButtonDisabled(allProductsHaveComments);
+        setCommentDialog(true);
+    };
+
+
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+
+        console.log("feedbackData:", feedbackData);
+
+        const feedbackPromises = feedbackData.map((product) => {
+            return axios.post("/api/controller/avis/save", {
+                note: product.note,
+                rating: product.rating,
+                produit: {
+                    id: product.id,
+                },
+                user: {
+                    id: userId,
+                },
+            });
+        });
+
+        try {
+            await Promise.all(feedbackPromises);
+            console.log("All comments have been saved successfully");
+            setFeedbackData([]); // Clear feedback data
+            hideDialog();
+            loadComments();
+        } catch (error) {
+            console.error("Error while saving comments:", error);
+        }
+    };
+
+
+    const commentDialogFooter = (
+        <div>
+            <Button
+                label="Submit"
+                icon="pi pi-check"
+                onClick={handleSubmit}
+                disabled={isSaveButtonDisabled} // Disable the button when isSaveButtonDisabled is true
+            />
+            <Button label="Cancel" icon="pi pi-times" onClick={hideDialog} className="p-button-text" />
+        </div>
+    );
+
+
+    const handleRatingChange = (e, product) => {
+        const updatedFeedbackData = feedbackData.map((p) => {
+            if (p.id === product.id) {
+                return { ...p, rating: e.value };
+            }
+            return p;
+        });
+        setFeedbackData(updatedFeedbackData);
+    };
+
+    const handleNoteChange = (e, product) => {
+        const updatedFeedbackData = feedbackData.map((p) => {
+            if (p.id === product.id) {
+                return { ...p, note: e.target.value };
+            }
+            return p;
+        });
+        setFeedbackData(updatedFeedbackData);
+    };
+
+
+    const renderFeedbackForm = () => {
+        return feedbackData.map((product) => (
+            <div key={product.id} className="mb-3">
+                <div className="d-flex align-items-center mb-2">
+                    {product.photo && (
+                        <Avatar src={product.photo} className="mr-2" />
+                    )}
+                    <h5>{product.nom}</h5>
+                </div>
+                <div className="card d-flex justify-content-between align-items-center">
+                    <div>
+                        <Rating
+                            value={product.rating}
+                            onChange={(e) => handleRatingChange(e, product)}
+                            cancel={false}
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor={`newcmt-${product.id}`} className="font-bold">
+                            Note
+                        </label>
+                        <InputTextarea
+                            style={{ marginTop: '5px' }}
+                            id={`newcmt-${product.id}`}
+                            value={product.note}
+                            onChange={(e) => handleNoteChange(e, product)}
+                            required
+                        />
+                    </div>
+                </div>
+                <div className="field mt-2"></div>
+            </div>
+        ));
+    };
+
+
+
+
+    /******************************************************* update status **************************************/
 
 
     const updateStatus = (group) => {
@@ -119,6 +278,15 @@ export default function ClientOrders() {
             accept: confirmCancel
         });
     };
+
+    /******************************************************* dialog   **************************************/
+
+
+
+
+
+
+
 
 
     function renderOrderDetails(group, statusFilter, updateStatus) {
@@ -247,6 +415,7 @@ export default function ClientOrders() {
     }
 
     return (
+        <>
         <div>
             <Toast ref={toast}/>
             <ConfirmDialog/>
@@ -396,9 +565,9 @@ export default function ClientOrders() {
                                                                 className="p-1 mx-1"
                                                                 label="feedback"
                                                                 severity="info"
-                                                                // onClick={() => {
-                                                                //     updateStatus(group);
-                                                                // }}
+                                                                onClick={() => openFeedbackDialog(group.orders)}
+
+
                                                             />
                                                         )}
                                                     </div>):(""))}
@@ -502,5 +671,18 @@ export default function ClientOrders() {
                 </div>
             </Card>
         </div>
+            <Dialog
+                visible={commentDialog}
+                style={{ width: '40rem' }}
+                breakpoints={{ '960px': '75vw', '641px': '90vw' }}
+                header="Add Comment"
+                modal
+                className="p-fluid"
+                footer={commentDialogFooter}
+                onHide={hideDialog}
+            >
+                {renderFeedbackForm()} {/* Render the dynamic feedback form */}
+            </Dialog>
+            </>
     );
 }
