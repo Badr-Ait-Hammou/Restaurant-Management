@@ -36,7 +36,8 @@ export default function ClientOrders() {
     const [comments, setComments] = useState([]);
     const [commentDialog, setCommentDialog] = useState(false);
 
-    const [selectedProducts, setSelectedProducts] = useState([]);
+
+    //const [selectedProducts, setSelectedProducts] = useState([]);
     const [feedbackData, setFeedbackData] = useState([]);
     const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(false);
 
@@ -110,14 +111,12 @@ export default function ClientOrders() {
     /******************************************************* Save comment **************************************/
 
     const openFeedbackDialog = (productsGroup) => {
-        setSelectedProducts(productsGroup);
-
         const initialFeedbackData = productsGroup.map((product) => {
             const existingComment = comments.find((comment) => comment.produit.id === product.produit.id);
             return {
                 id: product.produit.id,
                 nom: product.produit.nom,
-                photo:product.produit.photo,
+                photo: product.produit.photo,
                 rating: existingComment ? existingComment.rating : null,
                 note: existingComment ? existingComment.note : '',
             };
@@ -126,18 +125,22 @@ export default function ClientOrders() {
         setFeedbackData(initialFeedbackData);
 
         const allProductsHaveComments = productsGroup.every((product) => {
-            return comments.some((comment) => comment.produit.id === product.produit.id);
+            return feedbackData.some((feedback) => feedback.id === product.produit.id);
         });
-
-        // Update isSaveButtonDisabled based on the condition
         setIsSaveButtonDisabled(allProductsHaveComments);
         setCommentDialog(true);
     };
 
 
 
+
     const handleSubmit = async (event) => {
         event.preventDefault();
+
+        if (feedbackData.some((product) => !product.rating || !product.note)) {
+            showuEmpty();
+            return;
+        }
 
         console.log("feedbackData:", feedbackData);
 
@@ -157,8 +160,9 @@ export default function ClientOrders() {
         try {
             await Promise.all(feedbackPromises);
             console.log("All comments have been saved successfully");
-            setFeedbackData([]); // Clear feedback data
+            setFeedbackData([]);
             hideDialog();
+            showuSave();
             loadComments();
         } catch (error) {
             console.error("Error while saving comments:", error);
@@ -204,9 +208,7 @@ export default function ClientOrders() {
         return feedbackData.map((product) => (
             <div key={product.id} className="mb-3">
                 <div className="d-flex align-items-center mb-2">
-                    {product.photo && (
                         <Avatar src={product.photo} className="mr-2" />
-                    )}
                     <h5>{product.nom}</h5>
                 </div>
                 <div className="card d-flex justify-content-between align-items-center">
@@ -279,13 +281,15 @@ export default function ClientOrders() {
         });
     };
 
-    /******************************************************* dialog   **************************************/
+    /******************************************************* Toast   **************************************/
+    const showuSave = () => {
+        toast.current.show({severity:'success', summary: 'Done', detail:'Feedback submitted  successfully', life: 3000});
+    }
+    const showuEmpty = () => {
+        toast.current.show({severity:'danger', summary: 'Warning', detail:'One of the fields is empty ', life: 3000});
+    }
 
-
-
-
-
-
+    /******************************************************* return   **************************************/
 
 
 
