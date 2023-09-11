@@ -5,6 +5,8 @@ import "slick-carousel/slick/slick-theme.css";
 import "../styles/RestaurantSlick.css";
 import axios from "../service/callerService";
 import { Avatar } from "@mui/material";
+import {Link} from 'react-router-dom';
+
 
 function RestaurantSlick() {
     const [restaurants, setRestaurants] = useState([]);
@@ -33,11 +35,13 @@ function RestaurantSlick() {
             <Slider {...settings}>
                 {restaurants.map((restaurant) => (
                     <div className="container" key={restaurant.id}>
+                        <Link to={`restaurants/${restaurant.id}`}>
                         <Avatar src={restaurant.photo} alt={restaurant.nom}   sx={{ width: 70, height: 70,borderRadius:6,backgroundColor:"rgba(94,180,163,0.18)" }} style={{
                             alignItems: "center",
                             justifyContent: "center",
                             margin: "0 auto",
                             textAlign: "center"}} />
+                        </Link>
                     </div>
                 ))}
             </Slider>

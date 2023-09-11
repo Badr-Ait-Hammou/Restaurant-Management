@@ -70,8 +70,8 @@ const AdminRoute = () => {
                 <Route path="/reservation" element={<Reservation/>}/>
                 <Route path="/profile" element={<Profile/>}/>
                 <Route path="/all_products" element={<AllProducts/>}/>
-                <Route exact path="/restaurants/restaurants/:id" element={<RestaurantDetails/>}/>
-                <Route exact path="/home/restaurants/restaurants/:id" element={<RestaurantDetails/>}/>
+                <Route exact path="/restaurants/:id" element={<RestaurantDetails/>}/>
+                <Route exact path="/home/restaurants/:id" element={<RestaurantDetails/>}/>
             </Route>
         </Routes>
             <Footer/>

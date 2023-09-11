@@ -222,12 +222,12 @@ export default function RestaurantDetails() {
         <>
             <Toast ref={toast}/>
 
-            <Button icon="pi pi-shopping-cart"
-                    raised
-                    className="mx-2 mt-2"
-                    style={{backgroundColor: "transparent", color: "lightseagreen", fontSize: "20px"}}/>
+            {/*<Button icon="pi pi-shopping-cart"*/}
+            {/*        raised*/}
+            {/*        className="mx-2 mt-2"*/}
+            {/*        style={{backgroundColor: "transparent", color: "lightseagreen", fontSize: "20px"}}/>*/}
 
-            <Card className="mt-3 mx-2" style={{backgroundColor: "whitesmoke"}}>
+            <Card className="mt-4 mx-2" style={{backgroundColor: "whitesmoke"}}>
                 <CardContent>
                     <Row>
                         <Col sm={12} md={6} className="mb-3 mb-md-0">
