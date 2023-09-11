@@ -18,6 +18,7 @@ import {Card, CardContent, Avatar, Grid, Box} from '@mui/material';
 import Typography from "@mui/material/Typography";
 import RestaurantSlick from "../slick-Slider/RestaurantSlick"
 import HomeImgSlick from "../slick-Slider/HomeImgSlick";
+import SpecialitySlick from "../slick-Slider/SpecialitySlick";
 
 
 export default function HomePage() {
@@ -256,9 +257,7 @@ export default function HomePage() {
     return (
         <>
             <Toast ref={toast}/>
-
             <div style={{position: 'relative'}}>
-
                 <Grid container spacing={2}>
                     <Grid item xs={6} className="mt-2 mb-2  ">
                         <Box display="flex" justifyContent="start" alignItems="center">
@@ -297,10 +296,12 @@ export default function HomePage() {
                         transform: 'translate(-50%, -50%)'
                     }}>
 
+
                         <Button label="Best Offers" severity="help" raised className="m-1 p-1"
                                 style={{fontSize: "11px"}}/>
                         <Button label="Today's Deals " severity="warning" raised className="m-1 p-1"
                                 style={{fontSize: "11px"}}/>
+
                     </div>
                     <div style={{position: 'absolute', top: '55%', left: '50%', transform: 'translateX(-50%)'}}>
                         <Typography variant="h4" align="center" gutterBottom style={{color: "white"}}>
@@ -313,8 +314,17 @@ export default function HomePage() {
 
             </div>
 
+            <div style={{marginTop: "135px"}}>
+                <Card variant="outlined"
+                      sx={{ borderColor:"white", backgroundColor: 'rgba(239,230,236,0)'}}>
+                    <CardContent>
+                        <SpecialitySlick/>
+                    </CardContent>
+                </Card>
 
-            <div style={{marginTop: "190px"}}>
+            </div>
+
+                <div style={{marginTop: "190px"}}>
 
                 <div className=" mx-3 mb-2 text-lg-start text-2xl ">
                     <strong className="font-serif ">Our Restaurants</strong>
