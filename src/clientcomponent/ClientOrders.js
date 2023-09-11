@@ -20,16 +20,17 @@ import Tabs, {tabsClasses} from '@mui/material/Tabs';
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
 import Box from "@mui/material/Box";
+import ClientOrdersSkeleton from "../skeleton/ClientOrdersSkeleton";
 
 
 export default function ClientOrders() {
     const [orders, setOrders] = useState([]);
     const [userId, setUserId] = useState("");
-    const [alertMessage] = useState("Once you make an order one of our agents will contact you asap");
     const toast = useRef(null);
     const [value, setValue] = React.useState(0);
-    const shippingfee=30;
+    const [loading, setLoading] = useState(true);
 
+    const shippingfee = 30;
 
 
     useEffect(() => {
@@ -51,11 +52,12 @@ export default function ClientOrders() {
 
     useEffect(() => {
         loadOrders();
-    }, );
+    },);
 
     const loadOrders = () => {
         axios.get(`/api/controller/orders/userorder/${userId}`).then((response) => {
             setOrders(response.data);
+            setLoading(false);
         });
     };
 
@@ -153,15 +155,6 @@ export default function ClientOrders() {
                                             <strong className="mt-2 mx-2">Total
                                                 amount:</strong> {order.totalPrice} Dh<br/>
                                             <strong className="mt-2 mx-2">Quantity:</strong> {order.productQuantity} Pcs<br/>
-                                            { order.totalPrice < 100 ? (
-                                                <p className="mb-0">
-                                                    <strong className="mt-2 mx-2">Shipping fee:</strong> {shippingfee} Dh<br/>
-                                                </p>
-                                            ) : (
-                                                <p className="mb-0">
-                                                    <strong className="mt-2 mx-2">Shipping fee:</strong> 0 Dh<br/>
-                                                </p>
-                                            )}
                                         </p>
                                     </Grid>
                                 </Grid>
@@ -169,8 +162,9 @@ export default function ClientOrders() {
                         ))}
                         <Divider component="" className="m-2"/>
 
+
                         <div className="d-flex justify-content-center align-items-center ">
-                            <div className="m-1">
+                            <div className="m-1"  >
                                 {filteredOrders[0].status === statusFilter && (
                                     <div>
 
@@ -193,6 +187,19 @@ export default function ClientOrders() {
                                 <Tag className=" p-2" rounded>
                                     <strong className="m-2">Order Amount
                                         :</strong> {filteredOrders.reduce((total, order) => total + order.totalPrice, 0)} Dh
+                                </Tag>
+                                <Tag severity="secondary" className=" p-2" rounded>
+                                    {filteredOrders.reduce((total, order) => total + order.totalPrice, 0) < 100 ? (
+                                        <p className="mb-0">
+                                            <strong className="mt-2 mx-2">Shipping
+                                                fee:</strong> {shippingfee} Dh<br/>
+                                        </p>
+                                    ) : (
+                                        <p className="mb-0">
+                                            <strong className="mt-2 mx-2">Shipping
+                                                fee:</strong> 0 Dh<br/>
+                                        </p>
+                                    )}
                                 </Tag>
                             </div>
                             {statusFilter === 'Pending' && (
@@ -217,23 +224,23 @@ export default function ClientOrders() {
         );
     }
 
-
+    if(loading || orders.length===0){
+        return(<ClientOrdersSkeleton/>);
+    }
 
     return (
         <div>
             <Toast ref={toast}/>
             <ConfirmDialog/>
-            <div className="alert" style={{backgroundColor: "yellow", padding: "10px", fontFamily: "serif"}}>
-                {alertMessage}
-            </div>
-            <Card className="mx-3 mt-3 p-3">
+
+            <Card className="mx-3 p-2 mt-1">
                 <CardContent>
                     <div style={{alignItems: "center"}}>
-                        <h3>ORDERS</h3>
+                        <h2>ORDERS</h2>
                     </div>
                 </CardContent>
 
-                <div className="mt-5">
+                <div>
 
                     <Box sx={{display: 'flex', justifyContent: 'center'}}>
                         <Tabs
@@ -259,127 +266,129 @@ export default function ClientOrders() {
 
                     {value === 0 && (
                         <div>
-                            {/* Display all orders */}
                             {groupOrdersByCreatedDate().some((group) => group.orders.some((order) => order.length !== 0)) ? (
 
                                 groupOrdersByCreatedDate().map((group, index) => (
-                                <div key={index} className="order-group">
-                                    <div className="content mt-5">
-                                        <Fieldset legend={`Order Details (${group.createdDate})`} toggleable>
-                                            {group.orders.map((order, orderIndex) => (
-                                                <div key={order.id} className="order-item ">
-                                                    {orderIndex > 0 && <Divider component="" className="m-2"/>}
-                                                    <Grid container alignItems="center">
-                                                        <Grid item xs={4} className="left">
-                                                            <img
-                                                                src={order.produit.photo}
-                                                                alt={order.produit.nom}
-                                                                style={{
-                                                                    width: '100px',
-                                                                    height: '100px',
-                                                                    borderRadius: '8px'
-                                                                }}
-                                                            />
-                                                        </Grid>
-                                                        <Grid item xs={4} className="right">
-                                                            <p>
-                                                                <strong className="mt-2 mx-2">Product
-                                                                    :</strong> {order.produit.nom}<br/>
-                                                                <strong className="mt-2 mx-2">Restaurant
-                                                                    :</strong> {order.produit.restaurant.nom} <br/>
-                                                                <strong className="mt-2 mx-2">Price
-                                                                    :</strong> {order.produit.prix} Dh<br/>
-                                                            </p>
-                                                        </Grid>
-                                                        <Grid item xs={4} className="right">
-                                                            <p>
-                                                                <strong className="mt-2 mx-2">Total
-                                                                    amount:</strong> {order.totalPrice} Dh<br/>
-                                                                <strong
-                                                                    className="mt-2 mx-2">Quantity:</strong> {order.productQuantity} Pcs<br/>
+                                    <div key={index} className="order-group">
+                                        <div className="content mt-5">
+                                            <Fieldset legend={`Order Details (${group.createdDate})`} toggleable>
+                                                {group.orders.map((order, orderIndex) => (
+                                                    <div key={order.id} className="order-item ">
+                                                        {orderIndex > 0 && <Divider component="" className="m-2"/>}
+                                                        <Grid container alignItems="center">
+                                                            <Grid item xs={4} className="left">
+                                                                <img
+                                                                    src={order.produit.photo}
+                                                                    alt={order.produit.nom}
+                                                                    style={{
+                                                                        width: '100px',
+                                                                        height: '100px',
+                                                                        borderRadius: '8px'
+                                                                    }}
+                                                                />
+                                                            </Grid>
+                                                            <Grid item xs={4} className="right">
+                                                                <p>
+                                                                    <strong className="mt-2 mx-2">Product
+                                                                        :</strong> {order.produit.nom}<br/>
+                                                                    <strong className="mt-2 mx-2">Restaurant
+                                                                        :</strong> {order.produit.restaurant.nom} <br/>
+                                                                    <strong className="mt-2 mx-2">Price
+                                                                        :</strong> {order.produit.prix} Dh<br/>
+                                                                </p>
+                                                            </Grid>
+                                                            <Grid item xs={4} className="right">
+                                                                <p>
+                                                                    <strong className="mt-2 mx-2">Total
+                                                                        amount:</strong> {order.totalPrice} Dh<br/>
+                                                                    <strong
+                                                                        className="mt-2 mx-2">Quantity:</strong> {order.productQuantity} Pcs<br/>
 
-                                                            </p>
+                                                                </p>
+                                                            </Grid>
                                                         </Grid>
-                                                    </Grid>
-                                                </div>
-                                            ))}
-                                            <Divider component="" className="m-2"/>
+                                                    </div>
+                                                ))}
+                                                <Divider component="" className="m-2"/>
 
-                                            <div className="d-flex justify-content-center align-items-center">
+                                                <div className="d-flex justify-content-center align-items-center">
 
-                                                <div className="m-1">
-                                                    {group.orders[0].status && (
+                                                    <div className="m-1">
+                                                        {group.orders[0].status && (
+                                                            <div>
+
+                                                                <Tag
+                                                                    severity={group.orders[0].status === 'Delivered' ? 'success' : group.orders[0].status === 'Cancelled' ? 'danger' : group.orders[0].status === 'Shipped' ? 'info' : 'warning'}
+                                                                    rounded>
+                                                                    {group.orders[0].status === 'Delivered' &&
+                                                                        <CheckCircleOutlineIcon className="mx-1"/>}
+                                                                    {group.orders[0].status === 'Cancelled' &&
+                                                                        <RailwayAlertRoundedIcon className="mx-1"/>}
+                                                                    {group.orders[0].status === 'Shipped' &&
+                                                                        <LocalShippingIcon className="mx-1"/>}
+                                                                    {group.orders[0].status === 'Pending' &&
+                                                                        <PendingRoundedIcon className="mx-1"/>}
+                                                                    {group.orders[0].status}
+                                                                </Tag>
+
+                                                            </div>
+                                                        )}
+
+                                                    </div>
+
+                                                    <div>
+                                                        <Tag severity="secondary" className=" p-2" rounded>
+                                                            <strong className="m-2">Order Amount
+                                                                :</strong>{group.orders.reduce((total, order) => total + order.totalPrice, 0)} Dh
+                                                        </Tag>
+                                                        <Tag severity="secondary" className=" p-2" rounded>
+                                                            {group.orders.reduce((total, order) => total + order.totalPrice, 0) < 100 ? (
+                                                                <p className="mb-0">
+                                                                    <strong className="mt-2 mx-2">Shipping
+                                                                        fee:</strong> {shippingfee} Dh<br/>
+                                                                </p>
+                                                            ) : (
+                                                                <p className="mb-0">
+                                                                    <strong className="mt-2 mx-2">Shipping
+                                                                        fee:</strong> 0 Dh<br/>
+                                                                </p>
+                                                            )}
+                                                        </Tag>
+                                                    </div>
+                                                    {group.orders[0].status === 'Pending' && (
                                                         <div>
-
-                                                            <Tag
-                                                                severity={group.orders[0].status === 'Delivered' ? 'success' : group.orders[0].status === 'Cancelled' ? 'danger' : group.orders[0].status === 'Shipped' ? 'info' : 'warning'}
-                                                                rounded>
-                                                                {group.orders[0].status === 'Delivered' &&
-                                                                    <CheckCircleOutlineIcon className="mx-1"/>}
-                                                                {group.orders[0].status === 'Cancelled' &&
-                                                                    <RailwayAlertRoundedIcon className="mx-1"/>}
-                                                                {group.orders[0].status === 'Shipped' &&
-                                                                    <LocalShippingIcon className="mx-1"/>}
-                                                                {group.orders[0].status === 'Pending' &&
-                                                                    <PendingRoundedIcon className="mx-1"/>}
-                                                                {group.orders[0].status}
-                                                            </Tag>
-
+                                                            {groupOrdersByCreatedDate().some((group) =>
+                                                                group.orders.some((order) => order.status === 'Pending')
+                                                            ) && (
+                                                                <Button
+                                                                    className="p-1 mx-1"
+                                                                    label="cancel"
+                                                                    severity="danger"
+                                                                    onClick={() => {
+                                                                        updateStatus(group);
+                                                                    }}
+                                                                />
+                                                            )}
                                                         </div>
                                                     )}
-
                                                 </div>
 
-                                                <div>
-                                                    <Tag severity="secondary" className=" p-2" rounded>
-                                                        <strong className="m-2">Order Amount :</strong>{group.orders.reduce((total, order) => total + order.totalPrice, 0)} Dh
-                                                    </Tag>
-                                                    <Tag severity="secondary" className=" p-2" rounded>
-                                                        {group.orders.reduce((total, order) => total + order.totalPrice, 0) < 100 ? (
-                                                            <p className="mb-0">
-                                                                <strong className="mt-2 mx-2">Shipping fee:</strong> {shippingfee} Dh<br/>
-                                                            </p>
-                                                        ) : (
-                                                            <p className="mb-0">
-                                                                <strong className="mt-2 mx-2">Shipping fee:</strong> 0 Dh<br/>
-                                                            </p>
-                                                        )}
-                                                    </Tag>
-                                                </div>
-                                                {group.orders[0].status === 'Pending' && (
-                                                    <div>
-                                                        {groupOrdersByCreatedDate().some((group) =>
-                                                            group.orders.some((order) => order.status === 'Pending')
-                                                        ) && (
-                                                            <Button
-                                                                className="p-1 mx-1"
-                                                                label="cancel"
-                                                                severity="danger"
-                                                                onClick={() => {
-                                                                    updateStatus(group);
-                                                                }}
-                                                            />
-                                                        )}
-                                                    </div>
-                                                )}
-                                            </div>
-
-                                        </Fieldset>
+                                            </Fieldset>
+                                        </div>
                                     </div>
-                                </div>
-                            ))
-                                ):(
+                                ))
+                            ) : (
                                 <div className="order-group">
                                     <div className="content mt-5">
                                         <Fieldset legend="No  Orders">
                                             <Alert severity="error">
                                                 <AlertTitle>Info</AlertTitle>
-                                                <strong>oops!</strong> — There is No  Orders —
+                                                <strong>oops!</strong> — There is No Orders —
                                             </Alert>
                                         </Fieldset>
                                     </div>
                                 </div>
-                                )}
+                            )}
                         </div>
                     )}
                     {value === 1 && (

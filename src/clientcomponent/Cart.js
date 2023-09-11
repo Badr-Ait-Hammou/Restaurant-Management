@@ -6,6 +6,7 @@ import {InputNumber} from "primereact/inputnumber";
 import {Dialog} from 'primereact/dialog';
 import {Toast} from "primereact/toast";
 import {useRef} from "react";
+import {Skeleton} from "primereact/skeleton";
 
 
 export default function Cart() {
@@ -14,6 +15,8 @@ export default function Cart() {
     const [userId, setUserId] = useState("");
     const [productQuantities, setProductQuantities] = useState({});
     const toast = useRef(null);
+    const [loading, setLoading] = useState(true);
+
     const shippingfee=30;
 
     const updateQuantity = (productId, newQuantity) => {
@@ -56,6 +59,7 @@ export default function Cart() {
                 .catch(error => {
                     console.error('Error fetching cart products:', error);
                 });
+            setLoading(false);
         }
     };
 
@@ -174,6 +178,26 @@ export default function Cart() {
         }
     };
 
+    if(loading){
+        return( <div className="card mt-5 mx-2">
+            <section style={{backgroundColor: "#eee"}}>
+                <div className="container mt-2 ">
+                    <div className="row d-flex justify-content-center align-items-center h-100">
+                        <div className="col-12 col-md-10">
+                            <div className="d-flex justify-content-between align-items-center mb-4">
+                                <h3 className="fw-normal mb-0 text-black">Shopping Cart</h3>
+                            </div>
+                            <Skeleton width="100%" height="120px" className="mb-5"  />
+
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+            </div>
+        );
+    }
+
     return (
         <>
             <Toast ref={toast}/>
@@ -187,7 +211,7 @@ export default function Cart() {
                                     <h3 className="fw-normal mb-0 text-black">Shopping Cart</h3>
                                 </div>
                                 {cartProducts.length === 0 ? (
-                                    <div className="alert alert-secondary">
+                                    <div className="alert alert-secondary mb-5 p-5" >
                                         oops! There are no products in the cart.
                                     </div>
                                 ) : (
