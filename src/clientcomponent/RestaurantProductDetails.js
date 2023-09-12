@@ -94,9 +94,7 @@ export default function RestaurantProductDetails() {
     useEffect(() => {
         axios.get(`/api/controller/produits/${id}`)
             .then((response) => {
-                //const product = response.data;
                 setProducts(response.data);
-                //console.log(product);
             })
             .catch((error) => {
                 console.error("Error fetching product:", error);
@@ -149,66 +147,61 @@ export default function RestaurantProductDetails() {
                             <div className="justify-content-center d-flex">
                                 <img alt="badr" src={products.photo} style={{
                                     width: "70%",
-                                    height: "300px", objectFit: "fill", borderRadius: "20px"
+                                    height: "250px", objectFit: "fill", borderRadius: "10px"
                                 }}/>
                             </div>
-                            <div className="details-container" style={{padding: '10px', marginBottom: '10px'}}>
-                                <h3 style={{
-                                    fontFamily: 'sans-serif',
-                                    fontSize: '40px',
-                                    marginBottom: '20px',
-                                    color: '#20b0a8'}}>
-                                    {products.nom}
-                                </h3>
-                                <Rating value={getAverageRating(products)} readOnly cancel={false}  ></Rating>
-                                <Typography className="font-monospace ">({products.description})</Typography>
-
-                                <strong
-                                    style={{fontSize: '18px', color: '#181818'}}>Address: {products.nom}</strong>
-                            </div>
-                            <div className="details-container" style={{padding: '10px'}}>
-                                <strong className="card-title" style={{fontSize: '18px', color: '#333'}}>OPEN
-                                    : {products.stock} / {products.nom}</strong>
-                            </div>
-
-
                         </Col>
                         <Col sm={12} md={6}>
-                            <div className="map-container justify-content-center d-flex">
-                                <div className="flex flex-column align-items-center sm:align-items-start gap-3">
-                                    <div className="text-2xl font-bold text-900">{products.nom}</div>
-                                    <Rating value={getAverageRating(products)} readOnly cancel={false}  ></Rating>
-                                    <Typography className="font-monospace ">({getReviews(products)})review</Typography>
-                                    <div className="flex align-items-center gap-3">
-                                        {products.promotion === true && (
+                            <div className="map-container justify-content-start d-flex">
+                                <div className="flex flex-column align-items-start sm:align-items-start ">
+                                    <div >
+                                        <span className="text-1xl font-monospace text-900">Product Name :</span>
+                                        <span className="text-1xl font-bold text-900">{products.nom}</span>
+                                    </div>
+                                    <div className="mt-1">
+                                        <span className="text-1xl font-monospace text-900">Product Description :</span>
+                                        <span className="text-1xl font-bold text-900">{products.description}</span>
+                                    </div>
+                                    <div className="mt-1">
+                                        <span className="text-1xl font-monospace text-900">Stock :</span>
+                                        <span className="text-1xl font-bold text-900">{products.stock} Pcs</span>
+                                    </div>
+
+                                    <div className="mt-1 flex">
+                                        <span className="text-1xl font-monospace text-900">Status :</span>
+                                        {products.promotion === true ? (
                                             <Tag value="On Sale" severity="danger" icon="pi pi-tag" />
+                                        ):(
+                                            <Tag value="New" severity="success" icon="pi pi-plus" />
                                         )}
-                                        <span className="flex align-items-center gap-2">
-                                    <span className="font-semibold">{products.stock} Pcs</span>
-                                </span>
+                                    </div>
+                                    <div className="mt-1 flex">
+                                        <Rating value={getAverageRating(products)} readOnly cancel={false}  />
+                                        <Typography className="font-monospace ">({getReviews(products)})review</Typography>
+                                    </div>
+                                    <div className="d-flex justify-content-lg-between gap-3 align-items-start mt-3">
+                                        <span className="text-2xl font-semibold">{products.prix} Dh</span>
+
+                                        {productInCart[products.id] ? (
+                                            <Link to="/admin/cart">
+                                                <Button
+                                                    style={{background: 'linear-gradient(-225deg,#AC32E4 0%,#7918F2 48%,#4801FF 100%)'}}
+                                                    icon="pi pi-external-link"
+                                                    className="p-button-rounded mt-2"
+                                                    disabled={products.stock <= 0}
+                                                />
+                                            </Link>
+                                        ) : (
+                                            <Button
+                                                icon="pi pi-shopping-cart"
+                                                className="p-button-rounded mt-2"
+                                                onClick={() => handleAddToCart(products)}
+                                                disabled={products.stock <= 0 || productInCart[products.id]}
+                                            />
+                                        )}
                                     </div>
                                 </div>
-                                <div className="d-flex justify-content-lg-between gap-3 align-items-center mt-3">
-                                    <span className="text-2xl font-semibold">{products.prix} Dh</span>
 
-                                    {productInCart[products.id] ? (
-                                        <Link to="/admin/cart">
-                                            <Button
-                                                style={{background: 'linear-gradient(-225deg,#AC32E4 0%,#7918F2 48%,#4801FF 100%)'}}
-                                                icon="pi pi-external-link"
-                                                className="p-button-rounded mt-2"
-                                                disabled={products.stock <= 0}
-                                            />
-                                        </Link>
-                                    ) : (
-                                        <Button
-                                            icon="pi pi-shopping-cart"
-                                            className="p-button-rounded mt-2"
-                                            onClick={() => handleAddToCart(products)}
-                                            disabled={products.stock <= 0 || productInCart[products.id]}
-                                        />
-                                    )}
-                                </div>
                             </div>
                         </Col>
                     </Row>
