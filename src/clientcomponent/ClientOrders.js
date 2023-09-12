@@ -211,34 +211,37 @@ export default function ClientOrders() {
 
     const renderFeedbackForm = () => {
         return feedbackData.map((product) => (
-            <div key={product.id} className="mb-3">
-                <div className="d-flex align-items-center mb-2">
-                        <Avatar src={product.photo} className="mr-2" />
-                    <h5>{product.orderId}</h5>
-                    <h5>{product.nom}</h5>
-                </div>
-                <div className="card d-flex justify-content-between align-items-center">
-                    <div>
-                        <Rating
-                            value={product.rating}
-                            onChange={(e) => handleRatingChange(e, product)}
-                            cancel={false}
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor={`newcmt-${product.id}`} className="font-bold">
-                            Note
-                        </label>
-                        <InputTextarea
-                            style={{ marginTop: '5px' }}
-                            id={`newcmt-${product.id}`}
-                            value={product.note}
-                            onChange={(e) => handleNoteChange(e, product)}
-                            required
-                        />
-                    </div>
-                </div>
-                <div className="field mt-2"></div>
+            <div key={product.id} className="mb-3 mt-1">
+                <Grid container spacing={2}>
+                    <Grid item xs={12} sm={3}>
+                        <Box display="flex" sx={{mt: 4}} alignItems="center">
+                            <Avatar src={product.photo} className="mr-2" />
+                            <div>
+                                <h5>{product.nom}</h5>
+                            </div>
+                        </Box>
+                    </Grid>
+
+                    <Grid item xs={12} sm={9} >
+                        <Box  alignItems="center">
+                            <Rating
+                                value={product.rating}
+                                onChange={(e) => handleRatingChange(e, product)}
+                                cancel={false}
+                            />
+                            <InputTextarea
+                                style={{ marginTop: '5px' }}
+                                id={`newcmt-${product.id}`}
+                                value={product.note}
+                                placeholder="Your feedback "
+                                onChange={(e) => handleNoteChange(e, product)}
+                                required
+                            />
+                        </Box>
+                    </Grid>
+                </Grid>
+                <Divider variant="fullWidth" component=""/>
+
             </div>
         ));
     };
@@ -687,13 +690,14 @@ export default function ClientOrders() {
                 visible={commentDialog}
                 style={{ width: '40rem' }}
                 breakpoints={{ '960px': '75vw', '641px': '90vw' }}
-                header="Add Comment"
+                header={<small>Your Feedback Matters</small>}
                 modal
+                maximizable
                 className="p-fluid"
                 footer={commentDialogFooter}
                 onHide={hideDialog}
             >
-                {renderFeedbackForm()} {/* Render the dynamic feedback form */}
+                {renderFeedbackForm()}
             </Dialog>
             </>
     );
