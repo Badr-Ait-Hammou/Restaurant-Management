@@ -24,8 +24,8 @@ export default function ClientRestaurants() {
     const [loading, setLoading] = useState(true); // Track loading state
 
     const sortOptions = [
-        { label: 'Top Rated', value: '!id' },
-        { label: 'poorly-rated', value: 'id' }
+        { label: 'Top Rated', value: '!rating' },
+        { label: 'poorly-rated', value: 'rating' }
     ];
 
 
@@ -124,6 +124,7 @@ export default function ClientRestaurants() {
             return 0;
         }
     };
+
 
 
 
@@ -292,13 +293,14 @@ export default function ClientRestaurants() {
             setSortOrder(-1);
             setSortField(value.substring(1, value.length));
             setSortKey(value);
+            setRestaurants([...restaurants].sort((a, b) => getAverageRating(b) - getAverageRating(a)));
         } else {
             setSortOrder(1);
             setSortField(value);
             setSortKey(value);
+            setRestaurants([...restaurants].sort((a, b) => getAverageRating(a) - getAverageRating(b)));
         }
     };
-
 
     const header = () => {
         return (
@@ -308,7 +310,7 @@ export default function ClientRestaurants() {
                         options={sortOptions}
                         value={sortKey}
                         optionLabel="label"
-                        placeholder="Sort By Price"
+                        placeholder="Sort By Rating"
                         onChange={onSortChange}
                         className="w-full sm:w-14rem"
                     />
@@ -322,16 +324,7 @@ export default function ClientRestaurants() {
             </div>
         );
     };
-    const header2 = () => {
-        return (
-            <div className="flex justify-content-end">
-                <DataViewLayoutOptions
-                    layout={layout}
-                    onChange={(e) => setLayout(e.value)}
-                />
-            </div>
-        );
-    };
+
 
 
 
@@ -379,7 +372,7 @@ export default function ClientRestaurants() {
 
                 {layout === 'grid' && (
                     <div >
-                        <DataView value={groupedRestaurants} itemTemplate={itemTemplate} layout={layout} header={header2()} sortField={sortField} sortOrder={sortOrder}/>
+                        <DataView value={groupedRestaurants} itemTemplate={itemTemplate} layout={layout} header={header()} sortField={sortField} sortOrder={sortOrder}/>
                     </div>
                 )}
             </div>
