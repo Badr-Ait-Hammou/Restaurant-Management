@@ -22,6 +22,7 @@ import ClientOrders from "../clientcomponent/ClientOrders"
 import Cart from "../clientcomponent/Cart"
 import AllProducts from "../clientcomponent/AllProducts"
 import RestaurantBySpeciality from "../clientcomponent/RestaurantSpeciality";
+import RestaurantProductDetail from "../clientcomponent/RestaurantProductDetails";
 const AdminRoute = () => {
 
     return (
@@ -77,6 +78,7 @@ const AdminRoute = () => {
                 <Route exact path="/restaurants/:id" element={<RestaurantDetails/>}/>
                 <Route exact path="/home/restaurants_speciality/:id" element={<RestaurantBySpeciality/>}/>
                 <Route exact path="/home/restaurants/:id" element={<RestaurantDetails/>}/>
+                <Route exact path="/all_products/product/:id" element={<RestaurantProductDetail/>}/>
             </Route>
         </Routes>
             <Footer/>

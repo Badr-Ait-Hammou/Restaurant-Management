@@ -244,7 +244,7 @@ export default function AllProduct() {
             <div key={product.id} className={`col mb-4 ${product.stock <= 0 ? 'out-of-stock' : ''}`}>
                 <div className="card h-100">
                     <div className="flex flex-column xl:flex-row xl:align-items-start p-2 gap-4">
-                        <Link to={`products/${product.id}`}>
+                        <Link to={`product/${product.id}`}>
                             <div style={{position: 'relative'}}>
                                 <img className="w-90 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round"
                                      src={product.photo}
