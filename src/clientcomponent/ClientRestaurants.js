@@ -7,6 +7,7 @@ import {DataView, DataViewLayoutOptions} from "primereact/dataview";
 import {Rating} from "@mui/material";
 import Skeleton from "../skeleton/ProfileSkeleton"
 import DataviewSkeleton from "../skeleton/DataviewSkeleton"
+import Typography from "@mui/material/Typography";
 
 export default function ClientRestaurants() {
     const [restaurants, setRestaurants] = useState([]);
@@ -23,8 +24,8 @@ export default function ClientRestaurants() {
     const [loading, setLoading] = useState(true); // Track loading state
 
     const sortOptions = [
-        { label: 'Id High to Low', value: '!id' },
-        { label: 'Id Low to High', value: 'id' }
+        { label: 'Top Rated', value: '!id' },
+        { label: 'poorly-rated', value: 'id' }
     ];
 
 
@@ -101,6 +102,31 @@ export default function ClientRestaurants() {
         return now;
     }
 
+    const getAverageRating = (restaurant) => {
+        const ratings = restaurant.produitList.map((product) => product.avisList.reduce((accumulator, currentValue) => accumulator + currentValue.rating, 0));
+        if (ratings.length > 0) {
+            const totalRating = ratings.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+            const ratingsreview = restaurant.produitList.map((product) => product.avisList.length);
+            const reviewCount = ratingsreview.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+            return totalRating /reviewCount;
+        } else {
+            return 0;
+        }
+    };
+
+    const getReviews = (restaurant) => {
+        const ratings = restaurant.produitList.map((product) => product.avisList.length);
+        const reviewCount = restaurant.produitList.length;
+
+        if (ratings.length > 0) {
+            return reviewCount;
+        } else {
+            return 0;
+        }
+    };
+
+
+
 
     const listItem = (restaurant) => {
         return (
@@ -119,10 +145,12 @@ export default function ClientRestaurants() {
                                 }}/>
                         </Link>
                         <div className="card-body">
+
                             <h6 className="card-title">{restaurant.nom}</h6>
                             <Tag severity="success" icon="pi pi-clock">
                                 {restaurant.dateOuverture} / {restaurant.dateFermeture}
                             </Tag>
+
                             <span className="card-text-value mx-2">
                                     {restaurant.dateOuverture && restaurant.dateFermeture ? (
                                         isRestaurantOpen(restaurant.dateOuverture, restaurant.dateFermeture) ? (
@@ -148,6 +176,10 @@ export default function ClientRestaurants() {
                                     }}
                                 />
                                 </span>
+
+                            <div className="mt-2">
+                                <Rating value={getAverageRating(restaurant)} readOnly cancel={false} ></Rating>
+                                <Typography className="font-monospace ">({getReviews(restaurant)})review</Typography>                            </div>
                             <div className="mt-1">
                                 <strong className="card-text ">Address: </strong> {restaurant.adresse}
                             </div>
@@ -203,7 +235,8 @@ export default function ClientRestaurants() {
                             className="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4">
                             <div className="flex flex-column align-items-center sm:align-items-start gap-3">
                                 <div className="text-xl font-bold ">{restaurant.nom}</div>
-                                <Rating value={restaurant.id} readOnly cancel={false}></Rating>
+                                <Rating value={getAverageRating(restaurant)} readOnly cancel={false} ></Rating>
+                                <Typography className="font-monospace ">({getReviews(restaurant)})review</Typography>
                                 <div className="flex align-items-center ">
                                     <Tag severity="success" icon="pi pi-clock">
                                         {restaurant.dateOuverture} / {restaurant.dateFermeture}

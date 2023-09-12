@@ -154,8 +154,6 @@ export default function RestaurantDetails() {
         return  sumOfAverageRatings / numberOfProducts;
     };
 
-
-
     const restaurantRating = getRestaurantRating(products);
 
 
@@ -206,8 +204,9 @@ export default function RestaurantDetails() {
                             className="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4">
                             <div className="flex flex-column align-items-center sm:align-items-start gap-3">
                                 <div className="text-2xl font-bold text-900">{product.nom}</div>
-                                <Rating value={getAverageRating(product)} readOnly cancel={false}></Rating>
-                                <Typography className="font-monospace ">({getReviews(product)})review</Typography>                                <div className="flex align-items-center gap-3">
+                                <Rating value={getAverageRating(product)} readOnly cancel={false}  ></Rating>
+                                <Typography className="font-monospace ">({getReviews(product)})review</Typography>
+                                <div className="flex align-items-center gap-3">
                                     {product.promotion === true && (
                                         <Tag value="On Sale" severity="danger" icon="pi pi-tag" />
                                     )}
@@ -278,7 +277,7 @@ export default function RestaurantDetails() {
                                     color: '#20b0a8'}}>
                                     {restaurant.nom}
                                 </h3>
-                                <Rating value={restaurantRating} readOnly cancel={false}  precision={0.5}></Rating>
+                                <Rating value={restaurantRating} readOnly cancel={false}  ></Rating>
                                 <Typography className="font-monospace ">({products.length})review</Typography>
 
                                 <strong
