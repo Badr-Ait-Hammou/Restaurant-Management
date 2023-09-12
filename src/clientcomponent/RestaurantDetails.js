@@ -12,6 +12,7 @@ import 'primeicons/primeicons.css';
 import "primereact/resources/primereact.min.css";
 import {Tag} from "primereact/tag";
 import Skeleton from "../skeleton/ProfileSkeleton"
+import Typography from "@mui/material/Typography";
 
 
 export default function RestaurantDetails() {
@@ -124,6 +125,26 @@ export default function RestaurantDetails() {
     const showSuccess = () => {
         toast.current.show({severity: 'success', summary: 'Success', detail: 'item added to cart', life: 1000});
     }
+    const getAverageRating = (product) => {
+        const ratings = product.avisList.map((avis) => avis.rating);
+        if (ratings.length > 0) {
+            const totalRating = ratings.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+            return totalRating / ratings.length;
+        } else {
+            return 0;
+        }
+    };
+
+    const getReviews = (product) => {
+        const ratings = product.avisList.map((avis) => avis.rating);
+        const reviewCount = product.avisList.length;
+
+        if (ratings.length > 0) {
+            return reviewCount;
+        } else {
+            return 0;
+        }
+    };
 
 
     const itemTemplate = (product) => {
@@ -173,8 +194,8 @@ export default function RestaurantDetails() {
                             className="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4">
                             <div className="flex flex-column align-items-center sm:align-items-start gap-3">
                                 <div className="text-2xl font-bold text-900">{product.nom}</div>
-                                <Rating value={product.id} readOnly cancel={false}></Rating>
-                                <div className="flex align-items-center gap-3">
+                                <Rating value={getAverageRating(product)} readOnly cancel={false}></Rating>
+                                <Typography className="font-monospace ">({getReviews(product)})review</Typography>                                <div className="flex align-items-center gap-3">
                                     {product.promotion === true && (
                                         <Tag value="On Sale" severity="danger" icon="pi pi-tag" />
                                     )}
