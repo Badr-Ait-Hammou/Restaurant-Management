@@ -222,7 +222,7 @@ export default function HomePage() {
                                         <div className="text-2xl font-bold text-900">
                                             {product.nom}
                                         </div>
-                                        <Rating value={getAverageRating(product)} readOnly cancel={false}></Rating>
+                                        <Rating value={getAverageRating(product)} readOnly cancel={false} precision={0.5}></Rating>
                                         <Typography className="font-monospace ">({getReviews(product)})review</Typography>
                                         <div className="flex align-items-center gap-3">
                                             {product.promotion === true && (

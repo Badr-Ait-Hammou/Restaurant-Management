@@ -27,6 +27,7 @@ export default function RestaurantDetails() {
 
 
 
+
     const loadProductsUser = () => {
         const checkProductInCart = (productId) => {
             if (userId) {
@@ -146,6 +147,17 @@ export default function RestaurantDetails() {
         }
     };
 
+    const getRestaurantRating = (products) => {
+        const averageRatings = products.map((product) => getAverageRating(product));
+        const sumOfAverageRatings = averageRatings.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+        const numberOfProducts = products.length;
+        return  sumOfAverageRatings / numberOfProducts;
+    };
+
+
+
+    const restaurantRating = getRestaurantRating(products);
+
 
     const itemTemplate = (product) => {
         if (!product) {
@@ -263,8 +275,12 @@ export default function RestaurantDetails() {
                                     fontFamily: 'sans-serif',
                                     fontSize: '40px',
                                     marginBottom: '20px',
-                                    color: '#20b0a8'
-                                }}>{restaurant.nom}</h3>
+                                    color: '#20b0a8'}}>
+                                    {restaurant.nom}
+                                </h3>
+                                <Rating value={restaurantRating} readOnly cancel={false}  precision={0.5}></Rating>
+                                <Typography className="font-monospace ">({products.length})review</Typography>
+
                                 <strong
                                     style={{fontSize: '18px', color: '#181818'}}>Address: {restaurant.adresse}</strong>
                             </div>
