@@ -70,8 +70,10 @@ export default function AllProduct() {
 
     const getReviews = (product) => {
         const ratings = product.avisList.map((avis) => avis.rating);
+        const reviewCount = product.avisList.length;
+
         if (ratings.length > 0) {
-            return ratings.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+            return reviewCount;
         } else {
             return 0;
         }
