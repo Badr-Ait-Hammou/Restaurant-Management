@@ -112,9 +112,10 @@ export default function ClientOrders() {
 
     const openFeedbackDialog = (productsGroup) => {
         const initialFeedbackData = productsGroup.map((product) => {
-            const existingComment = comments.find((comment) => comment.produit.id === product.produit.id);
+            const existingComment = comments.find((comment) => comment.produit.id === product.produit.id && comment.orders.id === product.id);
             return {
                 id: product.produit.id,
+                orderId:product.id,
                 nom: product.produit.nom,
                 photo: product.produit.photo,
                 rating: existingComment ? existingComment.rating : null,
@@ -124,9 +125,10 @@ export default function ClientOrders() {
 
         setFeedbackData(initialFeedbackData);
 
-        const allProductsHaveComments = productsGroup.every((product) => {
-            return feedbackData.some((feedback) => feedback.id === product.produit.id);
+        const allProductsHaveComments = initialFeedbackData.every((product) => {
+            return product.rating !== null && product.note !== '';
         });
+
         setIsSaveButtonDisabled(allProductsHaveComments);
         setCommentDialog(true);
     };
@@ -150,6 +152,9 @@ export default function ClientOrders() {
                 rating: product.rating,
                 produit: {
                     id: product.id,
+                },
+                orders:{
+                    id:product.orderId,
                 },
                 user: {
                     id: userId,
@@ -176,7 +181,7 @@ export default function ClientOrders() {
                 label="Submit"
                 icon="pi pi-check"
                 onClick={handleSubmit}
-                disabled={isSaveButtonDisabled} // Disable the button when isSaveButtonDisabled is true
+                disabled={isSaveButtonDisabled}
             />
             <Button label="Cancel" icon="pi pi-times" onClick={hideDialog} className="p-button-text" />
         </div>
@@ -209,6 +214,7 @@ export default function ClientOrders() {
             <div key={product.id} className="mb-3">
                 <div className="d-flex align-items-center mb-2">
                         <Avatar src={product.photo} className="mr-2" />
+                    <h5>{product.orderId}</h5>
                     <h5>{product.nom}</h5>
                 </div>
                 <div className="card d-flex justify-content-between align-items-center">
@@ -286,7 +292,7 @@ export default function ClientOrders() {
         toast.current.show({severity:'success', summary: 'Done', detail:'Feedback submitted  successfully', life: 3000});
     }
     const showuEmpty = () => {
-        toast.current.show({severity:'danger', summary: 'Warning', detail:'One of the fields is empty ', life: 3000});
+        toast.current.show({severity:'error', summary: 'Warning', detail:'One of the fields is empty ', life: 3000});
     }
 
     /******************************************************* return   **************************************/
@@ -400,6 +406,8 @@ export default function ClientOrders() {
                                                 className="p-1 mx-1"
                                                 label="feedback"
                                                 severity="info"
+                                                onClick={() => openFeedbackDialog(group.orders)}
+
 
                                             />
                                         )}
