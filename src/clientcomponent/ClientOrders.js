@@ -211,19 +211,20 @@ export default function ClientOrders() {
 
     const renderFeedbackForm = () => {
         return feedbackData.map((product) => (
-            <div key={product.id} className="mb-3 mt-1">
-                <Grid container spacing={2}>
-                    <Grid item xs={12} sm={3}>
-                        <Box display="flex" sx={{mt: 4}} alignItems="center">
-                            <Avatar src={product.photo} className="mr-2" />
+            <div key={product.id} className="card mb-2 mt-1 " style={{backgroundColor:"rgba(13,77,84,0.05)"}} >
+                <Grid container spacing={2} sx={{mt:1,mb:1}}>
+
+                    <Grid item xs={12} sm={4}>
+                        <Box display="flex" sx={{mt: 3}} alignItems="center">
+                            <Avatar variant="square" sx={{width:50,height:50,borderRadius:2,backgroundColor:"white"}} src={product.photo} className="mx-3" />
                             <div>
                                 <h5>{product.nom}</h5>
                             </div>
                         </Box>
                     </Grid>
 
-                    <Grid item xs={12} sm={9} >
-                        <Box  alignItems="center">
+                    <Grid item xs={12} sm={8} >
+                        <Box  alignItems="center" sx={{mr:1}}>
                             <Rating
                                 value={product.rating}
                                 onChange={(e) => handleRatingChange(e, product)}
@@ -240,8 +241,6 @@ export default function ClientOrders() {
                         </Box>
                     </Grid>
                 </Grid>
-                <Divider variant="fullWidth" component=""/>
-
             </div>
         ));
     };

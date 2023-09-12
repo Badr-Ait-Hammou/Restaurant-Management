@@ -12,6 +12,7 @@ import {accountService} from "../service/accountService";
 import {Toast} from "primereact/toast";
 import RestaurantMenuRoundedIcon from '@mui/icons-material/RestaurantMenuRounded';
 import DataviewSkeleton from "../skeleton/DataviewSkeleton"
+import Typography from "@mui/material/Typography";
 
 
 export default function AllProduct() {
@@ -55,6 +56,26 @@ export default function AllProduct() {
         };
         fetchUserData();
     }, []);
+
+
+    const getAverageRating = (product) => {
+        const ratings = product.avisList.map((avis) => avis.rating);
+        if (ratings.length > 0) {
+            const totalRating = ratings.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+            return totalRating / ratings.length;
+        } else {
+            return 0;
+        }
+    };
+
+    const getReviews = (product) => {
+        const ratings = product.avisList.map((avis) => avis.rating);
+        if (ratings.length > 0) {
+            return ratings.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+        } else {
+            return 0;
+        }
+    };
 
     const loadProductsUser = () => {
         const checkProductInCart = (productId) => {
@@ -166,6 +187,8 @@ export default function AllProduct() {
                                     className="card-text ">Description: </strong><small>{product.description}</small>
                             </div>
 
+                            <Rating value={getAverageRating(product)} readOnly cancel={false}></Rating>
+                            <Typography className="font-monospace ">({getReviews(product)})review</Typography>
                             <div className=" align-items-center gap-3 mt-2">
                                 {product.promotion === true && (
                                     <Tag value="On Sale" severity="danger" icon="pi pi-tag"/>
@@ -258,7 +281,8 @@ export default function AllProduct() {
                             className="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4">
                             <div className="flex flex-column align-items-center sm:align-items-start gap-3">
                                 <div className="text-2xl font-bold text-900">{product.nom}</div>
-                                <Rating value={product.id} readOnly cancel={false}></Rating>
+                                <Rating value={getAverageRating(product)} readOnly cancel={false}></Rating>
+                                <Typography className="font-monospace ">({getReviews(product)})review</Typography>
                                 <div className="flex align-items-center gap-3">
                                     {product.promotion === true && (
                                         <Tag value="On Sale" severity="danger" icon="pi pi-tag"/>
