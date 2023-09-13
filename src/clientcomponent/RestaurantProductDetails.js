@@ -1,7 +1,7 @@
 import {Link, useParams} from 'react-router-dom';
 import axios from '../service/callerService';
 import {useEffect, useState, useRef} from "react";
-import {ButtonBase, Paper, Rating} from "@mui/material";
+import { Rating} from "@mui/material";
 import React from "react";
 import {accountService} from "../service/accountService";
 import {Toast} from "primereact/toast";
@@ -26,7 +26,6 @@ import {InputText} from "primereact/inputtext";
 import Avatar from "@mui/material/Avatar";
 import { formatDistanceToNow, format } from 'date-fns';
 import RestaurantRating from "./RestaurantRating";
-import { styled } from '@mui/material/styles';
 
 
 export default function RestaurantProductDetails() {
@@ -38,12 +37,7 @@ export default function RestaurantProductDetails() {
     const [productSpeciality, setProductsSpeciality] = useState({});
     const  restaurantId= products.restaurant && products.restaurant.id;
 
-    const Img = styled('img')({
-        margin: 'auto',
-        display: 'block',
-        maxWidth: '100%',
-        maxHeight: '100%',
-    });
+
 
 
 
