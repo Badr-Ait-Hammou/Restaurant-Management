@@ -22,6 +22,8 @@ import ZoomOutRoundedIcon from '@mui/icons-material/ZoomOutRounded';
 import RemoveRedEyeRoundedIcon from '@mui/icons-material/RemoveRedEyeRounded';
 import {DataView} from "primereact/dataview";
 import Box from "@mui/material/Box";
+import {InputText} from "primereact/inputtext";
+import Avatar from "@mui/material/Avatar";
 
 
 
@@ -119,6 +121,7 @@ export default function RestaurantProductDetails() {
         axios.get(`/api/controller/produits/${id}`)
             .then((response) => {
                 setProducts(response.data);
+                console.log(products);
             });
     }, [id]);
 
@@ -280,6 +283,35 @@ export default function RestaurantProductDetails() {
             </div>
         );
     };
+    const itemTemplateFeedback = (comment) => {
+        return (
+            <div key={comment.id} className="flex flex-wrap p-1 align-items-center gap-3">
+                <Avatar
+                    sx={{
+                        backgroundColor: "rgba(50, 121, 99, 0.18)",
+                        p: 1,
+                        width: 50,
+                        height: 50
+                    }}
+                    src={comment.user && comment.user.photo}
+                    alt="badr"
+                />
+                <div className=" flex flex-column gap-2 xl:mr-1">
+                    <div className="flex flex-row gap-3 align-items-center">
+                        <small className="text-black">{comment.user && comment.user.firstName}</small>
+                        <Rating value={comment.rating} readOnly cancel={false} />
+                    </div>
+                    <div className="flex flex-row gap-3 align-items-center">
+                        <Typography variant="body1" gutterBottom>
+                            <InputText  disabled={true} value={comment.note || 'nice'} className="font-bold" />
+                        </Typography>
+                    </div>
+
+                </div>
+            </div>
+
+        );
+    };
 
 
     return (
@@ -409,7 +441,9 @@ export default function RestaurantProductDetails() {
             <Box sx={{mx:3,mt:3}}>
                 <Grid item container spacing={2}  columns={12}>
                     <Grid item xs={12} md={7}  >
-                        <h6>5</h6>
+                        <div className="card">
+                            <DataView value={products.avisList} itemTemplate={itemTemplateFeedback} paginator paginatorTemplate={'PrevPageLink CurrentPageReport NextPageLink'} rows={3} header="Similar products" />
+                        </div>
                     </Grid>
                     <Grid item xs={12} md={5}  >
                         <div className="card">
