@@ -166,77 +166,77 @@ export default function RestaurantProductDetails() {
 
 
 
-    const itemTemplate30 = (product) => {
-        const averageRating = getAverageRating(product);
-        const totalReviews = getReviews(product);
-
-        return (
-            <Card key={product.id} className="mb-4 p-1" variant="outlined">
-                <CardContent>
-                    <Grid container spacing={2}>
-                        <Grid item xs={12} md={4}>
-                            <img
-                                className="w-100"
-                                src={product.photo}
-                                alt={product.nom}
-                            />
-                        </Grid>
-                        <Grid item xs={12} md={8}>
-                            <Typography variant="h6" gutterBottom>
-                                {product.nom}
-                            </Typography>
-                            <Typography variant="body1" gutterBottom>
-                                <div>
-                                    <Rating value={averageRating} readOnly cancel={false} />
-                                    <small className="text-black">({totalReviews} review{totalReviews !== 1 ? 's' : ''})</small>
-                                </div>
-                            </Typography>
-                            <Typography variant="body1" gutterBottom>
-                                Stock: {product.stock} pcs
-                            </Typography>
-                            <Typography variant="body1" gutterBottom>
-                                Restaurant: {product.restaurant && product.restaurant.nom}
-                            </Typography>
-                            <Typography variant="body1" gutterBottom>
-                                Speciality: {product.restaurant && product.restaurant.specialite.nom}
-                            </Typography>
-                            <div>
-                                <Typography variant="body1" gutterBottom>
-                                    Status: {product.promotion ? (
-                                    <Tag className="mx-2" value="On Sale" severity="danger" icon="pi pi-tag" />
-                                ) : (
-                                    <Tag className="mx-2" value="New" severity="success" icon="pi pi-tag" />
-                                )}
-                                </Typography>
-                            </div>
-                            <div>
-                                <Typography variant="body1" gutterBottom>
-                                    Price: {product.prix} Dh
-                                </Typography>
-                                {productInCart[product.id] ? (
-                                    <Link to="/admin/cart">
-                                        <Button
-                                            style={{ background: 'linear-gradient(-225deg,#AC32E4 0%,#7918F2 48%,#4801FF 100%)' }}
-                                            icon="pi pi-external-link"
-                                            className="p-button-rounded"
-                                            disabled={product.stock <= 0}
-                                        />
-                                    </Link>
-                                ) : (
-                                    <Button
-                                        icon="pi pi-shopping-cart"
-                                        className="p-button-rounded"
-                                        onClick={() => handleAddToCart(product)}
-                                        disabled={product.stock <= 0 || productInCart[product.id]}
-                                    />
-                                )}
-                            </div>
-                        </Grid>
-                    </Grid>
-                </CardContent>
-            </Card>
-        );
-    };
+    // const itemTemplate30 = (product) => {
+    //     const averageRating = getAverageRating(product);
+    //     const totalReviews = getReviews(product);
+    //
+    //     return (
+    //         <Card key={product.id} className="mb-4 p-1" variant="outlined">
+    //             <CardContent>
+    //                 <Grid container spacing={2}>
+    //                     <Grid item xs={12} md={4}>
+    //                         <img
+    //                             className="w-100"
+    //                             src={product.photo}
+    //                             alt={product.nom}
+    //                         />
+    //                     </Grid>
+    //                     <Grid item xs={12} md={8}>
+    //                         <Typography variant="h6" gutterBottom>
+    //                             {product.nom}
+    //                         </Typography>
+    //                         <Typography variant="body1" gutterBottom>
+    //                             <div>
+    //                                 <Rating value={averageRating} readOnly cancel={false} />
+    //                                 <small className="text-black">({totalReviews} review{totalReviews !== 1 ? 's' : ''})</small>
+    //                             </div>
+    //                         </Typography>
+    //                         <Typography variant="body1" gutterBottom>
+    //                             Stock: {product.stock} pcs
+    //                         </Typography>
+    //                         <Typography variant="body1" gutterBottom>
+    //                             Restaurant: {product.restaurant && product.restaurant.nom}
+    //                         </Typography>
+    //                         <Typography variant="body1" gutterBottom>
+    //                             Speciality: {product.restaurant && product.restaurant.specialite.nom}
+    //                         </Typography>
+    //                         <div>
+    //                             <Typography variant="body1" gutterBottom>
+    //                                 Status: {product.promotion ? (
+    //                                 <Tag className="mx-2" value="On Sale" severity="danger" icon="pi pi-tag" />
+    //                             ) : (
+    //                                 <Tag className="mx-2" value="New" severity="success" icon="pi pi-tag" />
+    //                             )}
+    //                             </Typography>
+    //                         </div>
+    //                         <div>
+    //                             <Typography variant="body1" gutterBottom>
+    //                                 Price: {product.prix} Dh
+    //                             </Typography>
+    //                             {productInCart[product.id] ? (
+    //                                 <Link to="/admin/cart">
+    //                                     <Button
+    //                                         style={{ background: 'linear-gradient(-225deg,#AC32E4 0%,#7918F2 48%,#4801FF 100%)' }}
+    //                                         icon="pi pi-external-link"
+    //                                         className="p-button-rounded"
+    //                                         disabled={product.stock <= 0}
+    //                                     />
+    //                                 </Link>
+    //                             ) : (
+    //                                 <Button
+    //                                     icon="pi pi-shopping-cart"
+    //                                     className="p-button-rounded"
+    //                                     onClick={() => handleAddToCart(product)}
+    //                                     disabled={product.stock <= 0 || productInCart[product.id]}
+    //                                 />
+    //                             )}
+    //                         </div>
+    //                     </Grid>
+    //                 </Grid>
+    //             </CardContent>
+    //         </Card>
+    //     );
+    // };
 
 
 
