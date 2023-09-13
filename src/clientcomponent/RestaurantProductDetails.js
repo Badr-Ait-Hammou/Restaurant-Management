@@ -414,9 +414,12 @@ export default function RestaurantProductDetails() {
                     </Grid>
                     <Grid item xs={9} md={11}   >
                         <div className="card  flex justify-content-start" style={{backgroundColor:"transparent",borderColor:"transparent"}}>
+                            <Link to={`/admin/home/restaurants/${restaurantId}`}>
+
                             <Typography variant="body1" className="ml-1" gutterBottom>
                                 <strong className="text-black" style={{float:"left"}} >{products.restaurant && products.restaurant.nom}</strong>
                             </Typography>
+                            </Link>
                             <Typography variant="body2" className="ml-1" color="text.secondary" sx={{float:"left"}}>
                                 <p  style={{float:"left"}} >{products.restaurant && products.restaurant.adresse}</p>
                             </Typography>
