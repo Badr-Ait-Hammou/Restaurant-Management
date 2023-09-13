@@ -180,7 +180,7 @@ export default function ClientRestaurants() {
 
                             <div className="mt-2">
                                 <Rating value={getAverageRating(restaurant)} readOnly cancel={false} ></Rating>
-                                <Typography className="font-monospace ">({getReviews(restaurant)})review</Typography>                            </div>
+                                <Typography className="font-monospace ">({getReviews(restaurant)})review{getReviews(restaurant) !==1 ? 's':""}</Typography>                            </div>
                             <div className="mt-1">
                                 <strong className="card-text ">Address: </strong> {restaurant.adresse}
                             </div>
@@ -237,9 +237,9 @@ export default function ClientRestaurants() {
                             <div className="flex flex-column align-items-center sm:align-items-start gap-3">
                                 <div className="text-xl font-bold ">{restaurant.nom}</div>
                                 <Rating value={getAverageRating(restaurant)} readOnly cancel={false} ></Rating>
-                                <Typography className="font-monospace ">({getReviews(restaurant)})review</Typography>
+                                <Typography className="font-monospace ">({getReviews(restaurant)}) review{getReviews(restaurant) !== 1 ? 's' : ''}</Typography>
                                 <div className="flex align-items-center ">
-                                    <Tag severity="success" icon="pi pi-clock">
+                                    <Tag severity="success" icon="pi pi-clock" >
                                         {restaurant.dateOuverture} / {restaurant.dateFermeture}
                                     </Tag>
                                     <span className="card-text-value mx-2">
@@ -259,7 +259,7 @@ export default function ClientRestaurants() {
                                 </span>
                                 </div>
                             </div>
-                            <div className="d-flex justify-content-lg-between gap-1 align-items-center mt-3">
+                            <div className="d-flex justify-content-lg-between gap-1 align-items-center mt-1">
                                 <strong className="card-text mt-1 ">City: </strong>{restaurant.zone.ville.nom}
                             </div>
                         </div>

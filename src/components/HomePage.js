@@ -186,8 +186,8 @@ export default function HomePage() {
                                             src={product.photo}
                                             alt={product.nom}
                                             style={{
-                                                width: '180px',
-                                                height: '140px',
+                                                width: '100%',
+                                                height: '200px',
                                                 borderRadius: '8px',
                                             }}
                                         />
@@ -223,7 +223,7 @@ export default function HomePage() {
                                             {product.nom}
                                         </div>
                                         <Rating value={getAverageRating(product)} readOnly cancel={false} precision={0.5}></Rating>
-                                        <Typography className="font-monospace ">({getReviews(product)})review</Typography>
+                                        <Typography className="font-monospace ">({getReviews(product)})review{getReviews(product) !==1 ? 's':""}</Typography>
                                         <div className="flex align-items-center gap-3">
                                             {product.promotion === true && (
                                                 <Tag value="On Sale" severity="danger" icon="pi pi-tag"/>
@@ -233,7 +233,7 @@ export default function HomePage() {
                                             </span>
                                         </div>
                                     </div>
-                                    <div className="d-flex justify-content-lg-between gap-3 align-items-center mt-3">
+                                    <div className="d-flex justify-content-lg-between gap-3 align-items-center mt-1">
                                         <span className="text-2xl font-semibold">{product.prix} Dh</span>
 
                                         {productInCart[product.id] ? (
@@ -244,14 +244,14 @@ export default function HomePage() {
                                                             'linear-gradient(-225deg,#AC32E4 0%,#7918F2 48%,#4801FF 100%)',
                                                     }}
                                                     icon="pi pi-external-link"
-                                                    className="p-button-rounded mt-2"
+                                                    className="p-button-rounded "
                                                     disabled={product.stock <= 0}
                                                 />
                                             </Link>
                                         ) : (
                                             <Button
                                                 icon="pi pi-shopping-cart"
-                                                className="p-button-rounded mt-2"
+                                                className="p-button-rounded "
                                                 onClick={() => handleAddToCart(product)}
                                                 disabled={product.stock <= 0 || productInCart[product.id]}
                                             />

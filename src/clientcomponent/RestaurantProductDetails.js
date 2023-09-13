@@ -264,7 +264,7 @@ export default function RestaurantProductDetails() {
     return (
         <>
             <Toast ref={toast}/>
-            <Box className="mx-3 mt-5" sx={{mt:5,mx:3,p:2,backgroundColor:"rgba(43,115,94,0.09)",borderRadius:2}}>
+            <Box className="mx-4 mt-5" sx={{mt:5,mx:3,p:2,backgroundColor:"rgba(43,115,94,0.09)",borderRadius:2}}>
                 <Grid columns={12} spacing={2}  container >
                     <Grid item xs={12} md={5}  >
                             <div className="mt-2">
@@ -291,7 +291,6 @@ export default function RestaurantProductDetails() {
                             </div>
                         </Grid>
                         <Grid item columns={12} md={7} container spacing={1}  className="md:flex md:flex-col md:items-start text-center text-md-start">
-                            {/*<div className="map-container d-flex">*/}
                                 <div className="flex flex-col col-12  ">
                                     <Typography  gutterBottom>
                                         {products.stock <= 0 ? (
@@ -348,7 +347,6 @@ export default function RestaurantProductDetails() {
 
                                     </div>
                                 </div>
-                            {/*</div>*/}
                             <Grid columns={12}  container  style={{backgroundColor:"rgba(140,134,134,0.15)",borderRadius:"10px"}}>
                                 <Grid xs={6} >
 
@@ -382,7 +380,6 @@ export default function RestaurantProductDetails() {
                         </Grid>
                     </Grid>
             </Box>
-
 
             <div className="card mx-4 mt-2">
             <Box sx={{mx:1,mt:1}}>
