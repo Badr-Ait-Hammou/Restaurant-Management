@@ -283,32 +283,47 @@ export default function RestaurantProductDetails() {
             </div>
         );
     };
+    // const itemTemplateFeedback = (comment) => {
+    //     return (
+    //         <div key={comment.id} className="flex flex-wrap p-2 align-items-center gap-3">
+    //             <Avatar sx={{backgroundColor:"rgba(50,121,99,0.18)",p:1,width:50,height:50}} src={comment.user && comment.user.photo} alt={"badr"} />
+    //             <small className="text-black">{comment.user && comment.user.firstName}</small>
+    //
+    //             <div className="flex-1 flex flex-column gap-2 xl:mr-8">
+    //                 <Typography variant="body1" gutterBottom>
+    //                     <div>
+    //                         <Rating value={comment.rating} readOnly cancel={false} />
+    //                     </div>
+    //                 </Typography>
+    //                 <InputText disabled={true} value={comment.note || 'nice'} className="font-bold"/>
+    //             </div>
+    //         </div>
+    //     );
+    // };
+
     const itemTemplateFeedback = (comment) => {
         return (
-            <div key={comment.id} className="flex flex-wrap p-1 align-items-center gap-3">
-                <Avatar
-                    sx={{
-                        backgroundColor: "rgba(50, 121, 99, 0.18)",
-                        p: 1,
-                        width: 50,
-                        height: 50
-                    }}
-                    src={comment.user && comment.user.photo}
-                    alt="badr"
-                />
-                <div className=" flex flex-column gap-2 xl:mr-1">
-                    <div className="flex flex-row gap-3 align-items-center">
-                        <small className="text-black">{comment.user && comment.user.firstName}</small>
-                        <Rating value={comment.rating} readOnly cancel={false} />
-                    </div>
-                    <div className="flex flex-row gap-3 align-items-center">
-                        <Typography variant="body1" gutterBottom>
-                            <InputText  disabled={true} value={comment.note || 'nice'} className="font-bold" />
-                        </Typography>
-                    </div>
 
-                </div>
-            </div>
+            <Box sx={{mx:1,mt:1}}>
+                <Grid item  container  columns={12}>
+                    <Grid  item xs={3} md={2}   >
+                        <div>
+                            <Avatar sx={{backgroundColor:"rgba(50,121,99,0.18)",p:1,width:70,height:70,mt:1}} src={comment.user && comment.user.photo} alt={"badr"} />
+                        </div>
+                    </Grid>
+                    <Grid item xs={9} md={10}   >
+                        <div className="card mb-2 ml-1 flex justify-content-start" style={{backgroundColor:"transparent",borderColor:"transparent"}}>
+                            <Typography variant="body1" gutterBottom>
+                                <div>
+                                    <strong className="text-black" style={{ float: 'left' }}>{comment.user && comment.user.firstName}</strong>
+                                    <Rating value={comment.rating} readOnly cancel={false} style={{ float: 'left', marginLeft: '10px' }} />
+                                </div>
+                            </Typography>
+                            <InputText disabled={true} value={comment.note || 'nice'} className="font-bold" />
+                        </div>
+                    </Grid>
+                </Grid>
+            </Box>
 
         );
     };
@@ -443,8 +458,7 @@ export default function RestaurantProductDetails() {
                     <Grid item xs={12} md={7}  >
                         <div className="card">
                             <DataView value={products.avisList} itemTemplate={itemTemplateFeedback} paginator paginatorTemplate={'PrevPageLink CurrentPageReport NextPageLink'} rows={3} header="Similar products" />
-                        </div>
-                    </Grid>
+                        </div>                    </Grid>
                     <Grid item xs={12} md={5}  >
                         <div className="card">
                             <DataView value={productSpeciality} itemTemplate={itemTemplate3} paginator paginatorTemplate={'PrevPageLink CurrentPageReport NextPageLink'} rows={3} header="Similar products" />
