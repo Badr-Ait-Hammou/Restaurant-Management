@@ -21,6 +21,7 @@ import ZoomInRoundedIcon from '@mui/icons-material/ZoomInRounded';
 import ZoomOutRoundedIcon from '@mui/icons-material/ZoomOutRounded';
 import RemoveRedEyeRoundedIcon from '@mui/icons-material/RemoveRedEyeRounded';
 import {DataView} from "primereact/dataview";
+import Box from "@mui/material/Box";
 
 
 
@@ -163,9 +164,6 @@ export default function RestaurantProductDetails() {
             return 0;
         }
     };
-
-
-
     // const itemTemplate30 = (product) => {
     //     const averageRating = getAverageRating(product);
     //     const totalReviews = getReviews(product);
@@ -237,8 +235,6 @@ export default function RestaurantProductDetails() {
     //         </Card>
     //     );
     // };
-
-
 
     const itemTemplate3 = (product) => {
         const averageRating = getAverageRating(product);
@@ -409,9 +405,21 @@ export default function RestaurantProductDetails() {
                     </Grid>
                 </CardContent>
             </Card>
-            <div className="card">
-                <DataView value={productSpeciality} itemTemplate={itemTemplate3} paginator rows={3} header="Similar products" />
-            </div>
+
+            <Box sx={{mx:3,mt:3}}>
+                <Grid item container spacing={2}  columns={12}>
+                    <Grid item xs={12} md={7}  >
+                        <h6>5</h6>
+                    </Grid>
+                    <Grid item xs={12} md={5}  >
+                        <div className="card">
+                            <DataView value={productSpeciality} itemTemplate={itemTemplate3} paginator paginatorTemplate={'PrevPageLink CurrentPageReport NextPageLink'} rows={3} header="Similar products" />
+                        </div>
+                    </Grid>
+                </Grid>
+            </Box>
+
+
         </>
     );
 }
