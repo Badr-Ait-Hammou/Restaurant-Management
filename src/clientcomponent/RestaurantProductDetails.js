@@ -1,7 +1,7 @@
 import {Link, useParams} from 'react-router-dom';
 import axios from '../service/callerService';
 import {useEffect, useState, useRef} from "react";
-import { Rating} from "@mui/material";
+import {ButtonBase, Paper, Rating} from "@mui/material";
 import React from "react";
 import {accountService} from "../service/accountService";
 import {Toast} from "primereact/toast";
@@ -26,13 +26,7 @@ import {InputText} from "primereact/inputtext";
 import Avatar from "@mui/material/Avatar";
 import { formatDistanceToNow, format } from 'date-fns';
 import RestaurantRating from "./RestaurantRating";
-
-
-
-
-
-
-
+import { styled } from '@mui/material/styles';
 
 
 export default function RestaurantProductDetails() {
@@ -43,6 +37,13 @@ export default function RestaurantProductDetails() {
     const [productInCart, setProductInCart] = useState({});
     const [productSpeciality, setProductsSpeciality] = useState({});
     const  restaurantId= products.restaurant && products.restaurant.id;
+
+    const Img = styled('img')({
+        margin: 'auto',
+        display: 'block',
+        maxWidth: '100%',
+        maxHeight: '100%',
+    });
 
 
 
@@ -384,26 +385,33 @@ export default function RestaurantProductDetails() {
                 </CardContent>
             </Card>
 
-            <Box sx={{mx:3,mt:2}} style={{backgroundColor:"rgba(50,121,99,0.18)",borderRadius:"10px"}}>
-                <Grid item    columns={12}>
+
+
+
+
+            <div className="card mx-4 mt-2">
+            <Box sx={{mx:1,mt:1}}>
+                <Grid item  container  columns={12}>
                     <Grid  item xs={3} md={2}   >
                         <div>
-                            <Avatar sx={{backgroundColor:"rgba(50,121,99,0.18)",width:70,height:70,mt:2}} src={products.restaurant && products.restaurant.photo} alt={"badr"} />
+                            <Avatar sx={{backgroundColor:"rgba(50,121,99,0.18)",width:70,height:70}} src={products.restaurant && products.restaurant.photo} alt={"badr"} />
                         </div>
                     </Grid>
                     <Grid item xs={9} md={10}   >
-                        <RestaurantRating restaurantId={restaurantId} />
-
                         <div className="card mb-2 ml-1 flex justify-content-start" style={{backgroundColor:"transparent",borderColor:"transparent"}}>
                             <Typography variant="body1" gutterBottom>
-                                <div>
-                                    <strong className="text-black" style={{ float: 'left' }}>{products.restaurant && products.restaurant.nom}</strong>
-                                </div>
+                                <strong className="text-black" style={{float:"left"}} >{products.restaurant && products.restaurant.nom}</strong>
                             </Typography>
+                            <Typography variant="body2" color="text.secondary" sx={{float:"left"}}>
+                                <p  style={{float:"left"}} >{products.restaurant && products.restaurant.adresse}</p>
+                            </Typography>
+                            <RestaurantRating restaurantId={restaurantId} />
+
                         </div>
                     </Grid>
                 </Grid>
             </Box>
+            </div>
 
 
             <Box sx={{mx:3,mt:3}}>
