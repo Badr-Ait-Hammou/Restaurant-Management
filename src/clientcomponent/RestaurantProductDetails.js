@@ -25,6 +25,7 @@ import Box from "@mui/material/Box";
 import {InputText} from "primereact/inputtext";
 import Avatar from "@mui/material/Avatar";
 import { formatDistanceToNow, format } from 'date-fns';
+import RestaurantRating from "./RestaurantRating";
 
 
 
@@ -41,6 +42,8 @@ export default function RestaurantProductDetails() {
     const toast = useRef(null);
     const [productInCart, setProductInCart] = useState({});
     const [productSpeciality, setProductsSpeciality] = useState({});
+    const  restaurantId= products.restaurant && products.restaurant.id;
+
 
 
 
@@ -180,6 +183,7 @@ export default function RestaurantProductDetails() {
             return format(commentDateTime, 'dd-MM-yyyy HH:mm');
         }
     }
+
 
 
     const itemTemplate3 = (product) => {
@@ -380,12 +384,35 @@ export default function RestaurantProductDetails() {
                 </CardContent>
             </Card>
 
+            <Box sx={{mx:3,mt:2}} style={{backgroundColor:"rgba(50,121,99,0.18)",borderRadius:"10px"}}>
+                <Grid item    columns={12}>
+                    <Grid  item xs={3} md={2}   >
+                        <div>
+                            <Avatar sx={{backgroundColor:"rgba(50,121,99,0.18)",width:70,height:70,mt:2}} src={products.restaurant && products.restaurant.photo} alt={"badr"} />
+                        </div>
+                    </Grid>
+                    <Grid item xs={9} md={10}   >
+                        <RestaurantRating restaurantId={restaurantId} />
+
+                        <div className="card mb-2 ml-1 flex justify-content-start" style={{backgroundColor:"transparent",borderColor:"transparent"}}>
+                            <Typography variant="body1" gutterBottom>
+                                <div>
+                                    <strong className="text-black" style={{ float: 'left' }}>{products.restaurant && products.restaurant.nom}</strong>
+                                </div>
+                            </Typography>
+                        </div>
+                    </Grid>
+                </Grid>
+            </Box>
+
+
             <Box sx={{mx:3,mt:3}}>
                 <Grid item container spacing={2}  columns={12}>
                     <Grid item xs={12} md={7}  >
                         <div className="card">
                             <DataView value={products.avisList} itemTemplate={itemTemplateFeedback} paginator paginatorTemplate={'PrevPageLink CurrentPageReport NextPageLink'} rows={3} header="Feedback" />
-                        </div>                    </Grid>
+                        </div>
+                    </Grid>
                     <Grid item xs={12} md={5}  >
                         <div className="card">
                             <DataView value={productSpeciality} itemTemplate={itemTemplate3} paginator paginatorTemplate={'PrevPageLink CurrentPageReport NextPageLink'} rows={3} header="Similar products" />
@@ -393,6 +420,7 @@ export default function RestaurantProductDetails() {
                     </Grid>
                 </Grid>
             </Box>
+
 
 
         </>
