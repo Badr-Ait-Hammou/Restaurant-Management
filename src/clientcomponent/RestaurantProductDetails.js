@@ -10,7 +10,7 @@ import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import {Tag} from "primereact/tag";
 import Skeleton from "../skeleton/ProfileSkeleton"
-import {  Grid, Typography } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import {Button} from 'primereact/button';
 import { Image } from 'primereact/image';
 import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded';
@@ -292,7 +292,7 @@ export default function RestaurantProductDetails() {
                         </Grid>
                         <Grid item columns={12} md={7} container spacing={1}  className="md:flex md:flex-col md:items-start text-center text-md-start">
                             {/*<div className="map-container d-flex">*/}
-                                <div className="flex flex-column ">
+                                <div className="flex flex-col col-12  ">
                                     <Typography  gutterBottom>
                                         {products.stock <= 0 ? (
                                             <Tag
