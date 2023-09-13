@@ -386,6 +386,29 @@ export default function RestaurantProductDetails() {
                 <Grid item  container spacing={3} columns={12}>
                     <Grid  item xs={3} md={1}   >
                         <div>
+                            <Avatar sx={{backgroundColor:"rgba(50,121,99,0.18)",width:70,height:70}}  alt={"badr"} />
+                        </div>
+                    </Grid>
+                    <Grid item xs={9} md={11}   >
+                        <div className="card  flex justify-content-start" style={{backgroundColor:"transparent",borderColor:"transparent"}}>
+                            <Typography variant="body1" className="ml-1" gutterBottom>
+                                <strong className="text-black" style={{float:"left"}} >time</strong>
+                            </Typography>
+                            <Typography variant="body2" className="ml-1" color="text.secondary" sx={{float:"left"}}>
+                                <p  style={{float:"left"}} >delivery info</p>
+                            </Typography>
+                        </div>
+                    </Grid>
+                </Grid>
+            </Box>
+            </div>
+            {/*             Restaurant info         */}
+
+            <div className="card mx-4 mt-2">
+            <Box sx={{mx:1,mt:1}}>
+                <Grid item  container spacing={3} columns={12}>
+                    <Grid  item xs={3} md={1}   >
+                        <div>
                             <Avatar sx={{backgroundColor:"rgba(50,121,99,0.18)",width:70,height:70}} src={products.restaurant && products.restaurant.photo} alt={"badr"} />
                         </div>
                     </Grid>
