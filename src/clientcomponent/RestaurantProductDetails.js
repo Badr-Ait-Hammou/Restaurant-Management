@@ -10,7 +10,7 @@ import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import {Tag} from "primereact/tag";
 import Skeleton from "../skeleton/ProfileSkeleton"
-import { Card, CardContent, Grid, Typography } from "@mui/material";
+import {  Grid, Typography } from "@mui/material";
 import {Button} from 'primereact/button';
 import { Image } from 'primereact/image';
 import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded';
@@ -186,11 +186,13 @@ export default function RestaurantProductDetails() {
         const totalReviews = getReviews(product);
         return (
             <div key={product.id} className="flex flex-wrap p-2 align-items-center gap-3">
+                <Link to={`/admin/all_products/product/${product.id}`}>
                 <img  className="w-3 sm:w-6rem xl:w-10rem shadow-2 block xl:block mx-auto border-round" src={product.photo} alt={product.nom}  style={{
                     width: '800%',
                     height: '50%',
                     borderRadius: '8px'
                 }} />
+                </Link>
                 <div className="flex-1 flex flex-column gap-2 xl:mr-8">
                     <span className="font-bold">{product.nom}</span>
                     <Typography variant="body1" gutterBottom>
@@ -208,7 +210,7 @@ export default function RestaurantProductDetails() {
                         )}
                     </div>
                 </div>
-                <span className="font-bold text-900">${product.prix}</span>
+                <span className="font-bold text-900">{product.prix} Dh</span>
                 {productInCart[product.id] ? (
                     <Link to="/admin/cart">
                         <Button
@@ -262,10 +264,9 @@ export default function RestaurantProductDetails() {
     return (
         <>
             <Toast ref={toast}/>
-            <Card className="mt-4 mx-4 p-1 m-1" variant="outlined" style={{ backgroundColor: "rgba(88,176,154,0.03)" }}>
-                <CardContent>
-                    <Grid item container spacing={2}  columns={12}>
-                        <Grid item xs={12} md={5}  >
+            <Box className="mx-3 mt-5" sx={{mt:5,mx:3,p:2,backgroundColor:"rgba(43,115,94,0.09)",borderRadius:2}}>
+                <Grid columns={12} spacing={2}  container >
+                    <Grid item xs={12} md={5}  >
                             <div className="mt-2">
 
                                 <Image
@@ -290,7 +291,7 @@ export default function RestaurantProductDetails() {
                             </div>
                         </Grid>
                         <Grid item columns={12} md={7} container spacing={1}  className="md:flex md:flex-col md:items-start text-center text-md-start">
-                            <div className="map-container d-flex">
+                            {/*<div className="map-container d-flex">*/}
                                 <div className="flex flex-column ">
                                     <Typography  gutterBottom>
                                         {products.stock <= 0 ? (
@@ -340,15 +341,14 @@ export default function RestaurantProductDetails() {
                                     <div >
 
                                         <Typography variant="body1" gutterBottom>
-                                            <div>
+
                                                 <Rating style={{float:"left"}} value={getAverageRating(products)} readOnly cancel={false} />
-                                                <Typography  className="font-monospace ">({getReviews(products)} review{getReviews(products) !== 1 ? 's' : ''})</Typography>
-                                            </div>
+                                                <Typography style={{float:"right"}} className="font-monospace ">({getReviews(products)} review{getReviews(products) !== 1 ? 's' : ''})</Typography>
                                         </Typography>
 
                                     </div>
                                 </div>
-                            </div>
+                            {/*</div>*/}
                             <Grid columns={12}  container  style={{backgroundColor:"rgba(140,134,134,0.15)",borderRadius:"10px"}}>
                                 <Grid xs={6} >
 
@@ -381,8 +381,7 @@ export default function RestaurantProductDetails() {
                             </Grid>
                         </Grid>
                     </Grid>
-                </CardContent>
-            </Card>
+            </Box>
 
 
             <div className="card mx-4 mt-2">

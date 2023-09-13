@@ -190,7 +190,7 @@ export default function AllProduct() {
                             </div>
 
                             <Rating value={getAverageRating(product)} readOnly cancel={false} precision={0.5}></Rating>
-                            <Typography className="font-monospace ">({getReviews(product)})review</Typography>
+                            <Typography className="font-monospace ">({getReviews(product)})review{getReviews(product) !== 1 ? 's' : ''}</Typography>
                             <div className=" align-items-center gap-3 mt-2">
                                 {product.promotion === true && (
                                     <Tag value="On Sale" severity="danger" icon="pi pi-tag"/>
@@ -284,7 +284,7 @@ export default function AllProduct() {
                             <div className="flex flex-column align-items-center sm:align-items-start gap-3">
                                 <div className="text-2xl font-bold text-900">{product.nom}</div>
                                 <Rating value={getAverageRating(product)} readOnly cancel={false} precision={0.5}></Rating>
-                                <Typography className="font-monospace ">({getReviews(product)})review</Typography>
+                                <Typography className="font-monospace ">({getReviews(product)})review{getReviews(product) !== 1 ? 's' : ''}</Typography>
                                 <div className="flex align-items-center gap-3">
                                     {product.promotion === true && (
                                         <Tag value="On Sale" severity="danger" icon="pi pi-tag"/>
