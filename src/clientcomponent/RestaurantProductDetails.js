@@ -252,33 +252,46 @@ export default function RestaurantProductDetails() {
     return (
         <>
             <Toast ref={toast}/>
-
             <Card className="mt-4 mx-4" style={{ backgroundColor: "whitesmoke" }}>
                 <CardContent>
-                    <Grid container spacing={2} >
-                        <Grid item xs={12} md={6} >
-                            <div>
-                                <Image
+                    <Grid container spacing={2} columns={12}>
+                        <Grid item xs={12} md={5}  >
+                            <div className="mt-2">
 
+                                <Image
                                     alt="badr"
                                     src={products.photo}
                                     indicatorIcon={icon}
                                     preview
-
                                     imageStyle={{
                                         width: 350,
                                         height: 250,
                                         borderRadius: 10,
                                         objectFit:"fill"
                                     }}
-
-
                                 />
+
+
                             </div>
                         </Grid>
-                        <Grid item xs={12} md={6} className="md:flex md:flex-col md:items-start text-center text-md-start">
+                        <Grid item columns={12} md={7} container spacing={1}  className="md:flex md:flex-col md:items-start text-center text-md-start">
                             <div className="map-container d-flex">
                                 <div className="flex flex-column ">
+                                    <Typography  gutterBottom>
+                                        {products.stock <= 0 ? (
+                                            <Tag
+                                                severity="warning"
+                                                value="Out of Stock"
+
+                                            />
+                                        ) : (
+                                            <Tag
+                                                severity="success"
+                                                value="In Stock"
+
+                                            />
+                                        )}
+                                    </Typography>
                                     <Typography  gutterBottom>
                                        <span className="font-extrabold text-2xl">Product Name: {products.nom}</span>
                                     </Typography>
@@ -309,7 +322,7 @@ export default function RestaurantProductDetails() {
                                         )}
                                         </Typography>
                                     </div>
-                                    <div className="mb-1 ">
+                                    <div >
 
                                         <Typography variant="body1" gutterBottom>
                                             <div>
@@ -318,31 +331,38 @@ export default function RestaurantProductDetails() {
                                             </div>
                                         </Typography>
                                     </div>
-                                    <div className="d-flex justify-content-between align-items-center ">
-                                        <Typography variant="h6">Price: {products.prix} Dh</Typography>
-                                        <div>
-                                            {productInCart[products.id] ? (
-                                                <Link to="/admin/cart">
-                                                    <Button
-                                                        style={{background: 'linear-gradient(-225deg,#AC32E4 0%,#7918F2 48%,#4801FF 100%)'}}
-                                                        icon="pi pi-external-link"
-                                                        className="p-button-rounded mt-2"
-                                                        disabled={products.stock <= 0}
-                                                    />
-                                                </Link>
-                                            ) : (
-                                                <Button
-                                                    icon="pi pi-shopping-cart"
-                                                    className="p-button-rounded mt-2"
-                                                    onClick={() => handleAddToCart(products)}
-                                                    disabled={products.stock <= 0 || productInCart[products.id]}
-                                                />
-                                            )}
-                                        </div>
-                                    </div>
-
                                 </div>
                             </div>
+                            <Grid columns={12}  container  style={{backgroundColor:"rgba(140,134,134,0.15)",borderRadius:"10px"}}>
+                                <Grid xs={6} >
+
+                                    <Typography variant="body1" className="mt-2 " gutterBottom>
+                                        <span className="font-extrabold  mx-2 text-1xl">Price: </span>
+                                        <span className="font-monospace text-1xl"> {products.prix} Dh </span>
+                                    </Typography>
+                                </Grid>
+                                <Grid xs={6} >
+                                    <div className="flex justify-content-end">
+                                        {productInCart[products.id] ? (
+                                            <Link to="/admin/cart">
+                                                <Button
+                                                    style={{background: 'linear-gradient(-225deg,#AC32E4 0%,#7918F2 48%,#4801FF 100%)'}}
+                                                    icon="pi pi-external-link"
+                                                    className="p-button-rounded align-items-end"
+                                                    disabled={products.stock <= 0}
+                                                />
+                                            </Link>
+                                        ) : (
+                                            <Button
+                                                icon="pi pi-shopping-cart"
+                                                className="p-button-rounded "
+                                                onClick={() => handleAddToCart(products)}
+                                                disabled={products.stock <= 0 || productInCart[products.id]}
+                                            />
+                                        )}
+                                    </div>
+                                </Grid>
+                            </Grid>
                         </Grid>
                     </Grid>
                 </CardContent>
