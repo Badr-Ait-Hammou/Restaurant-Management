@@ -13,7 +13,6 @@ import "primereact/resources/primereact.min.css";
 import {Tag} from "primereact/tag";
 import Skeleton from "../skeleton/ProfileSkeleton"
 import Typography from "@mui/material/Typography";
-import RestaurantRating from "./RestaurantRating";
 
 export default function RestaurantDetails() {
     const [longitude, setLongitude] = useState();
@@ -147,6 +146,16 @@ export default function RestaurantDetails() {
         }
     };
 
+    const getRestaurantRating = (products) => {
+        const averageRatings = products.map((product) => getAverageRating(product));
+        const sumOfAverageRatings = averageRatings.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+        const numberOfProducts = products.length;
+        return  sumOfAverageRatings / numberOfProducts;
+    };
+
+    const restaurantRating = getRestaurantRating(products);
+
+
     const itemTemplate = (product) => {
         if (!product) {
             return;
@@ -155,7 +164,7 @@ export default function RestaurantDetails() {
             <div key={product.id} className={`col mb-4 ${product.stock <= 0 ? 'out-of-stock' : ''}`}>
                 <div className="card h-100">
                     <div className="flex flex-column xl:flex-row xl:align-items-start p-2 gap-4">
-                        <Link to={`products/${product.id}`}>
+                        <Link to={`product/${product.id}`}>
                             <div style={{position: 'relative'}}>
                                 <img className="w-90 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round"
                                      src={product.photo}
@@ -267,9 +276,8 @@ export default function RestaurantDetails() {
                                     color: '#20b0a8'}}>
                                     {restaurant.nom}
                                 </h3>
-                                <RestaurantRating restaurantId={restaurant.id} />
-
-
+                                <Rating value={restaurantRating} readOnly cancel={false}  ></Rating>
+                                <Typography className="font-monospace ">({products.length})review</Typography>
                                 <strong
                                     style={{fontSize: '18px', color: '#181818'}}>Address: {restaurant.adresse}</strong>
                             </div>

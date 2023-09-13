@@ -186,7 +186,7 @@ export default function RestaurantProductDetails() {
         const totalReviews = getReviews(product);
         return (
             <div key={product.id} className="flex flex-wrap p-2 align-items-center gap-3">
-                <img className="w-4rem shadow-2 flex-shrink-0 border-round" src={product.photo} alt={product.nom} />
+                <img  className="w-90 sm:w-6rem xl:w-10rem shadow-2 block xl:block mx-auto border-round" src={product.photo} alt={product.nom} />
                 <div className="flex-1 flex flex-column gap-2 xl:mr-8">
                     <span className="font-bold">{product.nom}</span>
                     <Typography variant="body1" gutterBottom>
@@ -337,10 +337,11 @@ export default function RestaurantProductDetails() {
 
                                         <Typography variant="body1" gutterBottom>
                                             <div>
-                                                <Rating value={getAverageRating(products)} readOnly cancel={false} />
-                                                <small className="text-black">({getReviews(products)} review{getReviews(products) !== 1 ? 's' : ''})</small>
+                                                <Rating style={{float:"left"}} value={getAverageRating(products)} readOnly cancel={false} />
+                                                <Typography  className="font-monospace ">({getReviews(products)} review{getReviews(products) !== 1 ? 's' : ''})</Typography>
                                             </div>
                                         </Typography>
+
                                     </div>
                                 </div>
                             </div>
@@ -380,27 +381,23 @@ export default function RestaurantProductDetails() {
             </Card>
 
 
-
-
-
             <div className="card mx-4 mt-2">
             <Box sx={{mx:1,mt:1}}>
-                <Grid item  container  columns={12}>
-                    <Grid  item xs={3} md={2}   >
+                <Grid item  container spacing={3} columns={12}>
+                    <Grid  item xs={3} md={1}   >
                         <div>
                             <Avatar sx={{backgroundColor:"rgba(50,121,99,0.18)",width:70,height:70}} src={products.restaurant && products.restaurant.photo} alt={"badr"} />
                         </div>
                     </Grid>
-                    <Grid item xs={9} md={10}   >
-                        <div className="card mb-2 ml-1 flex justify-content-start" style={{backgroundColor:"transparent",borderColor:"transparent"}}>
-                            <Typography variant="body1" gutterBottom>
+                    <Grid item xs={9} md={11}   >
+                        <div className="card  flex justify-content-start" style={{backgroundColor:"transparent",borderColor:"transparent"}}>
+                            <Typography variant="body1" className="ml-1" gutterBottom>
                                 <strong className="text-black" style={{float:"left"}} >{products.restaurant && products.restaurant.nom}</strong>
                             </Typography>
-                            <Typography variant="body2" color="text.secondary" sx={{float:"left"}}>
+                            <Typography variant="body2" className="ml-1" color="text.secondary" sx={{float:"left"}}>
                                 <p  style={{float:"left"}} >{products.restaurant && products.restaurant.adresse}</p>
                             </Typography>
                             <RestaurantRating restaurantId={restaurantId} />
-
                         </div>
                     </Grid>
                 </Grid>
