@@ -12,8 +12,15 @@ import {Tag} from "primereact/tag";
 import Skeleton from "../skeleton/ProfileSkeleton"
 import { Card, CardContent, Grid, Typography } from "@mui/material";
 import {Button} from 'primereact/button';
-
 import { Image } from 'primereact/image';
+import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded';
+import RotateRightRoundedIcon from '@mui/icons-material/RotateRightRounded';
+import RotateLeftRoundedIcon from '@mui/icons-material/RotateLeftRounded';
+import HighlightOffRoundedIcon from '@mui/icons-material/HighlightOffRounded';
+import ZoomInRoundedIcon from '@mui/icons-material/ZoomInRounded';
+import ZoomOutRoundedIcon from '@mui/icons-material/ZoomOutRounded';
+import RemoveRedEyeRoundedIcon from '@mui/icons-material/RemoveRedEyeRounded';
+
 
 
 
@@ -27,7 +34,7 @@ export default function RestaurantProductDetails() {
     const toast = useRef(null);
     const [productInCart, setProductInCart] = useState({});
     const [productSpeciality, setProductsSpeciality] = useState({});
-    const icon = (<i className="pi pi-check"></i>)
+
 
 
 
@@ -252,16 +259,23 @@ export default function RestaurantProductDetails() {
     return (
         <>
             <Toast ref={toast}/>
-            <Card className="mt-4 mx-4" style={{ backgroundColor: "whitesmoke" }}>
+            <Card className="mt-4 mx-4 p-1 m-1" variant="outlined" style={{ backgroundColor: "rgba(88,176,154,0.03)" }}>
                 <CardContent>
-                    <Grid container spacing={2} columns={12}>
+                    <Grid item container spacing={2}  columns={12}>
                         <Grid item xs={12} md={5}  >
                             <div className="mt-2">
 
                                 <Image
+                                    downloadIcon={<DownloadRoundedIcon/>}
+                                    closeIcon={<HighlightOffRoundedIcon/>}
+                                    rotateLeftIcon={<RotateLeftRoundedIcon/>}
+                                    rotateRightIcon={<RotateRightRoundedIcon/>}
+                                    zoomInIcon={<ZoomInRoundedIcon/>}
+                                    zoomOutIcon={<ZoomOutRoundedIcon/>}
+                                    downloadable={true}
                                     alt="badr"
                                     src={products.photo}
-                                    indicatorIcon={icon}
+                                    indicatorIcon={<RemoveRedEyeRoundedIcon/>}
                                     preview
                                     imageStyle={{
                                         width: 350,
@@ -348,7 +362,7 @@ export default function RestaurantProductDetails() {
                                                 <Button
                                                     style={{background: 'linear-gradient(-225deg,#AC32E4 0%,#7918F2 48%,#4801FF 100%)'}}
                                                     icon="pi pi-external-link"
-                                                    className="p-button-rounded align-items-end"
+                                                    className="p-button-rounded"
                                                     disabled={products.stock <= 0}
                                                 />
                                             </Link>
