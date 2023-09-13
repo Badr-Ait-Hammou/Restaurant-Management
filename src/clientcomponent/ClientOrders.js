@@ -167,8 +167,8 @@ export default function ClientOrders() {
             console.log("All comments have been saved successfully");
             setFeedbackData([]);
             hideDialog();
-            showuSave();
             loadComments();
+            showuSave();
         } catch (error) {
             console.error("Error while saving comments:", error);
         }
