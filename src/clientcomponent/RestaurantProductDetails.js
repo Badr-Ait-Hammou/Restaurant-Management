@@ -6,8 +6,8 @@ import React from "react";
 import {accountService} from "../service/accountService";
 import {Toast} from "primereact/toast";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
-import 'primeicons/primeicons.css';
 import "primereact/resources/primereact.min.css";
+import "primeicons/primeicons.css";
 import {Tag} from "primereact/tag";
 import Skeleton from "../skeleton/ProfileSkeleton"
 import { Card, CardContent, Grid, Typography } from "@mui/material";
@@ -20,6 +20,8 @@ import HighlightOffRoundedIcon from '@mui/icons-material/HighlightOffRounded';
 import ZoomInRoundedIcon from '@mui/icons-material/ZoomInRounded';
 import ZoomOutRoundedIcon from '@mui/icons-material/ZoomOutRounded';
 import RemoveRedEyeRoundedIcon from '@mui/icons-material/RemoveRedEyeRounded';
+import {DataView} from "primereact/dataview";
+
 
 
 
@@ -34,7 +36,6 @@ export default function RestaurantProductDetails() {
     const toast = useRef(null);
     const [productInCart, setProductInCart] = useState({});
     const [productSpeciality, setProductsSpeciality] = useState({});
-
 
 
 
@@ -57,11 +58,20 @@ export default function RestaurantProductDetails() {
         if (products && products.id) {
             checkProductInCart(products.id);
         }
+
+        if (productSpeciality && productSpeciality.length > 0) {
+            productSpeciality.forEach(specialityProduct => {
+                if (specialityProduct.id) {
+                    checkProductInCart(specialityProduct.id);
+                }
+            });
+        }
     };
 
     useEffect(() => {
         loadProductsUser();
-    }, [userId, products]);
+    }, [userId, products, productSpeciality]);
+
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -112,14 +122,13 @@ export default function RestaurantProductDetails() {
     }, [id]);
 
     useEffect(() => {
-        // Define specialiteId after products have been set
         const specialiteId = products.restaurant && products.restaurant.specialite.id;
 
-        // Check if specialiteId is defined before making the request
         if (specialiteId !== undefined) {
             axios.get(`/api/controller/produits/restaurant/speciality/${specialiteId}`)
                 .then((response) => {
                     setProductsSpeciality(response.data);
+
                 })
                 .catch((error) => {
                     console.error('Error fetching products with speciality:', error);
@@ -157,103 +166,124 @@ export default function RestaurantProductDetails() {
 
 
 
-    const itemTemplate = (product) => {
-        if (!product) {
-            return;
-        }
+    const itemTemplate30 = (product) => {
+        const averageRating = getAverageRating(product);
+        const totalReviews = getReviews(product);
+
         return (
-            <div key={product.id} className={`col mb-4 ${product.stock <= 0 ? 'out-of-stock' : ''}`}>
-                <div className="card h-100">
-                    <div className="flex flex-column xl:flex-row xl:align-items-start p-2 gap-4">
-                        <Link to={`/admin/all_products/product/${product.id}`}>
-                            <div style={{position: 'relative'}}>
-                                <img className="w-90 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round"
-                                     src={product.photo}
-                                     alt={product.nom}
-                                     style={{
-                                         width: '180px',
-                                         height: '140px',
-                                         borderRadius: '8px'
-                                     }}/>
-                                {product.stock <= 0 ? (
-                                    <Tag
-                                        severity="warning"
-                                        value="Out of Stock"
-                                        style={{
-                                            fontSize:"10px",
-                                            position: 'absolute',
-                                            top: '3px',
-                                            right: '11px',
-                                        }}
-                                    />
-                                ) : (
-                                    <Tag
-                                        severity="success"
-                                        value="In Stock"
-                                        style={{
-                                            fontSize:"10px",
-                                            position: 'absolute',
-                                            top: '3px',
-                                            right: '11px',
-                                        }}
-                                    />
-                                )}
-                            </div>
-                        </Link>
-                        <div
-                            className="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4">
-                            <div className="flex flex-column align-items-center sm:align-items-start gap-3">
-                                <div className="text-2xl font-bold text-900">{product.nom}</div>
-                                <Rating value={getAverageRating(product)} readOnly cancel={false}  ></Rating>
-                                <Typography className="font-monospace ">({getReviews(product)})review</Typography>
-                                <div className="flex align-items-center gap-3">
-                                    {product.promotion === true && (
-                                        <Tag value="On Sale" severity="danger" icon="pi pi-tag" />
-                                    )}
-                                    <span className="flex align-items-center gap-2">
-                                    <span className="font-semibold">{product.stock} Pcs</span>
-
-                                </span>
+            <Card key={product.id} className="mb-4 p-1" variant="outlined">
+                <CardContent>
+                    <Grid container spacing={2}>
+                        <Grid item xs={12} md={4}>
+                            <img
+                                className="w-100"
+                                src={product.photo}
+                                alt={product.nom}
+                            />
+                        </Grid>
+                        <Grid item xs={12} md={8}>
+                            <Typography variant="h6" gutterBottom>
+                                {product.nom}
+                            </Typography>
+                            <Typography variant="body1" gutterBottom>
+                                <div>
+                                    <Rating value={averageRating} readOnly cancel={false} />
+                                    <small className="text-black">({totalReviews} review{totalReviews !== 1 ? 's' : ''})</small>
                                 </div>
-                                <span className="font-semibold">{product.restaurant && product.restaurant.specialite.nom} Pcs</span>
-                                <span className="font-semibold">{product.restaurant.nom } Pcs</span>
+                            </Typography>
+                            <Typography variant="body1" gutterBottom>
+                                Stock: {product.stock} pcs
+                            </Typography>
+                            <Typography variant="body1" gutterBottom>
+                                Restaurant: {product.restaurant && product.restaurant.nom}
+                            </Typography>
+                            <Typography variant="body1" gutterBottom>
+                                Speciality: {product.restaurant && product.restaurant.specialite.nom}
+                            </Typography>
+                            <div>
+                                <Typography variant="body1" gutterBottom>
+                                    Status: {product.promotion ? (
+                                    <Tag className="mx-2" value="On Sale" severity="danger" icon="pi pi-tag" />
+                                ) : (
+                                    <Tag className="mx-2" value="New" severity="success" icon="pi pi-tag" />
+                                )}
+                                </Typography>
                             </div>
-                            <div className="d-flex justify-content-lg-between gap-3 align-items-center mt-3">
-                                <span className="text-2xl font-semibold">{product.prix} Dh</span>
-
+                            <div>
+                                <Typography variant="body1" gutterBottom>
+                                    Price: {product.prix} Dh
+                                </Typography>
                                 {productInCart[product.id] ? (
                                     <Link to="/admin/cart">
                                         <Button
-                                            style={{background: 'linear-gradient(-225deg,#AC32E4 0%,#7918F2 48%,#4801FF 100%)'}}
+                                            style={{ background: 'linear-gradient(-225deg,#AC32E4 0%,#7918F2 48%,#4801FF 100%)' }}
                                             icon="pi pi-external-link"
-                                            className="p-button-rounded mt-2"
+                                            className="p-button-rounded"
                                             disabled={product.stock <= 0}
                                         />
                                     </Link>
                                 ) : (
                                     <Button
                                         icon="pi pi-shopping-cart"
-                                        className="p-button-rounded mt-2"
+                                        className="p-button-rounded"
                                         onClick={() => handleAddToCart(product)}
                                         disabled={product.stock <= 0 || productInCart[product.id]}
                                     />
                                 )}
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                        </Grid>
+                    </Grid>
+                </CardContent>
+            </Card>
         );
     };
 
-    const groupedProducts = [];
-    for (let i = 0; i < productSpeciality.length; i += 4) {
-        groupedProducts.push(productSpeciality.slice(i, i + 4));
-    }
 
 
+    const itemTemplate3 = (product) => {
+        const averageRating = getAverageRating(product);
+        const totalReviews = getReviews(product);
+        return (
+            <div key={product.id} className="flex flex-wrap p-2 align-items-center gap-3">
+                <img className="w-4rem shadow-2 flex-shrink-0 border-round" src={product.photo} alt={product.nom} />
+                <div className="flex-1 flex flex-column gap-2 xl:mr-8">
+                    <span className="font-bold">{product.nom}</span>
+                    <Typography variant="body1" gutterBottom>
+                        <div>
+                            <Rating value={averageRating} readOnly cancel={false} />
+                            <small className="text-black">({totalReviews} review{totalReviews !== 1 ? 's' : ''})</small>
+                        </div>
+                    </Typography>
 
-
+                    <div className="flex align-items-center gap-2">
+                        {product.promotion === true ? (
+                            <Tag className="mx-2"  value="On Sale" severity="danger" icon="pi pi-tag" />
+                        ) : (
+                            <Tag className="mx-2"  value="New" severity="success" icon="pi pi-tag" />
+                        )}
+                    </div>
+                </div>
+                <span className="font-bold text-900">${product.prix}</span>
+                {productInCart[product.id] ? (
+                    <Link to="/admin/cart">
+                        <Button
+                            style={{ background: 'linear-gradient(-225deg,#AC32E4 0%,#7918F2 48%,#4801FF 100%)' }}
+                            icon="pi pi-external-link"
+                            className="p-button-rounded"
+                            disabled={product.stock <= 0}
+                        />
+                    </Link>
+                ) : (
+                    <Button
+                        icon="pi pi-shopping-cart"
+                        className="p-button-rounded"
+                        onClick={() => handleAddToCart(product)}
+                        disabled={product.stock <= 0 || productInCart[product.id]}
+                    />
+                )}
+            </div>
+        );
+    };
 
 
     return (
@@ -284,8 +314,6 @@ export default function RestaurantProductDetails() {
                                         objectFit:"fill"
                                     }}
                                 />
-
-
                             </div>
                         </Grid>
                         <Grid item columns={12} md={7} container spacing={1}  className="md:flex md:flex-col md:items-start text-center text-md-start">
@@ -341,7 +369,7 @@ export default function RestaurantProductDetails() {
                                         <Typography variant="body1" gutterBottom>
                                             <div>
                                                 <Rating value={getAverageRating(products)} readOnly cancel={false} />
-                                                <small className=" text-black">({getReviews(products)}) review</small>
+                                                <small className="text-black">({getReviews(products)} review{getReviews(products) !== 1 ? 's' : ''})</small>
                                             </div>
                                         </Typography>
                                     </div>
@@ -381,15 +409,9 @@ export default function RestaurantProductDetails() {
                     </Grid>
                 </CardContent>
             </Card>
-
-            <div className="container mt-5">
-                {groupedProducts.map((group) => (
-                    <div className="row row-cols-2 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-                        {group.map((product) => itemTemplate(product))}
-                    </div>
-                ))}
+            <div className="card">
+                <DataView value={productSpeciality} itemTemplate={itemTemplate3} paginator rows={3} header="Similar products" />
             </div>
-
         </>
     );
 }
