@@ -45,7 +45,7 @@ export default function RestaurantRating({restaurantId} ) {
                 <Typography variant="body1" gutterBottom style={{marginTop:"-8px"}}>
                     <div style={{float:"left"}}>
                         <Rating value={restaurantRating} style={{float:"left"}} readOnly cancel={false} ></Rating>
-                        <Typography style={{float:"left"}} className="font-monospace ">({products.length})review</Typography>
+                        <Typography style={{float:"left"}} className="font-monospace ">({products.length})review{products.length !== 1 ? 's' : ''}</Typography>
                     </div>
                 </Typography>
         </>

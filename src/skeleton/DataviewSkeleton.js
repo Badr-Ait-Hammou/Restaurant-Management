@@ -44,10 +44,6 @@ export default function DataviewSkeleton() {
                             <div key={index} className={`col mb-4 out-of-stock`}>
                                 <div className="card h-100">
                                     <div className="flex flex-column xl:flex-row xl:align-items-start p-2 gap-4">
-                                        <div style={{position: 'relative'}}>
-                                            <Skeleton
-                                                className="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round"/>
-                                        </div>
                                         <div
                                             className="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4">
                                             <div

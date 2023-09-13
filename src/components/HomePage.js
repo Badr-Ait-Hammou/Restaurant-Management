@@ -179,7 +179,7 @@ export default function HomePage() {
                     <div key={product.id}>
                         <div className="card h-100 m-2">
                             <div className="flex flex-column xl:flex-row xl:align-items-start p-2 gap-4">
-                                <Link to={`/admin/home/restaurants`}>
+                                <Link to={`product/${product.id}`}>
                                     <div style={{position: 'relative'}}>
                                         <img
                                             className="w-90 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round"

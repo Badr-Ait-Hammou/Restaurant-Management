@@ -186,13 +186,17 @@ export default function RestaurantProductDetails() {
         const totalReviews = getReviews(product);
         return (
             <div key={product.id} className="flex flex-wrap p-2 align-items-center gap-3">
-                <img  className="w-90 sm:w-6rem xl:w-10rem shadow-2 block xl:block mx-auto border-round" src={product.photo} alt={product.nom} />
+                <img  className="w-3 sm:w-6rem xl:w-10rem shadow-2 block xl:block mx-auto border-round" src={product.photo} alt={product.nom}  style={{
+                    width: '800%',
+                    height: '50%',
+                    borderRadius: '8px'
+                }} />
                 <div className="flex-1 flex flex-column gap-2 xl:mr-8">
                     <span className="font-bold">{product.nom}</span>
                     <Typography variant="body1" gutterBottom>
                         <div>
                             <Rating value={averageRating} readOnly cancel={false} />
-                            <small className="text-black">({totalReviews} review{totalReviews !== 1 ? 's' : ''})</small>
+                            <Typography className="font-monospace">({totalReviews} review{totalReviews !== 1 ? 's' : ''})</Typography>
                         </div>
                     </Typography>
 
