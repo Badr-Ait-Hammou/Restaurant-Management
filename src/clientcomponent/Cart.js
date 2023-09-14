@@ -374,10 +374,12 @@ export default function Cart() {
 
             <Dialog
                 visible={isDialogVisible}
+                maximizable
+                style={{height:"460px"}}
                 onHide={() => setDialogVisible(false)}
                 header="Confirm Payment"
             >
-                <Box sx={{ width: '100%',mb:2 }}>
+                <Box sx={{ width: '100%',mb:1 }}>
                     <Stepper activeStep={activeStep} alternativeLabel>
                         {steps.map((label) => (
                             <Step key={label}>
@@ -453,8 +455,8 @@ export default function Cart() {
                             </Grid>
 
                             <Grid container justifyContent="center">
-                                <Grid item xs={12} textAlign="end">
-                                    <Button label="Update" severity="info" raised onClick={handleUpdate} />
+                                <Grid item xs={12} textAlign="end" mt={1}>
+                                    <Button label="Update" className="mx-1" severity="info" raised onClick={handleUpdate} />
                                     <Button label="Next"  onClick={handleNext} />
 
                                 </Grid>
