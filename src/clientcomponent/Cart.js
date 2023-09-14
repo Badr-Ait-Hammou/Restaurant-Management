@@ -14,18 +14,44 @@ import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
 import { IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import Stepper from '@mui/material/Stepper';
+import Step from '@mui/material/Step';
+import StepLabel from '@mui/material/StepLabel';
 import PriceCheckIcon from '@mui/icons-material/PriceCheck';
+import Switch from '@mui/material/Switch';
 
 
 export default function Cart() {
     const [isDialogVisible, setDialogVisible] = useState(false);
     const [cartProducts, setCartProducts] = useState([]);
     const [userId, setUserId] = useState("");
+    const [user, setUser] = useState([]);
+    const [email, setemail] = useState("");
+    const [photo, setPhotos] = useState("");
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [adresse, setAdresse] = useState('');
+    const [telephone, setTelephone] = useState('');
+    const [area, setArea] = useState('');
+    const [postcode, setpostcode] = useState('');
     const [productQuantities, setProductQuantities] = useState({});
     const toast = useRef(null);
     const [loading, setLoading] = useState(true);
-
     const shippingfee=30;
+    const [activeStep, setActiveStep] = useState(0);
+    const [isCashOnDelivery, setIsCashOnDelivery] = useState(false);
+    const [isOnlinePayment, setIsOnlinePayment] = useState(false);
+    const steps = ['Verify Email and Address', 'Choose Payment Method', 'Review and Confirm'];
+
+
+
+    const handleNext = () => {
+        setActiveStep((prevStep) => prevStep + 1);
+    };
+
+    const handleBack = () => {
+        setActiveStep((prevStep) => prevStep - 1);
+    };
 
     const updateQuantity = (productId, newQuantity) => {
         setProductQuantities((prevQuantities) => ({
@@ -41,6 +67,8 @@ export default function Cart() {
 
     const opendialog = () => {
         setDialogVisible(true);
+        loadUser();
+
     };
 
 
@@ -56,6 +84,24 @@ export default function Cart() {
             }
         }
     };
+
+
+    const loadUser = async () => {
+        axios.get(`/api/controller/users/${userId}`).then((response) => {
+            const userData= response.data;
+            setUser(userData);
+
+            if (!firstName && userData) setFirstName(userData.firstName);
+            if (!lastName && userData) setLastName(userData.lastName);
+            if (!email && userData) setemail(userData.email);
+            if (!adresse && userData) setAdresse(userData.adresse);
+            if (!area && userData) setArea(userData.area);
+            if (!photo && userData) setPhotos(userData.photo);
+            if (!telephone && userData) setTelephone(userData.telephone);
+            if (!postcode && userData) setpostcode(userData.postcode);
+        });
+    };
+
 
 
     const loadCartProducts = () => {
@@ -74,6 +120,7 @@ export default function Cart() {
 
     useEffect(() => {
         loadCartProducts();
+        loadUser();
         fetchUserData();
 
     }, [userId]);
@@ -196,8 +243,6 @@ export default function Cart() {
                                 <h3 className="fw-normal mb-0 text-black">Shopping Cart</h3>
                             </div>
                             <Skeleton width="100%" height="120px" className="mb-5"  />
-
-
                         </div>
                     </div>
                 </div>
@@ -219,11 +264,7 @@ export default function Cart() {
                             <Tag style={{fontSize:"10px"}}  value={`In Stock :${product.produit.stock} Pcs`}/>
                     </span>
                     </div>
-
-
                     <div className="flex align-items-center sm:col-12  md:col-12 xl:col-12 justify-content-sm-center justify-content-between ">
-
-
                         <div>
                             <Tag style={{fontSize:"10px",float:"left",backgroundColor:"rgba(224,200,200,0.21)",color:"black"}}  value={`Price :${product.totalprice} Dh`}/><br/>
                             <Tag style={{fontSize:"10px",float:"left"}} severity="success"  className="mr-1" value={`Total :`}/>{product.totalprice * (productQuantities[product.id] || 1)}Dh<br/>
@@ -264,140 +305,215 @@ export default function Cart() {
                     </div>
 
                 </div>
-
-                {/*<Button*/}
-                {/*    icon="pi pi-trash"*/}
-                {/*    severity="danger"*/}
-                {/*    aria-label="Cancel"*/}
-                {/*    onClick={() => deleteProduct(product.id)}*/}
-                {/*/>*/}
             </div>
         );
     };
 
-    {/*<InputNumber*/}
-    {/*    className="small"*/}
-    {/*    value={productQuantities[product.id] || product.quantity}*/}
-    {/*    mode="decimal"*/}
-    {/*    showButtons*/}
-    {/*    min={1}*/}
-    {/*    max={product.produit.stock}*/}
-    {/*    onChange={(e) => {*/}
-    {/*        const newQuantity = parseInt(e.value, 10);*/}
-    {/*        if (newQuantity >= 0 && newQuantity <= product.produit.stock) {*/}
-    {/*            updateQuantity(product.id, newQuantity);*/}
-    {/*        }*/}
-    {/*    }}*/}
-    {/*/>*/}
+    /**************************************************User info **************************** **/
+
+
+
+
+    const handleUpdate = (event) => {
+        event.preventDefault();
+
+        const requestData = {
+            id:user.id,
+            firstName  :firstName || user.firstName,
+            lastName : lastName || user.lastName,
+            adresse : adresse || user.adresse,
+            email:user.email,
+            telephone :telephone || user.telephone,
+            postcode :postcode || user.postcode,
+            photo:user.photo,
+            area :area || user.area,
+            role:user.role,
+            password:user.password,
+        };
+
+        axios.put(`/api/controller/users/${userId}`, requestData)
+            .then((response) => {
+                console.log("API Response:", response.data);
+                loadUser();
+                showupdate();
+            })
+            .catch((error) => {
+                console.error("Error while saving project:", error);
+            });
+    };
+
+
+
+    const showupdate = () => {
+        toast.current.show({severity:'info', summary: 'success', detail:'profile updated successfully', life: 3000});
+    }
+
+
     return (
         <>
             <Toast ref={toast}/>
+            {/*<Dialog*/}
+            {/*    visible={isDialogVisible}*/}
+            {/*    onHide={() => setDialogVisible(false)}*/}
+            {/*    header="Confirm Payment"*/}
+            {/*>*/}
+            {/*    <Box sx={{ width: '100%' }}>*/}
+            {/*        <Stepper activeStep={1} alternativeLabel>*/}
+            {/*            {steps.map((label) => (*/}
+            {/*                <Step key={label}>*/}
+            {/*                    <StepLabel>{label}</StepLabel>*/}
+            {/*                </Step>*/}
+            {/*            ))}*/}
+            {/*        </Stepper>*/}
+            {/*    </Box>*/}
+            {/*    <Button label="Confirm" onClick={handleConfirmPayment}/>*/}
+            {/*    <Button label="Cancel" onClick={() => setDialogVisible(false)} className="p-button-secondary"/>*/}
+            {/*</Dialog>*/}
 
-            {/*<div className="card mt-5 mx-2">*/}
-            {/*    <section style={{backgroundColor: "#eee"}}>*/}
-            {/*        <div className="container mt-2 ">*/}
-            {/*            <div className="row d-flex justify-content-center align-items-center h-100">*/}
-            {/*                <div className="col-12 col-md-10">*/}
-            {/*                    <div className="d-flex justify-content-between align-items-center mb-4">*/}
-            {/*                        <h3 className="fw-normal mb-0 text-black">Shopping Cart</h3>*/}
-            {/*                    </div>*/}
-            {/*                    {cartProducts.length === 0 ? (*/}
-            {/*                        <div className="alert alert-secondary mb-5 p-5" >*/}
-            {/*                            oops! There are no products in the cart.*/}
-            {/*                        </div>*/}
-            {/*                    ) : (*/}
-            {/*                        <>*/}
-            {/*                            {cartProducts.map((product) => (*/}
-            {/*                                <div className="card rounded-3 mb-2" key={product.id}>*/}
-            {/*                                    <div className="card-body p-3 ">*/}
-            {/*                                        <div*/}
-            {/*                                            className="row d-flex justify-content-between align-items-center">*/}
-            {/*                                            <div className="col-4 col-md-2 col-lg-2 col-xl-2">*/}
-            {/*                                                <img*/}
-            {/*                                                    src={product.produit.photo}*/}
-            {/*                                                    className="img-fluid rounded-3"*/}
-            {/*                                                    alt={product.produit.nom}*/}
-            {/*                                                />*/}
-            {/*                                            </div>*/}
-            {/*                                            <div className="col-8 col-md-3 col-lg-3 col-xl-3">*/}
-            {/*                                                <p className="lead fw-normal mb-2">{product.produit.nom}</p>*/}
 
-            {/*                                                <p>*/}
-            {/*                                                    <span className="text-muted">Price:</span>*/}
-            {/*                                                    <strong>{product.totalprice}Dh</strong><br/>*/}
-            {/*                                                    <span className="text-muted">In stock: </span>*/}
-            {/*                                                    {product.produit.stock}<br/>*/}
-            {/*                                                    <span className="text-muted">Restaurant: </span>*/}
-            {/*                                                    {product.produit.restaurant.nom}*/}
-            {/*                                                </p>*/}
-
-            {/*                                            </div>*/}
-            {/*                                            <div*/}
-            {/*                                                className="col-8 col-md-3 col-lg-3 col-xl-2 d-flex mt-3 mt-md-0">*/}
-            {/*                                                <InputNumber*/}
-            {/*                                                    value={productQuantities[product.id] || product.quantity}*/}
-            {/*                                                    mode="decimal"*/}
-            {/*                                                    showButtons*/}
-            {/*                                                    min={1}*/}
-            {/*                                                    max={product.produit.stock}*/}
-            {/*                                                    onChange={(e) => {*/}
-            {/*                                                        const newQuantity = parseInt(e.value, 10);*/}
-            {/*                                                        if (newQuantity >= 0 && newQuantity <= product.produit.stock) {*/}
-            {/*                                                            updateQuantity(product.id, newQuantity);*/}
-            {/*                                                        }*/}
-            {/*                                                    }}*/}
-            {/*                                                />*/}
-            {/*                                            </div>*/}
-            {/*                                            <div*/}
-            {/*                                                className="col-4 col-md-3 col-lg-2 col-xl-2 offset-md-1 mt-3 mt-md-0">*/}
-            {/*                                                <h5 className="mb-0"> {product.totalprice * (productQuantities[product.id] || 1)}Dh</h5>*/}
-            {/*                                            </div>*/}
-            {/*                                            <div*/}
-            {/*                                                className="col-3 col-md-1 col-lg-1 col-xl-1 text-end mt-3 mt-md-0">*/}
-            {/*                                                <Button*/}
-            {/*                                                    icon="pi pi-trash"*/}
-            {/*                                                    severity="danger"*/}
-            {/*                                                    aria-label="Cancel"*/}
-            {/*                                                    onClick={() => deleteProduct(product.id)}*/}
-            {/*                                                />*/}
-            {/*                                            </div>*/}
-            {/*                                        </div>*/}
-            {/*                                    </div>*/}
-            {/*                                </div>*/}
-            {/*                            ))}*/}
-            {/*                            <div className="card mb-2">*/}
-            {/*                                <div className="card-body">*/}
-            {/*                                    <div className="row d-flex justify-content-between align-items-center">*/}
-            {/*                                        <div className="col-12 col-md-6">*/}
-            {/*                                            <p className="mb-1">Total Quantity: {getTotalQuantity()}</p>*/}
-            {/*                                            <p className="mb-0">Shipping Fee: {calculateShippingFee(getTotalAmount())}Dh</p>*/}
-            {/*                                            <p className="mb-0">Total Amount: {getTotalAmount()}Dh</p>*/}
-            {/*                                        </div>*/}
-            {/*                                        <div className="col-12 col-md-6 text-md-end mt-5 mt-md-0">*/}
-            {/*                                            <Button label="Proceed to Pay"*/}
-            {/*                                                    disabled={isProceedToPayDisabled}*/}
-            {/*                                                    severity="info" onClick={opendialog}*/}
-            {/*                                            />*/}
-            {/*                                        </div>*/}
-            {/*                                    </div>*/}
-            {/*                                </div>*/}
-            {/*                            </div>*/}
-            {/*                        </>*/}
-            {/*                    )}*/}
-            {/*                </div>*/}
-            {/*            </div>*/}
-            {/*        </div>*/}
-            {/*    </section>*/}
-            {/*</div>*/}
 
             <Dialog
                 visible={isDialogVisible}
                 onHide={() => setDialogVisible(false)}
                 header="Confirm Payment"
             >
-                <p>Are you sure you want to proceed with the payment?</p>
-                <Button label="Confirm" onClick={handleConfirmPayment}/>
-                <Button label="Cancel" onClick={() => setDialogVisible(false)} className="p-button-secondary"/>
+                <Box sx={{ width: '100%',mb:2 }}>
+                    <Stepper activeStep={activeStep} alternativeLabel>
+                        {steps.map((label) => (
+                            <Step key={label}>
+                                <StepLabel>{label}</StepLabel>
+                            </Step>
+                        ))}
+                    </Stepper>
+                </Box>
+                <div>
+                    {activeStep === 0 && (
+                        <>
+                            <Grid container spacing={1} mt={1}>
+                                <Grid item xs={6}>
+                                    <TextField
+                                        fullWidth
+                                        label="firstName"
+                                        value={firstName}
+                                        placeholder={user ? user.firstName || "firstName" : "firstName"}
+                                        onChange={(e) => setFirstName(e.target.value)}
+                                    />
+                                </Grid>
+                                <Grid item xs={6}>
+                                    <TextField
+                                        fullWidth
+                                        label="lastName"
+                                        value={lastName}
+                                        placeholder={user ? user.lastName || "lastName" : "lastName"}
+                                        onChange={(e) => setLastName(e.target.value)}
+                                    />
+                                </Grid>
+                            </Grid>
+
+                            <Grid container spacing={1} mt={1}>
+                                <Grid item xs={6}>
+                                    <TextField
+                                        fullWidth
+                                        label="Address"
+                                        value={adresse}
+                                        onChange={(e) => setAdresse(e.target.value)}
+                                        placeholder={user ? user.adresse || "Address" : "Address"}
+                                    />
+                                </Grid>
+                                <Grid item xs={6}>
+                                    <TextField
+                                        fullWidth
+                                        label="Post Code"
+                                        value={postcode}
+                                        onChange={(e) => setpostcode(e.target.value)}
+                                        placeholder={user ? user.postcode || "Post Code" : "Post Code"}
+                                    />
+                                </Grid>
+                            </Grid>
+
+                            <Grid container spacing={1} mt={1}>
+                                <Grid item xs={6}>
+                                    <TextField
+                                        fullWidth
+                                        label="Area"
+                                        value={area}
+                                        onChange={(e) => setArea(e.target.value)}
+                                        placeholder={user ? user.area || "Area" : "Area"}
+                                    />
+                                </Grid>
+                                <Grid item xs={6}>
+                                    <TextField
+                                        fullWidth
+                                        label="Telephone"
+                                        value={telephone}
+                                        onChange={(e) => setTelephone(e.target.value)}
+                                        placeholder={user ? user.telephone || "phone" : "PHONE"}
+                                    />
+                                </Grid>
+                            </Grid>
+
+                            <Grid container justifyContent="center">
+                                <Grid item xs={12} textAlign="end">
+                                    <Button label="Update" severity="info" raised onClick={handleUpdate} />
+                                    <Button label="Next"  onClick={handleNext} />
+
+                                </Grid>
+                            </Grid>
+                        </>
+                    )}
+                    {activeStep === 1 && (
+                        <>
+                            {/* Step 2: Choose Delivery Method */}
+                            <div className="flex">
+                            <div>
+                                <label>Cash on Delivery</label>
+                                <Switch
+                                    checked={isCashOnDelivery}
+                                    onChange={() => setIsCashOnDelivery(!isCashOnDelivery)}
+                                    color="primary"
+                                />
+                            </div>
+                            <div>
+                                <label>Online Payment</label>
+                                <Switch
+                                    checked={isOnlinePayment}
+                                    onChange={() => setIsOnlinePayment(!isOnlinePayment)}
+                                    color="primary"
+                                    disabled={true}
+                                />
+
+
+                            </div>
+                            </div>
+                            <div>
+                                <Button label="Back" onClick={handleBack} />
+                                <Button label="Next" onClick={handleNext} />
+                            </div>
+                        </>
+                    )}
+                    {activeStep === 2 && (
+                        <>
+                            <Grid container spacing={1} mt={1}>
+                                <Grid item xs={6}>
+                                    <p><strong>FirstName </strong>:{user.firstName}</p>
+                                    <p><strong>LastName </strong>:{user.lastName}</p>
+                                    <p><strong>Phone </strong>:{user.telephone}</p>
+                                </Grid>
+                                <Grid item xs={6}>
+                                    <p><strong>Area </strong>:{user.area}</p>
+                                    <p><strong>Post Code </strong>:{user.postcode}</p>
+                                    <p><strong>Delivery Method </strong>: {isCashOnDelivery ? 'Cash on Delivery' : 'Online Payment'}</p>
+                                </Grid>
+                            </Grid>
+                            <div>
+                                <p><strong>Address </strong>:{user.adresse}</p>
+                                <Button label="Confirm Payment" style={{float:"right"}} onClick={handleConfirmPayment} />
+                                <Button className="mx-2" label="Back" style={{float:"right"}} onClick={handleBack} />
+
+                            </div>
+                        </>
+                    )}
+                </div>
             </Dialog>
 
             <Box sx={{mx:3,mt:3}}>
@@ -414,24 +530,6 @@ export default function Cart() {
                                 oops! There are no products in the cart.
                             </div>
                         ) : (
-                            // <div className="card mb-2">
-                            //     <div className="card-body">
-                            //         <div className="row d-flex justify-content-between align-items-center">
-                            //             <div className="col-12 col-md-6">
-                            //                 <p className="mb-1">Total Quantity: {getTotalQuantity()}</p>
-                            //                 <p className="mb-0">Shipping Fee: {calculateShippingFee(getTotalAmount())}Dh</p>
-                            //                 <p className="mb-0">Total Amount: {getTotalAmount()}Dh</p>
-                            //             </div>
-                            //             <div className="col-12 col-md-6 text-md-end mt-5 mt-md-0">
-                            //                 <Button label="Proceed to Pay"
-                            //                         disabled={isProceedToPayDisabled}
-                            //                         severity="info" onClick={opendialog}
-                            //                 />
-                            //             </div>
-                            //         </div>
-                            //     </div>
-                            // </div>
-
                             <div className="grid mt-1 p-1" >
                                 <div className="col-6">
                                     <div className="text-center p-1 border-round-sm  font-bold">
@@ -464,8 +562,9 @@ export default function Cart() {
                                     </div>
                                 </div>
                                 <div className="col-12">
-                                    <div className="text-center p-1 border-round-sm  font-bold">
-                                        <Button label="Proceed to Pay"
+                                    <div className="text-center p-1 border-round-sm  font-bold ">
+                                        <Button
+                                            label="Proceed to Pay" outlined
                                                 disabled={isProceedToPayDisabled}
                                                 severity="info" onClick={opendialog}
                                         />
