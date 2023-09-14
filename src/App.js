@@ -6,6 +6,8 @@ import "primereact/resources/primereact.min.css";
 import AuthRoute from './Auth/AuthRoute';
 import AdminRoute from './Auth/AdminRoute';
 import ProtectedRoute from './components/ProtectedRoute';
+import 'primeflex/primeflex.css';
+
 
 function App() {
 

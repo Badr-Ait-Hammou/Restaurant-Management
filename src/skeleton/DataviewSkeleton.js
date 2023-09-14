@@ -9,6 +9,8 @@ export default function DataviewSkeleton() {
     const products = [
         { id: 1 },
         { id: 2 },
+        { id: 3 },
+        { id: 4 },
 
     ];
 
@@ -38,34 +40,22 @@ export default function DataviewSkeleton() {
 
     const gridItem = () => {
         return (
-            <div className="flex flex-column xl:flex-row xl:align-items-start p-2 gap-4 mt-5">
-                    <div className="row row-cols-2 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-                        {Array.from({length: 4}).map((_, index) => (
-                            <div key={index} className={`col mb-4 out-of-stock`}>
-                                <div className="card h-100">
-                                    <div className="flex flex-column xl:flex-row xl:align-items-start p-2 gap-4">
-                                        <div
-                                            className="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4">
-                                            <div
-                                                className="flex flex-column align-items-center sm:align-items-start gap-3">
-                                                <Skeleton className="w-8rem border-round h-2rem"/>
-                                                <Skeleton className="w-6rem border-round h-1rem"/>
-                                                <div className="flex align-items-center gap-3">
-                                                    <Skeleton className="w-6rem border-round h-1rem"/>
-                                                    <Skeleton className="w-3rem border-round h-1rem"/>
-                                                </div>
-                                            </div>
-                                            <div
-                                                className="flex sm:flex-column align-items-center sm:align-items-end gap-3 sm-gap-2">
-                                                <Skeleton className="w-4rem border-round h-2rem"/>
-                                                <Skeleton shape="circle" className="w-3rem h-3rem"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
+            <div className="col-12 sm:col-6 lg:col-4 xl:col-3 p-2">
+                <div className="p-4 border-1 surface-border surface-card border-round">
+                    <div className="flex flex-wrap align-items-center justify-content-between gap-2">
+                        <Skeleton className="w-6rem border-round h-1rem" />
+                        <Skeleton className="w-3rem border-round h-1rem" />
                     </div>
+                    <div className="flex flex-column align-items-center gap-3 py-5">
+                        <Skeleton className="w-9 shadow-2 border-round h-10rem" />
+                        <Skeleton className="w-8rem border-round h-2rem" />
+                        <Skeleton className="w-6rem border-round h-1rem" />
+                    </div>
+                    <div className="flex align-items-center justify-content-between">
+                        <Skeleton className="w-4rem border-round h-2rem" />
+                        <Skeleton shape="circle" className="w-3rem h-3rem" />
+                    </div>
+                </div>
             </div>
         );
     };
