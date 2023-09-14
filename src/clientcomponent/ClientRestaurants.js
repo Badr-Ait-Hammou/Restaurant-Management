@@ -5,9 +5,9 @@ import {Dropdown} from 'primereact/dropdown';
 import {Tag} from "primereact/tag";
 import {DataView, DataViewLayoutOptions} from "primereact/dataview";
 import {Rating} from "@mui/material";
-import Skeleton from "../skeleton/ProfileSkeleton"
 import DataviewSkeleton from "../skeleton/DataviewSkeleton"
 import Typography from "@mui/material/Typography";
+import RestaurantMenuRoundedIcon from "@mui/icons-material/RestaurantMenuRounded";
 
 export default function ClientRestaurants() {
     const [restaurants, setRestaurants] = useState([]);
@@ -24,8 +24,8 @@ export default function ClientRestaurants() {
     const [loading, setLoading] = useState(true); // Track loading state
 
     const sortOptions = [
-        { label: 'Top Rated', value: '!rating' },
-        { label: 'poorly-rated', value: 'rating' }
+        {label: 'Top Rated', value: '!rating'},
+        {label: 'poorly-rated', value: 'rating'}
     ];
 
 
@@ -108,7 +108,7 @@ export default function ClientRestaurants() {
             const totalRating = ratings.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
             const ratingsreview = restaurant.produitList.map((product) => product.avisList.length);
             const reviewCount = ratingsreview.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-            return totalRating /reviewCount;
+            return totalRating / reviewCount;
         } else {
             return 0;
         }
@@ -126,123 +126,148 @@ export default function ClientRestaurants() {
     };
 
 
+    if (loading) {
+        return (<DataviewSkeleton/>)
+    }
 
+
+   
+    const gridItem = (restaurant) => {
+        return (
+            <div className="col-12 sm:col-6 lg:col-4 xl:col-3 p-2 ">
+                <div className="p-4 border-1 surface-border surface-card border-round">
+                    <div className="flex flex-wrap align-items-center justify-content-between gap-2">
+                        <div className="flex align-items-center gap-2">
+                            <Tag severity="success" icon="pi pi-clock">
+                                {restaurant.dateOuverture} / {restaurant.dateFermeture}
+                            </Tag>
+                            {/*<i className="pi pi-tag"></i>*/}
+                            {/*<span className="font-semibold">{product.category}</span>*/}
+                        </div>
+                        <span className="card-text-value mx-2">
+                                    {restaurant.dateOuverture && restaurant.dateFermeture ? (
+                                        isRestaurantOpen(restaurant.dateOuverture, restaurant.dateFermeture) ? (
+                                            <Tag severity="info" icon="pi pi-check">
+                                                Open
+                                            </Tag>
+                                        ) : (
+                                            <Tag severity="danger" icon="pi pi-moon">
+                                                Closed
+                                            </Tag>
+                                        )
+                                    ) : (
+                                        "N/A"
+                                    )}
+                                </span>
+                    </div>
+                    <div className="flex flex-column align-items-center gap-2 py-2">
+                        <Link to={`${restaurant.id}`}>
+                            <div style={{position: 'relative'}}>
+                                <img
+                                    className=" w-16 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round"
+                                    src={restaurant.photo}
+                                    alt={restaurant.nom}
+                                    style={{
+                                        width: '100%',
+                                        height: '140px',
+                                        borderRadius: '8px'
+                                    }}/>
+
+                                <Tag
+                                    severity="warning"
+                                    value={restaurant.serie && restaurant.serie.nom}
+                                    style={{
+                                        fontSize: "10px",
+                                        position: 'absolute',
+                                        top: '3px',
+                                        right: '5px',
+                                    }}
+                                />
+                            </div>
+                        </Link>
+                        <div className="text-2xl font-bold">{restaurant.nom}</div>
+                        <Typography variant="body2" className="ml-1"
+                                    color="text.secondary">{restaurant.adresse}
+                        </Typography>
+                        <Tag value={restaurant.specialite && restaurant.specialite.nom}
+                             style={{backgroundColor: "rgb(23,113,122)"}}>
+
+                        </Tag>
+                        <Rating value={getAverageRating(restaurant)} readOnly cancel={false} precision={0.5}></Rating>
+                        <Typography
+                            className="font-monospace ">({getReviews(restaurant)})review{getReviews(restaurant) !== 1 ? 's' : ''}
+                        </Typography>
+                    </div>
+                    <div className=" flex align-items-center justify-content-between">
+
+                    </div>
+                </div>
+            </div>
+        );
+    };
 
 
     const listItem = (restaurant) => {
         return (
-            <div className="flex flex-column xl:flex-row xl:align-items-start p-2 gap-4">
-                <div key={restaurant.id} className="col mb-4 card h-100">
-                    <div className="row  row-cols-1  row-cols-sm-4 row-cols-md-4 row-cols-lg-4 g-4 ">
-                        <Link to={`${restaurant.id}`}>
+            <div className="col-12  ">
+                <div className="flex flex-column xl:flex-row xl:align-items-start   p-3 gap-4">
+                    <Link to={`${restaurant.id}`}>
+                        <div style={{position: 'relative'}}>
                             <img
-                                className="card-img-top mx-auto mt-3 "
+                                className="w-10 sm:w-10rem xl:w-10rem shadow-2 block xl:block mx-auto border-round"
                                 src={restaurant.photo}
                                 alt={restaurant.nom}
                                 style={{
                                     width: '180px',
                                     height: '140px',
-                                    borderRadius: '8px'
-                                }}/>
-                        </Link>
-                        <div className="card-body">
+                                    borderRadius: '18px'
+                                }}
+                            />
+                            <Tag
 
-                            <h6 className="card-title">{restaurant.nom}</h6>
-                            <Tag severity="success" icon="pi pi-clock">
-                                {restaurant.dateOuverture} / {restaurant.dateFermeture}
-                            </Tag>
-
-                            <span className="card-text-value mx-2">
-                                    {restaurant.dateOuverture && restaurant.dateFermeture ? (
-                                        isRestaurantOpen(restaurant.dateOuverture, restaurant.dateFermeture) ? (
-                                            <Tag severity="info" icon="pi pi-check">
-                                                Open
-                                            </Tag>
-                                        ) : (
-                                            <Tag severity="danger" icon="pi pi-moon">
-                                                Closed
-                                            </Tag>
-                                        )
-                                    ) : (
-                                        "N/A"
-                                    )}
-                                <Tag
-                                    severity="warning"
-                                    value={restaurant.serie.nom}
-                                    style={{
-                                        fontSize:"8px",
-                                        position: 'absolute',
-                                        top: '3px',
-                                        right: '11px',
-                                    }}
-                                />
+                                severity="warning"
+                                value={restaurant.serie && restaurant.serie.nom}
+                                style={{
+                                    fontSize: "10px",
+                                    position: 'absolute',
+                                    top: '3px',
+                                    right: '11px',
+                                }}
+                            />
+                        </div>
+                    </Link>
+                    <div
+                        className="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-2">
+                        <div className="flex flex-column align-items-center sm:align-items-start gap-3">
+                            <div className="text-2xl font-bold text-900">{restaurant.nom}</div>
+                            <div className="flex align-items-center gap-3">
+                                <Tag value={restaurant.specialite && restaurant.specialite.nom} severity="danger"
+                                     icon="pi pi-tag"/>
+                                <span className="flex align-items-center gap-2">
+                                     <Tag
+                                         style={{background: 'linear-gradient(-225deg,#AC32E4 0%,#7918F2 48%,#4801FF 100%)'}}
+                                         icon={<RestaurantMenuRoundedIcon
+                                             style={{fontSize: '16px'}}/>}> {restaurant.ville && restaurant.ville.nom} --{restaurant.zone && restaurant.zone.nom}
+                                     </Tag>
                                 </span>
 
-                            <div className="mt-2">
-                                <Rating value={getAverageRating(restaurant)} readOnly cancel={false} ></Rating>
-                                <Typography className="font-monospace ">({getReviews(restaurant)})review{getReviews(restaurant) !==1 ? 's':""}</Typography>                            </div>
-                            <div className="mt-1">
-                                <strong className="card-text ">Address: </strong> {restaurant.adresse}
                             </div>
                             <div>
-                                <strong
-                                    className="card-text mt-1 ">City: </strong>{restaurant.zone.ville.nom}--{restaurant.zone.nom}
+                                <Typography variant="body2" className="ml-1"
+                                            color="text.secondary">{restaurant.adresse}</Typography>
                             </div>
-                            <div>
-                                <strong className="card-text">Speciality:</strong> {restaurant.specialite.nom}
-                            </div>
-
                         </div>
-                    </div>
-                </div>
-            </div>
-        );
-    };
-
-    if(loading){
-        return(<DataviewSkeleton/>)
-    }
+                        <div className="flex flex-column align-items-center sm:align-items-start gap-3">
+                            <Rating value={getAverageRating(restaurant)} readOnly cancel={false}
+                                    precision={0.5}></Rating>
+                            <Typography
+                                className="font-monospace align-items-center">({getReviews(restaurant)})review{getReviews(restaurant) !== 1 ? 's' : ''}</Typography>
 
 
-    const gridItem = (restaurant) => {
-        return (
-            <div key={restaurant.id} className="mb-3">
-                <div className="card h-100 mb-2">
-                    <div className="flex flex-column xl:flex-row xl:align-items-start p-2 gap-4">
-                        <Link to={`${restaurant.id}`}>
-                            <div style={{position: 'relative'}}>
-                                <img className="w-90 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round"
-                                     src={restaurant.photo}
-                                     alt={restaurant.nom}
-                                     style={{
-                                         width: '180px',
-                                         height: '140px',
-                                         borderRadius: '8px'
-                                     }}/>
-
-                                <Tag
-                                    severity="warning"
-                                    value={restaurant.serie.nom}
-                                    style={{
-                                        fontSize:"10px",
-                                        position: 'absolute',
-                                        top: '3px',
-                                        right: '11px',
-                                    }}
-                                />
-                            </div>
-                        </Link>
-                        <div
-                            className="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4">
-                            <div className="flex flex-column align-items-center sm:align-items-start gap-3">
-                                <div className="text-xl font-bold ">{restaurant.nom}</div>
-                                <Rating value={getAverageRating(restaurant)} readOnly cancel={false} ></Rating>
-                                <Typography className="font-monospace ">({getReviews(restaurant)}) review{getReviews(restaurant) !== 1 ? 's' : ''}</Typography>
-                                <div className="flex align-items-center ">
-                                    <Tag severity="success" icon="pi pi-clock" >
+                            <span className="card-text-value ">
+                                   <Tag severity="success" icon="pi pi-clock" className="mx-1" >
                                         {restaurant.dateOuverture} / {restaurant.dateFermeture}
                                     </Tag>
-                                    <span className="card-text-value mx-2">
                                     {restaurant.dateOuverture && restaurant.dateFermeture ? (
                                         isRestaurantOpen(restaurant.dateOuverture, restaurant.dateFermeture) ? (
                                             <Tag severity="info" icon="pi pi-check">
@@ -256,35 +281,16 @@ export default function ClientRestaurants() {
                                     ) : (
                                         "N/A"
                                     )}
+
                                 </span>
-                                </div>
-                            </div>
-                            <div className="d-flex justify-content-lg-between gap-1 align-items-center mt-1">
-                                <strong className="card-text mt-1 ">City: </strong>{restaurant.zone.ville.nom}
-                            </div>
                         </div>
+
                     </div>
                 </div>
             </div>
         );
     };
 
-
-
-
-    const itemTemplate = (group) => {
-        if (!group || group.length === 0) {
-            return <Skeleton/>;
-        }
-
-        return (
-            <div className="container mt-2">
-                <div className="row row-cols-2 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-                    {group.map((product) => gridItem(product))}
-                </div>
-            </div>
-        );
-    };
 
     const onSortChange = (event) => {
         const value = event.value;
@@ -326,13 +332,6 @@ export default function ClientRestaurants() {
     };
 
 
-
-
-    const groupedRestaurants = [];
-    for (let i = 0; i < restaurants.length; i += 4) {
-        groupedRestaurants.push(restaurants.slice(i, i + 4));
-    }
-
     return (
         <>
             <div className="col-md-12   mb-3 mt-5">
@@ -362,22 +361,21 @@ export default function ClientRestaurants() {
             </div>
 
 
-
             <div className="card mx-2">
                 {layout === 'list' && (
-                    <div >
-                        <DataView value={restaurants} itemTemplate={listItem} layout={layout} header={header()} sortField={sortField} sortOrder={sortOrder}/>
+                    <div>
+                        <DataView value={restaurants} itemTemplate={listItem} layout={layout} header={header()}
+                                  sortField={sortField} sortOrder={sortOrder}/>
                     </div>
                 )}
 
                 {layout === 'grid' && (
-                    <div >
-                        <DataView value={groupedRestaurants} itemTemplate={itemTemplate} layout={layout} header={header()} sortField={sortField} sortOrder={sortOrder}/>
+                    <div>
+                        <DataView value={restaurants} itemTemplate={gridItem} layout={layout}
+                                  header={header()} sortField={sortField} sortOrder={sortOrder}/>
                     </div>
                 )}
             </div>
-
-
 
 
         </>
