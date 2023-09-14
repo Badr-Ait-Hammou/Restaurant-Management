@@ -19,6 +19,7 @@ import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import PriceCheckIcon from '@mui/icons-material/PriceCheck';
 import Switch from '@mui/material/Switch';
+import Typography from "@mui/material/Typography";
 
 
 export default function Cart() {
@@ -375,7 +376,8 @@ export default function Cart() {
             <Dialog
                 visible={isDialogVisible}
                 maximizable
-                style={{height:"460px"}}
+
+                style={{ width: '50vw' }} breakpoints={{ '960px': '75vw', '641px': '100vw' }}
                 onHide={() => setDialogVisible(false)}
                 header="Confirm Payment"
             >
@@ -474,8 +476,7 @@ export default function Cart() {
                                     onChange={() => setIsCashOnDelivery(!isCashOnDelivery)}
                                     color="primary"
                                 />
-                            </div>
-                            <div>
+
                                 <label>Online Payment</label>
                                 <Switch
                                     checked={isOnlinePayment}
@@ -483,12 +484,22 @@ export default function Cart() {
                                     color="primary"
                                     disabled={true}
                                 />
+                                <div >
+                                    <Typography variant="body2" color="text.secondary" >
+                                        Explore the Convenience of Cash on Delivery! Learn more about our Cash on Delivery payment method by clicking the 'Learn More' link below.
+                                        Discover how this hassle-free and secure payment option allows you to pay for your purchases at the time of delivery,
+                                        providing peace of mind and flexibility in your online shopping experience.
+                                    </Typography>
+                                    <a target="_blank" rel="noopener noreferrer">
+                                        <Button label="Learn More" className="p-button-link" />
+                                    </a>
+                                </div>
 
 
                             </div>
                             </div>
-                            <div>
-                                <Button label="Back" onClick={handleBack} />
+                            <div className="text-right mt-4 ">
+                                <Button label="Back" className="mx-1" onClick={handleBack} />
                                 <Button label="Next" onClick={handleNext} />
                             </div>
                         </>
