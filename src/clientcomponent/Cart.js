@@ -17,9 +17,9 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
-import PriceCheckIcon from '@mui/icons-material/PriceCheck';
 import Switch from '@mui/material/Switch';
 import Typography from "@mui/material/Typography";
+import CartSkeleton from "../skeleton/CartSkeleton";
 
 
 export default function Cart() {
@@ -234,21 +234,9 @@ export default function Cart() {
         }
     };
 
-    if(loading){
-        return( <div className="card mt-5 mx-2">
-            <section style={{backgroundColor: "#eee"}}>
-                <div className="container mt-2 ">
-                    <div className="row d-flex justify-content-center align-items-center h-100">
-                        <div className="col-12 col-md-10">
-                            <div className="d-flex justify-content-between align-items-center mb-4">
-                                <h3 className="fw-normal mb-0 text-black">Shopping Cart</h3>
-                            </div>
-                            <Skeleton width="100%" height="120px" className="mb-5"  />
-                        </div>
-                    </div>
-                </div>
-            </section>
-            </div>
+    if(loading ){
+        return(
+            <CartSkeleton/>
         );
     }
 
@@ -300,19 +288,13 @@ export default function Cart() {
                             />
 
                         </div>
-
-
-
                     </div>
-
                 </div>
             </div>
         );
     };
 
     /**************************************************User info **************************** **/
-
-
 
 
     const handleUpdate = (event) => {
@@ -343,33 +325,73 @@ export default function Cart() {
             });
     };
 
-
-
     const showupdate = () => {
-        toast.current.show({severity:'info', summary: 'success', detail:'profile updated successfully', life: 3000});
+        toast.current.show({severity:'info', summary: 'success', detail:'Delivery info updated successfully', life: 3000});
     }
 
 
     return (
         <>
             <Toast ref={toast}/>
-            {/*<Dialog*/}
-            {/*    visible={isDialogVisible}*/}
-            {/*    onHide={() => setDialogVisible(false)}*/}
-            {/*    header="Confirm Payment"*/}
-            {/*>*/}
-            {/*    <Box sx={{ width: '100%' }}>*/}
-            {/*        <Stepper activeStep={1} alternativeLabel>*/}
-            {/*            {steps.map((label) => (*/}
-            {/*                <Step key={label}>*/}
-            {/*                    <StepLabel>{label}</StepLabel>*/}
-            {/*                </Step>*/}
-            {/*            ))}*/}
-            {/*        </Stepper>*/}
-            {/*    </Box>*/}
-            {/*    <Button label="Confirm" onClick={handleConfirmPayment}/>*/}
-            {/*    <Button label="Cancel" onClick={() => setDialogVisible(false)} className="p-button-secondary"/>*/}
-            {/*</Dialog>*/}
+            <Box sx={{mx:3,mt:3}}>
+                <Grid item container spacing={1}  columns={12} >
+                    <Grid item xs={12} md={7}  >
+                        <div className="card">
+                            <DataView value={cartProducts} itemTemplate={itemTemplate}   header="Cart" />
+                        </div>
+                    </Grid>
+                    <Grid item xs={12} md={5}   >
+                        <div className="card ">
+                        {cartProducts.length === 0 ? (
+                                <Skeleton width="100%" height="233px"  />
+
+                        ) : (
+                            <div className="grid mt-1 p-1" >
+                                <div className="col-6">
+                                    <div className="text-center p-1 border-round-sm  font-bold">
+                                        <p className="mb-1">Total Quantity :</p>
+
+                                    </div>
+                                </div>
+                                <div className="col-6">
+                                    <div className="text-center p-1 border-round-sm  font-bold">{getTotalQuantity()}</div>
+                                </div>
+                                <div className="col-6">
+                                    <div className="text-center p-1 border-round-sm  font-bold">
+                                        <p className="mb-0">Shipping Fee :</p>
+
+                                    </div>
+                                </div>
+                                <div className="col-6">
+                                    <div className="text-center p-1 border-round-sm  font-bold">
+                                        {calculateShippingFee(getTotalAmount())}Dh
+                                    </div>
+                                </div>
+                                <div className="col-6">
+                                    <div className="text-center p-1 border-round-sm  font-bold">
+                                        <p className="mb-0">Total Amount :</p>
+                                    </div>
+                                </div>
+                                <div className="col-6">
+                                    <div className="text-center p-1 border-round-sm  font-bold">
+                                        {getTotalAmount()}Dh
+                                    </div>
+                                </div>
+                                <div className="col-12">
+                                    <div className="text-center p-1 border-round-sm  font-bold ">
+                                        <Button
+                                            label="Proceed to Pay" outlined
+                                                disabled={isProceedToPayDisabled}
+                                                severity="info" onClick={opendialog}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            )}
+                        </div>
+                    </Grid>
+                </Grid>
+            </Box>
 
 
 
@@ -467,36 +489,33 @@ export default function Cart() {
                     )}
                     {activeStep === 1 && (
                         <>
-                            {/* Step 2: Choose Delivery Method */}
                             <div className="flex">
-                            <div>
-                                <label>Cash on Delivery</label>
-                                <Switch
-                                    checked={isCashOnDelivery}
-                                    onChange={() => setIsCashOnDelivery(!isCashOnDelivery)}
-                                    color="primary"
-                                />
+                                <div>
+                                    <label>Cash on Delivery</label>
+                                    <Switch
+                                        checked={isCashOnDelivery}
+                                        onChange={() => setIsCashOnDelivery(!isCashOnDelivery)}
+                                        color="primary"
+                                    />
 
-                                <label>Online Payment</label>
-                                <Switch
-                                    checked={isOnlinePayment}
-                                    onChange={() => setIsOnlinePayment(!isOnlinePayment)}
-                                    color="primary"
-                                    disabled={true}
-                                />
-                                <div >
-                                    <Typography variant="body2" color="text.secondary" >
-                                        Explore the Convenience of Cash on Delivery! Learn more about our Cash on Delivery payment method by clicking the 'Learn More' link below.
-                                        Discover how this hassle-free and secure payment option allows you to pay for your purchases at the time of delivery,
-                                        providing peace of mind and flexibility in your online shopping experience.
-                                    </Typography>
-                                    <a target="_blank" rel="noopener noreferrer">
-                                        <Button label="Learn More" className="p-button-link" />
-                                    </a>
+                                    <label>Online Payment</label>
+                                    <Switch
+                                        checked={isOnlinePayment}
+                                        onChange={() => setIsOnlinePayment(!isOnlinePayment)}
+                                        color="primary"
+                                        disabled={true}
+                                    />
+                                    <div >
+                                        <Typography variant="body2" color="text.secondary" >
+                                            Explore the Convenience of Cash on Delivery! Learn more about our Cash on Delivery payment method by clicking the 'Learn More' link below.
+                                            Discover how this hassle-free and secure payment option allows you to pay for your purchases at the time of delivery,
+                                            providing peace of mind and flexibility in your online shopping experience.
+                                        </Typography>
+                                        <a target="_blank" rel="noopener noreferrer">
+                                            <Button label="Learn More" className="p-button-link" />
+                                        </a>
+                                    </div>
                                 </div>
-
-
-                            </div>
                             </div>
                             <div className="text-right mt-4 ">
                                 <Button label="Back" className="mx-1" onClick={handleBack} />
@@ -528,67 +547,6 @@ export default function Cart() {
                     )}
                 </div>
             </Dialog>
-
-            <Box sx={{mx:3,mt:3}}>
-                <Grid item container spacing={1}  columns={12} >
-                    <Grid item xs={12} md={7}  >
-                        <div className="card">
-                            <DataView value={cartProducts} itemTemplate={itemTemplate}   header="Cart" />
-                        </div>
-                    </Grid>
-                    <Grid item xs={12} md={5}   >
-                        <div className="card ">
-                        {cartProducts.length === 0 ? (
-                            <div className="alert alert-secondary mb-5 p-5" >
-                                oops! There are no products in the cart.
-                            </div>
-                        ) : (
-                            <div className="grid mt-1 p-1" >
-                                <div className="col-6">
-                                    <div className="text-center p-1 border-round-sm  font-bold">
-                                        <p className="mb-1">Total Quantity :</p>
-
-                                    </div>
-                                </div>
-                                <div className="col-6">
-                                    <div className="text-center p-1 border-round-sm  font-bold">{getTotalQuantity()}</div>
-                                </div>
-                                <div className="col-6">
-                                    <div className="text-center p-1 border-round-sm  font-bold">
-                                        <p className="mb-0">Shipping Fee :</p>
-
-                                    </div>
-                                </div>
-                                <div className="col-6">
-                                    <div className="text-center p-1 border-round-sm  font-bold">
-                                        {calculateShippingFee(getTotalAmount())}Dh
-                                    </div>
-                                </div>
-                                <div className="col-6">
-                                    <div className="text-center p-1 border-round-sm  font-bold">
-                                        <p className="mb-0">Total Amount :</p>
-                                    </div>
-                                </div>
-                                <div className="col-6">
-                                    <div className="text-center p-1 border-round-sm  font-bold">
-                                        {getTotalAmount()}Dh
-                                    </div>
-                                </div>
-                                <div className="col-12">
-                                    <div className="text-center p-1 border-round-sm  font-bold ">
-                                        <Button
-                                            label="Proceed to Pay" outlined
-                                                disabled={isProceedToPayDisabled}
-                                                severity="info" onClick={opendialog}
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                            )}
-                        </div>
-                    </Grid>
-                </Grid>
-            </Box>
 
         </>
     );
