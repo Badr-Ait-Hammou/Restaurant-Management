@@ -131,7 +131,7 @@ export default function ClientRestaurants() {
     }
 
 
-   
+
     const gridItem = (restaurant) => {
         return (
             <div className="col-12 sm:col-6 lg:col-4 xl:col-3 p-2 ">
@@ -141,8 +141,6 @@ export default function ClientRestaurants() {
                             <Tag severity="success" icon="pi pi-clock">
                                 {restaurant.dateOuverture} / {restaurant.dateFermeture}
                             </Tag>
-                            {/*<i className="pi pi-tag"></i>*/}
-                            {/*<span className="font-semibold">{product.category}</span>*/}
                         </div>
                         <span className="card-text-value mx-2">
                                     {restaurant.dateOuverture && restaurant.dateFermeture ? (

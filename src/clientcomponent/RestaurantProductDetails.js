@@ -22,10 +22,11 @@ import ZoomOutRoundedIcon from '@mui/icons-material/ZoomOutRounded';
 import RemoveRedEyeRoundedIcon from '@mui/icons-material/RemoveRedEyeRounded';
 import {DataView} from "primereact/dataview";
 import Box from "@mui/material/Box";
-import {InputText} from "primereact/inputtext";
 import Avatar from "@mui/material/Avatar";
 import { formatDistanceToNow, format } from 'date-fns';
 import RestaurantRating from "./RestaurantRating";
+import {InputTextarea} from "primereact/inputtextarea";
+import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 
 
 export default function RestaurantProductDetails() {
@@ -180,33 +181,34 @@ export default function RestaurantProductDetails() {
     }
 
 
-
     const itemTemplate3 = (product) => {
         const averageRating = getAverageRating(product);
         const totalReviews = getReviews(product);
         return (
-            <div key={product.id} className="flex flex-wrap p-2 align-items-center gap-3">
+            <div className="col-12">
+            <div className="flex flex-wrap p-2 align-items-center gap-3">
                 <Link to={`/admin/all_products/product/${product.id}`}>
-                <img  className="w-3 sm:w-6rem xl:w-10rem shadow-2 block xl:block mx-auto border-round" src={product.photo} alt={product.nom}  style={{
+                <img className="w-4rem shadow-2 flex-shrink-0 border-round"
+                     src={product.photo} alt={product.nom}  style={{
                     width: '800%',
                     height: '50%',
                     borderRadius: '8px'
-                }} />
+                }}
+                />
                 </Link>
-                <div className="flex-1 flex flex-column gap-2 xl:mr-8">
-                    <span className="font-bold">{product.nom}</span>
-                    <Typography variant="body1" gutterBottom>
-                        <div>
-                            <Rating value={averageRating} readOnly cancel={false} />
-                            <Typography className="font-monospace">({totalReviews} review{totalReviews !== 1 ? 's' : ''})</Typography>
+                <div className="flex-1 flex flex-column gap-1 xl:mr-8  ">
+                    <span className="font-bold text-left" >{product.nom}</span>
+                    <Typography variant="body1" gutterBottom >
+                        <div style={{float:"left"}}>
+                            <Rating value={averageRating} style={{float:"left",fontSize:"15px"}} readOnly cancel={false} />
+                            <Typography  className="font-monospace" style={{float:"left",fontSize:"12px"}}  >({totalReviews}) <ThumbUpOffAltIcon style={{fontSize:"15px"}}/></Typography>
                         </div>
                     </Typography>
-
-                    <div className="flex align-items-center gap-2">
+                    <div className="flex align-items-center ">
                         {product.promotion === true ? (
-                            <Tag className="mx-2"  value="On Sale" severity="danger" icon="pi pi-tag" />
+                            <Tag   value="On Sale" severity="danger" icon="pi pi-tag" />
                         ) : (
-                            <Tag className="mx-2"  value="New" severity="success" icon="pi pi-tag" />
+                            <Tag   value="New" severity="success" icon="pi pi-tag" />
                         )}
                     </div>
                 </div>
@@ -229,21 +231,22 @@ export default function RestaurantProductDetails() {
                     />
                 )}
             </div>
+            </div>
         );
     };
 
     const itemTemplateFeedback = (comment) => {
         return (
 
-            <Box sx={{mx:1,mt:1}}>
+            <Box sx={{mt:1}} className="col-12 p-1">
                 <Grid item  container  columns={12}>
                     <Grid  item xs={3} md={2}   >
                         <div>
-                            <Avatar sx={{backgroundColor:"rgba(50,121,99,0.18)",p:1,width:70,height:70,mt:2}} src={comment.user && comment.user.photo} alt={"badr"} />
+                            <Avatar sx={{backgroundColor:"rgba(50,121,99,0.18)",mx:1,p:1,width:70,height:70,mt:2}} src={comment.user && comment.user.photo} alt={"badr"} />
                         </div>
                     </Grid>
                     <Grid item xs={9} md={10}   >
-                        <div className="card mb-2 ml-1 flex justify-content-start" style={{backgroundColor:"transparent",borderColor:"transparent"}}>
+                        <div className="card mb-2  flex justify-content-start" style={{backgroundColor:"transparent",borderColor:"transparent"}}>
                             <Typography variant="body1" gutterBottom>
                                 <div>
                                     <small className="text-black font-monospace" style={{ float: 'left' }}>{formatCommentDate(comment.commentDate)}</small><br/>
@@ -251,7 +254,7 @@ export default function RestaurantProductDetails() {
                                     <Rating value={comment.rating} readOnly cancel={false} style={{ float: 'left', marginLeft: '10px' }} />
                                 </div>
                             </Typography>
-                            <InputText disabled={true} value={comment.note || 'nice'} className="font-bold" />
+                            <InputTextarea readOnly={true} value={comment.note || 'nice'} className="font-bold" />
                         </div>
                     </Grid>
                 </Grid>
@@ -290,7 +293,7 @@ export default function RestaurantProductDetails() {
                                 />
                             </div>
                         </Grid>
-                        <Grid item columns={12} md={7} container spacing={1}  className="md:flex md:flex-col md:items-start text-center text-md-start">
+                        <Grid item columns={12} md={7} container spacing={1}  className="md:flex md:flex-col md:items-start  text-md-start">
                                 <div className="flex flex-col col-12  ">
                                     <Typography  gutterBottom>
                                         {products.stock <= 0 ? (
@@ -409,21 +412,22 @@ export default function RestaurantProductDetails() {
                 <Grid item  container spacing={3} columns={12}>
                     <Grid  item xs={3} md={1}   >
                         <div>
-                            <Avatar sx={{backgroundColor:"rgba(50,121,99,0.18)",width:70,height:70}} src={products.restaurant && products.restaurant.photo} alt={"badr"} />
+                            <Avatar sx={{backgroundColor:"rgba(50,121,99,0.18)",width:70,height:70}}  src={products.restaurant && products.restaurant.photo} alt={"badr"} />
                         </div>
                     </Grid>
                     <Grid item xs={9} md={11}   >
                         <div className="card  flex justify-content-start" style={{backgroundColor:"transparent",borderColor:"transparent"}}>
                             <Link to={`/admin/home/restaurants/${restaurantId}`}>
 
-                            <Typography variant="body1" className="ml-1" gutterBottom>
+                            <Typography variant="body1" className="ml-1 mb-5" gutterBottom>
                                 <strong className="text-black" style={{float:"left"}} >{products.restaurant && products.restaurant.nom}</strong>
                             </Typography>
                             </Link>
-                            <Typography variant="body2" className="ml-1" color="text.secondary" sx={{float:"left"}}>
+                            <RestaurantRating restaurantId={restaurantId} />
+
+                            <Typography variant="body2" className="ml-1 text-left" color="text.secondary" sx={{float:"left"}}>
                                 <p  style={{float:"left"}} >{products.restaurant && products.restaurant.adresse}</p>
                             </Typography>
-                            <RestaurantRating restaurantId={restaurantId} />
                         </div>
                     </Grid>
                 </Grid>
@@ -432,14 +436,14 @@ export default function RestaurantProductDetails() {
 
 
             <Box sx={{mx:3,mt:3}}>
-                <Grid item container spacing={2}  columns={12}>
+                <Grid item container spacing={1}  columns={12} >
                     <Grid item xs={12} md={7}  >
                         <div className="card">
                             <DataView value={products.avisList} itemTemplate={itemTemplateFeedback} paginator paginatorTemplate={'PrevPageLink CurrentPageReport NextPageLink'} rows={3} header="Feedback" />
                         </div>
                     </Grid>
-                    <Grid item xs={12} md={5}  >
-                        <div className="card">
+                    <Grid item xs={12} md={5}   >
+                        <div className="card ">
                             <DataView value={productSpeciality} itemTemplate={itemTemplate3} paginator paginatorTemplate={'PrevPageLink CurrentPageReport NextPageLink'} rows={3} header="Similar products" />
                         </div>
                     </Grid>
