@@ -409,23 +409,70 @@ export default function Cart() {
                     </Grid>
                     <Grid item xs={12} md={5}   >
                         <div className="card ">
-                            <div className="card mb-2">
-                                <div className="card-body">
-                                    <div className="row d-flex justify-content-between align-items-center">
-                                        <div className="col-12 col-md-6">
-                                            <p className="mb-1">Total Quantity: {getTotalQuantity()}</p>
-                                            <p className="mb-0">Shipping Fee: {calculateShippingFee(getTotalAmount())}Dh</p>
-                                            <p className="mb-0">Total Amount: {getTotalAmount()}Dh</p>
-                                        </div>
-                                        <div className="col-12 col-md-6 text-md-end mt-5 mt-md-0">
-                                            <Button label="Proceed to Pay"
-                                                    disabled={isProceedToPayDisabled}
-                                                    severity="info" onClick={opendialog}
-                                            />
-                                        </div>
+                        {cartProducts.length === 0 ? (
+                            <div className="alert alert-secondary mb-5 p-5" >
+                                oops! There are no products in the cart.
+                            </div>
+                        ) : (
+                            // <div className="card mb-2">
+                            //     <div className="card-body">
+                            //         <div className="row d-flex justify-content-between align-items-center">
+                            //             <div className="col-12 col-md-6">
+                            //                 <p className="mb-1">Total Quantity: {getTotalQuantity()}</p>
+                            //                 <p className="mb-0">Shipping Fee: {calculateShippingFee(getTotalAmount())}Dh</p>
+                            //                 <p className="mb-0">Total Amount: {getTotalAmount()}Dh</p>
+                            //             </div>
+                            //             <div className="col-12 col-md-6 text-md-end mt-5 mt-md-0">
+                            //                 <Button label="Proceed to Pay"
+                            //                         disabled={isProceedToPayDisabled}
+                            //                         severity="info" onClick={opendialog}
+                            //                 />
+                            //             </div>
+                            //         </div>
+                            //     </div>
+                            // </div>
+
+                            <div className="grid mt-1 p-1" >
+                                <div className="col-6">
+                                    <div className="text-center p-1 border-round-sm  font-bold">
+                                        <p className="mb-1">Total Quantity :</p>
+
+                                    </div>
+                                </div>
+                                <div className="col-6">
+                                    <div className="text-center p-1 border-round-sm  font-bold">{getTotalQuantity()}</div>
+                                </div>
+                                <div className="col-6">
+                                    <div className="text-center p-1 border-round-sm  font-bold">
+                                        <p className="mb-0">Shipping Fee :</p>
+
+                                    </div>
+                                </div>
+                                <div className="col-6">
+                                    <div className="text-center p-1 border-round-sm  font-bold">
+                                        {calculateShippingFee(getTotalAmount())}Dh
+                                    </div>
+                                </div>
+                                <div className="col-6">
+                                    <div className="text-center p-1 border-round-sm  font-bold">
+                                        <p className="mb-0">Total Amount :</p>
+                                    </div>
+                                </div>
+                                <div className="col-6">
+                                    <div className="text-center p-1 border-round-sm  font-bold">
+                                        {getTotalAmount()}Dh
+                                    </div>
+                                </div>
+                                <div className="col-12">
+                                    <div className="text-center p-1 border-round-sm  font-bold">
+                                        <Button label="Proceed to Pay"
+                                                disabled={isProceedToPayDisabled}
+                                                severity="info" onClick={opendialog}
+                                        />
                                     </div>
                                 </div>
                             </div>
+                            )}
                         </div>
                     </Grid>
                 </Grid>
