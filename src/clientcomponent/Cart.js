@@ -14,6 +14,7 @@ import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
 import { IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import PriceCheckIcon from '@mui/icons-material/PriceCheck';
 
 
 export default function Cart() {
@@ -211,18 +212,22 @@ export default function Cart() {
                 <img className="w-4rem shadow-2 flex-shrink-0 border-round"
                      src={product.produit.photo} alt={product.produit.nom} />
                 <div className="flex-1 flex flex-column gap-1 xl:mr-1">
-                    <span className="font-bold text-left">{product.produit.nom}
+                    <div className="flex justify-content-between">
+                         <span className="font-bold text-left">{product.produit.nom}
                     </span>
+                        <span className="font-bold mr-2">
+                            <Tag style={{fontSize:"10px"}}  value={`In Stock :${product.produit.stock} Pcs`}/>
+                    </span>
+                    </div>
+
 
                     <div className="flex align-items-center sm:col-12  md:col-12 xl:col-12 justify-content-sm-center justify-content-between ">
-                        <div>
 
-                            <Tag style={{fontSize:"10px"}} icon="pi pi-user" value={`${product.produit.stock} Pcs`}/><br/>
-                            <Tag style={{fontSize:"10px"}} icon="pi pi-time" value={`${product.totalprice} Dh`}/>
 
-                        </div>
                         <div>
-                        <h5 className="mb-0"> {product.totalprice * (productQuantities[product.id] || 1)}Dh</h5>
+                            <Tag style={{fontSize:"10px",float:"left",backgroundColor:"rgba(224,200,200,0.21)",color:"black"}}  value={`Price :${product.totalprice} Dh`}/><br/>
+                            <Tag style={{fontSize:"10px",float:"left"}} severity="success"  className="mr-1" value={`Total :`}/>{product.totalprice * (productQuantities[product.id] || 1)}Dh<br/>
+                            {/*<PriceCheckIcon style={{float:"left"}}/> {product.totalprice * (productQuantities[product.id] || 1)}Dh*/}
                         </div>
 
                         <div>
@@ -404,7 +409,6 @@ export default function Cart() {
                     </Grid>
                     <Grid item xs={12} md={5}   >
                         <div className="card ">
-                            {/*<DataView value={productSpeciality} itemTemplate={itemTemplate3} paginator paginatorTemplate={'PrevPageLink CurrentPageReport NextPageLink'} rows={3} header="Similar products" />*/}
                             <div className="card mb-2">
                                 <div className="card-body">
                                     <div className="row d-flex justify-content-between align-items-center">
