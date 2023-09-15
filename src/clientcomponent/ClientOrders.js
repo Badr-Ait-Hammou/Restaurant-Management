@@ -25,6 +25,7 @@ import {Dialog} from "primereact/dialog";
 import {Rating} from "primereact/rating";
 import {InputTextarea} from "primereact/inputtextarea";
 import Avatar from "@mui/material/Avatar";
+import RestaurantIcon from '@mui/icons-material/Restaurant';
 
 
 export default function ClientOrders() {
@@ -549,36 +550,29 @@ export default function ClientOrders() {
 
 
                                                         <div key={order.id} className="col-12 card xl:flex xl:justify-content-center">
-                                                        <div className="flex flex-wrap p-2 align-items-center gap-3">
+                                                        <div className="flex flex-wrap p-1 align-items-center gap-2">
                                                             <img className="w-4rem shadow-2 flex-shrink-0 border-round"
                                                                  src={order.produit.photo}
-                                                                                alt={order.produit.nom}
-                                                                                 // style={{
-                                                                                 //     width: '100px',
-                                                                                 //     height: '100px',
-                                                                                 //     borderRadius: '8px'
-                                                                                 // }}
+                                                                 alt={order.produit.nom}
                                                             />
                                                             <div className="flex-1 flex flex-column gap-2 xl:mr-8">
                                                                 <div className="flex align-items-start ">
-                                                                    <span className="font-bold">{order.produit.nom}</span>
+                                                                    <Tag style={{fontSize:"10px",background: 'linear-gradient(90deg, rgba(0,36,24,0.9759709547881653) 0%, rgba(9,121,84,1) 35%, rgba(0,255,200,1) 100%)'}} value={"Product Name :"}></Tag>
+                                                                    <Tag className="ml-1" value={order.produit.nom} style={{backgroundColor:"transparent", color:"black" ,fontSize:"10px"}}/>
+
+                                                                    {/*<span className="font-bold">Product :{order.produit.nom}</span>*/}
                                                                 </div>
                                                                 <div className="flex align-items-start ">
-                                                                    <span className="font-bold"> {order.produit.restaurant.nom}</span>
+                                                                    <Tag style={{fontSize:"10px",background: 'linear-gradient(-225deg,#AC32E4 0%,#7918F2 48%,#4801FF 100%)'}} value={'Restaurant :'} icon={<RestaurantIcon style={{fontSize:"14px"}}/>}></Tag>
+                                                                    <Tag className="ml-1" value={order.produit.restaurant.nom} style={{backgroundColor:"transparent",color:"black" ,fontSize:"10px"}}/>
                                                                 </div>
                                                                 <div className="flex align-items-start ">
-                                                                    <span>{order.productQuantity} Pcs</span>
-                                                                    <span>{order.produit.prix} Dh</span>
+                                                                    <span>{order.productQuantity} (Pcs) x {" "} {order.produit.prix} (Dh) </span>
                                                                 </div>
                                                             </div>
                                                             <div className="flex sm:flex-column align-items-center sm:align-items-end gap-3 sm:gap-2">
-                                                                        <span
-                                                                            className="text-2xl font-semibold">{order.totalPrice} Dh</span>
-                                                                <Button icon="pi pi-shopping-cart"
-                                                                        className="p-button-rounded"
-                                                                ></Button>
+                                                                        <span className="text-2xl font-semibold">Total Price :{order.totalPrice} Dh</span>
                                                             </div>
-                                                            <span className="font-bold text-900">Total :{order.totalPrice} Dh</span>
                                                         </div>
                                                         </div>
                                                     ))}
