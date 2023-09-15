@@ -27,6 +27,7 @@ import {InputTextarea} from "primereact/inputtextarea";
 import Avatar from "@mui/material/Avatar";
 import RestaurantIcon from '@mui/icons-material/Restaurant';
 import { Paginator } from 'primereact/paginator';
+import Typography from "@mui/material/Typography";
 
 
 
@@ -322,16 +323,16 @@ export default function ClientOrders() {
                 <div className="content mt-5">
                     <Fieldset legend={`Order Details (${group.createdDate})`} toggleable>
 
-                        <Box sx={{ mt: 1}}>
+                        <Box sx={{ mt: -3}}>
                             <Grid item container spacing={1} columns={12}>
-                                <Grid item xs={12} md={7}>
+                                <Grid item xs={12} md={8}>
                                     <div className="card">
                                         {filteredOrders.map((order, orderIndex) => (
                                             <Box sx={{mt: -1}} key={order.id}
                                                  className="col-12  xl:flex xl:justify-content-center">
-                                                {orderIndex > 0 && <Divider component=""/>}
+                                                {orderIndex > 0 && <Divider className="-mt-1 -mb-1"/>}
                                                 <div
-                                                    className="flex flex-wrap  align-items-center gap-3">
+                                                    className="flex flex-wrap mt-1  align-items-center gap-3">
                                                     <img
                                                         className="w-4rem shadow-2 flex-shrink-0 border-round"
                                                         src={order.produit.photo}
@@ -355,8 +356,7 @@ export default function ClientOrders() {
                                                                  }}/>
 
                                                         </div>
-                                                        <div
-                                                            className="flex align-items-start ">
+                                                        <div className="flex align-items-start ">
                                                             <Tag style={{
                                                                 fontSize: "10px",
                                                                 background: 'linear-gradient(-225deg,#AC32E4 0%,#7918F2 48%,#4801FF 100%)'
@@ -370,6 +370,9 @@ export default function ClientOrders() {
                                                                      color: "black",
                                                                      fontSize: "10px"
                                                                  }}/>
+                                                        </div>
+                                                        <div className="flex align-items-start ">
+                                                            <Typography className="text-left"  style={{fontSize:"10px"}} color="text.secondary"> {order.produit.description}</Typography>
                                                         </div>
                                                         <div
                                                             className="flex align-items-start ">
@@ -386,49 +389,33 @@ export default function ClientOrders() {
                                 </Grid>
 
 
-                                <Grid item xs={12} md={5}>
+                                <Grid item xs={12} md={4}>
                                     <div className="card ">
 
                                         <div className="grid mt-1 p-1">
                                             <div className="col-6">
                                                 <div
                                                     className="text-left ml-1 p-1   border-round-sm  font-bold">
-                                                    <p className="mb-1">Status :</p>
+                                                    <p className="mb-0">Status :</p>
                                                 </div>
                                             </div>
                                             <div className="col-6">
                                                 <div className="text-center  border-round-sm  font-bold">
                                                     {filteredOrders[0].status === statusFilter && (
-                                                            <Tag
+                                                            <Tag className="w-6rem"
                                                                 severity={statusFilter === 'Delivered' ? 'success' : statusFilter === 'Cancelled' ? 'danger' : statusFilter === 'Shipped' ? 'info' : 'warning'}
                                                                 rounded>
                                                                 {statusFilter === 'Delivered' &&
-                                                                    <CheckCircleOutlineIcon className="mx-1" style={{fontSize:"16px"}}/>}
+                                                                    <CheckCircleOutlineIcon className="mr-1" style={{fontSize:"16px"}}/>}
                                                                 {statusFilter === 'Cancelled' &&
-                                                                    <RailwayAlertRoundedIcon className="mx-1" style={{fontSize:"16px"}}/>}
+                                                                    <RailwayAlertRoundedIcon className="mr-1" style={{fontSize:"16px"}}/>}
                                                                 {statusFilter === 'Shipped' &&
-                                                                    <LocalShippingIcon className="mx-1" style={{fontSize:"16px"}}/>}
+                                                                    <LocalShippingIcon className="mr-1" style={{fontSize:"16px"}}/>}
                                                                 {statusFilter === 'Pending' &&
-                                                                    <PendingRoundedIcon className="mx-1" style={{fontSize:"16px"}}/>}
+                                                                    <PendingRoundedIcon className="mr-1" style={{fontSize:"16px"}}/>}
                                                                 {filteredOrders[0].status}
                                                             </Tag>
                                                     )}
-                                                </div>
-                                            </div>
-                                            <Divider type={"solid"} className="mx-2 -mt-1 -mb-1"/>
-                                            <div className="col-6">
-                                                <div
-                                                    className="text-left ml-1 p-1 border-round-sm  font-bold">
-                                                    <p className="mb-0">Order Amount :</p>
-                                                </div>
-                                            </div>
-                                            <div className="col-6">
-                                                <div
-                                                    className="text-center  border-round-sm  font-bold">
-                                                    <Tag severity="secondary"
-                                                         className=" w-6rem" rounded>
-                                                         {filteredOrders.reduce((total, order) => total + order.totalPrice, 0)} Dh
-                                                    </Tag>
                                                 </div>
                                             </div>
                                             <Divider type={"solid"} className="mx-2 -mt-1 -mb-1"/>
@@ -440,8 +427,8 @@ export default function ClientOrders() {
                                             </div>
                                             <div className="col-6">
                                                 <div
-                                                    className="text-center p-1 border-round-sm  font-bold">
-                                                    <Tag severity="secondary"
+                                                    className="text-center  border-round-sm  font-bold">
+                                                    <Tag style={{background:" linear-gradient(90deg, rgba(121,9,87,1) 0%, rgba(110,32,97,1) 0%, rgba(81,120,112,1) 0%, rgba(61,149,217,1) 0%"}}
                                                          className=" w-6rem" rounded>
                                                         {filteredOrders.reduce((total, order) => total + order.totalPrice, 0) < 100 ? (
                                                             <p className="mb-0">
@@ -456,6 +443,23 @@ export default function ClientOrders() {
                                                 </div>
                                             </div>
                                             <Divider type={"solid"} className="mx-2 -mt-1 -mb-1"/>
+                                            <div className="col-6">
+                                                <div
+                                                    className="text-left ml-1 p-1 border-round-sm  font-bold">
+                                                    <p className="mb-0">Order Amount :</p>
+                                                </div>
+                                            </div>
+                                            <div className="col-6">
+                                                <div
+                                                    className="text-center  border-round-sm  font-bold">
+                                                    <Tag style={{background:" linear-gradient(90deg, rgba(121,9,87,1) 0%, rgba(110,32,97,1) 0%, rgba(81,120,112,1) 0%, rgba(61,149,217,1) 0%"}}
+                                                         className=" w-6rem" rounded>
+                                                        {filteredOrders.reduce((total, order) => total + order.totalPrice, 0)} Dh
+                                                    </Tag>
+                                                </div>
+                                            </div>
+
+                                            <Divider type={"solid"} className="mx-2 -mt-1 -mb-1"/>
 
                                             <div className="col-12">
                                                 <div className="text-center p-1 border-round-sm  font-bold ">
@@ -463,7 +467,7 @@ export default function ClientOrders() {
                                                         <div>
                                                             {groupOrdersByCreatedDate().some((group) => group.orders.some((order) => order.status === 'Pending')) && (
                                                                 <Button
-                                                                    className="p-1 mx-1"
+                                                                    outlined
                                                                     label="cancel"
                                                                     severity="danger"
                                                                     onClick={() => {
@@ -477,7 +481,7 @@ export default function ClientOrders() {
                                                             <div>
                                                                 {groupOrdersByCreatedDate().some((group) => group.orders.some((order) => order.status === 'Delivered')) && (
                                                                     <Button
-                                                                        className="p-1 mx-1"
+                                                                        outlined
                                                                         label="feedback"
                                                                         severity="info"
                                                                         onClick={() => openFeedbackDialog(group.orders)}
@@ -549,16 +553,15 @@ export default function ClientOrders() {
                                             <div className="content mt-5">
 
                                                 <Fieldset legend={`Order Details (${group.createdDate})`} toggleable>
-                                                    <Box sx={{mx: 1, mt: 1}}>
+                                                    <Box sx={{ mt: -3}}>
                                                         <Grid item container spacing={1} columns={12}>
-                                                            <Grid item xs={12} md={7}>
+                                                            <Grid item xs={12} md={8}>
                                                                 <div className="card">
                                                                     {group.orders.map((order, orderIndex) => (
                                                                         <Box sx={{mt: -1}} key={order.id}
                                                                              className="col-12  xl:flex xl:justify-content-center">
-                                                                            {orderIndex > 0 && <Divider component=""/>}
-                                                                            <div
-                                                                                className="flex flex-wrap  align-items-center gap-3">
+                                                                            {orderIndex > 0 && <Divider className="-mt-1 -mb-1"/>}
+                                                                            <div className="flex mt-1 flex-wrap  align-items-center gap-3">
                                                                                 <img
                                                                                     className="w-4rem shadow-2 flex-shrink-0 border-round"
                                                                                     src={order.produit.photo}
@@ -582,14 +585,14 @@ export default function ClientOrders() {
                                                                                              }}/>
 
                                                                                     </div>
-                                                                                    <div
-                                                                                        className="flex align-items-start ">
+                                                                                    <div className="flex align-items-start ">
                                                                                         <Tag style={{
                                                                                             fontSize: "10px",
-                                                                                            background: 'linear-gradient(-225deg,#AC32E4 0%,#7918F2 48%,#4801FF 100%)'
-                                                                                        }} value={'Restaurant :'}
-                                                                                             icon={<RestaurantIcon
-                                                                                                 style={{fontSize: "14px"}}/>}></Tag>
+                                                                                            background: 'linear-gradient(-225deg,#AC32E4 0%,#7918F2 48%,#4801FF 100%)'}}
+                                                                                             value={'Restaurant :'}
+                                                                                             icon={<RestaurantIcon style={{fontSize: "14px"}}/>}>
+
+                                                                                        </Tag>
                                                                                         <Tag className="ml-1"
                                                                                              value={order.produit.restaurant.nom}
                                                                                              style={{
@@ -597,6 +600,9 @@ export default function ClientOrders() {
                                                                                                  color: "black",
                                                                                                  fontSize: "10px"
                                                                                              }}/>
+                                                                                    </div>
+                                                                                    <div className="flex align-items-start ">
+                                                                                        <Typography className="text-left"  style={{fontSize:"10px"}} color="text.secondary"> {order.produit.description}</Typography>
                                                                                     </div>
                                                                                     <div
                                                                                         className="flex align-items-start ">
@@ -614,14 +620,14 @@ export default function ClientOrders() {
                                                                 </div>
                                                             </Grid>
 
-                                                            <Grid item xs={12} md={5}>
+                                                            <Grid item xs={12} md={4}>
                                                                 <div className="card ">
 
                                                                     <div className="grid mt-1 p-1">
                                                                         <div className="col-6">
                                                                             <div
-                                                                                className="text-left ml-1 border-round-sm  font-bold">
-                                                                                <p className="mb-1">Status :</p>
+                                                                                className="text-left ml-1 p-1 border-round-sm  font-bold">
+                                                                                <p className="mb-0">Status :</p>
                                                                             </div>
                                                                         </div>
                                                                         <div className="col-6">
@@ -647,9 +653,33 @@ export default function ClientOrders() {
                                                                                 )}
                                                                             </div>
                                                                         </div>
+                                                                        <Divider type={"solid"} className="mx-2 -mt-1 -mb-1"/>
                                                                         <div className="col-6">
                                                                             <div
-                                                                                className="text-left ml-1 border-round-sm  font-bold">
+                                                                                className="text-left ml-1 p-1 border-round-sm  font-bold">
+                                                                                <p className="mb-0">Shipping Fee :</p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className="col-6">
+                                                                            <div className="text-center  border-round-sm  font-bold">
+                                                                                <Tag style={{background:" linear-gradient(90deg, rgba(121,9,87,1) 0%, rgba(110,32,97,1) 0%, rgba(81,120,112,1) 0%, rgba(61,149,217,1) 0%"}}
+                                                                                     className="w-6rem" rounded  >
+                                                                                    {group.orders.reduce((total, order) => total + order.totalPrice, 0) < 100 ? (
+                                                                                        <p className="mb-0">
+                                                                                            {shippingfee} Dh<br/>
+                                                                                        </p>
+                                                                                    ) : (
+                                                                                        <p className="mb-0">
+                                                                                            0 Dh<br/>
+                                                                                        </p>
+                                                                                    )}
+                                                                                </Tag>
+                                                                            </div>
+                                                                        </div>
+                                                                        <Divider type={"solid"} className="mx-2 -mt-1 -mb-1"/>
+                                                                        <div className="col-6">
+                                                                            <div
+                                                                                className="text-left ml-1 p-1 border-round-sm  font-bold">
                                                                                 <p className="mb-0">Order Amount :</p>
                                                                             </div>
                                                                         </div>
@@ -661,28 +691,7 @@ export default function ClientOrders() {
                                                                                 </Tag>
                                                                             </div>
                                                                         </div>
-                                                                        <div className="col-6">
-                                                                            <div
-                                                                                className="text-left  border-round-sm  font-bold">
-                                                                                <p className="mb-0">Shipping Fee :</p>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div className="col-6">
-                                                                            <div className="text-center  border-round-sm  font-bold">
-                                                                                <Tag style={{background:" linear-gradient(90deg, rgba(121,9,87,1) 0%, rgba(110,32,97,1) 0%, rgba(81,120,112,1) 0%, rgba(61,149,217,1) 0%"}}
-                                                                                     className="w-6rem" rounded  >
-                                                                                    {group.orders.reduce((total, order) => total + order.totalPrice, 0) < 100 ? (
-                                                                                        <p className="mb-0">
-                                                                                             {shippingfee} Dh<br/>
-                                                                                        </p>
-                                                                                    ) : (
-                                                                                        <p className="mb-0">
-                                                                                             0 Dh<br/>
-                                                                                        </p>
-                                                                                    )}
-                                                                                </Tag>
-                                                                            </div>
-                                                                        </div>
+                                                                        <Divider type={"solid"} className="mx-2 -mt-1 -mb-1"/>
                                                                         <div className="col-12">
                                                                             <div
                                                                                 className="text-center p-1 border-round-sm  font-bold ">

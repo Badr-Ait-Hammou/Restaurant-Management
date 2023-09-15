@@ -20,6 +20,7 @@ import StepLabel from '@mui/material/StepLabel';
 import Switch from '@mui/material/Switch';
 import Typography from "@mui/material/Typography";
 import CartSkeleton from "../skeleton/CartSkeleton";
+import {Divider} from "primereact/divider";
 
 
 export default function Cart() {
@@ -356,6 +357,8 @@ export default function Cart() {
                                 <div className="col-6">
                                     <div className="text-center p-1 border-round-sm  font-bold">{getTotalQuantity()}</div>
                                 </div>
+                                <Divider type={"solid"} className="mx-2 -mt-1 -mb-1"/>
+
                                 <div className="col-6">
                                     <div className="text-center p-1 border-round-sm  font-bold">
                                         <p className="mb-0">Shipping Fee :</p>
@@ -367,6 +370,7 @@ export default function Cart() {
                                         {calculateShippingFee(getTotalAmount())}Dh
                                     </div>
                                 </div>
+                                <Divider type={"solid"} className="mx-2 -mt-1 -mb-1"/>
                                 <div className="col-6">
                                     <div className="text-center p-1 border-round-sm  font-bold">
                                         <p className="mb-0">Total Amount :</p>
@@ -377,6 +381,8 @@ export default function Cart() {
                                         {getTotalAmount()}Dh
                                     </div>
                                 </div>
+                                <Divider type={"solid"} className="mx-2 -mt-1 -mb-1"/>
+
                                 <div className="col-12">
                                     <div className="text-center p-1 border-round-sm  font-bold ">
                                         <Button
