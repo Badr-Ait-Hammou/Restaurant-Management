@@ -323,7 +323,7 @@ export default function ClientOrders() {
                 <div className="content mt-5">
                     <Fieldset legend={`Order Details (${group.createdDate})`} toggleable>
 
-                        <Box sx={{ mt: -3}}>
+                        <Box sx={{mx:-2, mt: -3}}>
                             <Grid item container spacing={1} columns={12}>
                                 <Grid item xs={12} md={8}>
                                     <div className="card">
@@ -393,10 +393,35 @@ export default function ClientOrders() {
                                     <div className="card ">
 
                                         <div className="grid mt-1 p-1">
+
+                                            <Divider type={"solid"} className="mx-2 -mt-1 -mb-1 " align="center">
+                                                <Tag value={"Delivery info"}  style={{fontSize:"12px",backgroundColor:"rgba(217,202,202,0.22)",color:"black"}}/>
+                                            </Divider>
+                                            <div className="col-4">
+                                                <div className="text-left ml-1  border-round-sm ">
+                                                    <Typography variant={"body2"} className="font-monospace">Address :</Typography>
+                                                    <Typography variant={"body2"} className="font-monospace">Phone :</Typography>
+                                                    <Typography variant={"body2"} className="font-monospace">Area :</Typography>
+                                                    <Typography variant={"body2"} className="font-monospace">Post Code :</Typography>
+                                                </div>
+                                            </div>
+                                            <div className="col-8">
+                                                <div className="text-left  border-round-sm ">
+                                                    <Typography variant={"body2"} color="text.secondary">{filteredOrders[0].user.adresse}</Typography>
+                                                    <Typography variant={"body2"} color="text.secondary">{filteredOrders[0].user.telephone}</Typography>
+                                                    <Typography variant={"body2"} color="text.secondary">{filteredOrders[0].user.area}</Typography>
+                                                    <Typography variant={"body2"} color="text.secondary">{filteredOrders[0].user.postcode}</Typography>
+                                                </div>
+                                            </div>
+                                            <Divider type={"solid"} className="mx-2 mt-1 -mb-1 " align="center">
+                                                <Tag value={"Order Details"}  style={{fontSize:"12px",backgroundColor:"rgba(217,202,202,0.22)",color:"black"}}/>
+                                            </Divider>
+
+
                                             <div className="col-6">
                                                 <div
-                                                    className="text-left ml-1 p-1   border-round-sm  font-bold">
-                                                    <p className="mb-0">Status :</p>
+                                                    className="text-left ml-1 p-1  border-round-sm  font-bold">
+                                                    <p className="font-monospace mb-0">Status :</p>
                                                 </div>
                                             </div>
                                             <div className="col-6">
@@ -422,7 +447,7 @@ export default function ClientOrders() {
                                             <div className="col-6">
                                                 <div
                                                     className="text-left p-1 ml-1 border-round-sm  font-bold">
-                                                    <p className="mb-0">Shipping Fee :</p>
+                                                    <p className="font-monospace mb-0">Shipping Fee :</p>
                                                 </div>
                                             </div>
                                             <div className="col-6">
@@ -446,7 +471,7 @@ export default function ClientOrders() {
                                             <div className="col-6">
                                                 <div
                                                     className="text-left ml-1 p-1 border-round-sm  font-bold">
-                                                    <p className="mb-0">Order Amount :</p>
+                                                    <p className="font-monospace mb-0">Order Amount :</p>
                                                 </div>
                                             </div>
                                             <div className="col-6">
@@ -459,7 +484,7 @@ export default function ClientOrders() {
                                                 </div>
                                             </div>
 
-                                            <Divider type={"solid"} className="mx-2 -mt-1 -mb-1"/>
+
 
                                             <div className="col-12">
                                                 <div className="text-center p-1 border-round-sm  font-bold ">
@@ -468,7 +493,7 @@ export default function ClientOrders() {
                                                             {groupOrdersByCreatedDate().some((group) => group.orders.some((order) => order.status === 'Pending')) && (
                                                                 <Button
                                                                     outlined
-                                                                    label="cancel"
+                                                                    label="cancel order"
                                                                     severity="danger"
                                                                     onClick={() => {
                                                                         updateStatus(group);
@@ -482,7 +507,7 @@ export default function ClientOrders() {
                                                                 {groupOrdersByCreatedDate().some((group) => group.orders.some((order) => order.status === 'Delivered')) && (
                                                                     <Button
                                                                         outlined
-                                                                        label="feedback"
+                                                                        label="Feedback"
                                                                         severity="info"
                                                                         onClick={() => openFeedbackDialog(group.orders)}
                                                                     />
@@ -553,7 +578,7 @@ export default function ClientOrders() {
                                             <div className="content mt-5">
 
                                                 <Fieldset legend={`Order Details (${group.createdDate})`} toggleable>
-                                                    <Box sx={{ mt: -3}}>
+                                                    <Box sx={{ mx:-2,mt: -3}}>
                                                         <Grid item container spacing={1} columns={12}>
                                                             <Grid item xs={12} md={8}>
                                                                 <div className="card">
@@ -624,10 +649,35 @@ export default function ClientOrders() {
                                                                 <div className="card ">
 
                                                                     <div className="grid mt-1 p-1">
+
+                                                                        <Divider type={"solid"} className="mx-2 -mt-1 -mb-1 " align="center">
+                                                                            <Tag value={"Delivery info"}  style={{fontSize:"12px",backgroundColor:"rgba(217,202,202,0.22)",color:"black"}}/>
+                                                                        </Divider>
+                                                                        <div className="col-4">
+                                                                            <div className="text-left ml-1  border-round-sm ">
+                                                                                <Typography variant={"body2"} className="font-monospace">Address :</Typography>
+                                                                                <Typography variant={"body2"} className="font-monospace">Phone :</Typography>
+                                                                                <Typography variant={"body2"} className="font-monospace">Area :</Typography>
+                                                                                <Typography variant={"body2"} className="font-monospace">Post Code :</Typography>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className="col-8">
+                                                                            <div className="text-left  border-round-sm ">
+                                                                                <Typography variant={"body2"} color="text.secondary">{group.orders[0].user.adresse}</Typography>
+                                                                                <Typography variant={"body2"} color="text.secondary">{group.orders[0].user.telephone}</Typography>
+                                                                                <Typography variant={"body2"} color="text.secondary">{group.orders[0].user.area}</Typography>
+                                                                                <Typography variant={"body2"} color="text.secondary">{group.orders[0].user.postcode}</Typography>
+                                                                            </div>
+                                                                        </div>
+                                                                        <Divider type={"solid"} className="mx-2 mt-1 -mb-1 " align="center">
+                                                                            <Tag value={"Order Details"}  style={{fontSize:"12px",backgroundColor:"rgba(217,202,202,0.22)",color:"black"}}/>
+                                                                        </Divider>
+
+
                                                                         <div className="col-6">
                                                                             <div
                                                                                 className="text-left ml-1 p-1 border-round-sm  font-bold">
-                                                                                <p className="mb-0">Status :</p>
+                                                                                <p className="font-monospace mb-0">Status :</p>
                                                                             </div>
                                                                         </div>
                                                                         <div className="col-6">
@@ -657,7 +707,7 @@ export default function ClientOrders() {
                                                                         <div className="col-6">
                                                                             <div
                                                                                 className="text-left ml-1 p-1 border-round-sm  font-bold">
-                                                                                <p className="mb-0">Shipping Fee :</p>
+                                                                                <p className="font-monospace mb-0">Shipping Fee :</p>
                                                                             </div>
                                                                         </div>
                                                                         <div className="col-6">
@@ -680,7 +730,7 @@ export default function ClientOrders() {
                                                                         <div className="col-6">
                                                                             <div
                                                                                 className="text-left ml-1 p-1 border-round-sm  font-bold">
-                                                                                <p className="mb-0">Order Amount :</p>
+                                                                                <p className="font-monospace mb-0">Order Amount :</p>
                                                                             </div>
                                                                         </div>
                                                                         <div className="col-6">
@@ -703,7 +753,7 @@ export default function ClientOrders() {
                                                                                             <Button
                                                                                                 outlined
                                                                                                 className="mx-1"
-                                                                                                label="cancel"
+                                                                                                label="cancel order"
                                                                                                 severity="danger"
                                                                                                 onClick={() => {
                                                                                                     updateStatus(group);
@@ -719,7 +769,7 @@ export default function ClientOrders() {
                                                                                             <Button
                                                                                                 outlined
                                                                                                 className="mx-1"
-                                                                                                label="feedback"
+                                                                                                label="Feedback"
                                                                                                 severity="info"
                                                                                                 onClick={() => openFeedbackDialog(group.orders)}
 
