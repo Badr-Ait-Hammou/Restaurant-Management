@@ -473,7 +473,7 @@ export default function ClientOrders() {
                                     groupOrdersByCreatedDate().map((group, index) => (
                                         <div key={index} className="order-group">
                                             <div className="content mt-5">
-                                                <Fieldset legend={`Order Details (${group.createdDate})`} toggleable>
+                                                <Fieldset legend={`Order Details (${group.createdDate})`}  toggleable>
                                                     {group.orders.map((order, orderIndex) => (
                                                         // <div key={order.id} className="order-item ">
                                                         //     {orderIndex > 0 && <Divider component="" className="m-2"/>}
@@ -549,18 +549,18 @@ export default function ClientOrders() {
                                                         // </div>
 
 
-                                                        <div key={order.id} className="col-12 card xl:flex xl:justify-content-center">
-                                                        <div className="flex flex-wrap p-1 align-items-center gap-2">
+                                                        <Box sx={{mt:-2}} key={order.id} className="col-12  xl:flex xl:justify-content-center">
+                                                            {orderIndex > 0 && <Divider component="" />}
+                                                        <div className="flex flex-wrap  align-items-center gap-3">
                                                             <img className="w-4rem shadow-2 flex-shrink-0 border-round"
                                                                  src={order.produit.photo}
                                                                  alt={order.produit.nom}
                                                             />
-                                                            <div className="flex-1 flex flex-column gap-2 xl:mr-8">
+                                                            <div className="flex-1 flex flex-column gap-1 xl:mr-1 mt-1">
                                                                 <div className="flex align-items-start ">
                                                                     <Tag style={{fontSize:"10px",background: 'linear-gradient(90deg, rgba(0,36,24,0.9759709547881653) 0%, rgba(9,121,84,1) 35%, rgba(0,255,200,1) 100%)'}} value={"Product Name :"}></Tag>
                                                                     <Tag className="ml-1" value={order.produit.nom} style={{backgroundColor:"transparent", color:"black" ,fontSize:"10px"}}/>
 
-                                                                    {/*<span className="font-bold">Product :{order.produit.nom}</span>*/}
                                                                 </div>
                                                                 <div className="flex align-items-start ">
                                                                     <Tag style={{fontSize:"10px",background: 'linear-gradient(-225deg,#AC32E4 0%,#7918F2 48%,#4801FF 100%)'}} value={'Restaurant :'} icon={<RestaurantIcon style={{fontSize:"14px"}}/>}></Tag>
@@ -570,13 +570,13 @@ export default function ClientOrders() {
                                                                     <span>{order.productQuantity} (Pcs) x {" "} {order.produit.prix} (Dh) </span>
                                                                 </div>
                                                             </div>
-                                                            <div className="flex sm:flex-column align-items-center sm:align-items-end gap-3 sm:gap-2">
-                                                                        <span className="text-2xl font-semibold">Total Price :{order.totalPrice} Dh</span>
+                                                            <div className="flex sm:flex-column align-items-center sm:align-items-end md:align-items-center  gap-1 sm:gap-2">
+                                                                <span className="text-1xl font-monospace">Total Price :{order.totalPrice} Dh</span>
                                                             </div>
                                                         </div>
-                                                        </div>
+                                                        </Box>
                                                     ))}
-                                                    <Divider component="" className="m-2"/>
+                                                    <Divider component="" className="m-1"/>
 
                                                     <div className="d-flex justify-content-center align-items-center">
 
@@ -604,11 +604,6 @@ export default function ClientOrders() {
                                                         {/*</div>*/}
 
                                                         <Box sx={{width: 500}}>
-                                                            {/*<BottomNavigation*/}
-                                                            {/*    showLabels*/}
-                                                            {/*   // value={value}*/}
-
-                                                            {/*>*/}
                                                             <div className="flex">
                                                                 <div>
                                                                     {group.orders[0].status && (
@@ -683,7 +678,6 @@ export default function ClientOrders() {
                                                                         )}
                                                                     </div>) : (""))}
                                                                 </div>
-                                                                {/*</BottomNavigation>*/}
                                                             </div>
                                                         </Box>
                                                         {/*<div>*/}
