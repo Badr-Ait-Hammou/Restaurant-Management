@@ -3,7 +3,7 @@ import {Fieldset} from 'primereact/fieldset';
 import "../styles/clientreservation.css";
 import axios from '../service/callerService';
 import React, {useState, useEffect, useRef} from "react";
-import { Card, CardContent} from '@mui/material';
+import {Card, CardContent} from '@mui/material';
 import {accountService} from "../service/accountService";
 import moment from "moment";
 import {ConfirmDialog, confirmDialog} from 'primereact/confirmdialog';
@@ -26,6 +26,7 @@ import {Rating} from "primereact/rating";
 import {InputTextarea} from "primereact/inputtextarea";
 import Avatar from "@mui/material/Avatar";
 import RestaurantIcon from '@mui/icons-material/Restaurant';
+import {DataView} from "primereact/dataview";
 
 
 export default function ClientOrders() {
@@ -313,121 +314,187 @@ export default function ClientOrders() {
             <div key={group.createdDate} className="order-group">
                 <div className="content mt-5">
                     <Fieldset legend={`Order Details (${group.createdDate})`} toggleable>
-                        {filteredOrders.map((order, orderIndex) => (
-                            <div key={order.id} className="order-item ">
-                                {orderIndex > 0 && <Divider component="" className="m-2"/>}
-                                <Grid container alignItems="center ">
-                                    <Grid item xs={4} className="left">
-                                        <img
-                                            src={order.produit.photo}
-                                            alt={order.produit.nom}
-                                            style={{
-                                                width: '100px',
-                                                height: '100px',
-                                                borderRadius: '8px'
-                                            }}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={4} className="right">
-                                        <p>
-                                            <strong className="mt-2 mx-2">Product :</strong> {order.produit.nom}<br/>
-                                            <strong className="mt-2 mx-2">Restaurant
-                                                :</strong> {order.produit.restaurant.nom} <br/>
-                                            <strong className="mt-2 mx-2">Price :</strong> {order.produit.prix} Dh<br/>
-                                        </p>
-                                    </Grid>
-                                    <Grid item xs={4} className="right">
-                                        <p>
-                                            <strong className="mt-2 mx-2">Total
-                                                amount:</strong> {order.totalPrice} Dh<br/>
-                                            <strong className="mt-2 mx-2">Quantity:</strong> {order.productQuantity} Pcs<br/>
-                                        </p>
-                                    </Grid>
+
+                        <Box sx={{mx: 3, mt: 1}}>
+                            <Grid item container spacing={1} columns={12}>
+                                <Grid item xs={12} md={7}>
+                                    <div className="card">
+                                        {filteredOrders.map((order, orderIndex) => (
+                                            <Box sx={{mt: -1}} key={order.id}
+                                                 className="col-12  xl:flex xl:justify-content-center">
+                                                {orderIndex > 0 && <Divider component=""/>}
+                                                <div
+                                                    className="flex flex-wrap  align-items-center gap-3">
+                                                    <img
+                                                        className="w-4rem shadow-2 flex-shrink-0 border-round"
+                                                        src={order.produit.photo}
+                                                        alt={order.produit.nom}
+                                                    />
+                                                    <div
+                                                        className="flex-1 flex flex-column gap-1 xl:mr-1 mt-1">
+                                                        <div
+                                                            className="flex align-items-start ">
+                                                            <Tag style={{
+                                                                fontSize: "10px",
+                                                                background: 'linear-gradient(90deg, rgba(0,36,24,0.9759709547881653) 0%, rgba(9,121,84,1) 35%, rgba(0,255,200,1) 100%)'
+                                                            }}
+                                                                 value={"Product Name :"}></Tag>
+                                                            <Tag className="ml-1"
+                                                                 value={order.produit.nom}
+                                                                 style={{
+                                                                     backgroundColor: "transparent",
+                                                                     color: "black",
+                                                                     fontSize: "10px"
+                                                                 }}/>
+
+                                                        </div>
+                                                        <div
+                                                            className="flex align-items-start ">
+                                                            <Tag style={{
+                                                                fontSize: "10px",
+                                                                background: 'linear-gradient(-225deg,#AC32E4 0%,#7918F2 48%,#4801FF 100%)'
+                                                            }} value={'Restaurant :'}
+                                                                 icon={<RestaurantIcon
+                                                                     style={{fontSize: "14px"}}/>}></Tag>
+                                                            <Tag className="ml-1"
+                                                                 value={order.produit.restaurant.nom}
+                                                                 style={{
+                                                                     backgroundColor: "transparent",
+                                                                     color: "black",
+                                                                     fontSize: "10px"
+                                                                 }}/>
+                                                        </div>
+                                                        <div
+                                                            className="flex align-items-start ">
+                                                            <span>{order.productQuantity} (Pcs) x {" "} {order.produit.prix} (Dh) </span>
+                                                        </div>
+                                                    </div>
+                                                    <div className="flex sm:flex-column align-items-center sm:align-items-end md:align-items-center  gap-1 sm:gap-2">
+                                                        <span className="text-1xl font-monospace">Total Price :{order.totalPrice} Dh</span>
+                                                    </div>
+                                                </div>
+                                            </Box>
+                                        ))}
+                                    </div>
                                 </Grid>
-                            </div>
-                        ))}
-                        <Divider component="" className="m-2"/>
 
 
-                        <div className="d-flex justify-content-center align-items-center ">
-                            <div className="m-1">
-                                {filteredOrders[0].status === statusFilter && (
-                                    <div>
+                                <Grid item xs={12} md={5}>
+                                    <div className="card ">
 
-                                        <Tag
-                                            severity={statusFilter === 'Delivered' ? 'success' : statusFilter === 'Cancelled' ? 'danger' : statusFilter === 'Shipped' ? 'info' : 'warning'}
-                                            rounded>
-                                            {statusFilter === 'Delivered' && <CheckCircleOutlineIcon className="mx-1"/>}
-                                            {statusFilter === 'Cancelled' &&
-                                                <RailwayAlertRoundedIcon className="mx-1"/>}
-                                            {statusFilter === 'Shipped' && <LocalShippingIcon className="mx-1"/>}
-                                            {statusFilter === 'Pending' && <PendingRoundedIcon className="mx-1"/>}
-                                            {filteredOrders[0].status}
-                                        </Tag>
+                                        <div className="grid mt-1 p-1">
+                                            <div className="col-6">
+                                                <div
+                                                    className="text-center p-1 border-round-sm  font-bold">
+                                                    <p className="mb-1">Status :</p>
+                                                </div>
+                                            </div>
+                                            <div className="col-6">
+                                                <div
+                                                    className="text-center p-1 border-round-sm  font-bold">
+                                                    {filteredOrders[0].status === statusFilter && (
+                                                            <Tag
+                                                                severity={statusFilter === 'Delivered' ? 'success' : statusFilter === 'Cancelled' ? 'danger' : statusFilter === 'Shipped' ? 'info' : 'warning'}
+                                                                rounded>
+                                                                {statusFilter === 'Delivered' &&
+                                                                    <CheckCircleOutlineIcon className="mx-1"/>}
+                                                                {statusFilter === 'Cancelled' &&
+                                                                    <RailwayAlertRoundedIcon className="mx-1"/>}
+                                                                {statusFilter === 'Shipped' &&
+                                                                    <LocalShippingIcon className="mx-1"/>}
+                                                                {statusFilter === 'Pending' &&
+                                                                    <PendingRoundedIcon className="mx-1"/>}
+                                                                {filteredOrders[0].status}
+                                                            </Tag>
+                                                    )}
+                                                </div>
+                                            </div>
+                                            <div className="col-6">
+                                                <div
+                                                    className="text-center p-1 border-round-sm  font-bold">
+                                                    <p className="mb-0">Order Amount :</p>
+                                                </div>
+                                            </div>
+                                            <div className="col-6">
+                                                <div
+                                                    className="text-center p-1 border-round-sm  font-bold">
+                                                    <Tag severity="secondary"
+                                                         className=" p-2" rounded>
+                                                        <strong className="m-2">Order Amount :</strong> {filteredOrders.reduce((total, order) => total + order.totalPrice, 0)} Dh
+                                                    </Tag>
+                                                </div>
+                                            </div>
+                                            <div className="col-6">
+                                                <div
+                                                    className="text-center p-1 border-round-sm  font-bold">
+                                                    <p className="mb-0">Shipping Fee :</p>
+                                                </div>
+                                            </div>
+                                            <div className="col-6">
+                                                <div
+                                                    className="text-center p-1 border-round-sm  font-bold">
+                                                    <Tag severity="secondary" className=" p-2" rounded>
+                                                        {filteredOrders.reduce((total, order) => total + order.totalPrice, 0) < 100 ? (
+                                                            <p className="mb-0">
+                                                                <strong className="mt-2 mx-2">Shipping
+                                                                    fee:</strong> {shippingfee} Dh<br/>
+                                                            </p>
+                                                        ) : (
+                                                            <p className="mb-0">
+                                                                <strong className="mt-2 mx-2">Shipping
+                                                                    fee:</strong> 0 Dh<br/>
+                                                            </p>
+                                                        )}
+                                                    </Tag>
+                                                </div>
+                                            </div>
+                                            <div className="col-12">
+                                                <div className="text-center p-1 border-round-sm  font-bold ">
+                                                    {statusFilter === 'Pending' ? (
+                                                        <div>
+                                                            {groupOrdersByCreatedDate().some((group) => group.orders.some((order) => order.status === 'Pending')) && (
+                                                                <Button
+                                                                    className="p-1 mx-1"
+                                                                    label="cancel"
+                                                                    severity="danger"
+                                                                    onClick={() => {
+                                                                        updateStatus(group);
+                                                                    }}
+                                                                />
+                                                            )}
+                                                        </div>
+                                                    ) : (statusFilter === 'Delivered') ?
+                                                        (
+                                                            <div>
+                                                                {groupOrdersByCreatedDate().some((group) => group.orders.some((order) => order.status === 'Delivered')) && (
+                                                                    <Button
+                                                                        className="p-1 mx-1"
+                                                                        label="feedback"
+                                                                        severity="info"
+                                                                        onClick={() => openFeedbackDialog(group.orders)}
 
+
+                                                                    />
+                                                                )}
+                                                            </div>
+                                                        ) : ("")}
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                )}
-
-                            </div>
-                            <div>
-                                <Tag className=" p-2" rounded>
-                                    <strong className="m-2">Order Amount
-                                        :</strong> {filteredOrders.reduce((total, order) => total + order.totalPrice, 0)} Dh
-                                </Tag>
-                                <Tag severity="secondary" className=" p-2" rounded>
-                                    {filteredOrders.reduce((total, order) => total + order.totalPrice, 0) < 100 ? (
-                                        <p className="mb-0">
-                                            <strong className="mt-2 mx-2">Shipping
-                                                fee:</strong> {shippingfee} Dh<br/>
-                                        </p>
-                                    ) : (
-                                        <p className="mb-0">
-                                            <strong className="mt-2 mx-2">Shipping
-                                                fee:</strong> 0 Dh<br/>
-                                        </p>
-                                    )}
-                                </Tag>
-                            </div>
-                            {statusFilter === 'Pending' ? (
-                                <div>
-                                    {groupOrdersByCreatedDate().some((group) => group.orders.some((order) => order.status === 'Pending')) && (
-                                        <Button
-                                            className="p-1 mx-1"
-                                            label="cancel"
-                                            severity="danger"
-                                            onClick={() => {
-                                                updateStatus(group);
-                                            }}
-                                        />
-                                    )}
-                                </div>
-                            ) : (statusFilter === 'Delivered') ?
-                                (
-                                    <div>
-                                        {groupOrdersByCreatedDate().some((group) => group.orders.some((order) => order.status === 'Delivered')) && (
-                                            <Button
-                                                className="p-1 mx-1"
-                                                label="feedback"
-                                                severity="info"
-                                                onClick={() => openFeedbackDialog(group.orders)}
-
-
-                                            />
-                                        )}
-                                    </div>
-                                ) : ("")
-                            }
-                        </div>
-
+                                </Grid>
+                            </Grid>
+                        </Box>
                     </Fieldset>
                 </div>
             </div>
-        );
+    );
     }
 
-    if (loading || orders.length === 0) {
-        return (<ClientOrdersSkeleton/>);
-    }
+    if (loading || orders.length === 0)
+        {
+            return (<ClientOrdersSkeleton/>);
+        }
 
     return (
         <>
@@ -473,263 +540,189 @@ export default function ClientOrders() {
                                     groupOrdersByCreatedDate().map((group, index) => (
                                         <div key={index} className="order-group">
                                             <div className="content mt-5">
-                                                <Fieldset legend={`Order Details (${group.createdDate})`}  toggleable>
-                                                    {group.orders.map((order, orderIndex) => (
-                                                        // <div key={order.id} className="order-item ">
-                                                        //     {orderIndex > 0 && <Divider component="" className="m-2"/>}
-                                                        //     <Grid container alignItems="center">
-                                                        //         <Grid item xs={4} className="left">
-                                                        //             <img
-                                                        //                 src={order.produit.photo}
-                                                        //                 alt={order.produit.nom}
-                                                        //                 style={{
-                                                        //                     width: '100px',
-                                                        //                     height: '100px',
-                                                        //                     borderRadius: '8px'
-                                                        //                 }}
-                                                        //             />
-                                                        //         </Grid>
-                                                        //         <Grid item xs={4} className="right">
-                                                        //             <p>
-                                                        //                 <strong className="mt-2 mx-2">Product
-                                                        //                     :</strong> {order.produit.nom}<br/>
-                                                        //                 <strong className="mt-2 mx-2">Restaurant
-                                                        //                     :</strong> {order.produit.restaurant.nom} <br/>
-                                                        //                 <strong className="mt-2 mx-2">Price
-                                                        //                     :</strong> {order.produit.prix} Dh<br/>
-                                                        //             </p>
-                                                        //         </Grid>
-                                                        //         <Grid item xs={4} className="right">
-                                                        //             <p>
-                                                        //                 <strong className="mt-2 mx-2">Total
-                                                        //                     amount:</strong> {order.totalPrice} Dh<br/>
-                                                        //                 <strong
-                                                        //                     className="mt-2 mx-2">Quantity:</strong> {order.productQuantity} Pcs<br/>
-                                                        //
-                                                        //             </p>
-                                                        //         </Grid>
-                                                        //     </Grid>
-                                                        // </div>
-
-                                                        // <div className="col-12">
-                                                        //     <div
-                                                        //         className="flex flex-column sm:flex-row xl:flex-row justify-content-between md:align-items-start sm:align-items-start p-2 gap-2">
-                                                        //         <img
-                                                        //             className="w-4  shadow-2 block xl:block  border-round"
-                                                        //             src={order.produit.photo}
-                                                        //             alt={order.produit.nom}/>
-                                                        //         <div
-                                                        //             className="flex flex-column sm:flex-row justify-content-between sm:align-items-start md:align-items-start xl:align-items-start flex-1 gap-4">
-                                                        //             <div
-                                                        //                 className="flex flex-column align-items-center sm:align-items-start gap-3">
-                                                        //                 <div className="text-2xl font-bold text-900">{order.produit.nom}</div>
-                                                        //                 <div className="text-2xl font-bold text-900">{order.produit.restaurant.nom}</div>
-                                                        //                 {/*<Rating value={product.rating} readOnly*/}
-                                                        //                 {/*        cancel={false}></Rating>*/}
-                                                        //                 <div className="flex align-items-center gap-3">
-                                                        //                 <span className="flex align-items-center gap-2">
-                                                        //                     <i className="pi pi-tag"></i>
-                                                        //                     <span className="font-semibold">{order.produit.prix} Dh</span>
-                                                        //                     <span className="font-semibold">{order.productQuantity} Pcs</span>
-                                                        //                 </span>
-                                                        //                     <Tag value={order.productQuantity}
-                                                        //                        ></Tag>
-                                                        //                 </div>
-                                                        //             </div>
-                                                        //             <div
-                                                        //                 className="flex sm:flex-column align-items-center sm:align-items-end gap-3 sm:gap-2">
-                                                        //                 <span
-                                                        //                     className="text-2xl font-semibold">{order.totalPrice} Dh</span>
-                                                        //                 <Button icon="pi pi-shopping-cart"
-                                                        //                         className="p-button-rounded"
-                                                        //                         ></Button>
-                                                        //             </div>
-                                                        //         </div>
-                                                        //     </div>
-                                                        // </div>
-
-
-                                                        <Box sx={{mt:-2}} key={order.id} className="col-12  xl:flex xl:justify-content-center">
-                                                            {orderIndex > 0 && <Divider component="" />}
-                                                        <div className="flex flex-wrap  align-items-center gap-3">
-                                                            <img className="w-4rem shadow-2 flex-shrink-0 border-round"
-                                                                 src={order.produit.photo}
-                                                                 alt={order.produit.nom}
-                                                            />
-                                                            <div className="flex-1 flex flex-column gap-1 xl:mr-1 mt-1">
-                                                                <div className="flex align-items-start ">
-                                                                    <Tag style={{fontSize:"10px",background: 'linear-gradient(90deg, rgba(0,36,24,0.9759709547881653) 0%, rgba(9,121,84,1) 35%, rgba(0,255,200,1) 100%)'}} value={"Product Name :"}></Tag>
-                                                                    <Tag className="ml-1" value={order.produit.nom} style={{backgroundColor:"transparent", color:"black" ,fontSize:"10px"}}/>
-
-                                                                </div>
-                                                                <div className="flex align-items-start ">
-                                                                    <Tag style={{fontSize:"10px",background: 'linear-gradient(-225deg,#AC32E4 0%,#7918F2 48%,#4801FF 100%)'}} value={'Restaurant :'} icon={<RestaurantIcon style={{fontSize:"14px"}}/>}></Tag>
-                                                                    <Tag className="ml-1" value={order.produit.restaurant.nom} style={{backgroundColor:"transparent",color:"black" ,fontSize:"10px"}}/>
-                                                                </div>
-                                                                <div className="flex align-items-start ">
-                                                                    <span>{order.productQuantity} (Pcs) x {" "} {order.produit.prix} (Dh) </span>
-                                                                </div>
-                                                            </div>
-                                                            <div className="flex sm:flex-column align-items-center sm:align-items-end md:align-items-center  gap-1 sm:gap-2">
-                                                                <span className="text-1xl font-monospace">Total Price :{order.totalPrice} Dh</span>
-                                                            </div>
-                                                        </div>
-                                                        </Box>
-                                                    ))}
-                                                    <Divider component="" className="m-1"/>
-
-                                                    <div className="d-flex justify-content-center align-items-center">
-
-                                                        {/*<div className="m-1">*/}
-                                                        {/*    {group.orders[0].status && (*/}
-                                                        {/*        <div>*/}
-
-                                                        {/*            <Tag*/}
-                                                        {/*                severity={group.orders[0].status === 'Delivered' ? 'success' : group.orders[0].status === 'Cancelled' ? 'danger' : group.orders[0].status === 'Shipped' ? 'info' : 'warning'}*/}
-                                                        {/*                rounded>*/}
-                                                        {/*                {group.orders[0].status === 'Delivered' &&*/}
-                                                        {/*                    <CheckCircleOutlineIcon className="mx-1"/>}*/}
-                                                        {/*                {group.orders[0].status === 'Cancelled' &&*/}
-                                                        {/*                    <RailwayAlertRoundedIcon className="mx-1"/>}*/}
-                                                        {/*                {group.orders[0].status === 'Shipped' &&*/}
-                                                        {/*                    <LocalShippingIcon className="mx-1"/>}*/}
-                                                        {/*                {group.orders[0].status === 'Pending' &&*/}
-                                                        {/*                    <PendingRoundedIcon className="mx-1"/>}*/}
-                                                        {/*                {group.orders[0].status}*/}
-                                                        {/*            </Tag>*/}
-
-                                                        {/*        </div>*/}
-                                                        {/*    )}*/}
-
-                                                        {/*</div>*/}
-
-                                                        <Box sx={{width: 500}}>
-                                                            <div className="flex">
-                                                                <div>
-                                                                    {group.orders[0].status && (
-                                                                        <Tag
-                                                                            severity={group.orders[0].status === 'Delivered' ? 'success' : group.orders[0].status === 'Cancelled' ? 'danger' : group.orders[0].status === 'Shipped' ? 'info' : 'warning'}
-                                                                            rounded>
-                                                                            {group.orders[0].status === 'Delivered' &&
-                                                                                <CheckCircleOutlineIcon
-                                                                                    className="mx-1"/>}
-                                                                            {group.orders[0].status === 'Cancelled' &&
-                                                                                <RailwayAlertRoundedIcon
-                                                                                    className="mx-1"/>}
-                                                                            {group.orders[0].status === 'Shipped' &&
-                                                                                <LocalShippingIcon className="mx-1"/>}
-                                                                            {group.orders[0].status === 'Pending' &&
-                                                                                <PendingRoundedIcon className="mx-1"/>}
-                                                                            {group.orders[0].status}
-                                                                        </Tag>
-                                                                    )}
-                                                                </div>
-                                                                <div>
-                                                                    <Tag severity="secondary" className=" p-2" rounded>
-                                                                        <strong className="m-2">Order Amount
-                                                                            :</strong>{group.orders.reduce((total, order) => total + order.totalPrice, 0)} Dh
-                                                                    </Tag>
-
-                                                                </div>
-                                                                <div>
-                                                                    <Tag severity="secondary" className=" p-2" rounded>
-                                                                        {group.orders.reduce((total, order) => total + order.totalPrice, 0) < 100 ? (
-                                                                            <p className="mb-0">
-                                                                                <strong className="mt-2 mx-2">Shipping
-                                                                                    fee:</strong> {shippingfee} Dh<br/>
-                                                                            </p>
-                                                                        ) : (
-                                                                            <p className="mb-0">
-                                                                                <strong className="mt-2 mx-2">Shipping
-                                                                                    fee:</strong> 0 Dh<br/>
-                                                                            </p>
-                                                                        )}
-                                                                    </Tag>
-                                                                </div>
-
-                                                                <div>
-                                                                    {group.orders[0].status === 'Pending' ? (
-                                                                        <div>
-                                                                            {groupOrdersByCreatedDate().some((group) =>
-                                                                                group.orders.some((order) => order.status === 'Pending')
-                                                                            ) && (
-                                                                                <Button
-                                                                                    className="p-1 mx-1"
-                                                                                    label="cancel"
-                                                                                    severity="danger"
-                                                                                    onClick={() => {
-                                                                                        updateStatus(group);
-                                                                                    }}
+                                                <Fieldset legend={`Order Details (${group.createdDate})`} toggleable>
+                                                    <Box sx={{mx: 3, mt: 1}}>
+                                                        <Grid item container spacing={1} columns={12}>
+                                                            <Grid item xs={12} md={7}>
+                                                                <div className="card">
+                                                                    {group.orders.map((order, orderIndex) => (
+                                                                        <Box sx={{mt: -1}} key={order.id}
+                                                                             className="col-12  xl:flex xl:justify-content-center">
+                                                                            {orderIndex > 0 && <Divider component=""/>}
+                                                                            <div
+                                                                                className="flex flex-wrap  align-items-center gap-3">
+                                                                                <img
+                                                                                    className="w-4rem shadow-2 flex-shrink-0 border-round"
+                                                                                    src={order.produit.photo}
+                                                                                    alt={order.produit.nom}
                                                                                 />
-                                                                            )}
-                                                                        </div>
-                                                                    ) : (group.orders[0].status === 'Delivered' ? (<div>
-                                                                        {groupOrdersByCreatedDate().some((group) =>
-                                                                            group.orders.some((order) => order.status === 'Delivered')
-                                                                        ) && (
-                                                                            <Button
-                                                                                className="p-1 mx-1"
-                                                                                label="feedback"
-                                                                                severity="info"
-                                                                                onClick={() => openFeedbackDialog(group.orders)}
+                                                                                <div
+                                                                                    className="flex-1 flex flex-column gap-1 xl:mr-1 mt-1">
+                                                                                    <div
+                                                                                        className="flex align-items-start ">
+                                                                                        <Tag style={{
+                                                                                            fontSize: "10px",
+                                                                                            background: 'linear-gradient(90deg, rgba(0,36,24,0.9759709547881653) 0%, rgba(9,121,84,1) 35%, rgba(0,255,200,1) 100%)'
+                                                                                        }}
+                                                                                             value={"Product Name :"}></Tag>
+                                                                                        <Tag className="ml-1"
+                                                                                             value={order.produit.nom}
+                                                                                             style={{
+                                                                                                 backgroundColor: "transparent",
+                                                                                                 color: "black",
+                                                                                                 fontSize: "10px"
+                                                                                             }}/>
 
-
-                                                                            />
-                                                                        )}
-                                                                    </div>) : (""))}
+                                                                                    </div>
+                                                                                    <div
+                                                                                        className="flex align-items-start ">
+                                                                                        <Tag style={{
+                                                                                            fontSize: "10px",
+                                                                                            background: 'linear-gradient(-225deg,#AC32E4 0%,#7918F2 48%,#4801FF 100%)'
+                                                                                        }} value={'Restaurant :'}
+                                                                                             icon={<RestaurantIcon
+                                                                                                 style={{fontSize: "14px"}}/>}></Tag>
+                                                                                        <Tag className="ml-1"
+                                                                                             value={order.produit.restaurant.nom}
+                                                                                             style={{
+                                                                                                 backgroundColor: "transparent",
+                                                                                                 color: "black",
+                                                                                                 fontSize: "10px"
+                                                                                             }}/>
+                                                                                    </div>
+                                                                                    <div
+                                                                                        className="flex align-items-start ">
+                                                                                        <span>{order.productQuantity} (Pcs) x {" "} {order.produit.prix} (Dh) </span>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div
+                                                                                    className="flex sm:flex-column align-items-center sm:align-items-end md:align-items-center  gap-1 sm:gap-2">
+                                                                                    <span
+                                                                                        className="text-1xl font-monospace">Total Price :{order.totalPrice} Dh</span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </Box>
+                                                                    ))}
                                                                 </div>
-                                                            </div>
-                                                        </Box>
-                                                        {/*<div>*/}
-                                                        {/*    <Tag severity="secondary" className=" p-2" rounded>*/}
-                                                        {/*        <strong className="m-2">Order Amount*/}
-                                                        {/*            :</strong>{group.orders.reduce((total, order) => total + order.totalPrice, 0)} Dh*/}
-                                                        {/*    </Tag>*/}
-                                                        {/*    <Tag severity="secondary" className=" p-2" rounded>*/}
-                                                        {/*        {group.orders.reduce((total, order) => total + order.totalPrice, 0) < 100 ? (*/}
-                                                        {/*            <p className="mb-0">*/}
-                                                        {/*                <strong className="mt-2 mx-2">Shipping*/}
-                                                        {/*                    fee:</strong> {shippingfee} Dh<br/>*/}
-                                                        {/*            </p>*/}
-                                                        {/*        ) : (*/}
-                                                        {/*            <p className="mb-0">*/}
-                                                        {/*                <strong className="mt-2 mx-2">Shipping*/}
-                                                        {/*                    fee:</strong> 0 Dh<br/>*/}
-                                                        {/*            </p>*/}
-                                                        {/*        )}*/}
-                                                        {/*    </Tag>*/}
-                                                        {/*</div>*/}
-                                                        {/*{group.orders[0].status === 'Pending' ? (*/}
-                                                        {/*    <div>*/}
-                                                        {/*        {groupOrdersByCreatedDate().some((group) =>*/}
-                                                        {/*            group.orders.some((order) => order.status === 'Pending')*/}
-                                                        {/*        ) && (*/}
-                                                        {/*            <Button*/}
-                                                        {/*                className="p-1 mx-1"*/}
-                                                        {/*                label="cancel"*/}
-                                                        {/*                severity="danger"*/}
-                                                        {/*                onClick={() => {*/}
-                                                        {/*                    updateStatus(group);*/}
-                                                        {/*                }}*/}
-                                                        {/*            />*/}
-                                                        {/*        )}*/}
-                                                        {/*    </div>*/}
-                                                        {/*):(group.orders[0].status === 'Delivered' ?(<div>*/}
-                                                        {/*    {groupOrdersByCreatedDate().some((group) =>*/}
-                                                        {/*        group.orders.some((order) => order.status === 'Delivered')*/}
-                                                        {/*    ) && (*/}
-                                                        {/*        <Button*/}
-                                                        {/*            className="p-1 mx-1"*/}
-                                                        {/*            label="feedback"*/}
-                                                        {/*            severity="info"*/}
-                                                        {/*            onClick={() => openFeedbackDialog(group.orders)}*/}
+                                                            </Grid>
+
+                                                            <Grid item xs={12} md={5}>
+                                                                <div className="card ">
+
+                                                                    <div className="grid mt-1 p-1">
+                                                                        <div className="col-6">
+                                                                            <div
+                                                                                className="text-center p-1 border-round-sm  font-bold">
+                                                                                <p className="mb-1">Status :</p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className="col-6">
+                                                                            <div
+                                                                                className="text-center p-1 border-round-sm  font-bold">
+                                                                                {group.orders[0].status && (
+                                                                                    <Tag
+                                                                                        severity={group.orders[0].status === 'Delivered' ? 'success' : group.orders[0].status === 'Cancelled' ? 'danger' : group.orders[0].status === 'Shipped' ? 'info' : 'warning'}
+                                                                                        rounded>
+                                                                                        {group.orders[0].status === 'Delivered' &&
+                                                                                            <CheckCircleOutlineIcon
+                                                                                                className="mx-1"/>}
+                                                                                        {group.orders[0].status === 'Cancelled' &&
+                                                                                            <RailwayAlertRoundedIcon
+                                                                                                className="mx-1"/>}
+                                                                                        {group.orders[0].status === 'Shipped' &&
+                                                                                            <LocalShippingIcon
+                                                                                                className="mx-1"/>}
+                                                                                        {group.orders[0].status === 'Pending' &&
+                                                                                            <PendingRoundedIcon
+                                                                                                className="mx-1"/>}
+                                                                                        {group.orders[0].status}
+                                                                                    </Tag>
+                                                                                )}
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className="col-6">
+                                                                            <div
+                                                                                className="text-center p-1 border-round-sm  font-bold">
+                                                                                <p className="mb-0">Order Amount :</p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className="col-6">
+                                                                            <div
+                                                                                className="text-center p-1 border-round-sm  font-bold">
+                                                                                <Tag severity="secondary"
+                                                                                     className=" p-2" rounded>
+                                                                                    <strong className="m-2">Order Amount
+                                                                                        :</strong>{group.orders.reduce((total, order) => total + order.totalPrice, 0)} Dh
+                                                                                </Tag>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className="col-6">
+                                                                            <div
+                                                                                className="text-center p-1 border-round-sm  font-bold">
+                                                                                <p className="mb-0">Shipping Fee :</p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className="col-6">
+                                                                            <div
+                                                                                className="text-center p-1 border-round-sm  font-bold">
+                                                                                <Tag severity="secondary"
+                                                                                     className=" p-2" rounded>
+                                                                                    {group.orders.reduce((total, order) => total + order.totalPrice, 0) < 100 ? (
+                                                                                        <p className="mb-0">
+                                                                                            <strong
+                                                                                                className="mt-2 mx-2">Shipping
+                                                                                                fee:</strong> {shippingfee} Dh<br/>
+                                                                                        </p>
+                                                                                    ) : (
+                                                                                        <p className="mb-0">
+                                                                                            <strong
+                                                                                                className="mt-2 mx-2">Shipping
+                                                                                                fee:</strong> 0 Dh<br/>
+                                                                                        </p>
+                                                                                    )}
+                                                                                </Tag>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className="col-12">
+                                                                            <div
+                                                                                className="text-center p-1 border-round-sm  font-bold ">
+                                                                                {group.orders[0].status === 'Pending' ? (
+                                                                                    <div>
+                                                                                        {groupOrdersByCreatedDate().some((group) =>
+                                                                                            group.orders.some((order) => order.status === 'Pending')
+                                                                                        ) && (
+                                                                                            <Button
+                                                                                                className="p-1 mx-1"
+                                                                                                label="cancel"
+                                                                                                severity="danger"
+                                                                                                onClick={() => {
+                                                                                                    updateStatus(group);
+                                                                                                }}
+                                                                                            />
+                                                                                        )}
+                                                                                    </div>
+                                                                                ) : (group.orders[0].status === 'Delivered' ? (
+                                                                                    <div>
+                                                                                        {groupOrdersByCreatedDate().some((group) =>
+                                                                                            group.orders.some((order) => order.status === 'Delivered')
+                                                                                        ) && (
+                                                                                            <Button
+                                                                                                className="p-1 mx-1"
+                                                                                                label="feedback"
+                                                                                                severity="info"
+                                                                                                onClick={() => openFeedbackDialog(group.orders)}
 
 
-                                                        {/*        />*/}
-                                                        {/*    )}*/}
-                                                        {/*</div>):(""))}*/}
-                                                    </div>
-
+                                                                                            />
+                                                                                        )}
+                                                                                    </div>) : (""))}
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </Grid>
+                                                        </Grid>
+                                                    </Box>
                                                 </Fieldset>
                                             </div>
                                         </div>
@@ -841,6 +834,8 @@ export default function ClientOrders() {
             >
                 {renderFeedbackForm()}
             </Dialog>
+
+
         </>
     );
-}
+    }
