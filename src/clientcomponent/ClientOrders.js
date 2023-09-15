@@ -26,25 +26,24 @@ import {Rating} from "primereact/rating";
 import {InputTextarea} from "primereact/inputtextarea";
 import Avatar from "@mui/material/Avatar";
 import RestaurantIcon from '@mui/icons-material/Restaurant';
-import {DataView} from "primereact/dataview";
+import { Paginator } from 'primereact/paginator';
+
 
 
 export default function ClientOrders() {
     const [orders, setOrders] = useState([]);
     const [userId, setUserId] = useState("");
     const toast = useRef(null);
-    const [value, setValue] = React.useState(0);
     const [loading, setLoading] = useState(true);
     const [comments, setComments] = useState([]);
     const [commentDialog, setCommentDialog] = useState(false);
-
-
-    //const [selectedProducts, setSelectedProducts] = useState([]);
     const [feedbackData, setFeedbackData] = useState([]);
     const [isSaveButtonDisabled, setIsSaveButtonDisabled] = useState(false);
-
-
     const shippingfee = 30;
+    const [value, setValue] = useState(0);
+    const [page, setPage] = useState(0);
+
+
 
     const loadComments = () => {
         axios.get(`/api/controller/avis/`)
@@ -299,7 +298,15 @@ export default function ClientOrders() {
         toast.current.show({severity: 'error', summary: 'Warning', detail: 'One of the fields is empty ', life: 3000});
     }
 
-    /******************************************************* return   **************************************/
+    /******************************************************* Paginator   **************************************/
+
+    const fieldsetsPerPage = 5;
+    const startIndex = page * fieldsetsPerPage;
+    const endIndex = startIndex + fieldsetsPerPage;
+    const fieldsetsToDisplay = groupOrdersByCreatedDate().slice(startIndex, endIndex);
+    const onPageChange = (event) => {
+        setPage(event.page);
+    };
 
 
 
@@ -472,8 +479,6 @@ export default function ClientOrders() {
                                                                         label="feedback"
                                                                         severity="info"
                                                                         onClick={() => openFeedbackDialog(group.orders)}
-
-
                                                                     />
                                                                 )}
                                                             </div>
@@ -537,9 +542,10 @@ export default function ClientOrders() {
                             <div>
                                 {groupOrdersByCreatedDate().some((group) => group.orders.some((order) => order.length !== 0)) ? (
 
-                                    groupOrdersByCreatedDate().map((group, index) => (
-                                        <div key={index} className="order-group">
+                                        fieldsetsToDisplay.map((group, index) => (
+                                            <div key={index} className="order-group">
                                             <div className="content mt-5">
+
                                                 <Fieldset legend={`Order Details (${group.createdDate})`} toggleable>
                                                     <Box sx={{mx: 3, mt: 1}}>
                                                         <Grid item container spacing={1} columns={12}>
@@ -724,7 +730,9 @@ export default function ClientOrders() {
                                                         </Grid>
                                                     </Box>
                                                 </Fieldset>
+
                                             </div>
+
                                         </div>
                                     ))
                                 ) : (
@@ -739,6 +747,14 @@ export default function ClientOrders() {
                                         </div>
                                     </div>
                                 )}
+                                <Paginator
+                                    first={page * fieldsetsPerPage}
+                                    rows={fieldsetsPerPage}
+                                    totalRecords={groupOrdersByCreatedDate().length}
+                                    onPageChange={onPageChange}
+                                    template="FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink"
+                                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} Orders"
+                                />
                             </div>
                         )}
                         {value === 1 && (
@@ -766,6 +782,7 @@ export default function ClientOrders() {
                             <div>
                                 {groupOrdersByCreatedDate().some((group) => group.orders.some((order) => order.status === 'Cancelled')) ? (
                                     groupOrdersByCreatedDate().map((group) => renderOrderDetails(group, 'Cancelled', updateStatus))
+
                                 ) : (
 
                                     <div className="order-group">
@@ -819,6 +836,7 @@ export default function ClientOrders() {
                             </div>
                         )}
                     </div>
+
                 </Card>
             </div>
             <Dialog
