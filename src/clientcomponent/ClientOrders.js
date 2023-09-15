@@ -9,7 +9,7 @@ import moment from "moment";
 import {ConfirmDialog, confirmDialog} from 'primereact/confirmdialog';
 import {Toast} from "primereact/toast";
 import Grid from '@mui/material/Grid';
-import Divider from '@mui/material/Divider';
+import { Divider } from 'primereact/divider';
 import {Tag} from "primereact/tag";
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import RailwayAlertRoundedIcon from '@mui/icons-material/RailwayAlertRounded';
@@ -322,7 +322,7 @@ export default function ClientOrders() {
                 <div className="content mt-5">
                     <Fieldset legend={`Order Details (${group.createdDate})`} toggleable>
 
-                        <Box sx={{mx: 3, mt: 1}}>
+                        <Box sx={{ mt: 1}}>
                             <Grid item container spacing={1} columns={12}>
                                 <Grid item xs={12} md={7}>
                                     <div className="card">
@@ -392,69 +392,71 @@ export default function ClientOrders() {
                                         <div className="grid mt-1 p-1">
                                             <div className="col-6">
                                                 <div
-                                                    className="text-center p-1 border-round-sm  font-bold">
+                                                    className="text-left ml-1 p-1   border-round-sm  font-bold">
                                                     <p className="mb-1">Status :</p>
                                                 </div>
                                             </div>
                                             <div className="col-6">
-                                                <div
-                                                    className="text-center p-1 border-round-sm  font-bold">
+                                                <div className="text-center  border-round-sm  font-bold">
                                                     {filteredOrders[0].status === statusFilter && (
                                                             <Tag
                                                                 severity={statusFilter === 'Delivered' ? 'success' : statusFilter === 'Cancelled' ? 'danger' : statusFilter === 'Shipped' ? 'info' : 'warning'}
                                                                 rounded>
                                                                 {statusFilter === 'Delivered' &&
-                                                                    <CheckCircleOutlineIcon className="mx-1"/>}
+                                                                    <CheckCircleOutlineIcon className="mx-1" style={{fontSize:"16px"}}/>}
                                                                 {statusFilter === 'Cancelled' &&
-                                                                    <RailwayAlertRoundedIcon className="mx-1"/>}
+                                                                    <RailwayAlertRoundedIcon className="mx-1" style={{fontSize:"16px"}}/>}
                                                                 {statusFilter === 'Shipped' &&
-                                                                    <LocalShippingIcon className="mx-1"/>}
+                                                                    <LocalShippingIcon className="mx-1" style={{fontSize:"16px"}}/>}
                                                                 {statusFilter === 'Pending' &&
-                                                                    <PendingRoundedIcon className="mx-1"/>}
+                                                                    <PendingRoundedIcon className="mx-1" style={{fontSize:"16px"}}/>}
                                                                 {filteredOrders[0].status}
                                                             </Tag>
                                                     )}
                                                 </div>
                                             </div>
+                                            <Divider type={"solid"} className="mx-2 -mt-1 -mb-1"/>
                                             <div className="col-6">
                                                 <div
-                                                    className="text-center p-1 border-round-sm  font-bold">
+                                                    className="text-left ml-1 p-1 border-round-sm  font-bold">
                                                     <p className="mb-0">Order Amount :</p>
                                                 </div>
                                             </div>
                                             <div className="col-6">
                                                 <div
-                                                    className="text-center p-1 border-round-sm  font-bold">
+                                                    className="text-center  border-round-sm  font-bold">
                                                     <Tag severity="secondary"
-                                                         className=" p-2" rounded>
-                                                        <strong className="m-2">Order Amount :</strong> {filteredOrders.reduce((total, order) => total + order.totalPrice, 0)} Dh
+                                                         className=" w-6rem" rounded>
+                                                         {filteredOrders.reduce((total, order) => total + order.totalPrice, 0)} Dh
                                                     </Tag>
                                                 </div>
                                             </div>
+                                            <Divider type={"solid"} className="mx-2 -mt-1 -mb-1"/>
                                             <div className="col-6">
                                                 <div
-                                                    className="text-center p-1 border-round-sm  font-bold">
+                                                    className="text-left p-1 ml-1 border-round-sm  font-bold">
                                                     <p className="mb-0">Shipping Fee :</p>
                                                 </div>
                                             </div>
                                             <div className="col-6">
                                                 <div
                                                     className="text-center p-1 border-round-sm  font-bold">
-                                                    <Tag severity="secondary" className=" p-2" rounded>
+                                                    <Tag severity="secondary"
+                                                         className=" w-6rem" rounded>
                                                         {filteredOrders.reduce((total, order) => total + order.totalPrice, 0) < 100 ? (
                                                             <p className="mb-0">
-                                                                <strong className="mt-2 mx-2">Shipping
-                                                                    fee:</strong> {shippingfee} Dh<br/>
+                                                                 {shippingfee} Dh<br/>
                                                             </p>
                                                         ) : (
                                                             <p className="mb-0">
-                                                                <strong className="mt-2 mx-2">Shipping
-                                                                    fee:</strong> 0 Dh<br/>
+                                                                0 Dh<br/>
                                                             </p>
                                                         )}
                                                     </Tag>
                                                 </div>
                                             </div>
+                                            <Divider type={"solid"} className="mx-2 -mt-1 -mb-1"/>
+
                                             <div className="col-12">
                                                 <div className="text-center p-1 border-round-sm  font-bold ">
                                                     {statusFilter === 'Pending' ? (
@@ -547,7 +549,7 @@ export default function ClientOrders() {
                                             <div className="content mt-5">
 
                                                 <Fieldset legend={`Order Details (${group.createdDate})`} toggleable>
-                                                    <Box sx={{mx: 3, mt: 1}}>
+                                                    <Box sx={{mx: 1, mt: 1}}>
                                                         <Grid item container spacing={1} columns={12}>
                                                             <Grid item xs={12} md={7}>
                                                                 <div className="card">
@@ -618,29 +620,28 @@ export default function ClientOrders() {
                                                                     <div className="grid mt-1 p-1">
                                                                         <div className="col-6">
                                                                             <div
-                                                                                className="text-center p-1 border-round-sm  font-bold">
+                                                                                className="text-left ml-1 border-round-sm  font-bold">
                                                                                 <p className="mb-1">Status :</p>
                                                                             </div>
                                                                         </div>
                                                                         <div className="col-6">
                                                                             <div
-                                                                                className="text-center p-1 border-round-sm  font-bold">
+                                                                                className="text-center  border-round-sm  font-bold">
                                                                                 {group.orders[0].status && (
-                                                                                    <Tag
-                                                                                        severity={group.orders[0].status === 'Delivered' ? 'success' : group.orders[0].status === 'Cancelled' ? 'danger' : group.orders[0].status === 'Shipped' ? 'info' : 'warning'}
-                                                                                        rounded>
+                                                                                    <Tag className="w-6rem"
+                                                                                        severity={group.orders[0].status === 'Delivered' ? 'success' : group.orders[0].status === 'Cancelled' ? 'danger' : group.orders[0].status === 'Shipped' ? 'info' : 'warning'} rounded>
                                                                                         {group.orders[0].status === 'Delivered' &&
                                                                                             <CheckCircleOutlineIcon
-                                                                                                className="mx-1"/>}
+                                                                                                className="mr-1" style={{fontSize:"16px"}}/>}
                                                                                         {group.orders[0].status === 'Cancelled' &&
                                                                                             <RailwayAlertRoundedIcon
-                                                                                                className="mx-1"/>}
+                                                                                                className="mr-1" style={{fontSize:"16px"}}/>}
                                                                                         {group.orders[0].status === 'Shipped' &&
                                                                                             <LocalShippingIcon
-                                                                                                className="mx-1"/>}
+                                                                                                className="mr-1" style={{fontSize:"16px"}}/>}
                                                                                         {group.orders[0].status === 'Pending' &&
                                                                                             <PendingRoundedIcon
-                                                                                                className="mx-1"/>}
+                                                                                                className="mr-1" style={{fontSize:"16px"}}/>}
                                                                                         {group.orders[0].status}
                                                                                     </Tag>
                                                                                 )}
@@ -648,42 +649,35 @@ export default function ClientOrders() {
                                                                         </div>
                                                                         <div className="col-6">
                                                                             <div
-                                                                                className="text-center p-1 border-round-sm  font-bold">
+                                                                                className="text-left ml-1 border-round-sm  font-bold">
                                                                                 <p className="mb-0">Order Amount :</p>
                                                                             </div>
                                                                         </div>
                                                                         <div className="col-6">
-                                                                            <div
-                                                                                className="text-center p-1 border-round-sm  font-bold">
-                                                                                <Tag severity="secondary"
-                                                                                     className=" p-2" rounded>
-                                                                                    <strong className="m-2">Order Amount
-                                                                                        :</strong>{group.orders.reduce((total, order) => total + order.totalPrice, 0)} Dh
+                                                                            <div className="text-center  border-round-sm  font-bold">
+                                                                                <Tag style={{background:" linear-gradient(90deg, rgba(121,9,87,1) 0%, rgba(110,32,97,1) 0%, rgba(81,120,112,1) 0%, rgba(61,149,217,1) 0%"}}
+                                                                                     className="w-6rem" rounded>
+                                                                                    {group.orders.reduce((total, order) => total + order.totalPrice, 0)} Dh
                                                                                 </Tag>
                                                                             </div>
                                                                         </div>
                                                                         <div className="col-6">
                                                                             <div
-                                                                                className="text-center p-1 border-round-sm  font-bold">
+                                                                                className="text-left  border-round-sm  font-bold">
                                                                                 <p className="mb-0">Shipping Fee :</p>
                                                                             </div>
                                                                         </div>
                                                                         <div className="col-6">
-                                                                            <div
-                                                                                className="text-center p-1 border-round-sm  font-bold">
-                                                                                <Tag severity="secondary"
-                                                                                     className=" p-2" rounded>
+                                                                            <div className="text-center  border-round-sm  font-bold">
+                                                                                <Tag style={{background:" linear-gradient(90deg, rgba(121,9,87,1) 0%, rgba(110,32,97,1) 0%, rgba(81,120,112,1) 0%, rgba(61,149,217,1) 0%"}}
+                                                                                     className="w-6rem" rounded  >
                                                                                     {group.orders.reduce((total, order) => total + order.totalPrice, 0) < 100 ? (
                                                                                         <p className="mb-0">
-                                                                                            <strong
-                                                                                                className="mt-2 mx-2">Shipping
-                                                                                                fee:</strong> {shippingfee} Dh<br/>
+                                                                                             {shippingfee} Dh<br/>
                                                                                         </p>
                                                                                     ) : (
                                                                                         <p className="mb-0">
-                                                                                            <strong
-                                                                                                className="mt-2 mx-2">Shipping
-                                                                                                fee:</strong> 0 Dh<br/>
+                                                                                             0 Dh<br/>
                                                                                         </p>
                                                                                     )}
                                                                                 </Tag>
@@ -698,7 +692,8 @@ export default function ClientOrders() {
                                                                                             group.orders.some((order) => order.status === 'Pending')
                                                                                         ) && (
                                                                                             <Button
-                                                                                                className="p-1 mx-1"
+                                                                                                outlined
+                                                                                                className="mx-1"
                                                                                                 label="cancel"
                                                                                                 severity="danger"
                                                                                                 onClick={() => {
@@ -713,7 +708,8 @@ export default function ClientOrders() {
                                                                                             group.orders.some((order) => order.status === 'Delivered')
                                                                                         ) && (
                                                                                             <Button
-                                                                                                className="p-1 mx-1"
+                                                                                                outlined
+                                                                                                className="mx-1"
                                                                                                 label="feedback"
                                                                                                 severity="info"
                                                                                                 onClick={() => openFeedbackDialog(group.orders)}
