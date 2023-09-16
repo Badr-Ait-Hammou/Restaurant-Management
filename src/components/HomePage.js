@@ -41,6 +41,9 @@ export default function HomePage() {
         setLoading(false);
     }, []);
 
+
+
+
     const getAverageRating = (product) => {
         const ratings = product.avisList.map((avis) => avis.rating);
         if (ratings.length > 0) {
@@ -61,7 +64,6 @@ export default function HomePage() {
             return 0;
         }
     };
-
 
 
     useEffect(() => {
@@ -137,46 +139,33 @@ export default function HomePage() {
     }
 
 
-    const chunkArray = (myArray, chunkSize) => {
-        const arrayCopy = [...myArray];
-        const results = [];
-        while (arrayCopy.length) {
-            results.push(arrayCopy.splice(0, chunkSize));
-        }
-        return results;
-    };
 
     const responsiveOptions = [
         {
-            breakpoint: '1199px',
+            breakpoint: '1024px',
             numVisible: 3,
-            numScroll: 1,
+            numScroll: 3
         },
         {
-            breakpoint: '991px',
+            breakpoint: '768px',
             numVisible: 2,
-            numScroll: 1,
+            numScroll: 2
         },
         {
-            breakpoint: '767px',
+            breakpoint: '560px',
             numVisible: 1,
-            numScroll: 1,
-        },
+            numScroll: 1
+        }
     ];
 
-
-    if (loading ||products.length===0) {
+    if (loading || products.length === 0) {
         return (<HomPageSkeleton/>)
     }
 
 
-
-
-
-
     const productTemplate = (product) => {
         return (
-            <div  key={product.id} className="border-1 surface-border border-round m-2 text-center py-5 px-3">
+            <div key={product.id} className="border-1 surface-border border-round m-2 text-center py-5 px-3">
                 <Link to={`product/${product.id}`}>
                     <div style={{position: 'relative'}}>
                         <img
@@ -229,12 +218,13 @@ export default function HomePage() {
                 <div>
                     <h4 className="mb-1">{product.nom}</h4>
                     <Rating value={getAverageRating(product)} readOnly cancel={false} precision={0.5}></Rating>
-                    <Typography className="font-monospace ">({getReviews(product)})review{getReviews(product) !==1 ? 's':""}</Typography>
+                    <Typography
+                        className="font-monospace ">({getReviews(product)})review{getReviews(product) !== 1 ? 's' : ""}</Typography>
 
                     {product.promotion === true && (
                         <Tag value="On Sale" severity="danger" icon="pi pi-tag"/>
                     )}
-                        <span className="font-semibold ml-1">{product.stock} Pcs</span>
+                    <span className="font-semibold ml-1">{product.stock} Pcs</span>
                     <div className="mt-5 flex flex-wrap gap-2 justify-content-center">
                         <span className="text-2xl font-semibold">{product.prix} Dh</span>
 
@@ -263,13 +253,6 @@ export default function HomePage() {
             </div>
         );
     };
-
-
-
-
-
-
-
 
 
     return (
@@ -360,6 +343,7 @@ export default function HomePage() {
                         <strong className="font-serif ">On Sale</strong>
                     </div>
                     <div >
+
                         <Carousel
                             value={products}
                             numVisible={4} numScroll={1}
@@ -368,7 +352,9 @@ export default function HomePage() {
                             circular
                             prevIcon={<SkipPreviousRoundedIcon/>}
                             nextIcon={<SkipNextRoundedIcon/>}
-                            autoplayInterval={3000} itemTemplate={productTemplate} />
+                            autoplayInterval={3000} itemTemplate={productTemplate}
+
+                        />
                     </div>
                 </div>
 
@@ -381,15 +367,19 @@ export default function HomePage() {
                 </div>
                 <div className=" mt-5">
                     <div >
+
                         <Carousel value={productsno}
-                                  numVisible={3}
-                                  numScroll={3}
+                                  numVisible={4}
+                                  numScroll={1}
                                   responsiveOptions={responsiveOptions}
                                   className="custom-carousel"
                                   circular
                                   prevIcon={<SkipPreviousRoundedIcon/>}
                                   nextIcon={<SkipNextRoundedIcon/>}
-                                  autoplayInterval={3000} itemTemplate={productTemplate} />
+                                  autoplayInterval={3000} itemTemplate={productTemplate}
+
+
+                        />
                     </div>
                 </div>
             </div>
