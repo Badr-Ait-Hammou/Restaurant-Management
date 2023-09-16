@@ -136,21 +136,19 @@ export default function RestaurantDetails() {
     };
 
     const getReviews = (product) => {
-        const ratings = product.avisList.map((avis) => avis.rating);
-        const reviewCount = product.avisList.length;
-
-        if (ratings.length > 0) {
-            return reviewCount;
-        } else {
-            return 0;
-        }
+        return   product.avisList.length;
     };
 
     const getRestaurantRating = (products) => {
-        const averageRatings = products.map((product) => getAverageRating(product));
-        const sumOfAverageRatings = averageRatings.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-        const numberOfProducts = products.length;
-        return  sumOfAverageRatings / numberOfProducts;
+        const productsWithReviews = products.filter((product) => product.avisList.length > 0);
+
+        if (productsWithReviews.length > 0) {
+            const averageRatings = productsWithReviews.map((product) => getAverageRating(product));
+            const sumOfAverageRatings = averageRatings.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+            return sumOfAverageRatings / productsWithReviews.length;
+        } else {
+            return 0;
+        }
     };
 
     const restaurantRating = getRestaurantRating(products);
@@ -276,7 +274,7 @@ export default function RestaurantDetails() {
                                     color: '#20b0a8'}}>
                                     {restaurant.nom}
                                 </h3>
-                                <Rating value={restaurantRating} readOnly cancel={false}  ></Rating>
+                                <Rating value={restaurantRating} readOnly cancel={false} precision={0.5} ></Rating>
                                 <Typography className="font-monospace ">({products.length})review</Typography>
                                 <strong
                                     style={{fontSize: '18px', color: '#181818'}}>Address: {restaurant.adresse}</strong>
