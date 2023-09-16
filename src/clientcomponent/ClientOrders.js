@@ -329,7 +329,7 @@ export default function ClientOrders() {
                                     <div className="card">
                                         {filteredOrders.map((order, orderIndex) => (
                                             <Box sx={{mt: -1}} key={order.id}
-                                                 className="col-12  xl:flex xl:justify-content-center">
+                                                 className="col-12   xl:justify-content-center">
                                                 {orderIndex > 0 && <Divider className="-mt-1 -mb-1"/>}
                                                 <div
                                                     className="flex flex-wrap mt-1  align-items-center gap-3">
@@ -581,10 +581,10 @@ export default function ClientOrders() {
                                                     <Box sx={{ mx:-2,mt: -3}}>
                                                         <Grid item container spacing={1} columns={12}>
                                                             <Grid item xs={12} md={8}>
-                                                                <div className="card">
+                                                                <div className="card t">
                                                                     {group.orders.map((order, orderIndex) => (
                                                                         <Box sx={{mt: -1}} key={order.id}
-                                                                             className="col-12  xl:flex xl:justify-content-center">
+                                                                             className="col-12  xl:justify-content-center">
                                                                             {orderIndex > 0 && <Divider className="-mt-1 -mb-1"/>}
                                                                             <div className="flex mt-1 flex-wrap  align-items-center gap-3">
                                                                                 <img

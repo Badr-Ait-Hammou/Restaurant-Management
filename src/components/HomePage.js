@@ -164,112 +164,112 @@ export default function HomePage() {
         },
     ];
 
-    const groupedProducts = chunkArray(products, 1);
-    const groupedProductsNo = chunkArray(productsno, 1);
-
-
-    const carouselItemTemplate = (productsGroup) => {
-        if (!productsGroup || !Array.isArray(productsGroup)) {
-            return;
-        }
-
-        return (
-            <div className="p-grid p-nogutter">
-                {productsGroup.map((product) => (
-                    <div key={product.id}>
-                        <div className="card h-100 m-2">
-                            <div className="flex flex-column xl:flex-row xl:align-items-start p-2 gap-4">
-                                <Link to={`product/${product.id}`}>
-                                    <div style={{position: 'relative'}}>
-                                        <img
-                                            className="w-90 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round"
-                                            src={product.photo}
-                                            alt={product.nom}
-                                            style={{
-                                                width: '100%',
-                                                height: '200px',
-                                                borderRadius: '8px',
-                                            }}
-                                        />
-                                        {product.stock <= 0 ? (
-                                            <Tag
-                                                severity="warning"
-                                                value="Out of Stock"
-                                                style={{
-                                                    fontSize: '10px',
-                                                    position: 'absolute',
-                                                    top: '3px',
-                                                    right: '11px',
-                                                }}
-                                            />
-                                        ) : (
-                                            <Tag
-                                                severity="success"
-                                                value="In Stock"
-                                                style={{
-                                                    fontSize: '10px',
-                                                    position: 'absolute',
-                                                    top: '3px',
-                                                    right: '11px',
-                                                }}
-                                            />
-                                        )}
-                                    </div>
-                                </Link>
-                                <div
-                                    className="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4">
-                                    <div className="flex flex-column align-items-center sm:align-items-start gap-3">
-                                        <div className="text-2xl font-bold text-900">
-                                            {product.nom}
-                                        </div>
-                                        <Rating value={getAverageRating(product)} readOnly cancel={false} precision={0.5}></Rating>
-                                        <Typography className="font-monospace ">({getReviews(product)})review{getReviews(product) !==1 ? 's':""}</Typography>
-                                        <div className="flex align-items-center gap-3">
-                                            {product.promotion === true && (
-                                                <Tag value="On Sale" severity="danger" icon="pi pi-tag"/>
-                                            )}
-                                            <span className="flex align-items-center gap-2">
-                                                <span className="font-semibold">{product.stock} Pcs</span>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div className="d-flex justify-content-lg-between gap-3 align-items-center mt-1">
-                                        <span className="text-2xl font-semibold">{product.prix} Dh</span>
-
-                                        {productInCart[product.id] ? (
-                                            <Link to="/admin/cart">
-                                                <Button
-                                                    style={{
-                                                        background:
-                                                            'linear-gradient(-225deg,#AC32E4 0%,#7918F2 48%,#4801FF 100%)',
-                                                    }}
-                                                    icon="pi pi-external-link"
-                                                    className="p-button-rounded "
-                                                    disabled={product.stock <= 0}
-                                                />
-                                            </Link>
-                                        ) : (
-                                            <Button
-                                                icon="pi pi-shopping-cart"
-                                                className="p-button-rounded "
-                                                onClick={() => handleAddToCart(product)}
-                                                disabled={product.stock <= 0 || productInCart[product.id]}
-                                            />
-                                        )}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                ))}
-            </div>
-
-        );
-    };
 
     if (loading ||products.length===0) {
         return (<HomPageSkeleton/>)
     }
+
+
+
+
+
+
+    const productTemplate = (product) => {
+        return (
+            <div  key={product.id} className="border-1 surface-border border-round m-2 text-center py-5 px-3">
+                <Link to={`product/${product.id}`}>
+                    <div style={{position: 'relative'}}>
+                        <img
+                            className="shadow-2"
+                            src={product.photo}
+                            alt={product.nom}
+                            style={{
+                                width: '100%',
+                                height: '200px',
+                                borderRadius: '8px',
+                            }}
+                        />
+                        {product.stock <= 0 ? (
+                            <Tag
+                                severity="danger"
+                                value="Out of Stock"
+                                style={{
+                                    fontSize: '10px',
+                                    position: 'absolute',
+                                    top: '3px',
+                                    right: '11px',
+                                }}
+                            />
+                        ) : product.stock < 20 ? (
+                            <Tag
+                                severity="warning"
+                                value="LOWSTOCK"
+                                style={{
+                                    fontSize: '10px',
+                                    position: 'absolute',
+                                    top: '3px',
+                                    right: '11px',
+                                }}
+                            />
+                        ) : (
+                            <Tag
+                                severity="success"
+                                value="In Stock"
+                                style={{
+                                    fontSize: '10px',
+                                    position: 'absolute',
+                                    top: '3px',
+                                    right: '11px',
+                                }}
+                            />
+                        )}
+
+                    </div>
+                </Link>
+                <div>
+                    <h4 className="mb-1">{product.nom}</h4>
+                    <Rating value={getAverageRating(product)} readOnly cancel={false} precision={0.5}></Rating>
+                    <Typography className="font-monospace ">({getReviews(product)})review{getReviews(product) !==1 ? 's':""}</Typography>
+
+                    {product.promotion === true && (
+                        <Tag value="On Sale" severity="danger" icon="pi pi-tag"/>
+                    )}
+                        <span className="font-semibold ml-1">{product.stock} Pcs</span>
+                    <div className="mt-5 flex flex-wrap gap-2 justify-content-center">
+                        <span className="text-2xl font-semibold">{product.prix} Dh</span>
+
+                        {productInCart[product.id] ? (
+                            <Link to="/admin/cart">
+                                <Button
+                                    style={{
+                                        background:
+                                            'linear-gradient(-225deg,#AC32E4 0%,#7918F2 48%,#4801FF 100%)',
+                                    }}
+                                    icon="pi pi-external-link"
+                                    className="p-button-rounded "
+                                    disabled={product.stock <= 0}
+                                />
+                            </Link>
+                        ) : (
+                            <Button
+                                icon="pi pi-shopping-cart"
+                                className="p-button-rounded "
+                                onClick={() => handleAddToCart(product)}
+                                disabled={product.stock <= 0 || productInCart[product.id]}
+                            />
+                        )}
+                    </div>
+                </div>
+            </div>
+        );
+    };
+
+
+
+
+
+
+
 
 
     return (
@@ -359,17 +359,17 @@ export default function HomePage() {
                     <div className=" mx-3 mb-2 text-lg-start text-2xl ">
                         <strong className="font-serif ">On Sale</strong>
                     </div>
-                    <Carousel
-                        prevIcon={<SkipPreviousRoundedIcon/>}
-                        nextIcon={<SkipNextRoundedIcon/>}
-                        value={groupedProducts}
-                        numVisible={3}
-                        numScroll={1}
-                        circular
-                        responsiveOptions={responsiveOptions}
-                        autoplayInterval={3000}
-                        itemTemplate={carouselItemTemplate}
-                    />
+                    <div >
+                        <Carousel
+                            value={products}
+                            numVisible={4} numScroll={1}
+                            responsiveOptions={responsiveOptions}
+                            className="custom-carousel"
+                            circular
+                            prevIcon={<SkipPreviousRoundedIcon/>}
+                            nextIcon={<SkipNextRoundedIcon/>}
+                            autoplayInterval={3000} itemTemplate={productTemplate} />
+                    </div>
                 </div>
 
             </div>
@@ -380,17 +380,17 @@ export default function HomePage() {
                     <strong className="font-serif ">Best Plans</strong>
                 </div>
                 <div className=" mt-5">
-                    <Carousel
-                        prevIcon={<SkipPreviousRoundedIcon/>}
-                        nextIcon={<SkipNextRoundedIcon/>}
-                        value={groupedProductsNo}
-                        numVisible={3}
-                        numScroll={1}
-                        circular
-                        responsiveOptions={responsiveOptions}
-                        autoplayInterval={3000}
-                        itemTemplate={carouselItemTemplate}
-                    />
+                    <div >
+                        <Carousel value={productsno}
+                                  numVisible={3}
+                                  numScroll={3}
+                                  responsiveOptions={responsiveOptions}
+                                  className="custom-carousel"
+                                  circular
+                                  prevIcon={<SkipPreviousRoundedIcon/>}
+                                  nextIcon={<SkipNextRoundedIcon/>}
+                                  autoplayInterval={3000} itemTemplate={productTemplate} />
+                    </div>
                 </div>
             </div>
 
