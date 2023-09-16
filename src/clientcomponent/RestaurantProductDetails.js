@@ -309,6 +309,11 @@ export default function RestaurantProductDetails() {
 
                                             />
                                         )}
+                                        {products.promotion === true ? (
+                                            <Tag className="mx-2"  value="On Sale" severity="danger" icon="pi pi-tag" />
+                                        ) : (
+                                            <Tag className="mx-2"  value="New" severity="success" icon="pi pi-tag" />
+                                        )}
                                     </Typography>
                                     <Typography  gutterBottom>
                                        <span className="font-extrabold text-2xl">Product Name: {products.nom}</span>
@@ -330,20 +335,15 @@ export default function RestaurantProductDetails() {
                                         <span className="font-monospace text-1xl"> {products.restaurant && products.restaurant.specialite.nom } </span>
                                     </Typography>
                                     <div >
-                                        <Typography variant="body1" gutterBottom>
-                                            <span className="font-extrabold text-1xl">Status: </span>
+                                        {/*<Typography variant="body1" gutterBottom>*/}
+                                        {/*    <span className="font-extrabold text-1xl">Status: </span>*/}
 
-                                        {products.promotion === true ? (
-                                            <Tag className="mx-2"  value="On Sale" severity="danger" icon="pi pi-tag" />
-                                        ) : (
-                                            <Tag className="mx-2"  value="New" severity="success" icon="pi pi-tag" />
-                                        )}
-                                        </Typography>
+
+                                        {/*</Typography>*/}
                                     </div>
                                     <div >
 
                                         <Typography variant="body1" gutterBottom>
-
                                                 <Rating style={{float:"left"}} value={getAverageRating(products)} readOnly cancel={false} />
                                                 <Typography style={{float:"right"}} className="font-monospace ">({getReviews(products)} review{getReviews(products) !== 1 ? 's' : ''})</Typography>
                                         </Typography>
