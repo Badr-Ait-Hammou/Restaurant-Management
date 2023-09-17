@@ -327,7 +327,7 @@ export default function Cart() {
 
                         <div>
                             <TextField
-                                sx={{width:100}}
+                                sx={{width:90}}
                                 className="text-right "
                                 type="number"
                                 value={productQuantities[product.id] || product.quantity}
@@ -345,8 +345,10 @@ export default function Cart() {
                                                 onClick={() => deleteProduct(product.id)}
                                                 color="error"
                                                 size="small"
+                                                sx={{p:-1,m:-1}}
+
                                             >
-                                                <DeleteIcon />
+                                                <DeleteIcon sx={{fontSize:20}}/>
                                             </IconButton>
                                         </InputAdornment>
                                     ),
