@@ -25,9 +25,9 @@ import {Dialog} from "primereact/dialog";
 import {Rating} from "primereact/rating";
 import {InputTextarea} from "primereact/inputtextarea";
 import Avatar from "@mui/material/Avatar";
-import RestaurantIcon from '@mui/icons-material/Restaurant';
 import {Paginator} from 'primereact/paginator';
 import Typography from "@mui/material/Typography";
+import Chip from "@mui/material/Chip";
 
 
 export default function ClientOrders() {
@@ -101,19 +101,7 @@ export default function ClientOrders() {
         return grouped;
     };
 
-    const groupOrdersByRestaurant = () => {
-        const grouped = {};
 
-        for (const order of orders) {
-            const restaurantName = order.produit.restaurant.nom;
-            if (!grouped[restaurantName]) {
-                grouped[restaurantName] = [];
-            }
-            grouped[restaurantName].push(order);
-        }
-
-        return grouped;
-    };
 
 
     const hideDialog = () => {
@@ -335,10 +323,11 @@ export default function ClientOrders() {
 
         const ordersByRestaurant = filteredOrders.reduce((acc, order) => {
             const restaurantName = order.produit.restaurant.nom;
+            const restaurantPhoto = order.produit.restaurant.photo;
             if (!acc[restaurantName]) {
-                acc[restaurantName] = [];
+                acc[restaurantName] = { photo: restaurantPhoto, orders: [] };
             }
-            acc[restaurantName].push(order);
+            acc[restaurantName].orders.push(order);
             return acc;
         }, {});
 
@@ -350,11 +339,23 @@ export default function ClientOrders() {
                         <Box sx={{mx: -2, mt: -3}}>
                             <Grid item container spacing={1} columns={12}>
                                 <Grid item xs={12} md={8}>
-                                    <div className="card">
-                                        {Object.entries(ordersByRestaurant).map(([restaurantName, restaurantOrders]) => (
-                                            <div key={restaurantName} className="restaurant-orders card">
-                                                <h6>{restaurantName}</h6>
-                                                {restaurantOrders.map((order, orderIndex) => (
+                                    <div className="card ">
+                                        {Object.entries(ordersByRestaurant).map(([restaurantName, { photo, orders }]) => (
+                                            <div key={restaurantName} className="restaurant-orders card m-1">
+                                                <div className="restaurant-header text-left">
+                                                    <Divider align="left" className="-mb-1">
+                                                        <div className="inline-flex align-items-center -mt-3 ">
+                                                            <Chip
+                                                                avatar={<Avatar alt={restaurantName} src={photo} />}
+                                                                label={restaurantName}
+                                                                variant="outlined"
+                                                                size="small"
+                                                            />
+                                                        </div>
+                                                    </Divider>
+
+                                                </div>
+                                                {orders.map((order, orderIndex) => (
                                                     <Box sx={{mt: -1}} key={order.id}
                                                          className="col-12   xl:justify-content-center">
                                                         {orderIndex > 0 && <Divider className="-mt-1 -mb-1"/>}
@@ -383,21 +384,7 @@ export default function ClientOrders() {
                                                                          }}/>
 
                                                                 </div>
-                                                                <div className="flex align-items-start ">
-                                                                    <Tag style={{
-                                                                        fontSize: "10px",
-                                                                        background: 'linear-gradient(-225deg,#AC32E4 0%,#7918F2 48%,#4801FF 100%)'
-                                                                    }} value={'Restaurant :'}
-                                                                         icon={<RestaurantIcon
-                                                                             style={{fontSize: "14px"}}/>}></Tag>
-                                                                    <Tag className="ml-1"
-                                                                         value={order.produit.restaurant.nom}
-                                                                         style={{
-                                                                             backgroundColor: "transparent",
-                                                                             color: "black",
-                                                                             fontSize: "10px"
-                                                                         }}/>
-                                                                </div>
+
                                                                 <div className="flex align-items-start ">
                                                                     <Typography className="text-left"
                                                                                 style={{fontSize: "10px"}}
@@ -634,17 +621,32 @@ export default function ClientOrders() {
                                                         <Grid item container spacing={1} columns={12}>
                                                             <Grid item xs={12} md={8}>
                                                                 <div className="card t">
-                                                                    {Object.entries(group.orders.reduce((acc, order) => {
-                                                                        const restaurantName = order.produit.restaurant.nom;
-                                                                        if (!acc[restaurantName]) {
-                                                                            acc[restaurantName] = [];
-                                                                        }
-                                                                        acc[restaurantName].push(order);
-                                                                        return acc;
-                                                                    }, {})).map(([restaurantName, restaurantOrders]) => (
-                                                                        <div key={restaurantName} className="restaurant-orders card">
-                                                                            <h6>{restaurantName}</h6>
-                                                                            {restaurantOrders.map((order, orderIndex) => (
+                                                                    {Object.entries(
+                                                                        group.orders.reduce((acc, order) => {
+                                                                            const restaurantName = order.produit.restaurant.nom;
+                                                                            const restaurantPhoto = order.produit.restaurant.photo;
+
+                                                                            if (!acc[restaurantName]) {
+                                                                                acc[restaurantName] = { photo: restaurantPhoto, orders: [] };
+                                                                            }
+                                                                            acc[restaurantName].orders.push(order);
+                                                                            return acc;
+                                                                        }, {})
+                                                                    ).map(([restaurantName, { photo, orders }]) => (
+                                                                        <div key={restaurantName} className="restaurant-orders card m-1">
+                                                                            <div className="restaurant-header text-left">
+                                                                                <Divider align="left" className="-mb-1">
+                                                                                    <div className="inline-flex align-items-center -mt-3">
+                                                                                        <Chip
+                                                                                            avatar={<Avatar alt={restaurantName} src={photo} />}
+                                                                                            label={restaurantName}
+                                                                                            variant="outlined"
+                                                                                            size="small"
+                                                                                        />
+                                                                                    </div>
+                                                                                </Divider>
+                                                                            </div>
+                                                                            {orders.map((order, orderIndex) => (
                                                                         <Box sx={{mt: -1}} key={order.id}
                                                                              className="col-12  xl:justify-content-center">
                                                                             {orderIndex > 0 &&
@@ -674,25 +676,7 @@ export default function ClientOrders() {
                                                                                              }}/>
 
                                                                                     </div>
-                                                                                    <div
-                                                                                        className="flex align-items-start ">
-                                                                                        <Tag style={{
-                                                                                            fontSize: "10px",
-                                                                                            background: 'linear-gradient(-225deg,#AC32E4 0%,#7918F2 48%,#4801FF 100%)'
-                                                                                        }}
-                                                                                             value={'Restaurant :'}
-                                                                                             icon={<RestaurantIcon
-                                                                                                 style={{fontSize: "14px"}}/>}>
 
-                                                                                        </Tag>
-                                                                                        <Tag className="ml-1"
-                                                                                             value={order.produit.restaurant.nom}
-                                                                                             style={{
-                                                                                                 backgroundColor: "transparent",
-                                                                                                 color: "black",
-                                                                                                 fontSize: "10px"
-                                                                                             }}/>
-                                                                                    </div>
                                                                                     <div
                                                                                         className="flex align-items-start ">
                                                                                         <Typography
