@@ -570,6 +570,13 @@ export default function ClientOrders() {
         );
     }
 
+    // function generateLegendContent(group) {
+    //     return (
+    //         <div className=" flex -mt-2 -mb-2 " >
+    //             <Typography className="font-monospace">Order Details ({group.createdDate})</Typography>
+    //         </div>
+    //     );
+    // }
 
     return (
         <>
@@ -616,7 +623,7 @@ export default function ClientOrders() {
                                         <div key={index} className="order-group">
                                             <div className="content mt-5">
 
-                                                <Fieldset legend={`Order Details (${group.createdDate})`} toggleable>
+                                                <Fieldset legend={`Order Details (${group.createdDate})`}  toggleable >
                                                     <Box sx={{mx: -2, mt: -3}}>
                                                         <Grid item container spacing={1} columns={12}>
                                                             <Grid item xs={12} md={8}>
