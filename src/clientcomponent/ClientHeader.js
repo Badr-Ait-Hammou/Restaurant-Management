@@ -17,7 +17,7 @@ import {accountService} from "../service/accountService";
 import {Grid} from "@mui/material";
 import LocalShippingRoundedIcon from "@mui/icons-material/LocalShippingRounded";
 import Ifoulkilogo from "../images/IFOULKIlogo2.svg";
-const pages = ['home', 'restaurants', 'profile', 'reservation', 'orders', 'cart', 'all_products'];
+const pages = [ 'restaurants', 'profile', 'reservation', 'orders', 'cart', 'all_products'];
 
 export default function ClientHeader() {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -51,7 +51,7 @@ export default function ClientHeader() {
                 <Container maxWidth="xl">
                     <Toolbar disableGutters>
                         <Avatar src={Ifoulkilogo} variant="square"  sx={{display: {xs: "none", md: "flex"}, mr: 1}}/>
-                        <Link to="/admin/home" style={{ textDecoration: 'none', color: 'inherit' }}>
+                        <Link to="/ifoulki_meals" style={{ textDecoration: 'none', color: 'inherit' }}>
                         <Typography
                             variant="h6"
                             noWrap

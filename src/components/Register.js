@@ -1,79 +1,4 @@
-/*import React from 'react';
-import axios from "axios";
-import {useState} from "react";
 
-export default function Register() {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [firstname, setFirstName] = useState("");
-    const [lastname, setLastName] = useState("");
-    const [email, setEmail] = useState("");
-    const [telephone, settel] = useState("");
-    const [role, setRole] = useState("");
-    const [error, setError] = useState('');
-
-    const handleRegistration = (event) => {
-        event.preventDefault();
-
-        axios.post('http://localhost:8080/api/auth/register', {
-            username: username,
-            password: password,
-            firstname:firstname,
-            lastname:lastname,
-            telephone:telephone,
-            role:role,
-            email: email
-        }).then(response => {
-            localStorage.setItem('token', response.data.token);
-            window.location = '/';
-        }).catch(error => {
-            setError(error.response.data.message);
-        });
-    };
-
-    return (
-        <div>
-            <h2>Register</h2>
-            <form onSubmit={handleRegistration}>
-                <div>
-                    <label>Username:</label>
-                    <input type="text" onChange={event => setUsername(event.target.value)} />
-                </div>
-                <div>
-                    <label>FirstName:</label>
-                    <input type="text" onChange={event => setFirstName(event.target.value)} />
-                </div>
-                <div>
-                    <label>LastNAme:</label>
-                    <input type="text" onChange={event => setLastName(event.target.value)} />
-                </div>
-                <div>
-                    <label>Telephone:</label>
-                    <input type="text" onChange={event => settel(event.target.value)} />
-                </div>
-                <div>
-                    <label>Role:</label>
-                    <input type="text" onChange={event => setRole(event.target.value)} />
-                </div>
-                <div>
-                    <label>Password:</label>
-                    <input type="password" onChange={event => setPassword(event.target.value)} />
-                </div>
-                <div>
-                    <label>Email:</label>
-                    <input type="email" onChange={event => setEmail(event.target.value)} />
-                </div>
-                <button type="submit">Register</button>
-
-            </form>
-            <button onClick={() => window.location.href="/login"}>login</button>
-
-
-            {error && <div>{error}</div>}
-        </div>
-    );
-}
-*/
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -112,7 +37,7 @@ export default function Register() {
             lastname:lastname,
             telephone:telephone,
             adresse:adresse,
-            role: 'USER',
+            role: 'EMPLOYEE',
             email: email
         }).then(response => {
             window.location = '/';

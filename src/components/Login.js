@@ -185,7 +185,7 @@ const onSubmit = (e) => {
                 console.log("rol",user.role);
                 accountService.saveToken(res.data.access_token);
                 accountService.saveRole(user.role);
-                navigate("/admin", {replace: true});
+                navigate("/ifoulki_meals", {replace: true});
             });
         } catch (error) {
             console.log(error);

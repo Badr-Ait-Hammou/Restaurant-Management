@@ -52,7 +52,7 @@ export default function Header() {
                 <Container maxWidth="xl">
                     <Toolbar disableGutters>
                         <Avatar src={Ifoulkilogo} variant="square" sx={{display: {xs: "none", md: "flex"}, mr: 1}}/>
-                        <Link to="/admin/home" style={{textDecoration: 'none', color: 'inherit'}}>
+                        <Link to="/ifoulki_meals" style={{textDecoration: 'none', color: 'inherit'}}>
                             <Typography
                                 variant="h6"
                                 noWrap
@@ -133,7 +133,7 @@ export default function Header() {
                                 textDecoration: "none",
                             }}
                         >
-                            <Link to="/admin/home" style={{textDecoration: 'none', color: 'inherit'}}>
+                            <Link to="/ifoulki_meals" style={{textDecoration: 'none', color: 'inherit'}}>
 
                                 Ifoulki_Meals
                             </Link>

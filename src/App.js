@@ -17,7 +17,7 @@ function App() {
                 <Router>
                 <Routes>
                     <Route path="/*" element={<AuthRoute/>}/>
-                    <Route path="admin/*" element={
+                    <Route path="ifoulki_meals/*" element={
                         <ProtectedRoute>
                             <AdminRoute />
                         </ProtectedRoute>

@@ -23,6 +23,46 @@ import Cart from "../clientcomponent/Cart"
 import AllProducts from "../clientcomponent/AllProducts"
 import RestaurantBySpeciality from "../clientcomponent/RestaurantSpeciality";
 import RestaurantProductDetail from "../clientcomponent/RestaurantProductDetails";
+import AdminDash from "../components/Dashboard";
+import OwnerDash from "../OwnersComponent/Dashboard"
+const userRoutes = (
+    <>
+        <Route index element={<Home/>}/>
+        <Route path="/" element={<Home/>}/>
+        <Route path="/restaurants" element={<CltRest/>}/>
+        <Route path="/home/restaurants" element={<CltRest/>}/>
+        <Route path="/cart" element={<Cart/>}/>
+        <Route path="/orders" element={<ClientOrders/>}/>
+        <Route path="/reservation" element={<Reservation/>}/>
+        <Route path="/profile" element={<Profile/>}/>
+        <Route path="/all_products" element={<AllProducts/>}/>
+        <Route exact path="/restaurants/:id" element={<RestaurantDetails/>}/>
+        <Route exact path="/restaurants_speciality/:id" element={<RestaurantBySpeciality/>}/>
+        <Route exact path="/restaurants/:id" element={<RestaurantDetails/>}/>
+        <Route exact path="/product/:id" element={<RestaurantProductDetail/>}/>
+        <Route exact path="/restaurants/:id/product/:id" element={<RestaurantProductDetail/>}/>
+        <Route exact path="/all_products/product/:id" element={<RestaurantProductDetail/>}/>
+    </>
+);
+const employeRoutes = (
+    <>
+        <Route index element={<OwnerDash/>}/>
+        <Route path="/" element={<OwnerDash/>}/>
+        <Route path="/restaurants" element={<CltRest/>}/>
+        <Route path="/home/restaurants" element={<CltRest/>}/>
+        <Route path="/cart" element={<Cart/>}/>
+        <Route path="/orders" element={<ClientOrders/>}/>
+        <Route path="/reservation" element={<Reservation/>}/>
+        <Route path="/profile" element={<Profile/>}/>
+        <Route path="/all_products" element={<AllProducts/>}/>
+        <Route exact path="/restaurants/:id" element={<RestaurantDetails/>}/>
+        <Route exact path="/home/restaurants_speciality/:id" element={<RestaurantBySpeciality/>}/>
+        <Route exact path="/home/restaurants/:id" element={<RestaurantDetails/>}/>
+        <Route exact path="/home/product/:id" element={<RestaurantProductDetail/>}/>
+        <Route exact path="/home/restaurants/:id/product/:id" element={<RestaurantProductDetail/>}/>
+        <Route exact path="/all_products/product/:id" element={<RestaurantProductDetail/>}/>
+    </>
+);
 const AdminRoute = () => {
 
     return (
@@ -35,8 +75,16 @@ const AdminRoute = () => {
                 )}
         <Routes>
             <Route>
-            <Route index element={<Home/>}/>
-                    <Route path="/home" element={<Home/>}/>
+                {accountService.isLogged && accountService.getRole() === 'ADMIN' && (
+
+                    <Route index element={<AdminDash/>}/>
+
+                    )}
+                {accountService.isLogged && accountService.getRole() === 'ADMIN' && (
+
+                    <Route path="/" element={<AdminDash/>}/>
+
+                    )}
 
                 {accountService.isLogged && accountService.getRole() === 'ADMIN' && (
                 <Route path="/city" element={<Ville/>}/>
@@ -68,19 +116,14 @@ const AdminRoute = () => {
                 {accountService.isLogged && accountService.getRole() === 'ADMIN' && (
                     <Route exact path="/restaurants_speciality/:id" element={<RestaurantBySpeciality/>}/>
                     )}
-                <Route path="/restaurants" element={<CltRest/>}/>
-                <Route path="/home/restaurants" element={<CltRest/>}/>
-                <Route path="/cart" element={<Cart/>}/>
-                <Route path="/orders" element={<ClientOrders/>}/>
-                <Route path="/reservation" element={<Reservation/>}/>
-                <Route path="/profile" element={<Profile/>}/>
-                <Route path="/all_products" element={<AllProducts/>}/>
-                <Route exact path="/restaurants/:id" element={<RestaurantDetails/>}/>
-                <Route exact path="/home/restaurants_speciality/:id" element={<RestaurantBySpeciality/>}/>
-                <Route exact path="/home/restaurants/:id" element={<RestaurantDetails/>}/>
-                <Route exact path="/home/product/:id" element={<RestaurantProductDetail/>}/>
-                <Route exact path="/home/restaurants/:id/product/:id" element={<RestaurantProductDetail/>}/>
-                <Route exact path="/all_products/product/:id" element={<RestaurantProductDetail/>}/>
+
+
+                {accountService.isLogged && accountService.getRole() === 'USER' && (
+                    userRoutes
+                )}
+                {accountService.isLogged && accountService.getRole() === 'EMPLOYEE' && (
+                    employeRoutes
+                )}
             </Route>
         </Routes>
             <Footer/>
