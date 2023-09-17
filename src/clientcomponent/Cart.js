@@ -21,6 +21,9 @@ import Switch from '@mui/material/Switch';
 import Typography from "@mui/material/Typography";
 import CartSkeleton from "../skeleton/CartSkeleton";
 import {Divider} from "primereact/divider";
+import Chip from '@mui/material/Chip';
+import Avatar from '@mui/material/Avatar';
+
 
 
 export default function Cart() {
@@ -350,6 +353,8 @@ export default function Cart() {
                         </div>
                     </div>
                 </div>
+                <Divider />
+
             </div>
         );
     };
@@ -358,23 +363,42 @@ export default function Cart() {
         const groupedProducts = {};
         cartProducts.forEach((product) => {
             const restaurantName = product.produit.restaurant.nom;
+            const restaurantPhoto = product.produit.restaurant.photo;
             if (!groupedProducts[restaurantName]) {
-                groupedProducts[restaurantName] = [];
+                groupedProducts[restaurantName] = {
+                    photo: restaurantPhoto,
+                    products: [],
+                };
             }
-            groupedProducts[restaurantName].push(product);
+            groupedProducts[restaurantName].products.push(product);
         });
         return groupedProducts;
     };
 
+
     const renderRestaurantCards = () => {
         const groupedProducts = groupProductsByRestaurant();
         return Object.keys(groupedProducts).map((restaurantName) => (
-            <div key={restaurantName}>
-                <h2>{restaurantName}</h2>
-                {groupedProducts[restaurantName].map((product) => itemTemplate(product))}
+            <div key={restaurantName} className="card m-1">
+                <div className="restaurant-header text-left">
+                    <Divider align="left">
+                        <div className="inline-flex align-items-center -mt-3">
+                            <Chip
+                                avatar={<Avatar alt={restaurantName} src={groupedProducts[restaurantName].photo} />}
+                                label={restaurantName}
+                                variant="outlined"
+                                size="medium"
+                            />
+                        </div>
+                    </Divider>
+
+                </div>
+                {groupedProducts[restaurantName].products.map((product) => itemTemplate(product))}
             </div>
         ));
     };
+
+
     /**************************************************User info **************************** **/
 
 
