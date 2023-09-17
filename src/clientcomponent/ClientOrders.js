@@ -101,6 +101,20 @@ export default function ClientOrders() {
         return grouped;
     };
 
+    const groupOrdersByRestaurant = () => {
+        const grouped = {};
+
+        for (const order of orders) {
+            const restaurantName = order.produit.restaurant.nom;
+            if (!grouped[restaurantName]) {
+                grouped[restaurantName] = [];
+            }
+            grouped[restaurantName].push(order);
+        }
+
+        return grouped;
+    };
+
 
     const hideDialog = () => {
         setCommentDialog(false);
@@ -306,6 +320,10 @@ export default function ClientOrders() {
     const onPageChange = (event) => {
         setPage(event.page);
     };
+
+    if (loading || orders.length === 0) {
+        return (<ClientOrdersSkeleton/>);
+    }
 
 
     function renderOrderDetails(group, statusFilter, updateStatus) {
@@ -565,12 +583,6 @@ export default function ClientOrders() {
         );
     }
 
-    if (loading || orders.length === 0) {
-        return (<ClientOrdersSkeleton/>);
-    }
-
-
-
 
     return (
         <>
@@ -622,7 +634,17 @@ export default function ClientOrders() {
                                                         <Grid item container spacing={1} columns={12}>
                                                             <Grid item xs={12} md={8}>
                                                                 <div className="card t">
-                                                                    {group.orders.map((order, orderIndex) => (
+                                                                    {Object.entries(group.orders.reduce((acc, order) => {
+                                                                        const restaurantName = order.produit.restaurant.nom;
+                                                                        if (!acc[restaurantName]) {
+                                                                            acc[restaurantName] = [];
+                                                                        }
+                                                                        acc[restaurantName].push(order);
+                                                                        return acc;
+                                                                    }, {})).map(([restaurantName, restaurantOrders]) => (
+                                                                        <div key={restaurantName} className="restaurant-orders card">
+                                                                            <h6>{restaurantName}</h6>
+                                                                            {restaurantOrders.map((order, orderIndex) => (
                                                                         <Box sx={{mt: -1}} key={order.id}
                                                                              className="col-12  xl:justify-content-center">
                                                                             {orderIndex > 0 &&
@@ -688,10 +710,14 @@ export default function ClientOrders() {
                                                                                     <span
                                                                                         className="text-1xl font-monospace">Total Price :{order.totalPrice} Dh</span>
                                                                                 </div>
-                                                                            </div>
-                                                                        </Box>
+                                                                                </div>
+                                                                                </Box>
+                                                                                ))}
+
+                                                                        </div>
                                                                     ))}
                                                                 </div>
+
                                                             </Grid>
 
                                                             <Grid item xs={12} md={4}>
