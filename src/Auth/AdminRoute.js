@@ -24,7 +24,8 @@ import AllProducts from "../clientcomponent/AllProducts"
 import RestaurantBySpeciality from "../clientcomponent/RestaurantSpeciality";
 import RestaurantProductDetail from "../clientcomponent/RestaurantProductDetails";
 import AdminDash from "../components/Dashboard";
-import OwnerDash from "../OwnersComponent/Dashboard"
+import OwnerDash from "../OwnersComponent/Dashboard";
+import OwnerHeader from "../OwnersComponent/Header"
 const userRoutes = (
     <>
         <Route index element={<Home/>}/>
@@ -72,6 +73,9 @@ const AdminRoute = () => {
                 )}
             {accountService.isLogged && accountService.getRole() === 'USER' && (
                 <ClientHeader/>
+                )}
+            {accountService.isLogged && accountService.getRole() === 'EMPLOYEE' && (
+                <OwnerHeader/>
                 )}
         <Routes>
             <Route>
