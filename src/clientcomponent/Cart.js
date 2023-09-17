@@ -241,24 +241,84 @@ export default function Cart() {
         );
     }
 
+    // const itemTemplate = (product) => {
+    //     return (
+    //         <div key={product.id} className="flex col-12 flex-wrap p-2 align-items-center gap-3">
+    //             <img className="w-4rem shadow-2 flex-shrink-0 border-round"
+    //                  src={product.produit.photo} alt={product.produit.nom} />
+    //             <div className="flex-1 flex flex-column gap-1 xl:mr-1">
+    //                 <div className="flex justify-content-between">
+    //                      <span className="font-bold text-left">{product.produit.nom}
+    //                 </span>
+    //                     <span className="font-bold mr-2">
+    //                         <Tag style={{fontSize:"10px"}}  value={`In Stock :${product.produit.stock} Pcs`}/>
+    //                 </span>
+    //                 </div>
+    //                 <div className="flex align-items-center sm:col-12  md:col-12 xl:col-12 justify-content-sm-center justify-content-between ">
+    //                     <div>
+    //                         <Tag style={{fontSize:"10px",float:"left",backgroundColor:"rgba(224,200,200,0.21)",color:"black"}}  value={`Price :${product.totalprice} Dh`}/><br/>
+    //                         <Tag style={{fontSize:"10px",float:"left"}} severity="success"  className="mr-1" value={`Total :`}/>{product.totalprice * (productQuantities[product.id] || 1)}Dh<br/>
+    //                         {/*<PriceCheckIcon style={{float:"left"}}/> {product.totalprice * (productQuantities[product.id] || 1)}Dh*/}
+    //                     </div>
+    //
+    //                     <div>
+    //                         <TextField
+    //                             className="text-right "
+    //                             type="number"
+    //                             value={productQuantities[product.id] || product.quantity}
+    //                             onChange={(e) => {
+    //                                 const newQuantity = parseInt(e.target.value, 10);
+    //                                 if (newQuantity >= 0 && newQuantity <= product.produit.stock) {
+    //                                     updateQuantity(product.id, newQuantity);
+    //                                 }
+    //                             }}
+    //                             InputProps={{
+    //                                 inputProps: { min: 1, max: product.produit.stock },
+    //                                 startAdornment: (
+    //                                     <InputAdornment position="start">
+    //                                         <IconButton
+    //                                             onClick={() => deleteProduct(product.id)}
+    //                                             color="error"
+    //                                             size="small"
+    //                                         >
+    //                                             <DeleteIcon  />
+    //                                         </IconButton>
+    //                                     </InputAdornment>
+    //                                 ),
+    //                             }}
+    //                         />
+    //
+    //                     </div>
+    //                 </div>
+    //             </div>
+    //         </div>
+    //     );
+    // };
+
+
     const itemTemplate = (product) => {
         return (
             <div key={product.id} className="flex col-12 flex-wrap p-2 align-items-center gap-3">
-                <img className="w-4rem shadow-2 flex-shrink-0 border-round"
-                     src={product.produit.photo} alt={product.produit.nom} />
+                <img
+                    className="w-4rem shadow-2 flex-shrink-0 border-round"
+                    src={product.produit.photo}
+                    alt={product.produit.nom}
+                />
                 <div className="flex-1 flex flex-column gap-1 xl:mr-1">
                     <div className="flex justify-content-between">
-                         <span className="font-bold text-left">{product.produit.nom}
-                    </span>
+                        <span className="font-bold text-left">{product.produit.nom}</span>
                         <span className="font-bold mr-2">
-                            <Tag style={{fontSize:"10px"}}  value={`In Stock :${product.produit.stock} Pcs`}/>
-                    </span>
+            <Tag style={{ fontSize: "10px" }} value={`In Stock :${product.produit.stock} Pcs`} />
+          </span>
                     </div>
                     <div className="flex align-items-center sm:col-12  md:col-12 xl:col-12 justify-content-sm-center justify-content-between ">
                         <div>
-                            <Tag style={{fontSize:"10px",float:"left",backgroundColor:"rgba(224,200,200,0.21)",color:"black"}}  value={`Price :${product.totalprice} Dh`}/><br/>
-                            <Tag style={{fontSize:"10px",float:"left"}} severity="success"  className="mr-1" value={`Total :`}/>{product.totalprice * (productQuantities[product.id] || 1)}Dh<br/>
-                            {/*<PriceCheckIcon style={{float:"left"}}/> {product.totalprice * (productQuantities[product.id] || 1)}Dh*/}
+                            <Tag
+                                style={{ fontSize: "10px", float: "left", backgroundColor: "rgba(224,200,200,0.21)", color: "black" }}
+                                value={`Price :${product.totalprice} Dh`}
+                            /><br />
+                            <Tag style={{ fontSize: "10px", float: "left" }} severity="success" className="mr-1" value={`Total :`} />
+                            {product.totalprice * (productQuantities[product.id] || 1)}Dh<br />
                         </div>
 
                         <div>
@@ -281,13 +341,12 @@ export default function Cart() {
                                                 color="error"
                                                 size="small"
                                             >
-                                                <DeleteIcon  />
+                                                <DeleteIcon />
                                             </IconButton>
                                         </InputAdornment>
                                     ),
                                 }}
                             />
-
                         </div>
                     </div>
                 </div>
@@ -295,6 +354,27 @@ export default function Cart() {
         );
     };
 
+    const groupProductsByRestaurant = () => {
+        const groupedProducts = {};
+        cartProducts.forEach((product) => {
+            const restaurantName = product.produit.restaurant.nom;
+            if (!groupedProducts[restaurantName]) {
+                groupedProducts[restaurantName] = [];
+            }
+            groupedProducts[restaurantName].push(product);
+        });
+        return groupedProducts;
+    };
+
+    const renderRestaurantCards = () => {
+        const groupedProducts = groupProductsByRestaurant();
+        return Object.keys(groupedProducts).map((restaurantName) => (
+            <div key={restaurantName}>
+                <h2>{restaurantName}</h2>
+                {groupedProducts[restaurantName].map((product) => itemTemplate(product))}
+            </div>
+        ));
+    };
     /**************************************************User info **************************** **/
 
 
@@ -337,12 +417,16 @@ export default function Cart() {
             <Box sx={{mx:3,mt:3}}>
                 <Grid item container spacing={1}  columns={12} >
                     <Grid item xs={12} md={7}  >
-                        <div className="card">
-                            <DataView value={cartProducts} itemTemplate={itemTemplate}   header="Cart" />
+                        <div className="card " style={{width:"100%",height:"40px",backgroundColor:"rgb(23,113,122)",borderBottomRightRadius:"0px",borderBottomLeftRadius:"0px"}}></div>
+                        <div className="card" style={{backgroundColor:"rgba(23,113,122,0.04)",borderTopRightRadius:"0px",borderTopLeftRadius:"0px"}}>
+                            {/*<DataView value={cartProducts} itemTemplate={itemTemplate}   header="Cart" />*/}
+                            {renderRestaurantCards()}
+
                         </div>
                     </Grid>
                     <Grid item xs={12} md={5}   >
-                        <div className="card ">
+                        <div className="card " style={{width:"100%",height:"40px",backgroundColor:"rgb(23,113,122)",borderBottomRightRadius:"0px",borderBottomLeftRadius:"0px"}}></div>
+                        <div className="card" style={{backgroundColor:"rgba(23,113,122,0.04)",borderTopRightRadius:"0px",borderTopLeftRadius:"0px"}}>
                         {cartProducts.length === 0 ? (
                                 <Skeleton width="100%" height="233px"  />
 
