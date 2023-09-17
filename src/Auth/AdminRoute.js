@@ -39,6 +39,7 @@ const userRoutes = (
         <Route path="/all_products" element={<AllProducts/>}/>
         <Route exact path="/restaurants/:id" element={<RestaurantDetails/>}/>
         <Route exact path="/restaurants_speciality/:id" element={<RestaurantBySpeciality/>}/>
+        <Route exact path="/restaurants_speciality/:id/:id" element={<RestaurantDetails/>}/>
         <Route exact path="/restaurants/:id" element={<RestaurantDetails/>}/>
         <Route exact path="/product/:id" element={<RestaurantProductDetail/>}/>
         <Route exact path="/restaurants/:id/product/:id" element={<RestaurantProductDetail/>}/>
