@@ -307,12 +307,12 @@ export default function Cart() {
                     src={product.produit.photo}
                     alt={product.produit.nom}
                 />
-                <div className="flex-1 flex flex-column gap-1 xl:mr-1">
+                <div className="flex-1 flex flex-column -mb-2 xl:mr-1">
                     <div className="flex justify-content-between">
-                        <span className="font-bold text-left">{product.produit.nom}</span>
+                        <span className="font-bold text-left ml-2 ">{product.produit.nom}</span>
                         <span className="font-bold mr-2">
-            <Tag style={{ fontSize: "10px" }} value={`In Stock :${product.produit.stock} Pcs`} />
-          </span>
+                            <Tag style={{ fontSize: "10px" }} value={`In Stock :${product.produit.stock} Pcs`} />
+                        </span>
                     </div>
                     <div className="flex align-items-center sm:col-12  md:col-12 xl:col-12 justify-content-sm-center justify-content-between ">
                         <div>
@@ -320,12 +320,14 @@ export default function Cart() {
                                 style={{ fontSize: "10px", float: "left", backgroundColor: "rgba(224,200,200,0.21)", color: "black" }}
                                 value={`Price :${product.totalprice} Dh`}
                             /><br />
+                            <Typography variant="body2" color="text.secondary" style={{fontSize:"12px",float: "left"}} className="ml-1">{product.produit.description}</Typography><br/>
                             <Tag style={{ fontSize: "10px", float: "left" }} severity="success" className="mr-1" value={`Total :`} />
-                            {product.totalprice * (productQuantities[product.id] || 1)}Dh<br />
+                            {product.totalprice * (productQuantities[product.id] || 1)} Dh<br/>
                         </div>
 
                         <div>
                             <TextField
+                                sx={{width:100}}
                                 className="text-right "
                                 type="number"
                                 value={productQuantities[product.id] || product.quantity}
@@ -353,7 +355,7 @@ export default function Cart() {
                         </div>
                     </div>
                 </div>
-                <Divider />
+                <Divider className="-mt-3 -mb-3"/>
 
             </div>
         );
@@ -381,8 +383,8 @@ export default function Cart() {
         return Object.keys(groupedProducts).map((restaurantName) => (
             <div key={restaurantName} className="card m-1">
                 <div className="restaurant-header text-left">
-                    <Divider align="left">
-                        <div className="inline-flex align-items-center -mt-3">
+                    <Divider align="left" className="-mb-2">
+                        <div className="inline-flex align-items-center -mt-3 ">
                             <Chip
                                 avatar={<Avatar alt={restaurantName} src={groupedProducts[restaurantName].photo} />}
                                 label={restaurantName}
