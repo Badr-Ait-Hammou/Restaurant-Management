@@ -46,18 +46,18 @@
 }
  /**********************************/
  .template .p-button.add {
-    background: linear-gradient(to left, var(--green-200) 50%, var(--green-300) 50%);
+    background: linear-gradient(to left, var(--green-400) 50%, var(--green-500) 50%);
     background-size: 200% 100%;
     background-position: right bottom;
     transition: background-position 0.5s ease-out;
     color: #f6f4f4;
-    border-color: var(--green-300);
+    border-color: var(--green-500);
 }
  .template .p-button.add:hover {
     background-position: left bottom;
 }
  .template .p-button.add i {
-    background-color: var(--green-300);
+    background-color: var(--green-500);
 }
  .template .p-button.add:focus {
     box-shadow: 0 0 0 1px var(--green-400);

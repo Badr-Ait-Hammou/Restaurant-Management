@@ -1,20 +1,13 @@
 import { Toast } from 'primereact/toast';
 import { Button } from 'primereact/button';
 import"../styles/login.css"
-import TextField from '@mui/material/TextField';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import { InputText } from 'primereact/inputtext';
 import axios from '../service/callerService';
 import React,{useState,useEffect,useReducer} from "react";
 import ProduitTable from "../components/ProduitTable";
 import { Card, CardContent } from '@mui/material';
-import Checkbox from "@mui/material/Checkbox";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import Modal from "react-modal";
 import {useRef} from "react";
-import RestaurantTable from "./RestaurantTable";
 
 
 
@@ -45,7 +38,7 @@ export default function Produit() {
 
 
     const handleSubmit = (event) => {
-        console.log("jsjkjksjkjkqsdjks",photo);
+        console.log(photo);
 
         event.preventDefault();
         axios.post("/api/controller/produits/save", {
@@ -53,8 +46,8 @@ export default function Produit() {
             description,
             photo,
             stock,
-           // promotion,
-            promotion: promotion ? true : false,
+            //promotion: promotion ? true : false,
+            promotion: promotion,
             prix,
             restaurant: {
                 id: restaurantid
@@ -190,7 +183,6 @@ export default function Produit() {
                                             type="file"
                                             className="form-control"
                                             id="user-password"
-                                            type="file"
                                             accept="image/*"
                                             onChange={handlePhotoChange}
                                             required

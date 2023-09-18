@@ -5,9 +5,6 @@ import Modal from "react-modal";
 import 'bootstrap/dist/css/bootstrap.css';
 import ReactPaginate from 'react-paginate';
 import { InputText } from 'primereact/inputtext';
-import { TriStateCheckbox } from 'primereact/tristatecheckbox';
-
-import moment from "moment";
 import {Button} from "primereact/button";
 import {ConfirmDialog, confirmDialog} from "primereact/confirmdialog";
 import {Toast} from "primereact/toast";
