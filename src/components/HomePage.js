@@ -268,7 +268,7 @@ export default function HomePage() {
 
 
                     <Grid item xs={6} className="mt-2 mb-2">
-                        <Box display="flex" justifyContent="end" alignItems="center">
+                        <Box className="template" display="flex" justifyContent="end" alignItems="center">
                             <Tag className="mx-1" icon={<PhoneRoundedIcon/>} severity="success"
                                  value="+212 0666995588"/>
                         </Box>

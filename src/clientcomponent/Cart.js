@@ -440,12 +440,16 @@ export default function Cart() {
                                 <Divider type={"solid"} className="mx-2 -mt-1 -mb-1"/>
 
                                 <div className="col-12">
-                                    <div className="text-center p-1 border-round-sm  font-bold ">
-                                        <Button
-                                            label="Proceed to Pay" outlined
-                                                disabled={isProceedToPayDisabled}
-                                                severity="info" onClick={opendialog}
-                                        />
+                                    <div className=" template text-center p-1 border-round-sm  font-bold ">
+                                        {/*<Button*/}
+                                        {/*    label="Proceed to Pay" outlined*/}
+                                        {/*        disabled={isProceedToPayDisabled}*/}
+                                        {/*        severity="info" onClick={opendialog}*/}
+                                        {/*/>*/}
+                                        <Button className="pay p-0" aria-label="Slack" disabled={isProceedToPayDisabled} onClick={opendialog}>
+                                            <i className="pi pi-money-bill px-2"></i>
+                                            <span className="px-3">Proceed to Pay</span>
+                                        </Button>
                                     </div>
                                 </div>
                             </div>

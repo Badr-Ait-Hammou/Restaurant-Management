@@ -134,21 +134,21 @@
  .template .p-button.amazon:focus {
     box-shadow: 0 0 0 1px var(--yellow-200);
 }
- .template .p-button.discord {
-    background: linear-gradient(to left, var(--bluegray-700) 50%, var(--bluegray-800) 50%);
+ .template .p-button.pay {
+    background: linear-gradient(to left, #17717a 50%, #075862 50%);
     background-size: 200% 100%;
     background-position: right bottom;
     transition: background-position 0.5s ease-out;
     color: #fff;
     border-color: var(--bluegray-800);
 }
- .template .p-button.discord:hover {
+ .template .p-button.pay:hover {
     background-position: left bottom;
 }
- .template .p-button.discord i {
-    background-color: var(--bluegray-800);
+ .template .p-button.pay i {
+    background-color: #075862;
 }
- .template .p-button.discord:focus {
+ .template .p-button.pay:focus {
     box-shadow: 0 0 0 1px var(--bluegray-500);
 }
 @media screen and (max-width: 960px) {
