@@ -11,7 +11,7 @@ import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import 'primeicons/primeicons.css';
 import {ConfirmDialog, confirmDialog} from "primereact/confirmdialog";
-import {Avatar, Grid} from "@mui/material";
+import { Grid} from "@mui/material";
 import {Box} from "@mui/system";
 import { Dropdown } from 'primereact/dropdown';
 import axios from '../service/callerService';
@@ -271,7 +271,6 @@ export default function Zones() {
 
     return (
         <>
-
             <MainCard sx={{ margin: '20px' }}>
                 <Toast ref={toast} />
                 <ConfirmDialog />
@@ -279,7 +278,7 @@ export default function Zones() {
                 <div className="card">
                     <Toolbar className="mb-4" start={leftToolbarTemplate} center={centerToolbarTemplate} end={rightToolbarTemplate}></Toolbar>
                     {dataTableLoaded ? (
-                        <DataTable ref={dt} value={zone}
+                        <DataTable ref={dt} value={zone} size="small"
                                    dataKey="id"  paginator rows={10} rowsPerPageOptions={[5, 10, 25]}
                                    paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} Series" globalFilter={globalFilter} header={header}>

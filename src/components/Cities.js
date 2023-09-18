@@ -260,10 +260,10 @@ export default function Cities() {
                 <Toast ref={toast} />
                 <ConfirmDialog />
 
-                <div className="card">
+                <div className="card " >
                     <Toolbar className="mb-4" start={leftToolbarTemplate} center={centerToolbarTemplate} end={rightToolbarTemplate}></Toolbar>
                     {dataTableLoaded ? (
-                        <DataTable ref={dt} value={city}
+                        <DataTable ref={dt} value={city} size="small"
                                    dataKey="id"  paginator rows={10} rowsPerPageOptions={[5, 10, 25]}
                                    paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} Cities" globalFilter={globalFilter} header={header}>
