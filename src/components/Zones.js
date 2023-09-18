@@ -215,7 +215,7 @@ export default function Zones() {
     };
     const centerToolbarTemplate = () => {
         return <div className="flex flex-wrap gap-2 align-items-center justify-content-between ">
-            <h4 className="m-0 font-bold ">Manage Zones</h4>
+            <h4 className="m-0 font-monospace">Manage Zones</h4>
         </div>;
     };
 
