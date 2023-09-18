@@ -213,16 +213,27 @@ export default function Specialities() {
     /******************************************** components *************************/
 
 
+
     const leftToolbarTemplate = () => {
         return (
-            <div className="flex flex-wrap gap-2">
-                <Button   label="New" icon="pi pi-plus" severity="success" onClick={openNew} />
+            <div className="template flex flex-wrap gap-2">
+                <Button className="add p-0"   onClick={openNew}>
+                    <i className="pi pi-plus px-2"></i>
+                    <span className="px-3  font-bold text-white">Add</span>
+                </Button>
             </div>
         );
     };
 
     const rightToolbarTemplate = () => {
-        return <Button label="Export" icon="pi pi-upload" className="p-button-help" onClick={exportCSV} />;
+        return(
+            <div className="template ">
+                <Button className="export p-0"   onClick={exportCSV}>
+                    <i className="pi pi-upload px-2"></i>
+                    <span className="px-3  font-bold text-white">Export</span>
+                </Button>
+            </div>
+        );
     };
     const centerToolbarTemplate = () => {
         return <div className="flex flex-wrap gap-2 align-items-center justify-content-between">
@@ -236,8 +247,16 @@ export default function Specialities() {
     const actionBodyTemplate = (rowData) => {
         return (
             <React.Fragment>
-                <Button icon="pi pi-pencil" rounded outlined style={{marginRight:"4px"}} onClick={() => handleupdate(rowData)} />
-                <Button icon="pi pi-trash" rounded outlined severity="danger" onClick={() => handleDelete(rowData.id)} />
+                <div className="template">
+                    <Button className="cancel p-0" aria-label="Slack" onClick={() => handleDelete(rowData.id)}>
+                        <i className="pi pi-trash px-2"></i>
+                        <span className="px-3">Delete</span>
+                    </Button>
+                    <Button className="edit p-0" aria-label="Slack" onClick={() => handleupdate(rowData)}>
+                        <i className="pi pi-pencil px-2"></i>
+                        <span className="px-3">Update</span>
+                    </Button>
+                </div>
             </React.Fragment>
         );
     };
@@ -257,17 +276,31 @@ export default function Specialities() {
 
     const specialityDialogFooter = (
         <React.Fragment>
-            <Button label="Cancel" icon="pi pi-times" outlined onClick={hideDialog} />
-            <Button  label="save"
-                     severity="success"
-                     raised onClick={(e) => handleSubmit(e)}/>
+            <div className="template">
+                <Button className="cancel p-0" aria-label="Slack" onClick={hideDialog}>
+                    <i className="pi pi-times px-2"></i>
+                    <span className="px-3">Cancel</span>
+                </Button>
+                <Button className="edit p-0" aria-label="Slack" onClick={(e) => handleSubmit(e)}>
+                    <i className="pi pi-check px-2"></i>
+                    <span className="px-3">Create</span>
+                </Button>
+            </div>
         </React.Fragment>
     );
 
     const editimageDialogFooter = (
         <React.Fragment>
-            <Button label="Cancel" icon="pi pi-times" outlined onClick={hideeditDialog} />
-            <Button label="Update" severity="info"  raised onClick={() => handleEdit(selectedSerie)} />
+            <div className="template">
+                <Button className="cancel p-0" aria-label="Slack" onClick={hideeditDialog}>
+                    <i className="pi pi-times px-2"></i>
+                    <span className="px-3">Cancel</span>
+                </Button>
+                <Button className="edit p-0" aria-label="Slack" onClick={() => handleEdit(selectedSerie)}>
+                    <i className="pi pi-pencil px-2"></i>
+                    <span className="px-3">Update</span>
+                </Button>
+            </div>
         </React.Fragment>
     );
 
