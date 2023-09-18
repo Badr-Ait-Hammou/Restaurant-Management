@@ -9,7 +9,7 @@
  .template .p-button i {
     line-height: 2.50rem;
 }
- .template .p-button.google {
+ .template .p-button.next {
     background: linear-gradient(to left, var(--purple-600) 50%, var(--purple-700) 50%);
     background-size: 200% 100%;
     background-position: right bottom;
@@ -17,13 +17,13 @@
     color: #fff;
     border-color: var(--purple-700);
 }
- .template .p-button.google:hover {
+ .template .p-button.next:hover {
     background-position: left bottom;
 }
- .template .p-button.google i {
+ .template .p-button.next i {
     background-color: var(--purple-700);
 }
- .template .p-button.google:focus {
+ .template .p-button.next:focus {
     box-shadow: 0 0 0 1px var(--purple-400);
 }
  /***************/

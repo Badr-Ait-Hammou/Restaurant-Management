@@ -22,6 +22,8 @@ import CartSkeleton from "../skeleton/CartSkeleton";
 import {Divider} from "primereact/divider";
 import Chip from '@mui/material/Chip';
 import Avatar from '@mui/material/Avatar';
+import { useNavigate } from 'react-router-dom';
+
 
 
 
@@ -37,6 +39,7 @@ export default function Cart() {
     const [adresse, setAdresse] = useState('');
     const [telephone, setTelephone] = useState('');
     const [area, setArea] = useState('');
+    const navigate = useNavigate();
     const [postcode, setpostcode] = useState('');
     const [productQuantities, setProductQuantities] = useState({});
     const toast = useRef(null);
@@ -211,7 +214,6 @@ export default function Cart() {
 
                     updateStockPromises.push(updateStockPromise);
 
-                    // Create a promise to delete the cart item
                     const deleteCartPromise = axios.delete(`/api/controller/carts/${product.id}`);
                     deleteCartPromises.push(deleteCartPromise);
                 });
@@ -222,6 +224,8 @@ export default function Cart() {
                 console.log('All cart items deleted');
                 loadCartProducts();
                 showSuccess();
+                navigate('/ifoulki_meals/orders');
+
             })
             .catch((error) => {
                 console.error('Error saving orders or updating product stocks:', error);
@@ -441,11 +445,6 @@ export default function Cart() {
 
                                 <div className="col-12">
                                     <div className=" template text-center p-1 border-round-sm  font-bold ">
-                                        {/*<Button*/}
-                                        {/*    label="Proceed to Pay" outlined*/}
-                                        {/*        disabled={isProceedToPayDisabled}*/}
-                                        {/*        severity="info" onClick={opendialog}*/}
-                                        {/*/>*/}
                                         <Button className="pay p-0" aria-label="Slack" disabled={isProceedToPayDisabled} onClick={opendialog}>
                                             <i className="pi pi-money-bill px-2"></i>
                                             <span className="px-3">Proceed to Pay</span>
@@ -545,9 +544,17 @@ export default function Cart() {
                             </Grid>
 
                             <Grid container justifyContent="center">
-                                <Grid item xs={12} textAlign="end" mt={1}>
-                                    <Button label="Update" className="mx-1" severity="info" raised onClick={handleUpdate} />
-                                    <Button label="Next"  onClick={handleNext} />
+                                <Grid item xs={12} textAlign="end" mt={1} className="template">
+                                    {/*<Button label="Update" className="mx-1" severity="info" raised onClick={handleUpdate} />*/}
+                                    {/*<Button label="Next"  onClick={handleNext} />*/}
+                                    <Button className="edit p-0" aria-label="Slack"  onClick={handleUpdate}>
+                                        <i className="pi pi-pencil px-2"></i>
+                                        <span className="px-3">Update</span>
+                                    </Button>
+                                    <Button className="next p-0" aria-label="Slack"  onClick={handleNext}>
+                                        <i className="pi pi-angle-double-right px-2"></i>
+                                        <span className="px-3">Next</span>
+                                    </Button>
 
                                 </Grid>
                             </Grid>
@@ -581,9 +588,18 @@ export default function Cart() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="text-right mt-4 ">
-                                <Button label="Back" className="mx-1" onClick={handleBack} />
-                                <Button label="Next" onClick={handleNext} />
+                            <div className="template text-right mt-4 ">
+                                {/*<Button label="Back" className="mx-1" onClick={handleBack} />*/}
+                                {/*<Button label="Next" onClick={handleNext} />*/}
+
+                                <Button className="export p-0" aria-label="Slack" onClick={handleBack}>
+                                    <i className="pi pi-angle-double-left px-2"></i>
+                                    <span className="px-3">Back</span>
+                                </Button>
+                                <Button className="next p-0" aria-label="Slack"  onClick={handleNext}>
+                                    <i className="pi pi-angle-double-right px-2"></i>
+                                    <span className="px-3">Next</span>
+                                </Button>
                             </div>
                         </>
                     )}
@@ -601,11 +617,17 @@ export default function Cart() {
                                     <p><strong>Delivery Method </strong>: {isCashOnDelivery ? 'Cash on Delivery' : 'Online Payment'}</p>
                                 </Grid>
                             </Grid>
-                            <div>
+                            <div className="template">
                                 <p><strong>Address </strong>:{user.adresse}</p>
-                                <Button label="Confirm Payment" style={{float:"right"}} onClick={handleConfirmPayment} />
-                                <Button className="mx-2" label="Back" style={{float:"right"}} onClick={handleBack} />
-
+                                {/*<Button label="Confirm Payment" style={{float:"right"}} onClick={handleConfirmPayment} />*/}
+                                <Button className="pay p-0" aria-label="Slack" style={{float:"right"}} onClick={handleConfirmPayment}>
+                                    <i className="pi pi-money-bill px-2"></i>
+                                    <span className="px-3">Confirm Payment</span>
+                                </Button>
+                                <Button className="export p-0" aria-label="Slack" style={{float:"right"}} onClick={handleBack}>
+                                    <i className="pi pi-angle-double-left px-2"></i>
+                                    <span className="px-3">Back</span>
+                                </Button>
                             </div>
                         </>
                     )}
