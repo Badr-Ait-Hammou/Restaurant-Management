@@ -20,7 +20,6 @@ import SkeletonPr from "../skeleton/ProfileSkeleton"
 
 
 
-
 export default function Cities() {
 
     const [productDialog, setSerieDialog] = useState(false);
@@ -220,7 +219,7 @@ export default function Cities() {
       <i className="pi pi-search" />
       <InputText
           type="search"
-          value={globalFilter}
+          value={globalFilter || ''}
           onChange={(e) => setGlobalFilter(e.target.value)}
           placeholder="Search..."
       />

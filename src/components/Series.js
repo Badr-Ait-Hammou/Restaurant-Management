@@ -246,7 +246,7 @@ export default function Series() {
       <i className="pi pi-search" />
       <InputText
           type="search"
-          value={globalFilter}
+          value={globalFilter || ''}
           onChange={(e) => setGlobalFilter(e.target.value)}
           placeholder="Search..."
       />

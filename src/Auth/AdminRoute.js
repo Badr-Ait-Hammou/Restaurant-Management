@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom"
 import Home from '../components/HomePage';
 import Ville from '../components/Cities';
 import Restaurant from '../components/Restaurant';
-import Zone from '../components/Zone';
+import Zone from '../components/Zones';
 import Serie from '../components/Series';
 import Specilite from '../components/Specialities';
 import User from '../components/UserTable';
