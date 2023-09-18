@@ -7,7 +7,6 @@ import axios from '../service/callerService';
 import React,{useState,useEffect,useReducer} from "react";
 import RestaurantTable from "../components/RestaurantTable";
 import { Card, CardContent } from '@mui/material';
-import ZoneTable from "./ZoneTable";
 import Modal from "react-modal";
 import {useRef} from "react";
 

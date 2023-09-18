@@ -14,7 +14,6 @@ import {ConfirmDialog, confirmDialog} from "primereact/confirmdialog";
 import { Grid} from "@mui/material";
 import {Box} from "@mui/system";
 import axios from '../service/callerService';
-import MainCard from "../ui-component/MainCard";
 import SkeletonPr from "../skeleton/ProfileSkeleton"
 
 
@@ -256,12 +255,12 @@ export default function Cities() {
     return (
         <>
 
-            <MainCard sx={{ margin: '20px' }}>
+            <div className="card p-1 mt-5 mx-2">
                 <Toast ref={toast} />
                 <ConfirmDialog />
 
                 <div className="card " >
-                    <Toolbar className="mb-4" start={leftToolbarTemplate} center={centerToolbarTemplate} end={rightToolbarTemplate}></Toolbar>
+                    <Toolbar className="mb-2 p-1" start={leftToolbarTemplate} center={centerToolbarTemplate} end={rightToolbarTemplate}></Toolbar>
                     {dataTableLoaded ? (
                         <DataTable ref={dt} value={city} size="small"
                                    dataKey="id"  paginator rows={10} rowsPerPageOptions={[5, 10, 25]}
@@ -275,7 +274,7 @@ export default function Cities() {
                         <SkeletonPr/>
                     )}
                 </div>
-            </MainCard>
+            </div>
 
             <Dialog visible={productDialog} style={{ width: '40rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} header="Add Serie" modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>
                 <Grid container spacing={2}>
