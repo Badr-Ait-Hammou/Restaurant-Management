@@ -25,7 +25,7 @@ export default function Register() {
     const [email, setEmail] = useState("");
     const [telephone, settel] = useState("");
     const [adresse, setAdresse] = useState("");
-    const [error, setError] = useState('');
+    const [ setError] = useState('');
 
     const handleRegistration = (event) => {
         event.preventDefault();
@@ -37,7 +37,7 @@ export default function Register() {
             lastname:lastname,
             telephone:telephone,
             adresse:adresse,
-            role: 'EMPLOYEE',
+            role: 'USER',
             email: email
         }).then(response => {
             window.location = '/';

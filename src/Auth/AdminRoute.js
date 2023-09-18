@@ -1,7 +1,7 @@
 import React from 'react';
 import { Routes, Route } from "react-router-dom"
 import Home from '../components/HomePage';
-import Ville from '../components/Ville';
+import Ville from '../components/Cities';
 import Restaurant from '../components/Restaurant';
 import Zone from '../components/Zone';
 import Serie from '../components/Series';
