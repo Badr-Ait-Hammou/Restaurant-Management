@@ -1,5 +1,5 @@
-
-import React, {useState, useRef, useEffect} from 'react';
+import React, { Component } from 'react';
+import {useState, useRef, useEffect} from 'react';
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
 import { DataTable } from 'primereact/datatable';
@@ -17,12 +17,16 @@ import { FileUpload } from 'primereact/fileupload';
 import EmptyImg from "../images/empty.png";
 import axios from '../service/callerService';
 import SkeletonPr from "../skeleton/ProfileSkeleton"
+import "../styles/ButtonDemo.css"
+
+import { Password } from 'primereact/password';
 
 
 
 
 
-export default function Series() {
+
+export default function Series()  {
 
     const [productDialog, setSerieDialog] = useState(false);
     const [editproductDialog, seteditSerieDialog] = useState(false);
@@ -264,8 +268,16 @@ export default function Series() {
     
     const editimageDialogFooter = (
         <React.Fragment>
-            <Button label="Cancel" icon="pi pi-times" outlined onClick={hideeditDialog} />
-            <Button label="Update" severity="info"  raised onClick={() => handleEdit(selectedSerie)} />
+            <div className="template">
+            <Button className="cancel p-0" aria-label="Slack" onClick={hideeditDialog}>
+                <i className="pi pi-times px-2"></i>
+                <span className="px-3">Cancel</span>
+            </Button>
+                <Button className="edit p-0" aria-label="Slack" onClick={() => handleEdit(selectedSerie)}>
+                <i className="pi pi-pencil px-2"></i>
+                <span className="px-3">Update</span>
+            </Button>
+            </div>
         </React.Fragment>
     );
 
@@ -296,8 +308,45 @@ export default function Series() {
 
     return (
         <>
+            <h5>Template</h5>
+            <div className="template">
+                <Button className="google p-0" aria-label="Google">
+                    <i className="pi pi-google px-2"></i>
+                    <span className="px-3">Google</span>
+                </Button>
+                <Button className="youtube p-0" aria-label="Youtube">
+                    <i className="pi pi-youtube px-2"></i>
+                    <span className="px-3">Youtube</span>
+                </Button>
+                <Button className="vimeo p-0" aria-label="Vimeo">
+                    <i className="pi pi-vimeo px-2"></i>
+                    <span className="px-3">Vimeo</span>
+                </Button>
+                <Button className="facebook p-0" aria-label="Facebook">
+                    <i className="pi pi-facebook px-2"></i>
+                    <span className="px-3">Facebook</span>
+                </Button>
+                <Button className="twitter p-0" aria-label="Twitter">
+                    <i className="pi pi-twitter px-2"></i>
+                    <span className="px-3">Twitter</span>
+                </Button>
+                <Button className="slack p-0" aria-label="Slack">
+                    <i className="pi pi-slack px-2"></i>
+                    <span className="px-3">Slack</span>
+                </Button>
+                <Button className="amazon p-0" aria-label="Amazon">
+                    <i className="pi pi-amazon px-2"></i>
+                    <span className="px-3">Amazon</span>
+                </Button>
+                <Button className="discord p-0" aria-label="Discord">
+                    <i className="pi pi-discord px-2"></i>
+                    <span className="px-3">Discord</span>
+                </Button>
+            </div>
 
             <div className="card p-1 mt-5 mx-2">
+                <Password  mediumRegex feedback toggleMask/>
+
                 <Toast ref={toast} />
                 <ConfirmDialog />
 
@@ -326,8 +375,7 @@ export default function Series() {
                             <label htmlFor="nom" className="font-bold">
                                 Name
                             </label>
-                            <InputText style={{marginTop:"5px"}} id="nom" value={nom} onChange={(event) => setNom(event.target.value)} required autoFocus />
-                            {submitted && !serie.nom && <small className="p-error">Name is required.</small>}
+                            <InputText  keyfilter="alpha" style={{marginTop:"5px"}} id="nom" value={nom} onChange={(event) => setNom(event.target.value)} required autoFocus />
                         </Box>
                     </Grid>
                 </Grid>
@@ -364,8 +412,7 @@ export default function Series() {
                             <label htmlFor="nom" className="font-bold">
                                 Name
                             </label>
-                            <InputText style={{marginTop:"5px"}} id="nom" value={nom} onChange={(event) => setNom(event.target.value)} required autoFocus />
-                            {submitted && !serie.nom && <small className="p-error">Name is required.</small>}
+                            <InputText  keyfilter="alpha" style={{marginTop:"5px"}} id="nom" value={nom} onChange={(event) => setNom(event.target.value)} required autoFocus />
                         </Box>
                     </Grid>
                 </Grid>
