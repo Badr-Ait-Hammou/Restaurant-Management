@@ -7,7 +7,7 @@
     margin-right: 0;
 }
  .template .p-button i {
-    line-height: 2.25rem;
+    line-height: 2.50rem;
 }
  .template .p-button.google {
     background: linear-gradient(to left, var(--purple-600) 50%, var(--purple-700) 50%);
@@ -26,7 +26,8 @@
  .template .p-button.google:focus {
     box-shadow: 0 0 0 1px var(--purple-400);
 }
- .template .p-button.youtube {
+ /***************/
+ .template .p-button.export {
     background: linear-gradient(to left, var(--pink-600) 50%, var(--pink-700) 50%);
     background-size: 200% 100%;
     background-position: right bottom;
@@ -34,32 +35,34 @@
     color: #fff;
     border-color: var(--pink-700);
 }
- .template .p-button.youtube:hover {
+ .template .p-button.export:hover {
     background-position: left bottom;
 }
- .template .p-button.youtube i {
+ .template .p-button.export i {
     background-color: var(--pink-700);
 }
- .template .p-button.youtube:focus {
+ .template .p-button.export:focus {
     box-shadow: 0 0 0 1px var(--pink-400);
 }
- .template .p-button.vimeo {
+ /**********************************/
+ .template .p-button.add {
     background: linear-gradient(to left, var(--green-200) 50%, var(--green-300) 50%);
     background-size: 200% 100%;
     background-position: right bottom;
     transition: background-position 0.5s ease-out;
-    color: #000;
+    color: #f6f4f4;
     border-color: var(--green-300);
 }
- .template .p-button.vimeo:hover {
+ .template .p-button.add:hover {
     background-position: left bottom;
 }
- .template .p-button.vimeo i {
+ .template .p-button.add i {
     background-color: var(--green-300);
 }
- .template .p-button.vimeo:focus {
+ .template .p-button.add:focus {
     box-shadow: 0 0 0 1px var(--green-400);
 }
+ /****************************/
  .template .p-button.facebook {
     background: linear-gradient(to left, var(--indigo-600) 50%, var(--indigo-700) 50%);
     background-size: 200% 100%;

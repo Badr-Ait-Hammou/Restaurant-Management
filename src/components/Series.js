@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React  from 'react';
 import {useState, useRef, useEffect} from 'react';
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
@@ -19,7 +19,6 @@ import axios from '../service/callerService';
 import SkeletonPr from "../skeleton/ProfileSkeleton"
 import "../styles/ButtonDemo.css"
 
-import { Password } from 'primereact/password';
 
 
 
@@ -30,7 +29,6 @@ export default function Series()  {
 
     const [productDialog, setSerieDialog] = useState(false);
     const [editproductDialog, seteditSerieDialog] = useState(false);
-    const [submitted, setSubmitted] = useState(false);
     const [globalFilter, setGlobalFilter] = useState(null);
     const toast = useRef(null);
     const dt = useRef(null);
@@ -146,14 +144,12 @@ export default function Series()  {
 
     const openNew = () => {
         setSeries(serie);
-        setSubmitted(false);
         setNom("");
         setPhoto("");
         setSerieDialog(true);
     };
 
     const hideDialog = () => {
-        setSubmitted(false);
         setSerieDialog(false);
         seteditSerieDialog(false);
     };
@@ -217,14 +213,25 @@ export default function Series()  {
 
     const leftToolbarTemplate = () => {
         return (
-            <div className="flex flex-wrap gap-2">
-                <Button   label="New" icon="pi pi-plus" severity="success" onClick={openNew} />
+            <div className="template flex flex-wrap gap-2">
+                {/*<Button   label="New" icon="pi pi-plus" severity="success" onClick={openNew} />*/}
+                <Button className="add p-0"   onClick={openNew}>
+                    <i className="pi pi-plus px-2"></i>
+                    <span className="px-3  font-bold text-white">Add</span>
+                </Button>
             </div>
         );
     };
 
     const rightToolbarTemplate = () => {
-        return <Button label="Export" icon="pi pi-upload" className="p-button-help" onClick={exportCSV} />;
+        return(
+            <div className="template ">
+                <Button className="export p-0"   onClick={exportCSV}>
+                    <i className="pi pi-upload px-2"></i>
+                    <span className="px-3  font-bold text-white">Export</span>
+                </Button>
+            </div>
+        );
     };
     const centerToolbarTemplate = () => {
         return <div className="flex flex-wrap gap-2 align-items-center justify-content-between">
@@ -238,8 +245,16 @@ export default function Series()  {
     const actionBodyTemplate = (rowData) => {
         return (
             <React.Fragment>
-                <Button icon="pi pi-pencil" rounded outlined style={{marginRight:"4px"}} onClick={() => handleupdate(rowData)} />
-                <Button icon="pi pi-trash" rounded outlined severity="danger" onClick={() => handleDelete(rowData.id)} />
+                <div className="template">
+                    <Button className="cancel p-0" aria-label="Slack" onClick={() => handleDelete(rowData.id)}>
+                        <i className="pi pi-trash px-2"></i>
+                        <span className="px-1">Delete</span>
+                    </Button>
+                    <Button className="edit p-0" aria-label="Slack" onClick={() => handleupdate(rowData)}>
+                        <i className="pi pi-pencil px-2"></i>
+                        <span className="px-1">Update</span>
+                    </Button>
+                </div>
             </React.Fragment>
         );
     };
@@ -259,10 +274,16 @@ export default function Series()  {
 
     const productDialogFooter = (
         <React.Fragment>
-            <Button label="Cancel" icon="pi pi-times" outlined onClick={hideDialog} />
-            <Button  label="save"
-                     severity="success"
-                     raised onClick={(e) => handleSubmit(e)}/>
+            <div className="template">
+                <Button className="cancel p-0" aria-label="Slack" onClick={hideDialog}>
+                    <i className="pi pi-times px-2"></i>
+                    <span className="px-3">Cancel</span>
+                </Button>
+                <Button className="edit p-0" aria-label="Slack" onClick={(e) => handleSubmit(e)}>
+                    <i className="pi pi-check px-2"></i>
+                    <span className="px-3">Create</span>
+                </Button>
+            </div>
         </React.Fragment>
     );
     
@@ -297,56 +318,10 @@ export default function Series()  {
         />;
     };
 
-
-
-
-
-
-
-
-
-
     return (
         <>
-            <h5>Template</h5>
-            <div className="template">
-                <Button className="google p-0" aria-label="Google">
-                    <i className="pi pi-google px-2"></i>
-                    <span className="px-3">Google</span>
-                </Button>
-                <Button className="youtube p-0" aria-label="Youtube">
-                    <i className="pi pi-youtube px-2"></i>
-                    <span className="px-3">Youtube</span>
-                </Button>
-                <Button className="vimeo p-0" aria-label="Vimeo">
-                    <i className="pi pi-vimeo px-2"></i>
-                    <span className="px-3">Vimeo</span>
-                </Button>
-                <Button className="facebook p-0" aria-label="Facebook">
-                    <i className="pi pi-facebook px-2"></i>
-                    <span className="px-3">Facebook</span>
-                </Button>
-                <Button className="twitter p-0" aria-label="Twitter">
-                    <i className="pi pi-twitter px-2"></i>
-                    <span className="px-3">Twitter</span>
-                </Button>
-                <Button className="slack p-0" aria-label="Slack">
-                    <i className="pi pi-slack px-2"></i>
-                    <span className="px-3">Slack</span>
-                </Button>
-                <Button className="amazon p-0" aria-label="Amazon">
-                    <i className="pi pi-amazon px-2"></i>
-                    <span className="px-3">Amazon</span>
-                </Button>
-                <Button className="discord p-0" aria-label="Discord">
-                    <i className="pi pi-discord px-2"></i>
-                    <span className="px-3">Discord</span>
-                </Button>
-            </div>
 
             <div className="card p-1 mt-5 mx-2">
-                <Password  mediumRegex feedback toggleMask/>
-
                 <Toast ref={toast} />
                 <ConfirmDialog />
 

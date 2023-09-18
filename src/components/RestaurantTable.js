@@ -4,8 +4,6 @@ import React,{useState,useEffect} from "react";
 import Modal from "react-modal";
 import 'bootstrap/dist/css/bootstrap.css';
 import ReactPaginate from 'react-paginate';
-
-import moment from "moment";
 import {Button} from "primereact/button";
 import {ConfirmDialog, confirmDialog} from "primereact/confirmdialog";
 import {Toast} from "primereact/toast";
@@ -57,13 +55,13 @@ export default function RestaurantTable() {
         });
     }, []);
 
-    useEffect(() => {
-        const fetchusers = async () => {
-            const result = await axios(`/api/controller/users/`);
-            setUsers(result.data);
-        };
-        fetchusers();
-    }, []);
+    // useEffect(() => {
+    //     const fetchusers = async () => {
+    //         const result = await axios(`/api/controller/users/`);
+    //         setUsers(result.data);
+    //     };
+    //     fetchusers();
+    // }, []);
 
     useEffect(() => {
         const fetchzones = async () => {
