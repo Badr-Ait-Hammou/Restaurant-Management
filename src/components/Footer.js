@@ -7,7 +7,7 @@ import "../styles/footer.css"
 
 export default function Footer() {
     return (
-        <div className="footer-dark">
+        <div className="footer-dark" style={{marginTop:"50px",}}>
             <footer>
                 <div className="container">
                     <div className="row">

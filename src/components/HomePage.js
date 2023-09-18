@@ -12,13 +12,14 @@ import {Carousel} from 'primereact/carousel';
 import SkipPreviousRoundedIcon from '@mui/icons-material/SkipPreviousRounded';
 import SkipNextRoundedIcon from '@mui/icons-material/SkipNextRounded';
 import HomPageSkeleton from "../skeleton/HomePageSkeleton";
-import PhoneRoundedIcon from '@mui/icons-material/PhoneRounded';
-import logo from "../images/logo.svg";
-import {Card, CardContent, Avatar, Grid, Box} from '@mui/material';
+// import PhoneRoundedIcon from '@mui/icons-material/PhoneRounded';
+// import logo from "../images/logo.svg";
+import {Card, CardContent, Grid} from '@mui/material';
 import Typography from "@mui/material/Typography";
 import RestaurantSlick from "../slick-Slider/RestaurantSlick"
 import HomeImgSlick from "../slick-Slider/HomeImgSlick";
 import SpecialitySlick from "../slick-Slider/SpecialitySlick";
+import ContactSlick from "../slick-Slider/ContactSlick";
 
 
 export default function HomePage() {
@@ -260,19 +261,17 @@ export default function HomePage() {
             <Toast ref={toast}/>
             <div style={{position: 'relative'}}>
                 <Grid container spacing={2}>
-                    <Grid item xs={6} className="mt-2 mb-2  ">
-                        <Box display="flex" justifyContent="start" alignItems="center">
-                            <Avatar src={logo} sx={{width: 84, height: 34, marginX: 1}}/>
-                        </Box>
+                    <Grid item xs={12} >
+                        <ContactSlick/>
                     </Grid>
 
 
-                    <Grid item xs={6} className="mt-2 mb-2">
-                        <Box className="template" display="flex" justifyContent="end" alignItems="center">
-                            <Tag className="mx-1" icon={<PhoneRoundedIcon/>} severity="success"
-                                 value="+212 0666995588"/>
-                        </Box>
-                    </Grid>
+                    {/*<Grid item xs={6} className="mt-2 mb-2">*/}
+                    {/*    <Box className="template" display="flex" justifyContent="end" alignItems="center">*/}
+                    {/*        <Tag className="mx-1" icon={<PhoneRoundedIcon/>} severity="success"*/}
+                    {/*             value="+212 0666995588"/>*/}
+                    {/*    </Box>*/}
+                    {/*</Grid>*/}
                 </Grid>
 
                 <div style={{width: '100%', height: '250px'}}>
@@ -280,7 +279,7 @@ export default function HomePage() {
                     <div
                         style={{
                             position: 'absolute',
-                            top: 60,
+                            top: 38,
                             left: 0,
                             width: '100%',
                             height: '410px',
