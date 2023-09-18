@@ -259,10 +259,13 @@ export default function Series()  {
         );
     };
     const header = (
-        <div className="flex flex-wrap gap-2 align-items-center justify-content-between">
-    <span className="p-input-icon-left">
-      <i className="pi pi-search" />
+        <div className="flex flex-wrap  align-items-center justify-content-between -m-3" >
+    <span className="p-input-icon-left p-1 "  >
+      <i className="pi pi-search " />
       <InputText
+          style={{width:"100%",height:"0px"}}
+
+
           type="search"
           value={globalFilter || ''}
           onChange={(e) => setGlobalFilter(e.target.value)}

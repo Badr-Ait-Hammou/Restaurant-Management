@@ -249,12 +249,15 @@ export default function Zones() {
         );
     };
     const header = (
-        <div className="flex flex-wrap gap-2 align-items-center justify-content-between">
-    <span className="p-input-icon-left">
-      <i className="pi pi-search" />
+        <div className="flex flex-wrap  align-items-center justify-content-between -m-3" >
+    <span className="p-input-icon-left p-1 "  >
+      <i className="pi pi-search " />
       <InputText
+          style={{width:"100%",height:"0px"}}
+
+
           type="search"
-          value={globalFilter ||''}
+          value={globalFilter || ''}
           onChange={(e) => setGlobalFilter(e.target.value)}
           placeholder="Search..."
       />
@@ -313,7 +316,7 @@ export default function Zones() {
                 <div className="card">
                     <Toolbar className="mb-2 p-1" start={leftToolbarTemplate} center={centerToolbarTemplate} end={rightToolbarTemplate}></Toolbar>
                     {dataTableLoaded ? (
-                        <DataTable ref={dt} value={zone} size="small"
+                        <DataTable ref={dt} value={zone}
                                    dataKey="id"  paginator rows={10} rowsPerPageOptions={[5, 10, 25]}
                                    paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} Series" globalFilter={globalFilter} header={header}>
