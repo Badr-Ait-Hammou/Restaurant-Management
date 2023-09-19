@@ -1,54 +1,64 @@
-import React, {useState} from "react"
+import React, {useEffect, useState} from "react"
 import { Chart } from 'primereact/chart';
+import axios from  '../service/callerService';
+import RadarChart from '../chart/RadarChart'
+import Box from "@mui/material/Box";
+import {Grid} from "@mui/material";
+
 
 
 export default function Dashboard(){
+    const [chartData, setChartData] = useState({});
+    function calculateOrderCounts(orders) {
+        const orderCounts = {};
 
-    const [chartData] = useState({
-        datasets: [{
-            data: [
-                11,
-                16,
-                7,
-                3,
-                14,
-                12,
-                10
-            ],
-            backgroundColor: [
-                "#42A5F5",
-                "#66BB6A",
-                "#FFA726",
-                "#26C6DA",
-                "#7E57C2"
-            ],
-            label: 'My dataset'
-        }],
-        labels: [
-            "Red",
-            "Green",
-            "Yellow",
-            "Grey",
-            "Blue"
-        ]
-    });
+        orders.forEach(order => {
+            const restaurantName = order.produit.restaurant.nom;
+            if (!orderCounts[restaurantName]) {
+                orderCounts[restaurantName] = 1;
+            } else {
+                orderCounts[restaurantName]++;
+            }
+        });
 
-    const [lightOptions] = useState({
+        return orderCounts;
+    }
+
+    useEffect(() => {
+        // Fetch data from the API
+        axios.get('/api/controller/orders/all')
+            .then(response => {
+                const ordersData = response.data;
+
+                const orderCounts = calculateOrderCounts(ordersData);
+                const restaurantNames = Object.keys(orderCounts);
+                const orderCountsArray = Object.values(orderCounts);
+
+                const chartData = {
+                    datasets: [
+                        {
+                            data: orderCountsArray,
+                        },
+                    ],
+                    labels: restaurantNames,
+                };
+
+                setChartData(chartData);
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+    }, []);
+
+    const lightOptions = {
         plugins: {
             legend: {
                 labels: {
-                    color: '#495057'
-                }
-            }
+                    color: '#495057',
+                },
+            },
         },
-        scales: {
-            r: {
-                grid: {
-                    color: '#ebedef'
-                }
-            }
-        }
-    });
+    };
     return(
         <>
         <div className="card mt-5 p-1 m-2">
@@ -118,10 +128,23 @@ export default function Dashboard(){
         </div>
 
 
-            <div className="card flex justify-content-center mt-5 p-1 m-2">
-                <Chart type="polarArea" data={chartData} options={lightOptions} style={{ position: 'relative', width: '40%' }} />
-            </div>
 
+
+
+            <Box sx={{mx:1,mt:3}}>
+                <Grid item container spacing={1} columns={12}>
+                    <Grid item xs={12} md={6}>
+                        <Chart
+                            type="polarArea"
+                            data={chartData}
+                            options={lightOptions}
+                        />
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                        <RadarChart/>
+                    </Grid>
+                </Grid>
+            </Box>
 
             </>
     );
