@@ -80,7 +80,7 @@ const RadarChart = () => {
                                     data: averageRatings,
                                 },
                                 {
-                                    label: 'Product Count',
+                                    label: 'Product Count ',
                                     backgroundColor: 'rgba(255,99,132,0.2)',
                                     borderColor: 'rgba(255,99,132,1)',
                                     pointBackgroundColor: 'rgba(255,99,132,1)',

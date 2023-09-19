@@ -13,7 +13,8 @@ export default function Dashboard(){
     const [employeeCount, setEmployeeCount] = useState(0);
     const [ordersCount, setOrdersCount] = useState(0);
     const [undeliveredordersCount, setUndeliveredOrdersCount] = useState(0);
-
+    const [deliveredTotalPrice, setDeliveredTotalPrice] = useState(0);
+    const [pendingTotalPrice, setPendingTotalPrice] = useState(0);
     useEffect(() => {
         // Fetch data for user and employee counts
         axios
@@ -32,13 +33,6 @@ export default function Dashboard(){
     }, []);
 
 
-
-
-
-
-
-
-
     function calculateOrderCounts(orders) {
         const orderCounts = {};
 
@@ -54,6 +48,8 @@ export default function Dashboard(){
         return orderCounts;
     }
 
+
+
     useEffect(() => {
         axios.get('/api/controller/orders/all')
             .then(response => {
@@ -62,6 +58,17 @@ export default function Dashboard(){
                 const orderCounts = calculateOrderCounts(ordersData);
                 const undeliveredorders = ordersData.filter((orders) => orders.status !== 'Delivered').length;
                 setUndeliveredOrdersCount(undeliveredorders);
+
+                // const total = ordersData.reduce((acc, order) => acc + order.totalPrice, 0);
+                // setTotalPrice(total);
+                const deliveredOrders = ordersData.filter((order) => order.status === 'Delivered');
+                const pendingOrders = ordersData.filter((order) => order.status === 'Shipped');
+
+                const deliveredTotal = deliveredOrders.reduce((acc, order) => acc + order.totalPrice, 0);
+                const pendingTotal = pendingOrders.reduce((acc, order) => acc + order.totalPrice, 0);
+
+                setDeliveredTotalPrice(deliveredTotal);
+                setPendingTotalPrice(pendingTotal);
 
                 const orders = ordersData.length;
                 setOrdersCount(orders)
@@ -72,9 +79,10 @@ export default function Dashboard(){
                     datasets: [
                         {
                             data: orderCountsArray,
+                            label:"orders count :",
                         },
                     ],
-                    labels: restaurantNames,
+                    labels: restaurantNames ,
                 };
 
                 setChartData(chartData);
@@ -118,14 +126,14 @@ export default function Dashboard(){
                         <div className="flex justify-content-between mb-3">
                             <div>
                                 <span className="block text-500 font-medium mb-3">Revenue</span>
-                                <div className="text-900 font-medium text-xl">$2.100</div>
+                                <div className="text-900 font-medium text-xl">{deliveredTotalPrice} Dh</div>
                             </div>
                             <div className="flex align-items-center justify-content-center bg-orange-100 border-round" style={{ width: '2.5rem', height: '2.5rem' }}>
-                                <i className="pi pi-map-marker text-orange-500 text-xl"></i>
+                                <i className="pi pi-money-bill text-orange-500 text-xl"></i>
                             </div>
                         </div>
-                        <span className="text-green-500 font-medium">%52+ </span>
-                        <span className="text-500">since last week</span>
+                        <span className="text-green-500 font-medium"> {pendingTotalPrice} Dh + </span>
+                        <span className="text-500">On hold</span>
                     </div>
                 </div>
                 <div className="col-12 md:col-6 lg:col-3">
