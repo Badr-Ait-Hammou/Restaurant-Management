@@ -398,14 +398,14 @@ export default function AllProduct() {
                 {layout === 'list' && (
                     <div>
                         <DataView value={products} itemTemplate={listItem} layout={layout} header={header()}
-                                  sortField={sortField} sortOrder={sortOrder}/>
+                                  sortField={sortField} sortOrder={sortOrder} paginator paginatorTemplate={'PrevPageLink CurrentPageReport NextPageLink'} rows={6}/>
                     </div>
                 )}
 
                 {layout === 'grid' && (
                     <div>
                         <DataView value={products} itemTemplate={gridItem} layout={layout}
-                                  header={header2()} sortField={sortField}/>
+                                  header={header2()} sortField={sortField} paginator paginatorTemplate={'PrevPageLink CurrentPageReport NextPageLink'} rows={12}/>
                     </div>
                 )}
             </div>
