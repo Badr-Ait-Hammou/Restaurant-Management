@@ -37,7 +37,7 @@ export default function HomePage() {
             setProductsno(response.data);
         });
         loadProductsUser();
-        setLoading(true);
+        setLoading(false);
     }, []);
 
 
