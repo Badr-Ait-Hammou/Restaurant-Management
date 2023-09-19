@@ -4,6 +4,7 @@ import axios from  '../service/callerService';
 import RadarChart from '../chart/RadarChart'
 import Box from "@mui/material/Box";
 import {Grid} from "@mui/material";
+import { Divider } from 'primereact/divider';
 
 
 
@@ -173,16 +174,17 @@ export default function Dashboard(){
 
 
 
-            <Box sx={{mx:1,mt:3}}>
-                <Grid item container spacing={1} columns={12}>
-                    <Grid item xs={12} md={6}>
+            <Box sx={{mt:3}} className="card mt-1 mx-2">
+                <Grid item container  columns={12}  >
+                    <Grid item xs={12} md={6} >
                         <Chart
                             type="polarArea"
                             data={chartData}
                             options={lightOptions}
                         />
                     </Grid>
-                    <Grid item xs={12} md={6}>
+
+                    <Grid item xs={12} md={6} >
                         <RadarChart/>
                     </Grid>
                 </Grid>
