@@ -2,7 +2,7 @@ import React from 'react';
 import { Routes, Route } from "react-router-dom"
 import Home from '../components/HomePage';
 import Ville from '../components/Cities';
-import Restaurant from '../components/Restaurant';
+import Restaurant from '../components/Restaurants';
 import Zone from '../components/Zones';
 import Serie from '../components/Series';
 import Specilite from '../components/Specialities';
