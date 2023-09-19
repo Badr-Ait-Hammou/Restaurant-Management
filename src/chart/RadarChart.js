@@ -71,8 +71,8 @@ const RadarChart = () => {
                             datasets: [
                                 {
                                     label: 'Average Restaurant Rating',
-                                    backgroundColor: 'rgba(179,181,198,0.2)',
-                                    borderColor: 'rgba(179,181,198,1)',
+                                    backgroundColor: 'rgb(34,169,182)',
+                                    borderColor: 'rgba(20,115,128,0.85)',
                                     pointBackgroundColor: 'rgba(179,181,198,1)',
                                     pointBorderColor: '#fff',
                                     pointHoverBackgroundColor: '#fff',

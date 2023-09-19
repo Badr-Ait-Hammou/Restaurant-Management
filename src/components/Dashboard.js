@@ -148,8 +148,8 @@ export default function Dashboard(){
                                 <i className="pi pi-users text-cyan-500 text-xl"></i>
                             </div>
                         </div>
-                        <span className="text-green-500 font-medium">520  </span>
-                        <span className="text-500">newly registered</span>
+                        <span className="text-green-500 font-medium"> Verified  </span>
+                        <span className="text-500">Accounts</span>
                     </div>
                 </div>
                 <div className="col-12 md:col-6 lg:col-3">
@@ -163,8 +163,8 @@ export default function Dashboard(){
                                 <i className="pi pi-user text-purple-500 text-xl"></i>
                             </div>
                         </div>
-                        <span className="text-green-500 font-medium">85 </span>
-                        <span className="text-500">responded</span>
+                        <span className="text-green-500 font-medium">Verified </span>
+                        <span className="text-500">Accounts</span>
                     </div>
                 </div>
             </div>
@@ -174,8 +174,8 @@ export default function Dashboard(){
 
 
 
-            <Box sx={{mt:3}} className="card mt-1 mx-2">
-                <Grid item container  columns={12}  >
+            <Box sx={{mt:5}} className="card mx-2 justify-content-center">
+                <Grid item container  columns={12} className="justify-content-center" >
                     <Grid item xs={12} md={6} >
                         <Chart
                             type="polarArea"
@@ -183,8 +183,8 @@ export default function Dashboard(){
                             options={lightOptions}
                         />
                     </Grid>
-
-                    <Grid item xs={12} md={6} >
+                    {/*<Divider layout="vertical" className="-mx-1" />*/}
+                    <Grid item xs={12} md={6}  className="justify-content-center">
                         <RadarChart/>
                     </Grid>
                 </Grid>
