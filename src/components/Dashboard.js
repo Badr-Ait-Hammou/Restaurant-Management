@@ -9,6 +9,36 @@ import {Grid} from "@mui/material";
 
 export default function Dashboard(){
     const [chartData, setChartData] = useState({});
+    const [userCount, setUserCount] = useState(0);
+    const [employeeCount, setEmployeeCount] = useState(0);
+    const [ordersCount, setOrdersCount] = useState(0);
+    const [undeliveredordersCount, setUndeliveredOrdersCount] = useState(0);
+
+    useEffect(() => {
+        // Fetch data for user and employee counts
+        axios
+            .get('/api/controller/users/')
+            .then((response) => {
+                const usersData = response.data;
+                const userCount = usersData.filter((user) => user.role === 'USER').length;
+                const employeeCount = usersData.filter((user) => user.role === 'EMPLOYEE').length;
+
+                setUserCount(userCount);
+                setEmployeeCount(employeeCount);
+            })
+            .catch((error) => {
+                console.error('Error fetching data:', error);
+            });
+    }, []);
+
+
+
+
+
+
+
+
+
     function calculateOrderCounts(orders) {
         const orderCounts = {};
 
@@ -25,12 +55,16 @@ export default function Dashboard(){
     }
 
     useEffect(() => {
-        // Fetch data from the API
         axios.get('/api/controller/orders/all')
             .then(response => {
                 const ordersData = response.data;
 
                 const orderCounts = calculateOrderCounts(ordersData);
+                const undeliveredorders = ordersData.filter((orders) => orders.status !== 'Delivered').length;
+                setUndeliveredOrdersCount(undeliveredorders);
+
+                const orders = ordersData.length;
+                setOrdersCount(orders)
                 const restaurantNames = Object.keys(orderCounts);
                 const orderCountsArray = Object.values(orderCounts);
 
@@ -69,14 +103,14 @@ export default function Dashboard(){
                         <div className="flex justify-content-between mb-3">
                             <div>
                                 <span className="block text-500 font-medium mb-3">Orders</span>
-                                <div className="text-900 font-medium text-xl">152</div>
+                                <div className="text-900 font-medium text-xl">{ordersCount}</div>
                             </div>
                             <div className="flex align-items-center justify-content-center bg-blue-100 border-round" style={{ width: '2.5rem', height: '2.5rem' }}>
                                 <i className="pi pi-shopping-cart text-blue-500 text-xl"></i>
                             </div>
                         </div>
-                        <span className="text-green-500 font-medium">24 new </span>
-                        <span className="text-500">since last visit</span>
+                        <span className="text-green-500 font-medium">{undeliveredordersCount} </span>
+                        <span className="text-500">are undelivered</span>
                     </div>
                 </div>
                 <div className="col-12 md:col-6 lg:col-3">
@@ -99,10 +133,10 @@ export default function Dashboard(){
                         <div className="flex justify-content-between mb-3">
                             <div>
                                 <span className="block text-500 font-medium mb-3">Customers</span>
-                                <div className="text-900 font-medium text-xl">28441</div>
+                                <div className="text-900 font-medium text-xl">{userCount}</div>
                             </div>
                             <div className="flex align-items-center justify-content-center bg-cyan-100 border-round" style={{ width: '2.5rem', height: '2.5rem' }}>
-                                <i className="pi pi-inbox text-cyan-500 text-xl"></i>
+                                <i className="pi pi-users text-cyan-500 text-xl"></i>
                             </div>
                         </div>
                         <span className="text-green-500 font-medium">520  </span>
@@ -113,11 +147,11 @@ export default function Dashboard(){
                     <div className="surface-0 shadow-2 p-3 border-1 border-50 border-round">
                         <div className="flex justify-content-between mb-3">
                             <div>
-                                <span className="block text-500 font-medium mb-3">Comments</span>
-                                <div className="text-900 font-medium text-xl">152 Unread</div>
+                                <span className="block text-500 font-medium mb-3">Owners</span>
+                                <div className="text-900 font-medium text-xl">{employeeCount} </div>
                             </div>
                             <div className="flex align-items-center justify-content-center bg-purple-100 border-round" style={{ width: '2.5rem', height: '2.5rem' }}>
-                                <i className="pi pi-comment text-purple-500 text-xl"></i>
+                                <i className="pi pi-user text-purple-500 text-xl"></i>
                             </div>
                         </div>
                         <span className="text-green-500 font-medium">85 </span>
