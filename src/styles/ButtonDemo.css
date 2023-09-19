@@ -63,7 +63,7 @@
     box-shadow: 0 0 0 1px var(--green-400);
 }
  /****************************/
- .template .p-button.facebook {
+ .template .p-tag.facebook {
     background: linear-gradient(to left, var(--indigo-600) 50%, var(--indigo-700) 50%);
     background-size: 200% 100%;
     background-position: right bottom;
@@ -71,13 +71,13 @@
     color: #fff;
     border-color: var(--indigo-700);
 }
- .template .p-button.facebook:hover {
+ .template .p-tag.facebook:hover {
     background-position: left bottom;
 }
- .template .p-button.facebook i {
+ .template .p-tag.facebook i {
     background-color: var(--indigo-700);
 }
- .template .p-button.facebook:focus {
+ .template .p-tag.facebook:focus {
     box-shadow: 0 0 0 1px var(--indigo-400);
 }
  /************************/

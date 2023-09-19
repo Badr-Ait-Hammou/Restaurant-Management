@@ -5,6 +5,8 @@ import RadarChart from '../chart/RadarChart'
 import Box from "@mui/material/Box";
 import {Grid} from "@mui/material";
 // import { Divider } from 'primereact/divider';
+import { Tag } from 'primereact/tag';
+import {Button} from "primereact/button";
 
 
 
@@ -175,16 +177,23 @@ export default function Dashboard(){
 
 
             <Box sx={{mt:5}} className="card mx-2 justify-content-center">
+
                 <Grid item container  columns={12} className="justify-content-center" >
                     <Grid item xs={12} md={6} >
+                        <Tag severity="success" value={"orders stats"}/>
+
                         <Chart
                             type="polarArea"
                             data={chartData}
                             options={lightOptions}
                         />
                     </Grid>
-                    {/*<Divider layout="vertical" className="-mx-1" />*/}
-                    <Grid item xs={12} md={6}  className="justify-content-center">
+                    <Grid item xs={12} md={6}  className="template justify-content-center">
+                        <Tag  className="facebook  " >
+                            <span className="px-2">products count</span>
+                        </Tag>
+
+
                         <RadarChart/>
                     </Grid>
                 </Grid>
