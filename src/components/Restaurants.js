@@ -438,10 +438,10 @@ export default function Restaurants() {
                         <DataTable ref={dt} value={restaurants}
                                    dataKey="id"  paginator rows={10} rowsPerPageOptions={[5, 10, 25]}
                                    paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-                                   currentPageReportTemplate="Showing {first} to {last} of {totalRecords} Series" globalFilter={globalFilter} header={header}>
+                                   currentPageReportTemplate="Showing {first} to {last} of {totalRecords} Restaurants" globalFilter={globalFilter} header={header}>
                             <Column field="id"  header="ID" sortable style={{ minWidth: '5rem' }}></Column>
                             <Column field="nom" className="font-bold"  filter filterPlaceholder="Search Name ..." header="Name" sortable style={{ minWidth: '10rem' }}></Column>
-                            <Column field="photo" header="Photo" body={photoBodyTemplate}  style={{ minWidth: '6rem' }}></Column>
+                            <Column field="photo" header="Photo" body={photoBodyTemplate} exportable={false} style={{ minWidth: '6rem' }}></Column>
                             <Column field="adresse"   filter filterPlaceholder="Search Name ..." header="Address" sortable style={{ minWidth: '14rem' }}></Column>
                             <Column field="serie.nom"   filter filterPlaceholder="Search Name ..." header="Serie" sortable style={{ minWidth: '14rem' }}></Column>
                             <Column field="specialite.nom"   filter filterPlaceholder="Search Name ..." header="Specialite" sortable style={{ minWidth: '14rem' }}></Column>
@@ -450,7 +450,7 @@ export default function Restaurants() {
                             <Column field="dateOuverture"    header="Open" sortable style={{ minWidth: '8rem' }}></Column>
                             <Column field="dateFermeture"    header="Close" sortable style={{ minWidth: '8rem' }}></Column>
                             <Column   field={(rowData) => `${rowData.zone.ville.nom} -- ${rowData.zone.nom} `} header="Zone" sortable style={{ minWidth: '12rem' }}></Column>
-                            <Column header="Action" body={actionBodyTemplate} exportable={false} style={{ minWidth: '10rem' }}></Column>
+                            <Column header="Action" body={actionBodyTemplate} exportable={false} style={{ minWidth: '16rem' }}></Column>
                         </DataTable>
                     ):(
                         <SkeletonPr/>
@@ -569,7 +569,7 @@ export default function Restaurants() {
                 </Grid>
             </Dialog>
 
-            <Dialog visible={editRestaurantDialog} style={{ width: '40rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} header="Edit Zone" modal className="p-fluid" footer={editimageDialogFooter} onHide={hideDialog}>
+            <Dialog visible={editRestaurantDialog} style={{ width: '40rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} header="Edit Restaurant" modal className="p-fluid" footer={editimageDialogFooter} onHide={hideDialog}>
                 <Grid item xs={12}  >
                     <Box className="field" >
                         <FileUpload
