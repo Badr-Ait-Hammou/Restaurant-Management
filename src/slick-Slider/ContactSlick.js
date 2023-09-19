@@ -8,10 +8,11 @@ import {Tag} from "primereact/tag";
 
 function ContactSlick() {
     const textItems = [
-        { id: 1, text: "Text 1" },
-        { id: 2, text: "+212 0666995588",icon:"pi pi-phone" },
-        { id: 3, text: "Text 3" },
-        { id: 4, text: "Text 4" },
+
+        { id: 1, text: " +212 0666995588",icon:"pi pi-phone" },
+        { id: 2, text: "ifoulki_meals@gmail.com",icon:"pi pi-inbox" },
+        { id: 3, text: "Monday to Friday" ,icon:"pi pi-calendar" },
+        { id: 4, text: " 9:00 AM - 5:00 PM" ,icon:"pi pi-clock"},
     ];
 
     const settings = {
@@ -31,8 +32,7 @@ function ContactSlick() {
             <Slider {...settings} >
                 {textItems.map((item) => (
                     <div key={item.id} className="slide bg-black text-white" >
-                        {/*<Tag icon={item.icon}/>*/}
-                        <Typography>{item.text}</Typography>
+                        <Tag icon={item.icon} value={item.text} style={{backgroundColor:"black"}}/>
                     </div>
                 ))}
             </Slider>
