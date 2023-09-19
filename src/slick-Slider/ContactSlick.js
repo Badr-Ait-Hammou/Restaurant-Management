@@ -3,7 +3,6 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "../styles/HomeImgSlick.css";
-import Typography from "@mui/material/Typography";
 import {Tag} from "primereact/tag";
 
 function ContactSlick() {

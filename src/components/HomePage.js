@@ -12,8 +12,6 @@ import {Carousel} from 'primereact/carousel';
 import SkipPreviousRoundedIcon from '@mui/icons-material/SkipPreviousRounded';
 import SkipNextRoundedIcon from '@mui/icons-material/SkipNextRounded';
 import HomPageSkeleton from "../skeleton/HomePageSkeleton";
-// import PhoneRoundedIcon from '@mui/icons-material/PhoneRounded';
-// import logo from "../images/logo.svg";
 import {Card, CardContent, Grid} from '@mui/material';
 import Typography from "@mui/material/Typography";
 import RestaurantSlick from "../slick-Slider/RestaurantSlick"
@@ -39,7 +37,7 @@ export default function HomePage() {
             setProductsno(response.data);
         });
         loadProductsUser();
-        setLoading(false);
+        setLoading(true);
     }, []);
 
 
@@ -265,13 +263,6 @@ export default function HomePage() {
                         <ContactSlick/>
                     </Grid>
 
-
-                    {/*<Grid item xs={6} className="mt-2 mb-2">*/}
-                    {/*    <Box className="template" display="flex" justifyContent="end" alignItems="center">*/}
-                    {/*        <Tag className="mx-1" icon={<PhoneRoundedIcon/>} severity="success"*/}
-                    {/*             value="+212 0666995588"/>*/}
-                    {/*    </Box>*/}
-                    {/*</Grid>*/}
                 </Grid>
 
                 <div style={{width: '100%', height: '250px'}}>
