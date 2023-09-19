@@ -48,6 +48,7 @@ export default function ClientOrders() {
         axios.get(`/api/controller/avis/`)
             .then((response) => {
                 setComments(response.data);
+                console.log("comment",response.data)
             })
             .catch((error) => {
                 console.error("Error loading comments:", error);
@@ -111,7 +112,7 @@ export default function ClientOrders() {
 
     const openFeedbackDialog = (productsGroup) => {
         const initialFeedbackData = productsGroup.map((product) => {
-            const existingComment = comments.find((comment) => comment.produit.id === product.produit.id && comment.orders.id === product.id);
+            const existingComment = Array.isArray(comments) ? comments.find((comment) => comment.produit.id === product.produit.id && comment.orders.id === product.id) : null;
             return {
                 id: product.produit.id,
                 orderId: product.id,

@@ -417,7 +417,7 @@ export default function RestaurantProductDetails() {
                     </Grid>
                     <Grid item xs={9} md={11}   >
                         <div className="card  flex justify-content-start" style={{backgroundColor:"transparent",borderColor:"transparent"}}>
-                            <Link to={`/admin/home/restaurants/${restaurantId}`}>
+                            <Link to={`/ifoulki_meals/restaurants/${restaurantId}`}>
 
                             <Typography variant="body1" className="ml-1 mb-5" gutterBottom>
                                 <strong className="text-black" style={{float:"left"}} >{products.restaurant && products.restaurant.nom}</strong>
