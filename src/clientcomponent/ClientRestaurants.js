@@ -363,14 +363,14 @@ export default function ClientRestaurants() {
                 {layout === 'list' && (
                     <div>
                         <DataView value={restaurants} itemTemplate={listItem} layout={layout} header={header()}
-                                  sortField={sortField} sortOrder={sortOrder}/>
+                                  sortField={sortField} sortOrder={sortOrder} paginator paginatorTemplate={'PrevPageLink CurrentPageReport NextPageLink'} rows={6}/>
                     </div>
                 )}
 
                 {layout === 'grid' && (
                     <div>
                         <DataView value={restaurants} itemTemplate={gridItem} layout={layout}
-                                  header={header()} sortField={sortField} sortOrder={sortOrder}/>
+                                  header={header()} sortField={sortField} sortOrder={sortOrder} paginator paginatorTemplate={'PrevPageLink CurrentPageReport NextPageLink'} rows={12}/>
                     </div>
                 )}
             </div>
