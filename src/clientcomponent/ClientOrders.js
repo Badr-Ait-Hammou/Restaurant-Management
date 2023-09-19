@@ -44,16 +44,7 @@ export default function ClientOrders() {
     const [page, setPage] = useState(0);
 
 
-    const loadComments = () => {
-        axios.get(`/api/controller/avis/`)
-            .then((response) => {
-                setComments(response.data);
-                console.log("comment",response.data)
-            })
-            .catch((error) => {
-                console.error("Error loading comments:", error);
-            });
-    };
+
 
 
     useEffect(() => {
@@ -72,6 +63,16 @@ export default function ClientOrders() {
         fetchUserData();
     }, []);
 
+    const loadComments = () => {
+        axios.get(`/api/controller/avis/user/${userId}`)
+            .then((response) => {
+                setComments(response.data);
+                console.log("comment",response.data)
+            })
+            .catch((error) => {
+                console.error("Error loading comments:", error);
+            });
+    };
 
     useEffect(() => {
         loadOrders();
