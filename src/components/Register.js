@@ -25,7 +25,7 @@ export default function Register() {
     const [email, setEmail] = useState("");
     const [telephone, settel] = useState("");
     const [adresse, setAdresse] = useState("");
-    const [ setError] = useState('');
+    const [error, setError] = useState('');
 
     const handleRegistration = (event) => {
         event.preventDefault();
