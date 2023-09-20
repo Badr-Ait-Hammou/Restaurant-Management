@@ -107,24 +107,33 @@ export default function Dashboard(){
     };
     return(
         <>
+            {/*style={{background:"linear-gradient(to left, var(--yellow-400) 50%, var(--yellow-500) 50%)",transition:"background-position 0.5s ease-out;",backgroundSize:"200% 100%",backgroundPosition:"right bottom",borderColor:"var(--yellow-500)"}}*/}
         <div className="card mt-5 p-1 m-2">
 
             <div className="grid">
                 <div className="col-12 md:col-6 lg:col-3">
-                    <div className="surface-0 shadow-2 p-3 border-1 border-50 border-round">
-                        <div className="flex justify-content-between mb-3">
+                    {/*<div className=" shadow-2 p-3 border-1 border-50 border-round " style={{ backgroundImage: "url(https://www.primefaces.org/cdn/primeflex/images/landing/style-cards/fancy.jpg)", backdropFilter: "blur(4px)" }}>*/}
+                    <div className="shadow-2  border-1 p-0.5 border-50 border-round w-full h-full bg-[url('https://www.primefaces.org/cdn/primeflex/images/landing/style-cards/fancy.jpg')] bg-cover bg-center">
+                        <div className=" w-full h-full p-2  justify-content-between  backdrop-blur-sm">
+                        <div className=" w-full h-full flex justify-content-between mb-1 backdrop-blur-sm">
                             <div>
-                                <span className="block text-500 font-medium mb-3">Orders</span>
-                                <div className="text-900 font-medium text-xl">{deliveredcount}</div>
+                                <span className="block text-white  font-medium mb-3">Orders</span>
+                                <div className="text-white  font-medium text-xl">{deliveredcount}</div>
                             </div>
                             <div className="flex align-items-center justify-content-center bg-blue-100 border-round" style={{ width: '2.5rem', height: '2.5rem' }}>
                                 <i className="pi pi-shopping-cart text-blue-500 text-xl"></i>
                             </div>
                         </div>
-                        <span className="text-green-500 font-medium">{shippedcount} </span>
-                        <span className="text-500">are undelivered yet</span>
+                            <div className="-mt-5">
+                                <span className="text-green-500  font-bold">{shippedcount}</span>
+                                <span className="text-white">are undelivered yet</span>
+                            </div>
+
+                        </div>
+
                     </div>
                 </div>
+
                 <div className="col-12 md:col-6 lg:col-3">
                     <div className="surface-0 shadow-2 p-3 border-1 border-50 border-round">
                         <div className="flex justify-content-between mb-3">
@@ -203,3 +212,102 @@ export default function Dashboard(){
             </>
     );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//
+//
+//
+// <div className="p-2 border-round-xl" style={{background: "var(--style-cards-fancy-bg)", border: "1px solid rgba(255, 255, 255, 0.1)", backgroundBlendMode: "normal", width: "300px"}}>
+//     <div className="content border-round-sm">
+//         <div className="content-image bg-cover bg-no-repeat bg-center relative" style={{height: "244px", backgroundImage: "url(https://www.primefaces.org/cdn/primeflex/images/landing/style-cards/fancy.jpg)"}}>
+//             <div className="rating mt-2 border-round-sm absolute ml-2 p-2 flex align-items-center gap-2 bg-black-alpha-20 w-8rem border-1" style={{backdropFilter:"blur(27px)"}}>
+//                 <i className="pi pi-star-fill text-white"></i>
+//                 <i className="pi pi-star-fill text-white"></i>
+//                 <i className="pi pi-star-fill text-white"></i>
+//                 <i className="pi pi-star-fill text-gray-600"></i>
+//                 <i className="pi pi-star-fill text-gray-600"></i>
+//             </div>
+//         </div>
+//         <div className="content-info mt-2 border-round-sm bg-white-alpha-10 shadow-1 py-1" style={{backdropFilter:"blur(27px)"}}>
+//             <div className="flex align-items-center justify-content-between py-2 px-3">
+//                 <span className="font-medium text-white">Prime Coffee Shop</span>
+//                 <i className="pi pi-verified text-white"></i>
+//             </div>
+//             <div className="flex align-items-center justify-content-between py-2 px-3 gap-2">
+//                 <div className="flex align-items-center gap-2">
+//                     <i className="pi pi-star-fill text-white"></i>
+//                     <span className="font-small text-white white-space-nowrap">Cold Brew</span>
+//                 </div>
+//                 <div className="flex align-items-center gap-2">
+//                     <i className="pi pi-star-fill text-white"></i>
+//                     <span className="font-small text-white white-space-nowrap">10:00 - 17:00</span>
+//                 </div>
+//             </div>
+//             <div className="flex align-items-center justify-content-between py-2 px-3 gap-2">
+//                 <div className="flex align-items-center justify-content-center gap-1 border-right-1 surface-border pr-2">
+//                     <i className="pi pi-bolt text-white"></i>
+//                     <span className="font-small text-white white-space-nowrap">Charge</span>
+//                 </div>
+//                 <div className="flex align-items-center gap-1 justify-content-center gap-1 border-right-1 surface-border px-2">
+//                     <i className="pi pi-wifi text-white"></i>
+//                     <span className="font-small text-white white-space-nowrap">Wifi</span>
+//                 </div>
+//                 <div className="flex align-items-center gap-1 justify-content-center gap-1 pl-2">
+//                     <i className="pi pi-book text-white"></i>
+//                     <span className="font-small text-white white-space-nowrap">Library</span>
+//                 </div>
+//             </div>
+//         </div>
+//         <div className="flex align-items-center justify-content-center pt-2 gap-2">
+//             <button className="p-3 flex align-items-center justify-content-center w-7 gap-2 border-round-sm bg-white-alpha-10 shadow-1 border-none cursor-pointer hover:bg-white-alpha-20 transition-duration-200 bg-black" >
+//                 <span className="font-medium text-white white-space-nowrap">Contact</span>
+//                 <i className="pi pi-send text-white"></i>
+//             </button>
+//             <button className="p-3 flex align-items-center justify-content-center w-5 gap-2 bg-blue-500 shadow-1 border-round-sm border-none cursor-pointer hover:bg-blue-600 transition-duration-200">
+//                 <span className="font-medium text-white white-space-nowrap">Rate</span>
+//                 <i className="pi pi-thumbs-up-fill text-white"></i>
+//             </button>
+//         </div>
+//     </div>
+// </div>
+//
+

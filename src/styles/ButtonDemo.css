@@ -117,7 +117,7 @@
     box-shadow: 0 0 0 1px var(--orange-200);
 }
  /************************/
- .template .p-button.amazon {
+ .template .p-div.amazon {
     background: linear-gradient(to left, var(--yellow-400) 50%, var(--yellow-500) 50%);
     background-size: 200% 100%;
     background-position: right bottom;
@@ -125,13 +125,13 @@
     color: #000;
     border-color: var(--yellow-500);
 }
- .template .p-button.amazon:hover {
+ .template .p-div.amazon:hover {
     background-position: left bottom;
 }
- .template .p-button.amazon i {
+ .template .p-div.amazon i {
     background-color: var(--yellow-500);
 }
- .template .p-button.amazon:focus {
+ .template .p-div.amazon:focus {
     box-shadow: 0 0 0 1px var(--yellow-200);
 }
  .template .p-button.pay {
