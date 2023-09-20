@@ -113,9 +113,13 @@ export default function Dashboard(){
             <div className="grid">
                 <div className="col-12 md:col-6 lg:col-3">
                     {/*<div className=" shadow-2 p-3 border-1 border-50 border-round " style={{ backgroundImage: "url(https://www.primefaces.org/cdn/primeflex/images/landing/style-cards/fancy.jpg)", backdropFilter: "blur(4px)" }}>*/}
-                    <div className="shadow-2  border-1 p-0.5 border-50 border-round w-full h-full bg-[url('https://www.primefaces.org/cdn/primeflex/images/landing/style-cards/fancy.jpg')] bg-cover bg-center">
+                    {/*<div className="shadow-2  border-1 p-0.5 border-50 border-round w-full h-full bg-[url('https://img.freepik.com/free-photo/blue-teal-sand-paper_53876-92791.jpg?w=900&t=st=1695245835~exp=1695246435~hmac=01b44ddf63db6d8f99ac4ce1aa66f569db34415f56464e6bd3fe1f9fea9289ee')] bg-cover bg-center">*/}
+                    <div className="shadow-2  border-1 p-0.5 border-50 border-round w-full h-full bg-[url('https://img.freepik.com/free-photo/people-taking-photos-food_23-2149303524.jpg?size=626&ext=jpg&ga=GA1.2.1906554086.1668974677&semt=ais')] bg-cover bg-center">
+                    {/*<div className="shadow-2  border-1 p-0.5 border-50 border-round w-full h-full bg-[url('https://img.freepik.com/free-photo/revenue-income-money-profit-costs-budget-banking-concept_53876-134047.jpg?w=1060&t=st=1695246684~exp=1695247284~hmac=3b29564f1fb13edefe52b07061fca879f261f6719ea933653b992e1b704c923e')] bg-cover bg-center">*/}
+                        {/*<div className="shadow-2 border-1 p-0.5 border-50 rounded w-full h-full" style={{ backgroundImage:"", backgroundSize: 'cover', backgroundPosition: 'center' }}>*/}
+
                         <div className=" w-full h-full p-2  justify-content-between  backdrop-blur-sm">
-                        <div className=" w-full h-full flex justify-content-between mb-1 backdrop-blur-sm">
+                        <div className=" w-full h-full flex justify-content-between mb-1 ">
                             <div>
                                 <span className="block text-white  font-medium mb-3">Orders</span>
                                 <div className="text-white  font-medium text-xl">{deliveredcount}</div>
@@ -125,8 +129,8 @@ export default function Dashboard(){
                             </div>
                         </div>
                             <div className="-mt-5">
-                                <span className="text-green-500  font-bold">{shippedcount}</span>
-                                <span className="text-white">are undelivered yet</span>
+                                <span className="text-green-500  font-bold">{shippedcount} </span>
+                                <span className="text-white"> are undelivered yet</span>
                             </div>
 
                         </div>
@@ -135,8 +139,9 @@ export default function Dashboard(){
                 </div>
 
                 <div className="col-12 md:col-6 lg:col-3">
-                    <div className="surface-0 shadow-2 p-3 border-1 border-50 border-round">
-                        <div className="flex justify-content-between mb-3">
+                    <div className="shadow-2  border-1 p-0.5 border-50 border-round w-full h-full bg-[url('https://img.freepik.com/free-photo/revenue-income-money-profit-costs-budget-banking-concept_53876-134047.jpg?w=1060&t=st=1695246684~exp=1695247284~hmac=3b29564f1fb13edefe52b07061fca879f261f6719ea933653b992e1b704c923e')] bg-cover bg-center">
+                        <div className=" w-full h-full p-2  justify-content-between  backdrop-blur-sm">
+                            <div className=" w-full h-full flex justify-content-between mb-1 ">
                             <div>
                                 <span className="block text-500 font-medium mb-3">Revenue</span>
                                 <div className="text-900 font-medium text-xl">{deliveredtot} Dh</div>
@@ -144,9 +149,14 @@ export default function Dashboard(){
                             <div className="flex align-items-center justify-content-center bg-orange-100 border-round" style={{ width: '2.5rem', height: '2.5rem' }}>
                                 <i className="pi pi-money-bill text-orange-500 text-xl"></i>
                             </div>
+                            </div>
+                            <div className="-mt-5">
+                                <span className="text-green-500  font-bold">{shippedcount} </span>
+                                <span className="text-white"> are undelivered yet</span>
+                            </div>
+
                         </div>
-                        <span className="text-green-500 font-medium"> {shippedtot || '0'} Dh + </span>
-                        <span className="text-500">On hold</span>
+
                     </div>
                 </div>
                 <div className="col-12 md:col-6 lg:col-3">
