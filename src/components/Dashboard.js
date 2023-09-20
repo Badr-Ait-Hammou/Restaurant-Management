@@ -1,14 +1,13 @@
 import React, {useEffect, useState} from "react"
-import { Chart } from 'primereact/chart';
-import axios from  '../service/callerService';
+import {Chart} from 'primereact/chart';
+import axios from '../service/callerService';
 import RadarChart from '../chart/RadarChart'
 import Box from "@mui/material/Box";
 import {Grid} from "@mui/material";
-import { Tag } from 'primereact/tag';
+import {Tag} from 'primereact/tag';
 
 
-
-export default function Dashboard(){
+export default function Dashboard() {
     const [chartData, setChartData] = useState({});
     const [userCount, setUserCount] = useState(0);
     const [employeeCount, setEmployeeCount] = useState(0);
@@ -34,19 +33,19 @@ export default function Dashboard(){
     }, []);
 
     useEffect(() => {
-            axios.get('/api/controller/orders/shippedtot').then((response) => {
+        axios.get('/api/controller/orders/shippedtot').then((response) => {
             setShippedtot(response.data)
-            });
+        });
 
-            axios.get('/api/controller/orders/deliveredtot').then((response) => {
+        axios.get('/api/controller/orders/deliveredtot').then((response) => {
             setDeliveredtot(response.data)
-            });
-            axios.get('/api/controller/orders/shippedcount').then((response) => {
+        });
+        axios.get('/api/controller/orders/shippedcount').then((response) => {
             setShippedCount(response.data)
-            });
-            axios.get('/api/controller/orders/deliveredcount').then((response) => {
+        });
+        axios.get('/api/controller/orders/deliveredcount').then((response) => {
             setDeliveredCount(response.data)
-            })
+        })
             .catch((error) => {
                 console.error('Error fetching data:', error);
             });
@@ -69,7 +68,6 @@ export default function Dashboard(){
     }
 
 
-
     useEffect(() => {
         axios.get('/api/controller/orders/')
             .then(response => {
@@ -83,10 +81,10 @@ export default function Dashboard(){
                     datasets: [
                         {
                             data: orderCountsArray,
-                            label:"orders count :",
+                            label: "orders count :",
                         },
                     ],
-                    labels: restaurantNames ,
+                    labels: restaurantNames,
                 };
 
                 setChartData(chartData);
@@ -105,101 +103,114 @@ export default function Dashboard(){
             },
         },
     };
-    return(
+    return (
         <>
             {/*style={{background:"linear-gradient(to left, var(--yellow-400) 50%, var(--yellow-500) 50%)",transition:"background-position 0.5s ease-out;",backgroundSize:"200% 100%",backgroundPosition:"right bottom",borderColor:"var(--yellow-500)"}}*/}
-        <div className="card mt-5 p-1 m-2">
+            <div className="card mt-5 p-1 m-2">
 
-            <div className="grid">
-                <div className="col-12 md:col-6 lg:col-3">
-                    {/*<div className=" shadow-2 p-3 border-1 border-50 border-round " style={{ backgroundImage: "url(https://www.primefaces.org/cdn/primeflex/images/landing/style-cards/fancy.jpg)", backdropFilter: "blur(4px)" }}>*/}
-                    {/*<div className="shadow-2  border-1 p-0.5 border-50 border-round w-full h-full bg-[url('https://img.freepik.com/free-photo/blue-teal-sand-paper_53876-92791.jpg?w=900&t=st=1695245835~exp=1695246435~hmac=01b44ddf63db6d8f99ac4ce1aa66f569db34415f56464e6bd3fe1f9fea9289ee')] bg-cover bg-center">*/}
-                    <div className="shadow-2  border-1 p-0.5 border-50 border-round w-full h-full bg-[url('https://img.freepik.com/free-photo/people-taking-photos-food_23-2149303524.jpg?size=626&ext=jpg&ga=GA1.2.1906554086.1668974677&semt=ais')] bg-cover bg-center">
-                    {/*<div className="shadow-2  border-1 p-0.5 border-50 border-round w-full h-full bg-[url('https://img.freepik.com/free-photo/revenue-income-money-profit-costs-budget-banking-concept_53876-134047.jpg?w=1060&t=st=1695246684~exp=1695247284~hmac=3b29564f1fb13edefe52b07061fca879f261f6719ea933653b992e1b704c923e')] bg-cover bg-center">*/}
-                        {/*<div className="shadow-2 border-1 p-0.5 border-50 rounded w-full h-full" style={{ backgroundImage:"", backgroundSize: 'cover', backgroundPosition: 'center' }}>*/}
+                <div className="grid">
+                    <div className="col-12 md:col-6 lg:col-3">
+                        {/*<div className=" shadow-2 p-3 border-1 border-50 border-round " style={{ backgroundImage: "url(https://www.primefaces.org/cdn/primeflex/images/landing/style-cards/fancy.jpg)", backdropFilter: "blur(4px)" }}>*/}
+                        <div
+                            className="shadow-2  border-1 p-1 border-50 border-round w-full h-full bg-[url('https://img.freepik.com/free-photo/people-taking-photos-food_23-2149303524.jpg?size=626&ext=jpg&ga=GA1.2.1906554086.1668974677&semt=ais')] bg-cover bg-center">
+                            {/*<div className="shadow-2  border-1 p-0.5 border-50 border-round w-full h-full bg-[url('https://img.freepik.com/free-photo/revenue-income-money-profit-costs-budget-banking-concept_53876-134047.jpg?w=1060&t=st=1695246684~exp=1695247284~hmac=3b29564f1fb13edefe52b07061fca879f261f6719ea933653b992e1b704c923e')] bg-cover bg-center">*/}
+                            {/*<div className="shadow-2 border-1 p-0.5 border-50 rounded w-full h-full" style={{ backgroundImage:"", backgroundSize: 'cover', backgroundPosition: 'center' }}>*/}
 
-                        <div className=" w-full h-full p-2  justify-content-between  backdrop-blur-sm">
-                        <div className=" w-full h-full flex justify-content-between mb-1 ">
-                            <div>
-                                <span className="block text-white  font-bold mb-3">Orders</span>
-                                <div className="text-white  font-bold text-xl">{deliveredcount}</div>
+                            <div className=" w-full h-full p-2  justify-content-between  backdrop-blur-sm">
+                                <div className=" w-full h-full flex justify-content-between mb-1 ">
+                                    <div>
+                                        <span className="block text-white  font-bold mb-3">Orders</span>
+                                        <div className="text-white  font-bold text-xl">{deliveredcount}</div>
+                                    </div>
+                                    <div
+                                        className="flex align-items-center justify-content-center bg-blue-100 border-round"
+                                        style={{width: '2.5rem', height: '2.5rem'}}>
+                                        <i className="pi pi-shopping-cart text-blue-500 text-xl"></i>
+                                    </div>
+                                </div>
+                                <div className="-mt-5">
+                                    <span className="text-green-500  font-bold">{shippedcount} </span>
+                                    <span className="text-white"> are undelivered yet</span>
+                                </div>
+
                             </div>
-                            <div className="flex align-items-center justify-content-center bg-blue-100 border-round" style={{ width: '2.5rem', height: '2.5rem' }}>
-                                <i className="pi pi-shopping-cart text-blue-500 text-xl"></i>
-                            </div>
+
                         </div>
-                            <div className="-mt-5">
-                                <span className="text-green-500  font-bold">{shippedcount} </span>
-                                <span className="text-white"> are undelivered yet</span>
-                            </div>
-
-                        </div>
-
                     </div>
-                </div>
 
-                <div className="col-12 md:col-6 lg:col-3">
-                    <div className="shadow-2  border-1 p-0.5 border-50 border-round w-full h-full bg-[url('https://img.freepik.com/free-photo/revenue-income-money-profit-costs-budget-banking-concept_53876-134047.jpg?w=1060&t=st=1695246684~exp=1695247284~hmac=3b29564f1fb13edefe52b07061fca879f261f6719ea933653b992e1b704c923e')] bg-cover bg-center">
-                        <div className=" w-full h-full p-2  justify-content-between  backdrop-blur-sm">
-                            <div className=" w-full h-full flex justify-content-between mb-1 ">
-                            <div>
-                                <span className="block text-white font-bold mb-3">Revenue</span>
-                                <div className="text-white font-bold text-xl">{deliveredtot} Dh</div>
-                            </div>
-                            <div className="flex align-items-center justify-content-center bg-orange-100 border-round" style={{ width: '2.5rem', height: '2.5rem' }}>
-                                <i className="pi pi-money-bill text-orange-500 text-xl"></i>
-                            </div>
-                            </div>
-                            <div className="-mt-5">
-                                <span className="text-green-500  font-bold">{shippedcount} </span>
-                                <span className="text-white"> are undelivered yet</span>
+                    <div className="col-12 md:col-6 lg:col-3">
+                        <div
+                            className="shadow-2  border-1 p-1 border-50 border-round w-full h-full bg-[url('https://img.freepik.com/free-photo/revenue-income-money-profit-costs-budget-banking-concept_53876-134047.jpg?w=1060&t=st=1695246684~exp=1695247284~hmac=3b29564f1fb13edefe52b07061fca879f261f6719ea933653b992e1b704c923e')] bg-cover bg-center">
+                            <div className=" w-full h-full p-2  justify-content-between  backdrop-blur-sm">
+                                <div className=" w-full h-full flex justify-content-between mb-1 ">
+                                    <div>
+                                        <span className="block text-white font-bold mb-3">Revenue</span>
+                                        <div className="text-white font-bold text-xl">{deliveredtot} Dh</div>
+                                    </div>
+                                    <div
+                                        className="flex align-items-center justify-content-center bg-orange-100 border-round"
+                                        style={{width: '2.5rem', height: '2.5rem'}}>
+                                        <i className="pi pi-money-bill text-orange-500 text-xl"></i>
+                                    </div>
+                                </div>
+                                <div className="-mt-5">
+                                    <span className="text-green-500  font-bold">{shippedtot || 0} Dh +</span>
+                                    <span className="text-white"> on Hold</span>
+                                </div>
+
                             </div>
 
                         </div>
-
                     </div>
-                </div>
-                <div className="col-12 md:col-6 lg:col-3">
-                    <div className="surface-0 shadow-2 p-3 border-1 border-50 border-round">
-                        <div className="flex justify-content-between mb-3">
-                            <div>
-                                <span className="block text-500 font-medium mb-3">Customers</span>
-                                <div className="text-900 font-medium text-xl">{userCount}</div>
+                    <div className="col-12 md:col-6 lg:col-3">
+                        <div
+                            className="shadow-2  border-1 p-0.5 border-50 border-round w-full h-full bg-[url('https://img.freepik.com/free-photo/blue-teal-sand-paper_53876-92791.jpg?w=900&t=st=1695245835~exp=1695246435~hmac=01b44ddf63db6d8f99ac4ce1aa66f569db34415f56464e6bd3fe1f9fea9289ee')] bg-cover bg-center">
+                            <div className=" w-full h-full p-2  justify-content-between  backdrop-blur-md">
+                                <div className=" w-full h-full flex justify-content-between mb-1 ">
+                                    <div>
+                                        <span className="block text-white font-bold mb-3">Customers</span>
+                                        <div className="text-white font-bold text-xl">{userCount}</div>
+                                    </div>
+                                    <div
+                                        className="flex align-items-center justify-content-center bg-cyan-100 border-round"
+                                        style={{width: '2.5rem', height: '2.5rem'}}>
+                                        <i className="pi pi-users text-cyan-500 text-xl"></i>
+                                    </div>
+                                </div>
+                                <div className="-mt-5">
+                                    <span className="text-green-500 font-bold"> Verified  </span>
+                                    <span className="text-white">Accounts</span>
+                                </div>
+
                             </div>
-                            <div className="flex align-items-center justify-content-center bg-cyan-100 border-round" style={{ width: '2.5rem', height: '2.5rem' }}>
-                                <i className="pi pi-users text-cyan-500 text-xl"></i>
-                            </div>
+
                         </div>
-                        <span className="text-green-500 font-medium"> Verified  </span>
-                        <span className="text-500">Accounts</span>
                     </div>
-                </div>
-                <div className="col-12 md:col-6 lg:col-3">
-                    <div className="surface-0 shadow-2 p-3 border-1 border-50 border-round">
-                        <div className="flex justify-content-between mb-3">
-                            <div>
-                                <span className="block text-500 font-medium mb-3">Owners</span>
-                                <div className="text-900 font-medium text-xl">{employeeCount} </div>
+                    <div className="col-12 md:col-6 lg:col-3">
+                        <div className="surface-0 shadow-2 p-3 border-1 border-50 border-round">
+                            <div className="flex justify-content-between mb-3">
+                                <div>
+                                    <span className="block text-500 font-medium mb-3">Owners</span>
+                                    <div className="text-900 font-medium text-xl">{employeeCount} </div>
+                                </div>
+                                <div
+                                    className="flex align-items-center justify-content-center bg-purple-100 border-round"
+                                    style={{width: '2.5rem', height: '2.5rem'}}>
+                                    <i className="pi pi-user text-purple-500 text-xl"></i>
+                                </div>
                             </div>
-                            <div className="flex align-items-center justify-content-center bg-purple-100 border-round" style={{ width: '2.5rem', height: '2.5rem' }}>
-                                <i className="pi pi-user text-purple-500 text-xl"></i>
-                            </div>
+                            <span className="text-green-500 font-medium">Verified </span>
+                            <span className="text-500">Accounts</span>
                         </div>
-                        <span className="text-green-500 font-medium">Verified </span>
-                        <span className="text-500">Accounts</span>
                     </div>
                 </div>
             </div>
-        </div>
 
 
+            <Box sx={{mt: 5}} className="card mx-2 justify-content-center">
 
-
-
-            <Box sx={{mt:5}} className="card mx-2 justify-content-center">
-
-                <Grid item container  columns={12} className="justify-content-center" >
-                    <Grid item xs={12} md={6} >
+                <Grid item container columns={12} className="justify-content-center">
+                    <Grid item xs={12} md={6}>
                         <Tag severity="success" value={"orders stats"}/>
 
                         <Chart
@@ -208,8 +219,8 @@ export default function Dashboard(){
                             options={lightOptions}
                         />
                     </Grid>
-                    <Grid item xs={12} md={6}  className="template justify-content-center">
-                        <Tag  className="facebook  " >
+                    <Grid item xs={12} md={6} className="template justify-content-center">
+                        <Tag className="facebook  ">
                             <span className="px-2">products count</span>
                         </Tag>
 
@@ -219,48 +230,9 @@ export default function Dashboard(){
                 </Grid>
             </Box>
 
-            </>
+        </>
     );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 //
