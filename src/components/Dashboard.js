@@ -200,7 +200,7 @@ export default function Dashboard() {
                                 </div>
                                 <div className="-mt-5">
                             <span className="text-green-500 font-bold">Verified </span>
-                            <span className="text-500">Accounts</span>
+                            <span className="text-white">Accounts</span>
                             </div>
 
                         </div>
