@@ -40,8 +40,40 @@ export default function RestaurantProductDetails() {
 
 
 
+    useEffect(() => {
+        const specialiteId = products.restaurant && products.restaurant.specialite.id;
+        axios.get(`/api/controller/produits/restaurant/speciality/${specialiteId}`)
+            .then((response) => {
+                setProductsSpeciality(response.data);
+                console.log("specialite",specialiteId);
+
+            })
+            .catch((error) => {
+                console.error('Error fetching products with speciality:', error);
+            });
+
+    }, [products]);
 
 
+
+
+
+
+    useEffect(() => {
+        const fetchUserData = async () => {
+            const tokenInfo = accountService.getTokenInfo();
+            if (tokenInfo) {
+                try {
+                    const user = await accountService.getUserByEmail(tokenInfo.sub);
+                    setUserId(user.id);
+                    console.log('user', user.id);
+                } catch (error) {
+                    console.log('Error retrieving user:', error);
+                }
+            }
+        };
+        fetchUserData();
+    }, []);
 
     const loadProductsUser = () => {
         const checkProductInCart = (productId) => {
@@ -77,21 +109,7 @@ export default function RestaurantProductDetails() {
     }, [userId, products, productSpeciality]);
 
 
-    useEffect(() => {
-        const fetchUserData = async () => {
-            const tokenInfo = accountService.getTokenInfo();
-            if (tokenInfo) {
-                try {
-                    const user = await accountService.getUserByEmail(tokenInfo.sub);
-                    setUserId(user.id);
-                    console.log('user', user.id);
-                } catch (error) {
-                    console.log('Error retrieving user:', error);
-                }
-            }
-        };
-        fetchUserData();
-    }, []);
+
 
 
     const handleAddToCart = (product) => {
@@ -125,20 +143,7 @@ export default function RestaurantProductDetails() {
             });
     }, [id]);
 
-    useEffect(() => {
-        const specialiteId = products.restaurant && products.restaurant.specialite.id;
 
-        if (specialiteId !== undefined) {
-            axios.get(`/api/controller/produits/restaurant/speciality/${specialiteId}`)
-                .then((response) => {
-                    setProductsSpeciality(response.data);
-
-                })
-                .catch((error) => {
-                    console.error('Error fetching products with speciality:', error);
-                });
-        }
-    }, [products]);
 
 
     if (!products) {
@@ -187,7 +192,7 @@ export default function RestaurantProductDetails() {
         return (
             <div className="col-12">
             <div className="flex flex-wrap p-2 align-items-center gap-3">
-                <Link to={`/admin/all_products/product/${product.id}`}>
+                <Link to={`/ifoulki_meals/all_products/product/${product.id}`}>
                 <img className="w-4rem shadow-2 flex-shrink-0 border-round"
                      src={product.photo} alt={product.nom}  style={{
                     width: '800%',

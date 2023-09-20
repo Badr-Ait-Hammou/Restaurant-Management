@@ -39,7 +39,7 @@ const RadarChart = () => {
                 const productCounts = restaurantsData.map((restaurant) => restaurant.produitList.length);
 
                 axios
-                    .get('/api/controller/orders/all')
+                    .get('/api/controller/orders/')
                     .then((response) => {
                         const ordersData = response.data;
 
@@ -71,7 +71,7 @@ const RadarChart = () => {
                             datasets: [
                                 {
                                     label: 'Average Restaurant Rating',
-                                    backgroundColor: 'rgb(34,169,182)',
+                                    backgroundColor: 'rgba(34,169,182,0.52)',
                                     borderColor: 'rgba(20,115,128,0.85)',
                                     pointBackgroundColor: 'rgba(179,181,198,1)',
                                     pointBorderColor: '#fff',

@@ -44,6 +44,11 @@ export default function ClientOrders() {
     const [page, setPage] = useState(0);
 
 
+    useEffect(() => {
+        loadOrders();
+        loadComments();
+    }, [userId]);
+
 
 
 
@@ -64,28 +69,25 @@ export default function ClientOrders() {
     }, []);
 
     const loadComments = () => {
-        axios.get(`/api/controller/avis/user/${userId}`)
-            .then((response) => {
+        axios.get(`/api/controller/avis/user/${userId}`).then((response) => {
                 setComments(response.data);
-                console.log("comment",response.data)
             })
             .catch((error) => {
                 console.error("Error loading comments:", error);
             });
     };
 
-    useEffect(() => {
-        loadOrders();
-        loadComments();
-    }, [userId]);
+
 
     const loadOrders = () => {
+        // axios.get(`/api/controller/orders/userrole/${userId}`)
         axios.get(`/api/controller/orders/userorder/${userId}`)
             .then((response) => {
                 setOrders(response.data);
                 setLoading(false);
             })
     };
+
 
 
     const groupOrdersByCreatedDate = () => {
@@ -113,7 +115,7 @@ export default function ClientOrders() {
 
     const openFeedbackDialog = (productsGroup) => {
         const initialFeedbackData = productsGroup.map((product) => {
-            const existingComment = Array.isArray(comments) ? comments.find((comment) => comment.produit.id === product.produit.id && comment.orders.id === product.id) : null;
+            const existingComment = Array.isArray(comments) ? comments.find((comment) => comment.user.id === userId && comment.produit.id === product.produit.id && comment.orders.id === product.id ) : null;
             return {
                 id: product.produit.id,
                 orderId: product.id,
@@ -157,6 +159,7 @@ export default function ClientOrders() {
                 },
                 user: {
                     id: userId,
+                    //role:"USER"
                 },
             });
         });

@@ -73,7 +73,7 @@ export default function Orders( )  {
 
 
     const loadOrders = () => {
-        axios.get(`/api/controller/orders/all`).then((response) => {
+        axios.get(`/api/controller/orders/`).then((response) => {
             setOrders(response.data);
         });
     };

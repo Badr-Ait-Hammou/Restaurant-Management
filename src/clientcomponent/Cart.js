@@ -187,7 +187,7 @@ export default function Cart() {
                     id: product.produit.id,
                 }
             };
-            return axios.post('/api/controller/orders/save', orderItem)
+            return axios.post('/api/controller/orders/', orderItem)
                 .then((response) => response.data)
                 .catch((error) => {
                     console.error('Error saving order:', error);
