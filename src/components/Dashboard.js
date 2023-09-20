@@ -121,8 +121,8 @@ export default function Dashboard(){
                         <div className=" w-full h-full p-2  justify-content-between  backdrop-blur-sm">
                         <div className=" w-full h-full flex justify-content-between mb-1 ">
                             <div>
-                                <span className="block text-white  font-medium mb-3">Orders</span>
-                                <div className="text-white  font-medium text-xl">{deliveredcount}</div>
+                                <span className="block text-white  font-bold mb-3">Orders</span>
+                                <div className="text-white  font-bold text-xl">{deliveredcount}</div>
                             </div>
                             <div className="flex align-items-center justify-content-center bg-blue-100 border-round" style={{ width: '2.5rem', height: '2.5rem' }}>
                                 <i className="pi pi-shopping-cart text-blue-500 text-xl"></i>
@@ -143,8 +143,8 @@ export default function Dashboard(){
                         <div className=" w-full h-full p-2  justify-content-between  backdrop-blur-sm">
                             <div className=" w-full h-full flex justify-content-between mb-1 ">
                             <div>
-                                <span className="block text-500 font-medium mb-3">Revenue</span>
-                                <div className="text-900 font-medium text-xl">{deliveredtot} Dh</div>
+                                <span className="block text-white font-bold mb-3">Revenue</span>
+                                <div className="text-white font-bold text-xl">{deliveredtot} Dh</div>
                             </div>
                             <div className="flex align-items-center justify-content-center bg-orange-100 border-round" style={{ width: '2.5rem', height: '2.5rem' }}>
                                 <i className="pi pi-money-bill text-orange-500 text-xl"></i>
