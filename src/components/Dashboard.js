@@ -186,7 +186,7 @@ export default function Dashboard() {
                     </div>
                     <div className="col-12 md:col-6 lg:col-3">
                         <div className="shadow-2  border-1 p-0.5 border-50 border-round w-full h-8rem bg-[url('https://img.freepik.com/free-photo/confident-chef-wearing-uniform-posing-with-his-arms-crossed-looking-camera-restaurant-kitchen_613910-21338.jpg?size=626&ext=jpg&ga=GA1.2.1906554086.1668974677&semt=ais')] bg-cover bg-center">
-                            <div className=" w-full h-full p-2  justify-content-between  backdrop-blur-md">
+                            <div className=" w-full h-full p-2  justify-content-between  backdrop-blur-sm">
                                 <div className=" w-full h-full flex justify-content-between mb-1 ">
                                     <div>
                                     <span className="block text-white font-bold mb-3">Owners</span>
