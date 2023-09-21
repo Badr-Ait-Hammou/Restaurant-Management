@@ -2,9 +2,7 @@ import axios from  '../service/callerService';
 import React, { useState, useEffect } from "react";
 import 'bootstrap/dist/css/bootstrap.css';
 import { Button } from 'primereact/button';
-import ReactPaginate from "react-paginate";
 import"../styles/login.css"
-import { Card, CardContent } from '@mui/material';
 import {ConfirmDialog, confirmDialog} from "primereact/confirmdialog";
 import { Toast } from 'primereact/toast';
 import {useRef} from "react";
@@ -14,6 +12,7 @@ import {Column} from "primereact/column";
 import {Tag} from "primereact/tag";
 import SkeletonPr from "../skeleton/ProfileSkeleton";
 import {InputText} from "primereact/inputtext";
+import {format, formatDistanceToNow} from "date-fns";
 
 
 
@@ -109,9 +108,6 @@ export default function Orders( )  {
         </div>;
     };
 
-
-
-
     const actionBodyTemplate = (rowData) => {
         return (
             <React.Fragment>
@@ -120,7 +116,6 @@ export default function Orders( )  {
                         <i className="pi pi-trash px-2"></i>
                         <span className="px-1">Delete</span>
                     </Button>
-                    {/*<Button className="edit p-0" aria-label="Slack" onClick={() => handleupdate(rowData)}>*/}
                     <Button className="edit p-0" aria-label="Slack" >
                         <i className="pi pi-pencil px-2"></i>
                         <span className="px-1">Update</span>
@@ -147,9 +142,17 @@ export default function Orders( )  {
 
 
 
+    function formatCommentDate(dateCreated) {
+        const now = new Date();
+        const dateCreatedTime = new Date(dateCreated);
+        const timeDifference = now - dateCreatedTime;
 
-
-
+        if (timeDifference < 3600000) {
+            return formatDistanceToNow(dateCreatedTime, { addSuffix: true });
+        } else {
+            return format(dateCreatedTime, 'dd-MM-yyyy HH:mm');
+        }
+    }
 
 
 
@@ -164,11 +167,11 @@ export default function Orders( )  {
                     <DataTable ref={dt} value={reservations}
                                dataKey="id"  paginator rows={10} rowsPerPageOptions={[5, 10, 25]}
                                paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-                               currentPageReportTemplate="Showing {first} to {last} of {totalRecords} Products" globalFilter={globalFilter} header={header}>
+                               currentPageReportTemplate="Showing {first} to {last} of {totalRecords} Reservations" globalFilter={globalFilter} header={header}>
                         <Column field="id"  header="ID" sortable style={{ minWidth: '5rem' }}></Column>
                         <Column field="user.email"   filter filterPlaceholder="Search Name ..." header="Client" sortable style={{ minWidth: '14rem' }} body={(rowData) => (<div><Tag icon={"pi pi-inbox"} style={{backgroundColor:"rgba(70,175,172,0.91)"}} value={`${rowData.user && rowData.user.email} `}/></div>)}></Column>
                         <Column field="user.telephone"   filter filterPlaceholder="Search Name ..." header="Client Phone" sortable style={{ minWidth: '14rem' }} body={(rowData) => (<div><Tag icon={"pi pi-phone"} style={{backgroundColor:"rgba(235,241,241,0.91)",color:"black"}} value={`${rowData.user && rowData.user.telephone} `}/></div>)}></Column>
-                        <Column field="dateCreated" className="font-bold"  filter filterPlaceholder="Search Name ..." header="Submitted at" sortable style={{ minWidth: '10rem' }}></Column>
+                        <Column field="dateCreated" className="font-bold"  filter filterPlaceholder="Search Name ..." header="Submitted at" sortable style={{ minWidth: '10rem' }} body={(rowData) => (<div><Tag icon={"pi pi-inbox"} style={{backgroundColor:"rgba(70,175,172,0.91)"}}>{formatCommentDate(rowData.dateCreated)}</Tag></div>)}></Column>
                         <Column field="reservationDate" className="font-bold"  filter filterPlaceholder="Search Name ..." header="Reservation Date " sortable style={{ minWidth: '10rem' }}></Column>
                         <Column field="restaurant.nom"   filter filterPlaceholder="Search Name ..." header="Restaurant" sortable style={{ minWidth: '14rem' }} body={(rowData) => (<div><Tag style={{backgroundColor:"rgba(70,175,153,0.91)"}} value={`${rowData.restaurant && rowData.restaurant.nom} `}/></div>)}></Column>
                         <Column field="type"   filter filterPlaceholder="Search Name ..." header="Type " sortable style={{ minWidth: '10rem' }}></Column>
