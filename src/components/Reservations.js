@@ -24,6 +24,8 @@ export default function Orders( )  {
     const dt = useRef(null);
     const [globalFilter, setGlobalFilter] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [isCancelled, setIsCancelled] = useState(false);
+
 
 
 
@@ -35,18 +37,23 @@ export default function Orders( )  {
     };
 
 
-    const fetchData = async () => {
-        try {
-            const result = await axios(`/api/controller/reservations/`);
-            setReservations(result.data);
+    const loadReservations=async ()=>{
+        const result = await axios(`/api/controller/reservations/`);
+        setReservations(result.data);
 
-        } catch (error) {
-            console.error('Error fetching data:', error);
-        }
-    };
+    }
+
+
+
+
+
+
+
+
+
 
     useEffect(() => {
-        fetchData();
+        loadReservations();
         handleDataTableLoad();
     }, []);
 
@@ -79,7 +86,28 @@ export default function Orders( )  {
         dt.current.exportCSV();
     };
 
+    const handleUpdatestatus = async (reservationToUpdate) => {
+        try {
+            const response = await axios.put(`/api/controller/reservations/status/${reservationToUpdate.id}`, {
+                status: isCancelled ? "Confirmed" : "Cancelled",
+            });
 
+            const updatedReservation = [...reservations];
+            const updatedReservationIndex = updatedReservation.findIndex((reservation) => reservation.id === reservationToUpdate.id);
+            updatedReservation[updatedReservationIndex] = response.data;
+
+            setIsCancelled(!isCancelled);
+            loadReservations();
+            showupdateStatus();
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+
+    const showupdateStatus = () => {
+        toast.current.show({severity:'info', summary: 'success', detail:'reservation status updated ', life: 3000});
+    }
 
 
 
@@ -110,6 +138,23 @@ export default function Orders( )  {
         </div>;
     };
 
+    // const actionBodyTemplate = (rowData) => {
+    //     return (
+    //         <React.Fragment>
+    //             <div className="template">
+    //                 <Button className="cancel p-0" aria-label="Slack" onClick={() => handleDelete(rowData.id)}>
+    //                     <i className="pi pi-trash px-2"></i>
+    //                     <span className="px-1">Delete</span>
+    //                 </Button>
+    //                 <Button className="edit p-0" aria-label="Slack" onClick={()=>handleUpdatestatus(rowData.id)} >
+    //                     <i className="pi pi-pencil px-2"></i>
+    //                     <span className="px-1">Update</span>
+    //                 </Button>
+    //             </div>
+    //         </React.Fragment>
+    //     );
+    // };
+
     const actionBodyTemplate = (rowData) => {
         return (
             <React.Fragment>
@@ -118,14 +163,22 @@ export default function Orders( )  {
                         <i className="pi pi-trash px-2"></i>
                         <span className="px-1">Delete</span>
                     </Button>
-                    <Button className="edit p-0" aria-label="Slack" >
-                        <i className="pi pi-pencil px-2"></i>
-                        <span className="px-1">Update</span>
-                    </Button>
+                    {rowData.status ==="Cancelled" ? (
+                        <Button className="edit p-0" aria-label="Slack" onClick={() => handleUpdatestatus(rowData)}>
+                            <i className="pi pi-undo px-2"></i>
+                            <span className="px-1">Confirm</span>
+                        </Button>
+                    ) : (
+                        <Button className="edit p-0" aria-label="Slack" onClick={() => handleUpdatestatus(rowData)}>
+                            <i className="pi pi-pencil px-2"></i>
+                            <span className="px-1">Cancel</span>
+                        </Button>
+                    )}
                 </div>
             </React.Fragment>
         );
     };
+
     const header = (
         <div className="flex flex-wrap  align-items-center justify-content-between -m-3" >
     <span className="p-input-icon-left p-1 "  >
@@ -184,6 +237,7 @@ export default function Orders( )  {
                         <Column field="reservationDate" className="font-bold"  filter filterPlaceholder="Search Name ..." header="Reservation Date" sortable style={{ minWidth: '15rem' }} body={(rowData) => (<div><Tag icon={"pi pi-inbox"} style={{backgroundColor:"rgba(235,241,241,0.91)",color:"black"}}>{formatReservationDate(rowData.reservationDate)}</Tag></div>)}></Column>
                         <Column field="restaurant.nom"   filter filterPlaceholder="Search Name ..." header="Restaurant" sortable style={{ minWidth: '14rem' }} body={(rowData) => (<div><Tag style={{backgroundColor:"rgba(70,175,153,0.91)"}} value={`${rowData.restaurant && rowData.restaurant.nom} `}/></div>)}></Column>
                         <Column field="type"   filter filterPlaceholder="Search Name ..." header="Type " sortable style={{ minWidth: '10rem' }}></Column>
+                        <Column field="status"   filter filterPlaceholder="Search Name ..." header="status " sortable style={{ minWidth: '10rem' }}></Column>
                         <Column header="Action" body={actionBodyTemplate} exportable={false} style={{ minWidth: '16rem' }}></Column>
                     </DataTable>
             </div>
