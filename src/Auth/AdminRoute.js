@@ -7,7 +7,7 @@ import Zone from '../components/Zones';
 import Serie from '../components/Series';
 import Specilite from '../components/Specialities';
 import User from '../components/UserTable';
-import Produit from '../components/Produit';
+import Produit from '../components/Products';
 import Header from '../components/Header';
 import CltRest from '../clientcomponent/ClientRestaurants';
 import RestaurantDetails from '../clientcomponent/RestaurantDetails';

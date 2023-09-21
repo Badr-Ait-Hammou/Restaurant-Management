@@ -23,6 +23,7 @@ export default function ProduitTable() {
     const [produitPrix, setProduitPrix] = useState('');
     const [produitRestaurant, setProduitRestaurant] = useState('');
     const [selectedProduit, setSelectedProduit] = useState(null);
+
     const [pageNumber, setPageNumber] = useState(0);
     const itemsPerPage = 4;
     const offset = pageNumber * itemsPerPage;

@@ -22,6 +22,7 @@ export default function Produit() {
    // const [promotion, setpromotion] = useState("");
     const [promotion, setpromotion] = useState(false);
 
+
     const [prix, setprix] = useState("");
     const [upTB, forceUpdate] = useReducer((x) => x + 1, 0);
     const [tableKey, setTableKey] = useState(Date.now());
