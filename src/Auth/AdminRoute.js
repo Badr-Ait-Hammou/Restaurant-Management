@@ -16,7 +16,7 @@ import Footer from "../components/Footer";
 import ClientHeader from "../clientcomponent/ClientHeader"
 import Profile from "../clientcomponent/ClientProfile"
 import Orders from "../components/Orders"
-import Reservation from "../clientcomponent/ClientReservation"
+import Reservation from "../clientcomponent/Reservations"
 import Reservations from "../components/Reservations"
 import ClientOrders from "../clientcomponent/ClientOrders"
 import Cart from "../clientcomponent/Cart"
