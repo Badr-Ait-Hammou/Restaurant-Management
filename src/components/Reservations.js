@@ -85,7 +85,7 @@ export default function Orders( )  {
     const leftToolbarTemplate = () => {
         return (
             <div className="template flex flex-wrap gap-2">
-                <Button className="add p-0"  >
+                <Button className="pay p-0"  >
                     <i className="pi pi-plus px-2"></i>
                     <span className="px-3  font-bold text-white">Add</span>
                 </Button>
