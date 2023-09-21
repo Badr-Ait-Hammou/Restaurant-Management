@@ -214,8 +214,7 @@ export default function Series()  {
     const leftToolbarTemplate = () => {
         return (
             <div className="template flex flex-wrap gap-2">
-                {/*<Button   label="New" icon="pi pi-plus" severity="success" onClick={openNew} />*/}
-                <Button className="add p-0"   onClick={openNew}>
+                <Button className="pay p-0"   onClick={openNew}>
                     <i className="pi pi-plus px-2"></i>
                     <span className="px-3  font-bold text-white">Add</span>
                 </Button>
