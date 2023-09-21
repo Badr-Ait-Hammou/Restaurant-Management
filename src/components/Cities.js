@@ -14,8 +14,7 @@ import {ConfirmDialog, confirmDialog} from "primereact/confirmdialog";
 import { Grid} from "@mui/material";
 import {Box} from "@mui/system";
 import axios from '../service/callerService';
-import SkeletonPr from "../skeleton/ProfileSkeleton"
-
+import DatatableSkeleton from "../skeleton/DatatableSkeleton";
 
 
 
@@ -30,12 +29,12 @@ export default function Cities() {
     const [selectedCity, setSelectedCity] = useState(null);
     const [nom, setNom] = useState('');
     const [city, setCities] =  useState([]);
-    const [dataTableLoaded, setDataTableLoaded] = useState(false);
+    const [loading, setLoading] = useState(true);
 
 
 
     const handleDataTableLoad = () => {
-        setDataTableLoaded(true);
+        setLoading(false);
     };
 
 
@@ -282,7 +281,11 @@ export default function Cities() {
 
 
 
-
+    if(loading || city.length=== 0){
+        return(
+            <DatatableSkeleton/>
+        )
+    }
 
 
 
@@ -296,7 +299,6 @@ export default function Cities() {
 
                 <div className="card " >
                     <Toolbar className="mb-2 p-1" start={leftToolbarTemplate} center={centerToolbarTemplate} end={rightToolbarTemplate}></Toolbar>
-                    {dataTableLoaded ? (
                         <DataTable ref={dt} value={city}
                                    dataKey="id"  paginator rows={10} rowsPerPageOptions={[5, 10, 25]}
                                    paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
@@ -305,9 +307,7 @@ export default function Cities() {
                             <Column field="nom"   filter filterPlaceholder="Search Name ..." header="Name" sortable style={{ minWidth: '18rem' }}></Column>
                             <Column header="Action" body={actionBodyTemplate} exportable={false} style={{ minWidth: '18rem' }}></Column>
                         </DataTable>
-                    ):(
-                        <SkeletonPr/>
-                    )}
+
                 </div>
             </div>
 

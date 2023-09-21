@@ -15,7 +15,8 @@ import { Grid} from "@mui/material";
 import {Box} from "@mui/system";
 import { Dropdown } from 'primereact/dropdown';
 import axios from '../service/callerService';
-import SkeletonPr from "../skeleton/ProfileSkeleton"
+import DatatableSkeleton from "../skeleton/DatatableSkeleton";
+
 
 
 
@@ -31,8 +32,9 @@ export default function Zones() {
     const [nom, setNom] = useState('');
     const [zone, setZones] =  useState([]);
     const [city, setCities] =  useState([]);
-    const [dataTableLoaded, setDataTableLoaded] = useState(false);
     const [cityId, setCityId] = useState("");
+    const [loading, setLoading] = useState(true);
+
 
 
     const handleCityChange = (e) => {
@@ -40,7 +42,7 @@ export default function Zones() {
     };
 
     const handleDataTableLoad = () => {
-        setDataTableLoaded(true);
+        setLoading(false);
     };
 
 
@@ -267,7 +269,7 @@ export default function Zones() {
 
     const productDialogFooter = (
         <React.Fragment>
-            <div className="template">
+            <div className="template flex justify-content-end mt-1">
                 <Button className="cancel p-0" aria-label="Slack" onClick={hideDialog}>
                     <i className="pi pi-times px-2"></i>
                     <span className="px-3">Cancel</span>
@@ -281,12 +283,8 @@ export default function Zones() {
     );
 
     const editimageDialogFooter = (
-        // <React.Fragment>
-        //     <Button label="Cancel" icon="pi pi-times" outlined onClick={hideeditDialog} />
-        //     <Button label="Update" severity="info"  raised onClick={() => handleEdit(selectedZone)} />
-        // </React.Fragment>
     <React.Fragment>
-        <div className="template">
+        <div className="template flex justify-content-end mt-1">
             <Button className="cancel p-0" aria-label="Slack" onClick={hideeditDialog}>
                 <i className="pi pi-times px-2"></i>
                 <span className="px-3">Cancel</span>
@@ -300,7 +298,11 @@ export default function Zones() {
     );
 
 
-
+    if(loading || zone.length=== 0){
+        return(
+            <DatatableSkeleton/>
+        )
+    }
 
 
 
@@ -315,7 +317,6 @@ export default function Zones() {
 
                 <div className="card">
                     <Toolbar className="mb-2 p-1" start={leftToolbarTemplate} center={centerToolbarTemplate} end={rightToolbarTemplate}></Toolbar>
-                    {dataTableLoaded ? (
                         <DataTable ref={dt} value={zone}
                                    dataKey="id"  paginator rows={10} rowsPerPageOptions={[5, 10, 25]}
                                    paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
@@ -325,9 +326,6 @@ export default function Zones() {
                             <Column field="ville.nom"   filter filterPlaceholder="Search Name ..." header="City" sortable style={{ minWidth: '18rem' }}></Column>
                             <Column header="Action" body={actionBodyTemplate} exportable={false} style={{ minWidth: '10rem' }}></Column>
                         </DataTable>
-                    ):(
-                        <SkeletonPr/>
-                    )}
                 </div>
             </div>
 

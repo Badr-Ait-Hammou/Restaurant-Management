@@ -16,9 +16,8 @@ import {Box} from "@mui/system";
 import { FileUpload } from 'primereact/fileupload';
 import EmptyImg from "../images/empty.png";
 import axios from '../service/callerService';
-import SkeletonPr from "../skeleton/ProfileSkeleton"
 import "../styles/ButtonDemo.css"
-
+import DatatableSkeleton from "../skeleton/DatatableSkeleton";
 
 
 
@@ -36,12 +35,13 @@ export default function Series()  {
     const [nom, setNom] = useState('');
     const [photo, setPhoto] = useState('');
     const [serie, setSeries] =  useState([]);
-    const [dataTableLoaded, setDataTableLoaded] = useState(false);
+    const [loading, setLoading] = useState(true);
+
 
 
 
     const handleDataTableLoad = () => {
-        setDataTableLoaded(true);
+        setLoading(false);
     };
 
 
@@ -320,6 +320,12 @@ export default function Series()  {
         />;
     };
 
+    if(loading || serie.length=== 0){
+        return(
+            <DatatableSkeleton/>
+        )
+    }
+
     return (
         <>
 
@@ -329,7 +335,6 @@ export default function Series()  {
 
                 <div className="card">
                     <Toolbar className="mb-2 p-1" start={leftToolbarTemplate} center={centerToolbarTemplate} end={rightToolbarTemplate}></Toolbar>
-                    {dataTableLoaded ? (
                         <DataTable ref={dt} value={serie}
                                    dataKey="id"  paginator rows={10} rowsPerPageOptions={[5, 10, 25]}
                                    paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
@@ -339,9 +344,6 @@ export default function Series()  {
                             <Column field="photo" header="Photo" body={photoBodyTemplate} sortable style={{ minWidth: '18rem' }}></Column>
                             <Column header="Action" body={actionBodyTemplate} exportable={false} style={{ minWidth: '10rem' }}></Column>
                         </DataTable>
-                    ):(
-                        <SkeletonPr/>
-                    )}
                 </div>
             </div>
 

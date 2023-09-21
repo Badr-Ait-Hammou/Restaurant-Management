@@ -16,8 +16,8 @@ import {Box} from "@mui/system";
 import { FileUpload } from 'primereact/fileupload';
 import EmptyImg from "../images/empty.png";
 import axios from '../service/callerService';
-import SkeletonPr from "../skeleton/ProfileSkeleton"
 import { Avatar } from "@mui/material";
+import DatatableSkeleton from "../skeleton/DatatableSkeleton";
 
 
 
@@ -36,12 +36,13 @@ export default function Specialities() {
     const [nom, setNom] = useState('');
     const [photo, setPhoto] = useState('');
     const [sepeciality, setSepecialities] =  useState([]);
-    const [dataTableLoaded, setDataTableLoaded] = useState(false);
+    const [loading, setLoading] = useState(true);
+
 
 
 
     const handleDataTableLoad = () => {
-        setDataTableLoaded(true);
+        setLoading(false);
     };
 
 
@@ -279,7 +280,7 @@ export default function Specialities() {
 
     const specialityDialogFooter = (
         <React.Fragment>
-            <div className="template">
+            <div className="template flex justify-content-end mt-1">
                 <Button className="cancel p-0" aria-label="Slack" onClick={hideDialog}>
                     <i className="pi pi-times px-2"></i>
                     <span className="px-3">Cancel</span>
@@ -294,7 +295,7 @@ export default function Specialities() {
 
     const editimageDialogFooter = (
         <React.Fragment>
-            <div className="template">
+            <div className="template flex justify-content-end mt-1">
                 <Button className="cancel p-0" aria-label="Slack" onClick={hideeditDialog}>
                     <i className="pi pi-times px-2"></i>
                     <span className="px-3">Cancel</span>
@@ -326,7 +327,11 @@ export default function Specialities() {
 
 
 
-
+    if(loading || sepeciality.length=== 0){
+        return(
+            <DatatableSkeleton/>
+        )
+    }
 
 
 
@@ -341,7 +346,6 @@ export default function Specialities() {
 
                 <div className="card">
                     <Toolbar className="mb-2 p-1" start={leftToolbarTemplate} center={centerToolbarTemplate} end={rightToolbarTemplate}></Toolbar>
-                    {dataTableLoaded ? (
                         <DataTable ref={dt} value={sepeciality}
                                    dataKey="id"  paginator rows={10} rowsPerPageOptions={[5, 10, 25]}
                                    paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
@@ -351,9 +355,7 @@ export default function Specialities() {
                             <Column field="photo" header="Photo" body={photoBodyTemplate} sortable style={{ minWidth: '18rem' }}></Column>
                             <Column header="Action" body={actionBodyTemplate} exportable={false} style={{ minWidth: '10rem' }}></Column>
                         </DataTable>
-                    ):(
-                        <SkeletonPr/>
-                    )}
+
                 </div>
             </div>
 

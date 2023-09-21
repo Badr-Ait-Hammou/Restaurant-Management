@@ -15,7 +15,6 @@ import {ConfirmDialog, confirmDialog} from "primereact/confirmdialog";
 import {Avatar, Grid,FormControlLabel,Switch,Box} from "@mui/material";
 import { Dropdown } from 'primereact/dropdown';
 import axios from '../service/callerService';
-import SkeletonPr from "../skeleton/ProfileSkeleton"
 import {FileUpload} from "primereact/fileupload";
 import EmptyImg from "../images/empty.png";
 import DatatableSkeleton from "../skeleton/DatatableSkeleton";
@@ -39,10 +38,11 @@ export default function Products() {
     const [description, setDescription] = useState("");
     const [stock, setStock] = useState("");
     const [promotion, setpromotion] = useState(null);
-    const [dataTableLoaded, setDataTableLoaded] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [products, setproducts] = useState([]);
     const [prix, setprix] = useState("");
+    const [loading, setLoading] = useState(true);
+
 
 
 
@@ -53,7 +53,7 @@ export default function Products() {
     };
  
     const handleDataTableLoad = () => {
-        setDataTableLoaded(true);
+        setLoading(false);
     };
 
 
@@ -373,6 +373,11 @@ export default function Products() {
         />;
     };
 
+    if(loading || products.length=== 0){
+        return(
+            <DatatableSkeleton/>
+        )
+    }
 
     return (
         <>
@@ -382,7 +387,6 @@ export default function Products() {
 
                 <div className="card">
                     <Toolbar className="mb-2 p-1" start={leftToolbarTemplate} center={centerToolbarTemplate} end={rightToolbarTemplate}></Toolbar>
-                    {dataTableLoaded ? (
                         <DataTable ref={dt} value={products}
                                    dataKey="id"  paginator rows={10} rowsPerPageOptions={[5, 10, 25]}
                                    paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
@@ -413,9 +417,6 @@ export default function Products() {
                             )}  filter filterPlaceholder="Search Name ..." header="Status" sortable style={{ minWidth: '6rem' }}></Column>
                             <Column header="Action" body={actionBodyTemplate} exportable={false} style={{ minWidth: '16rem' }}></Column>
                         </DataTable>
-                    ):(
-                        <SkeletonPr/>
-                    )}
                 </div>
             </div>
 

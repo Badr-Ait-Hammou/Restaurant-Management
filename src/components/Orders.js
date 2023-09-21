@@ -20,6 +20,8 @@ import IconButton from "@mui/material/IconButton";
 import {Fade} from "@mui/material";
 import {ConfirmDialog, confirmDialog} from "primereact/confirmdialog";
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
+import DatatableSkeleton from "../skeleton/DatatableSkeleton";
+
 
 
 
@@ -28,6 +30,8 @@ export default function Orders( )  {
     const [globalFilter, setGlobalFilter] = useState(null);
     const toast = useRef(null);
     const dt = useRef(null);
+    const [loading, setLoading] = useState(true);
+
 
     const items = [
         {
@@ -75,6 +79,7 @@ export default function Orders( )  {
     const loadOrders = () => {
         axios.get(`/api/controller/orders/`).then((response) => {
             setOrders(response.data);
+            setLoading(false);
         });
     };
 
@@ -262,6 +267,12 @@ export default function Orders( )  {
         return grouped;
     };
 
+
+    if(loading || orders.length=== 0){
+        return(
+            <DatatableSkeleton/>
+        )
+    }
 
 
     return (
