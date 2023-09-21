@@ -1,8 +1,6 @@
 import axios from  '../service/callerService';
 import React, { useState, useEffect } from "react";
-import 'bootstrap/dist/css/bootstrap.css';
 import { Button } from 'primereact/button';
-import"../styles/login.css"
 import {ConfirmDialog, confirmDialog} from "primereact/confirmdialog";
 import { Toast } from 'primereact/toast';
 import {useRef} from "react";
@@ -10,9 +8,12 @@ import {Toolbar} from "primereact/toolbar";
 import {DataTable} from "primereact/datatable";
 import {Column} from "primereact/column";
 import {Tag} from "primereact/tag";
-import SkeletonPr from "../skeleton/ProfileSkeleton";
 import {InputText} from "primereact/inputtext";
 import {format, formatDistanceToNow} from "date-fns";
+import DatatableSkeleton from "../skeleton/DatatableSkeleton";
+
+
+
 
 
 
@@ -21,15 +22,16 @@ export default function Orders( )  {
     const [reservations, setReservations] = useState([]);
     const toast = useRef(null);
     const dt = useRef(null);
-    const [dataTableLoaded, setDataTableLoaded] = useState(false);
     const [globalFilter, setGlobalFilter] = useState(null);
+    const [loading, setLoading] = useState(true);
+
 
 
 
 
 
     const handleDataTableLoad = () => {
-        setDataTableLoaded(true);
+        setLoading(false);
     };
 
 
@@ -142,7 +144,7 @@ export default function Orders( )  {
 
 
 
-    function formatCommentDate(dateCreated) {
+    function formatReservationDate(dateCreated) {
         const now = new Date();
         const dateCreatedTime = new Date(dateCreated);
         const timeDifference = now - dateCreatedTime;
@@ -150,20 +152,27 @@ export default function Orders( )  {
         if (timeDifference < 3600000) {
             return formatDistanceToNow(dateCreatedTime, { addSuffix: true });
         } else {
-            return format(dateCreatedTime, 'dd-MM-yyyy HH:mm');
+            return format(dateCreatedTime, 'EEEE, dd-MM-yyyy HH:mm');
         }
     }
 
 
+    if(loading ||reservations.length ===0){
+        return(
+
+            <DatatableSkeleton/>
+
+        )
+    }
 
     return (
+        <>
         <div className="card p-1 mt-5 mx-2">
             <Toast ref={toast} />
             <ConfirmDialog />
 
             <div className="card">
                 <Toolbar className="mb-2 p-1" start={leftToolbarTemplate} center={centerToolbarTemplate} end={rightToolbarTemplate}></Toolbar>
-                {dataTableLoaded ? (
                     <DataTable ref={dt} value={reservations}
                                dataKey="id"  paginator rows={10} rowsPerPageOptions={[5, 10, 25]}
                                paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
@@ -171,17 +180,15 @@ export default function Orders( )  {
                         <Column field="id"  header="ID" sortable style={{ minWidth: '5rem' }}></Column>
                         <Column field="user.email"   filter filterPlaceholder="Search Name ..." header="Client" sortable style={{ minWidth: '14rem' }} body={(rowData) => (<div><Tag icon={"pi pi-inbox"} style={{backgroundColor:"rgba(70,175,172,0.91)"}} value={`${rowData.user && rowData.user.email} `}/></div>)}></Column>
                         <Column field="user.telephone"   filter filterPlaceholder="Search Name ..." header="Client Phone" sortable style={{ minWidth: '14rem' }} body={(rowData) => (<div><Tag icon={"pi pi-phone"} style={{backgroundColor:"rgba(235,241,241,0.91)",color:"black"}} value={`${rowData.user && rowData.user.telephone} `}/></div>)}></Column>
-                        <Column field="dateCreated" className="font-bold"  filter filterPlaceholder="Search Name ..." header="Submitted at" sortable style={{ minWidth: '10rem' }} body={(rowData) => (<div><Tag icon={"pi pi-inbox"} style={{backgroundColor:"rgba(70,175,172,0.91)"}}>{formatCommentDate(rowData.dateCreated)}</Tag></div>)}></Column>
-                        <Column field="reservationDate" className="font-bold"  filter filterPlaceholder="Search Name ..." header="Reservation Date " sortable style={{ minWidth: '10rem' }}></Column>
+                        <Column field="dateCreated" className="font-bold"  filter filterPlaceholder="Search Name ..." header="Submitted at" sortable style={{ minWidth: '15rem' }} body={(rowData) => (<div><Tag icon={"pi pi-inbox"} style={{backgroundColor:"rgba(235,241,241,0.91)",color:"black"}}>{formatReservationDate(rowData.dateCreated)}</Tag></div>)}></Column>
+                        <Column field="reservationDate" className="font-bold"  filter filterPlaceholder="Search Name ..." header="Reservation Date" sortable style={{ minWidth: '15rem' }} body={(rowData) => (<div><Tag icon={"pi pi-inbox"} style={{backgroundColor:"rgba(235,241,241,0.91)",color:"black"}}>{formatReservationDate(rowData.reservationDate)}</Tag></div>)}></Column>
                         <Column field="restaurant.nom"   filter filterPlaceholder="Search Name ..." header="Restaurant" sortable style={{ minWidth: '14rem' }} body={(rowData) => (<div><Tag style={{backgroundColor:"rgba(70,175,153,0.91)"}} value={`${rowData.restaurant && rowData.restaurant.nom} `}/></div>)}></Column>
                         <Column field="type"   filter filterPlaceholder="Search Name ..." header="Type " sortable style={{ minWidth: '10rem' }}></Column>
                         <Column header="Action" body={actionBodyTemplate} exportable={false} style={{ minWidth: '16rem' }}></Column>
                     </DataTable>
-                ):(
-                    <SkeletonPr/>
-                )}
             </div>
         </div>
+            </>
     );
 };
 

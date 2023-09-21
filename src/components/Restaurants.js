@@ -15,9 +15,9 @@ import {Avatar, Grid} from "@mui/material";
 import {Box} from "@mui/system";
 import { Dropdown } from 'primereact/dropdown';
 import axios from '../service/callerService';
-import SkeletonPr from "../skeleton/ProfileSkeleton"
 import {FileUpload} from "primereact/fileupload";
 import EmptyImg from "../images/empty.png";
+import DatatableSkeleton from "../skeleton/DatatableSkeleton";
 
 
 
@@ -31,7 +31,6 @@ export default function Restaurants() {
     const dt = useRef(null);
     const [nom, setNom] = useState('');
     const [zone, setZones] =  useState([]);
-    const [dataTableLoaded, setDataTableLoaded] = useState(false);
     const [series, setSeries] = useState([]);
     const [specialites, setSpecialites] = useState([]);
     const [restaurants, setRestaurants] = useState([]);
@@ -45,6 +44,17 @@ export default function Restaurants() {
     const [adresse, setAdresse] = useState("");
     const [photo, setPhotos] = useState("");
     const [selectedRestaurant, setSelectedRestaurant] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+
+
+
+
+
+    const handleDataTableLoad = () => {
+        setLoading(false);
+    };
+
 
 
 
@@ -58,9 +68,6 @@ export default function Restaurants() {
         setSpecialiteid(e.value);
     };
 
-    const handleDataTableLoad = () => {
-        setDataTableLoaded(true);
-    };
 
 
     useEffect(() => {
@@ -371,7 +378,7 @@ export default function Restaurants() {
 
     const RestaurantDialogFooter = (
         <React.Fragment>
-            <div className="template">
+            <div className="template flex justify-content-end mt-1">
                 <Button className="cancel p-0" aria-label="Slack" onClick={hideDialog}>
                     <i className="pi pi-times px-2"></i>
                     <span className="px-3">Cancel</span>
@@ -385,12 +392,9 @@ export default function Restaurants() {
     );
 
     const editimageDialogFooter = (
-        // <React.Fragment>
-        //     <Button label="Cancel" icon="pi pi-times" outlined onClick={hideeditDialog} />
-        //     <Button label="Update" severity="info"  raised onClick={() => handleEdit(selectedZone)} />
-        // </React.Fragment>
+
         <React.Fragment>
-            <div className="template">
+            <div className="template flex justify-content-end mt-1">
                 <Button className="cancel p-0" aria-label="Slack" onClick={hideeditDialog}>
                     <i className="pi pi-times px-2"></i>
                     <span className="px-3">Cancel</span>
@@ -426,6 +430,11 @@ export default function Restaurants() {
     };
 
 
+    if(loading || restaurants.length ===0){
+        return(
+            <DatatableSkeleton/>
+        )
+    }
     return (
         <>
             <div className="card p-1 mt-5 mx-2">
@@ -434,7 +443,6 @@ export default function Restaurants() {
 
                 <div className="card">
                     <Toolbar className="mb-2 p-1" start={leftToolbarTemplate} center={centerToolbarTemplate} end={rightToolbarTemplate}></Toolbar>
-                    {dataTableLoaded ? (
                         <DataTable ref={dt} value={restaurants}
                                    dataKey="id"  paginator rows={10} rowsPerPageOptions={[5, 10, 25]}
                                    paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
@@ -452,9 +460,6 @@ export default function Restaurants() {
                             <Column   field={(rowData) => `${rowData.zone.ville.nom} -- ${rowData.zone.nom} `} header="Zone" sortable style={{ minWidth: '12rem' }}></Column>
                             <Column header="Action" body={actionBodyTemplate} exportable={false} style={{ minWidth: '16rem' }}></Column>
                         </DataTable>
-                    ):(
-                        <SkeletonPr/>
-                    )}
                 </div>
             </div>
 

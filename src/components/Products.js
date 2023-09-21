@@ -18,6 +18,8 @@ import axios from '../service/callerService';
 import SkeletonPr from "../skeleton/ProfileSkeleton"
 import {FileUpload} from "primereact/fileupload";
 import EmptyImg from "../images/empty.png";
+import DatatableSkeleton from "../skeleton/DatatableSkeleton";
+
 
 
 
