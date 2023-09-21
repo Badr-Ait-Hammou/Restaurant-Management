@@ -105,7 +105,6 @@ export default function Dashboard() {
     };
     return (
         <>
-            {/*style={{background:"linear-gradient(to left, var(--yellow-400) 50%, var(--yellow-500) 50%)",transition:"background-position 0.5s ease-out;",backgroundSize:"200% 100%",backgroundPosition:"right bottom",borderColor:"var(--yellow-500)"}}*/}
             <div className="card mt-5 p-1 m-2">
 
                 <div className="grid">
