@@ -8,6 +8,7 @@ import { Toast } from 'primereact/toast';
 import { Button } from 'primereact/button';
 import { Toolbar } from 'primereact/toolbar';
 import { Dialog } from 'primereact/dialog';
+import { Tag } from 'primereact/tag';
 import { InputText } from 'primereact/inputtext';
 import 'primeicons/primeicons.css';
 import {ConfirmDialog, confirmDialog} from "primereact/confirmdialog";
@@ -389,9 +390,25 @@ export default function Products() {
                             <Column field="photo" header="Photo" body={photoBodyTemplate} exportable={false} style={{ minWidth: '6rem' }}></Column>
                             <Column field="restaurant.nom"   filter filterPlaceholder="Search Name ..." header="Restaurant" sortable style={{ minWidth: '14rem' }}></Column>
                             <Column field="description"   filter filterPlaceholder="Search Name ..." header="Description" sortable style={{ minWidth: '14rem' }}></Column>
-                            <Column field="prix"   filter filterPlaceholder="Search Name ..." header="Price" sortable style={{ minWidth: '14rem' }}></Column>
-                            <Column field="stock"   filter filterPlaceholder="Search Name ..." header="Stock" sortable style={{ minWidth: '8rem' }}></Column>
-                            <Column field="promotion"   filter filterPlaceholder="Search Name ..." header="On Sale" sortable style={{ minWidth: '8rem' }}></Column>
+                            <Column field="prix"   filter filterPlaceholder="Search Name ..." header="Price" sortable style={{ minWidth: '8rem' }} body={(rowData) => (<div><Tag style={{backgroundColor:"rgba(238,233,233,0.91)",color:"black"}} value={`${rowData.prix} Dh`}/></div>)}></Column>
+                            <Column field="stock"   filter filterPlaceholder="Search Name ..." header="Stock" sortable style={{ minWidth: '8rem' }} body={(rowData) => (
+                                <div>
+                                    {rowData.stock ===0 ? (
+                                        <Tag severity="warning" value={"Out Of Stock"}/>
+                                    ) : (
+                                        <Tag style={{backgroundColor:"rgba(45,154,141,0.82)"}} value={`${rowData.stock}  pcs`}/>
+                                    )}
+                                </div>
+                            )}></Column>
+                            <Column field="promotion" body={(rowData) => (
+                                <div>
+                                    {rowData.promotion ? (
+                                        <Tag style={{backgroundColor:"rgba(255,0,0,0.82)"}} value={"On Sale"}/>
+                                    ) : (
+                                        <Tag style={{backgroundColor:"rgba(45,154,141,0.82)"}} value={"Not On Sale"}/>
+                                    )}
+                                </div>
+                            )}  filter filterPlaceholder="Search Name ..." header="Status" sortable style={{ minWidth: '6rem' }}></Column>
                             <Column header="Action" body={actionBodyTemplate} exportable={false} style={{ minWidth: '16rem' }}></Column>
                         </DataTable>
                     ):(
