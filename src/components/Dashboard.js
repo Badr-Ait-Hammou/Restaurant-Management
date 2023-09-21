@@ -5,6 +5,9 @@ import RadarChart from '../chart/RadarChart'
 import Box from "@mui/material/Box";
 import {Grid} from "@mui/material";
 import {Tag} from 'primereact/tag';
+import ordersImage from "../images/flowers.jpg";
+import revenueImage from "../images/tealliqude.jpg";
+
 
 
 export default function Dashboard() {
@@ -109,11 +112,7 @@ export default function Dashboard() {
 
                 <div className="grid">
                     <div className="col-12 md:col-6 lg:col-3">
-                        {/*<div className=" shadow-2 p-3 border-1 border-50 border-round " style={{ backgroundImage: "url(https://www.primefaces.org/cdn/primeflex/images/landing/style-cards/fancy.jpg)", backdropFilter: "blur(4px)" }}>*/}
-                        <div
-                            className="shadow-2  border-1 p-1 border-50 border-round w-full h-8rem bg-[url('https://img.freepik.com/free-photo/people-taking-photos-food_23-2149303524.jpg?size=626&ext=jpg&ga=GA1.2.1906554086.1668974677&semt=ais')] bg-cover bg-center">
-                            {/*<div className="shadow-2 border-1 p-0.5 border-50 rounded w-full h-full" style={{ backgroundImage:"", backgroundSize: 'cover', backgroundPosition: 'center' }}>*/}
-
+                        <div className="shadow-2 border-1 p-1 border-50 border-round w-full h-8rem bg-cover bg-center" style={{backgroundImage: `url(${ordersImage})`,}}>
                             <div className=" w-full h-full p-2  justify-content-between  backdrop-blur-sm  border-spacing-1 shadow-2 p-0.5 border-50 border-round">
                                 <div className=" w-full h-full flex justify-content-between mb-1 ">
                                     <div>
@@ -130,16 +129,14 @@ export default function Dashboard() {
                                     <span className="text-green-500  font-bold">{shippedcount} </span>
                                     <span className="text-white"> are undelivered yet</span>
                                 </div>
-
                             </div>
-
                         </div>
                     </div>
 
                     <div className="col-12 md:col-6 lg:col-3">
-                        <div
-                            className="shadow-2  border-1 p-1 border-50 border-round w-full h-8rem bg-[url('https://img.freepik.com/free-photo/revenue-income-money-profit-costs-budget-banking-concept_53876-134047.jpg?w=1060&t=st=1695246684~exp=1695247284~hmac=3b29564f1fb13edefe52b07061fca879f261f6719ea933653b992e1b704c923e')] bg-cover bg-center">
-                            <div className=" w-full h-full p-2  justify-content-between  backdrop-blur-sm  border-spacing-1 shadow-2 p-0.5 border-50 border-round">
+                        <div className="shadow-2 border-1 p-1 border-50 border-round w-full h-8rem bg-cover bg-center" style={{backgroundImage: `url(${revenueImage})`,}}>
+                            <div
+                                className=" w-full h-full p-2  justify-content-between  backdrop-blur-sm  border-spacing-1 shadow-2 p-0.5 border-50 border-round">
                                 <div className=" w-full h-full flex justify-content-between mb-1 ">
                                     <div>
                                         <span className="block text-white font-bold mb-3">Revenue</span>
@@ -161,8 +158,10 @@ export default function Dashboard() {
                         </div>
                     </div>
                     <div className="col-12 md:col-6 lg:col-3">
-                        <div className="shadow-2  border-1 p-0.5 border-50 border-round w-full h-8rem bg-[url('https://img.freepik.com/free-photo/blue-teal-sand-paper_53876-92791.jpg?w=900&t=st=1695245835~exp=1695246435~hmac=01b44ddf63db6d8f99ac4ce1aa66f569db34415f56464e6bd3fe1f9fea9289ee')] bg-cover bg-center">
-                            <div className=" w-full h-full p-2  justify-content-between  backdrop-blur-sm  border-spacing-1 shadow-2 p-0.5 border-50 border-round">
+
+                        <div className="shadow-2 border-1 p-1 border-50 border-round w-full h-8rem bg-cover bg-center" style={{backgroundImage: `url(${revenueImage})`,}}>
+                            <div
+                                className=" w-full h-full p-2  justify-content-between  backdrop-blur-sm  border-spacing-1 shadow-2 p-0.5 border-50 border-round">
                                 <div className=" w-full h-full flex justify-content-between mb-1 ">
                                     <div>
                                         <span className="block text-white font-bold mb-3">Customers</span>
@@ -184,29 +183,28 @@ export default function Dashboard() {
                         </div>
                     </div>
                     <div className="col-12 md:col-6 lg:col-3">
-                        <div className="shadow-2  border-1 p-0.5 border-50 border-round w-full h-8rem bg-[url('https://img.freepik.com/free-photo/confident-chef-wearing-uniform-posing-with-his-arms-crossed-looking-camera-restaurant-kitchen_613910-21338.jpg?size=626&ext=jpg&ga=GA1.2.1906554086.1668974677&semt=ais')] bg-cover bg-center">
-                        {/*<div className="shadow-2  border-1 p-0.5 border-50 border-round w-full h-8rem bg-black bg-cover bg-center">*/}
+                        <div className="shadow-2 border-1 p-1 border-50 border-round w-full h-8rem bg-cover bg-center" style={{backgroundImage: `url(${ordersImage})`,}}>
                             <div className=" w-full h-full p-2  justify-content-between  backdrop-blur-sm  border-spacing-1 shadow-2 p-0.5 border-50 border-round">
                                 <div className=" w-full h-full flex justify-content-between mb-1 ">
                                     <div>
-                                    <span className="block text-white font-bold mb-3">Owners</span>
-                                    <div className="text-white font-bold text-xl">{employeeCount} </div>
-                                </div>
-                                <div
-                                    className="flex align-items-center justify-content-center bg-purple-100 border-round"
-                                    style={{width: '2.5rem', height: '2.5rem'}}>
-                                    <i className="pi pi-user text-purple-500 text-xl"></i>
-                                </div>
+                                        <span className="block text-white font-bold mb-3">Owners</span>
+                                        <div className="text-white font-bold text-xl">{employeeCount} </div>
+                                    </div>
+                                    <div
+                                        className="flex align-items-center justify-content-center bg-purple-100 border-round"
+                                        style={{width: '2.5rem', height: '2.5rem'}}>
+                                        <i className="pi pi-user text-purple-500 text-xl"></i>
+                                    </div>
                                 </div>
                                 <div className="-mt-5">
-                            <span className="text-green-500 font-bold">Verified </span>
-                            <span className="text-white">Accounts</span>
+                                    <span className="text-green-500 font-bold">Verified </span>
+                                    <span className="text-white">Accounts</span>
+                                </div>
+
                             </div>
 
                         </div>
-
                     </div>
-                </div>
                 </div>
             </div>
 

@@ -168,7 +168,7 @@ export default function HomePage() {
                 <Link to={`product/${product.id}`}>
                     <div style={{position: 'relative'}}>
                         <img
-                            className="shadow-2"
+                            className="shadow-2 "
                             src={product.photo}
                             alt={product.nom}
                             style={{

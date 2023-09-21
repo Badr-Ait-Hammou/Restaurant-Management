@@ -31,11 +31,11 @@ function RestaurantSlick() {
         <div className="carousel-container">
             <Slider {...settings}>
                 {images.map((image) => (
-                    <div key={image.alt} className="slide">
+                    <div key={image.alt} className="slide ">
                         <img
                             src={image.src}
                             alt={image.alt}
-                            className="slide-image"
+                            className="slide-image "
                         />
                     </div>
                 ))}
