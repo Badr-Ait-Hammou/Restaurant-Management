@@ -88,21 +88,23 @@ export default function Orders( )  {
 
     const handleUpdatestatus = async (reservationToUpdate) => {
         try {
-            const response = await axios.put(`/api/controller/reservations/status/${reservationToUpdate.id}`, {
-                status: isCancelled ? "Confirmed" : "Cancelled",
+            const newStatus = reservationToUpdate.status === "Cancelled" ? "Confirmed" : "Cancelled";
+            // const response = await axios.put(`/api/controller/reservations/status/${reservationToUpdate.id}`, {
+             await axios.put(`/api/controller/reservations/status/${reservationToUpdate.id}`, {
+                status: newStatus,
             });
 
-            const updatedReservation = [...reservations];
-            const updatedReservationIndex = updatedReservation.findIndex((reservation) => reservation.id === reservationToUpdate.id);
-            updatedReservation[updatedReservationIndex] = response.data;
+            const updatedReservation = reservations.map((reservation) =>
+                reservation.id === reservationToUpdate.id ? { ...reservation, status: newStatus } : reservation
+            );
 
-            setIsCancelled(!isCancelled);
-            loadReservations();
+            setReservations(updatedReservation);
             showupdateStatus();
         } catch (error) {
             console.error(error);
         }
     };
+
 
 
     const showupdateStatus = () => {
@@ -138,40 +140,24 @@ export default function Orders( )  {
         </div>;
     };
 
-    // const actionBodyTemplate = (rowData) => {
-    //     return (
-    //         <React.Fragment>
-    //             <div className="template">
-    //                 <Button className="cancel p-0" aria-label="Slack" onClick={() => handleDelete(rowData.id)}>
-    //                     <i className="pi pi-trash px-2"></i>
-    //                     <span className="px-1">Delete</span>
-    //                 </Button>
-    //                 <Button className="edit p-0" aria-label="Slack" onClick={()=>handleUpdatestatus(rowData.id)} >
-    //                     <i className="pi pi-pencil px-2"></i>
-    //                     <span className="px-1">Update</span>
-    //                 </Button>
-    //             </div>
-    //         </React.Fragment>
-    //     );
-    // };
 
     const actionBodyTemplate = (rowData) => {
         return (
             <React.Fragment>
-                <div className="template">
+                <div className="template flex justify-content-end">
                     <Button className="cancel p-0" aria-label="Slack" onClick={() => handleDelete(rowData.id)}>
                         <i className="pi pi-trash px-2"></i>
                         <span className="px-1">Delete</span>
                     </Button>
                     {rowData.status ==="Cancelled" ? (
-                        <Button className="edit p-0" aria-label="Slack" onClick={() => handleUpdatestatus(rowData)}>
+                        <Button className="add p-0" aria-label="Slack" onClick={() => handleUpdatestatus(rowData)}>
                             <i className="pi pi-undo px-2"></i>
                             <span className="px-1">Confirm</span>
                         </Button>
                     ) : (
                         <Button className="edit p-0" aria-label="Slack" onClick={() => handleUpdatestatus(rowData)}>
-                            <i className="pi pi-pencil px-2"></i>
-                            <span className="px-1">Cancel</span>
+                            <i className="pi pi-times px-2"></i>
+                            <span className="px-2">Cancel</span>
                         </Button>
                     )}
                 </div>
@@ -235,9 +221,17 @@ export default function Orders( )  {
                         <Column field="user.telephone"   filter filterPlaceholder="Search Name ..." header="Client Phone" sortable style={{ minWidth: '14rem' }} body={(rowData) => (<div><Tag icon={"pi pi-phone"} style={{backgroundColor:"rgba(235,241,241,0.91)",color:"black"}} value={`${rowData.user && rowData.user.telephone} `}/></div>)}></Column>
                         <Column field="dateCreated" className="font-bold"  filter filterPlaceholder="Search Name ..." header="Submitted at" sortable style={{ minWidth: '15rem' }} body={(rowData) => (<div><Tag icon={"pi pi-inbox"} style={{backgroundColor:"rgba(235,241,241,0.91)",color:"black"}}>{formatReservationDate(rowData.dateCreated)}</Tag></div>)}></Column>
                         <Column field="reservationDate" className="font-bold"  filter filterPlaceholder="Search Name ..." header="Reservation Date" sortable style={{ minWidth: '15rem' }} body={(rowData) => (<div><Tag icon={"pi pi-inbox"} style={{backgroundColor:"rgba(235,241,241,0.91)",color:"black"}}>{formatReservationDate(rowData.reservationDate)}</Tag></div>)}></Column>
-                        <Column field="restaurant.nom"   filter filterPlaceholder="Search Name ..." header="Restaurant" sortable style={{ minWidth: '14rem' }} body={(rowData) => (<div><Tag style={{backgroundColor:"rgba(70,175,153,0.91)"}} value={`${rowData.restaurant && rowData.restaurant.nom} `}/></div>)}></Column>
+                        <Column field="restaurant.nom"   filter filterPlaceholder="Search Name ..." header="Restaurant" sortable style={{ minWidth: '14rem' }} body={(rowData) => (<div><Tag style={{backgroundColor:"rgba(235,241,241,0.91)",color:"black"}} value={`${rowData.restaurant && rowData.restaurant.nom} `}/></div>)}></Column>
                         <Column field="type"   filter filterPlaceholder="Search Name ..." header="Type " sortable style={{ minWidth: '10rem' }}></Column>
-                        <Column field="status"   filter filterPlaceholder="Search Name ..." header="status " sortable style={{ minWidth: '10rem' }}></Column>
+                        <Column field="status"   filter filterPlaceholder="Search Name ..." header="status " sortable style={{ minWidth: '10rem' }} body={(rowData) => (
+                            <div>
+                                {rowData.status ==="Cancelled" ? (
+                                    <Tag style={{backgroundColor:"rgba(255,0,0,0.82)"}} value={rowData.status}/>
+                                ) : (
+                                    <Tag style={{backgroundColor:"rgba(45,154,141,0.82)"}} value={rowData.status}/>
+                                )}
+                            </div>
+                        )}></Column>
                         <Column header="Action" body={actionBodyTemplate} exportable={false} style={{ minWidth: '16rem' }}></Column>
                     </DataTable>
             </div>
