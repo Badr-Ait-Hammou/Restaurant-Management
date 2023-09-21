@@ -7,7 +7,7 @@ import {useEffect} from "react";
 import {accountService} from "../service/accountService";
 import axios from "../service/callerService";
 import {DataView} from "primereact/dataview";
-import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
+import RestaurantIcon from '@mui/icons-material/Restaurant';
 import {Tag} from "primereact/tag";
 
 
@@ -58,19 +58,29 @@ export default function Reservations(){
     const reservationTemplate = (reservation) => {
         return (
             <div className="col-12">
-                <div className="flex flex-wrap p-1 align-items-center gap-2">
+                <div className="flex flex-wrap  align-items-center gap-2 -m-3">
                 <img className="w-4rem shadow-2 flex-shrink-0 border-round" src={reservation.restaurant && reservation.restaurant.photo} alt={reservation.restaurant.nom }/>
                     <div className="flex-1 flex flex-column gap-1 xl:mr-8  ">
-                        <span className="font-bold text-left" >{reservation.restaurant && reservation.restaurant.nom}</span>
+                        <div className="flex justify-content-between">
+                            <Tag style={{float:"left",backgroundColor:"rgba(245,241,241,0.89)",color:"black"}} icon={<RestaurantIcon style={{fontSize:"12px",marginRight:'3px'}}/>}  >{reservation.restaurant && reservation.restaurant.nom}</Tag>
+                            <div className="flex align-items-center ">
+                                {reservation.status === "Cancelled"?(
+                                    <Tag  value={reservation.status} severity="danger" icon="pi pi-exclamation-circle"  />
+                                ):(
+                                    <Tag  value={reservation.status} severity="success" icon="pi pi-check-square"  />
+                                )}
+                            </div>
+                        </div>
                         <Typography variant="body1" gutterBottom >
                             <div style={{float:"left"}}>
-                                <Typography  className="font-monospace" style={{float:"left",fontSize:"12px"}}  >{formatCommentDate(reservation.dateCreated)} <ThumbUpOffAltIcon style={{fontSize:"15px"}}/></Typography>
-                                <Typography  className="font-monospace" style={{float:"left",fontSize:"12px"}}  >{formatCommentDate(reservation.reservationDate)} <ThumbUpOffAltIcon style={{fontSize:"15px"}}/></Typography>
+                                <Tag icon={"pi pi-clock"} className="font-monospace mb-1" style={{float:"left",fontSize:"10px",backgroundColor:"rgba(245,241,241,0.89)",color:"black"}}  >{formatCommentDate(reservation.dateCreated)} </Tag>
+                                <Tag icon={"pi pi-calendar-plus"}  className="font-monospace" style={{float:"left",fontSize:"10px",backgroundColor:"rgba(245,241,241,0.89)",color:"black"}}  >{formatCommentDate(reservation.reservationDate)} </Tag>
                             </div>
                         </Typography>
                         <div className="flex align-items-center ">
-                                <Tag   value={reservation.type} severity="danger" icon="pi pi-tag"  />
+                            <Tag  value={reservation.type} style={{backgroundColor:"rgba(56,141,152,0.93)"}} icon="pi pi-home"  />
                         </div>
+
                     </div>
             </div>
             </div>
@@ -79,13 +89,14 @@ export default function Reservations(){
 
     return(
         <div className=" mt-5 mx-2  card">
-            <Box sx={{mx:1,mt:3 ,mb:3}} >
+            <Box sx={{mx:1,mt:2 ,mb:3}} >
                 <Grid reservation container  columns={14} className="flex justify-content-between">
-                    <Grid reservation xs={12} md={6} >
+                    <Grid item reservation sm={14} lg={6} xs={14} md={6}  className="justify-content-start" >
                         <div >
-                            <OrderList value={reservations} onChange={(e) => setReservations(e.value)} itemTemplate={reservationTemplate} header="Reservations" filter filterBy="restaurant.nom" ></OrderList>
-                        </div>                    </Grid>
-                    <Grid reservation xs={12} md={7}>
+                            <OrderList value={reservations} onChange={(e) => setReservations(e.value)} itemTemplate={reservationTemplate} header="Reservations" filter filterBy="restaurant.nom"  ></OrderList>
+                        </div>
+                    </Grid>
+                    <Grid item sm={14} lg={7} xs={14} md={7}  className="justify-content-end">
                         <div className="card ">
                             <DataView value={reservations} onChange={(e) => setReservations(e.value)} itemTemplate={reservationTemplate} header="Reservations" ></DataView>
                         </div>
