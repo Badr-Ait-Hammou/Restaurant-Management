@@ -1,5 +1,5 @@
 import React, {useState} from "react"
-import { Grid, Typography} from "@mui/material";
+import {Grid, Typography} from "@mui/material";
 import Box from "@mui/material/Box";
 import { OrderList } from 'primereact/orderlist';
 import {format, formatDistanceToNow} from "date-fns";
@@ -15,6 +15,7 @@ import {Toast} from "primereact/toast";
 import {useRef} from "react";
 import {Dialog} from "primereact/dialog";
 import {InputText} from "primereact/inputtext";
+import {Link} from "react-router-dom";
 
 
 
@@ -88,7 +89,7 @@ export default function Reservations(){
             setReservations(response.data);
             const  cancelledRes = response.data.filter((reservation) => reservation.status === 'Cancelled');
             setCancelledReservations(cancelledRes);
-            const  confirmedRes = response.data.filter((reservation) => reservation.status === 'Confirmed');
+            const  confirmedRes = response.data.filter((reservation) => reservation.status === 'Confirmed' || reservation.status=== 'Finished');
             setConfirmedReservations(confirmedRes);
             const finishedRes = response.data.filter((reservation) => reservation.status ==='Finished' );
             setFinishedReservations(finishedRes);
@@ -261,12 +262,12 @@ export default function Reservations(){
 
     const header = () => {
         return (
-            <div className="template flex flex-wrap justify-content-between gap-2">
+            <div className="template flex  justify-content-between ">
                 <Button className="pay p-0" onClick={openNew} >
                     <i className="pi pi-plus p-1"></i>
                     <span className="px-3  font-bold text-white">Make a reservation</span>
                 </Button>
-                <Dropdown options={sortOptions} value={sortKey} optionLabel="label" placeholder="Sort By Price" onChange={onSortChange} className="w-full sm:w-14rem" />
+                <Dropdown options={sortOptions} value={sortKey} optionLabel="label" placeholder="Sort By Price" onChange={onSortChange}  />
 
             </div>
         );
@@ -280,7 +281,6 @@ export default function Reservations(){
                     <i className="pi pi-times px-2"></i>
                     <span className="px-3">Cancel</span>
                 </Button>
-                {/*<Button className="edit p-0 " aria-label="Slack" onClick={(e) => handleSubmit(e)}>*/}
                 <Button className="edit p-0 " aria-label="Slack" onClick={(e) => handleSubmit(e)} >
                     <i className="pi pi-check px-2"></i>
                     <span className="px-3">Submit</span>
@@ -292,34 +292,113 @@ export default function Reservations(){
     const confirmedResTemplate = (reservation) => {
         return (
 
-        <div className="col-12">
-            <div className="flex flex-column xl:flex-row xl:align-items-start p-4 gap-4">
-                    <img className="w-6 sm:w-6rem xl:w-6rem shadow-2 align-items-center block xl:block mx-auto border-round"  src={reservation.restaurant && reservation.restaurant.photo} alt={reservation.restaurant.nom } />
-                    <div className="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4">
-                        <div className="flex flex-column align-items-center sm:align-items-start gap-3">
-                            <div className="text-2xl font-bold text-900">{reservation.restaurant && reservation.restaurant.nom}</div>
-                            {reservation.status === "Finished" ? (
-                                <Tag value={reservation.status} severity="warning" icon="pi pi-exclamation-triangle" />
-                            ) : (
-                                <Tag value={reservation.status} severity="success" icon="pi pi-check-square" />
-                            )}
+        // <div className="col-12">
+        //     <div className="flex flex-column xl:flex-row xl:align-items-start p-4 gap-4">
+        //             <img className="w-6 sm:w-6rem xl:w-6rem shadow-2 align-items-center block xl:block mx-auto border-round"  src={reservation.restaurant && reservation.restaurant.photo} alt={reservation.restaurant.nom } />
+        //             <div className="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4">
+        //                 <div className="flex flex-column align-items-center sm:align-items-start gap-3">
+        //                     <div className="text-2xl font-bold text-900">{reservation.restaurant && reservation.restaurant.nom}</div>
+        //                     {reservation.status === "Finished" ? (
+        //                         <Tag value={reservation.status} severity="warning" icon="pi pi-exclamation-triangle" />
+        //                     ) : (
+        //                         <Tag value={reservation.status} severity="success" icon="pi pi-check-square" />
+        //                     )}
+        //
+        //
+        //                     <div className="flex align-items-center gap-3">
+        //                         <span className="flex align-items-center gap-2">
+        //                             <i className="pi pi-tag"></i>
+        //                             <span className="font-semibold">{formatCommentDate(reservation.dateCreated)}</span>
+        //                         </span>
+        //                         <Tag severity="success">{formatCommentDate(reservation.reservationDate)}</Tag>
+        //                     </div>
+        //                 </div>
+        //                 <div className="flex template sm:flex-column align-items-center sm:align-items-end gap-3 sm:gap-2">
+        //                     <span className="text-2xl font-semibold">{reservation.type}</span>
+        //                         <Button className="edit p-0" aria-label="Slack" onClick={() => Updatestatus(reservation)} disabled={reservation.status ==="Finished"}>
+        //                         <i className="pi pi-times px-2"></i>
+        //                         <span className="px-2">Cancel</span>
+        //                     </Button>
+        //                 </div>
+        //             </div>
+        //         </div>
+        //     </div>
+
+            // <div className="col-12">
+            //     <div className="template flex p-1 align-items-center gap-3">
+            //         <Link to={`/ifoulki_meals/restaurant/${reservation.restaurant && reservation.restaurant.id}`}>
+            //             <img className="w-4rem shadow-2 flex-shrink-0 border-round"
+            //                  src={reservation.restaurant && reservation.restaurant.photo} alt={"badr"}  style={{
+            //                 width: '800%',
+            //                 height: '50%',
+            //                 borderRadius: '8px'
+            //             }}
+            //             />
+            //         </Link>
+            //         <div className=" flex-1 flex flex-column gap-1   ">
+            //             <div className="flex justify-content-between">
+            //             <Tag style={{backgroundColor:"rgba(245,241,241,0.89)",color:"black"}} className="justify-content-start" icon={<RestaurantIcon style={{fontSize:"12px",marginRight:'3px'}}/>}  >{reservation.restaurant && reservation.restaurant.nom}</Tag>
+            //                 {reservation.status === "Finished" ? (
+            //                     <Tag value={reservation.status} severity="warning" className="justify-content-end" icon="pi pi-exclamation-triangle" />
+            //                 ) : (
+            //                     <Tag value={reservation.status} severity="success" className="justify-content-end"  icon="pi pi-check-square" />
+            //                 )}
+            //             </div>
+            //             <Typography variant="body1" gutterBottom >
+            //                 <div style={{float:"left"}}>
+            //                     <Tag  style={{float:"left",fontSize:"12px",backgroundColor:"rgba(245,241,241,0.89)",color:"black"}} >{formatCommentDate(reservation.dateCreated)}</Tag><br/>
+            //                     <Tag  className="font-monospace mt-1" style={{float:"left",fontSize:"12px",backgroundColor:"rgba(245,241,241,0.89)",color:"black"}}  >{formatCommentDate(reservation.reservationDate)}</Tag>
+            //                 </div>
+            //             </Typography>
+            //             <div className="flex align-items-center ">
+            //                 {reservation.status === "Finished" ? (
+            //                     <Tag value={reservation.status} severity="warning" icon="pi pi-exclamation-triangle" />
+            //                 ) : (
+            //                     <Tag value={reservation.status} severity="success" icon="pi pi-check-square" />
+            //                 )}
+            //             </div>
+            //         </div>
+            //         <Tag  value={reservation.type} style={{backgroundColor:"rgba(56,141,152,0.93)"}} icon="pi pi-home"/>
+            //         <Button className="edit p-0" aria-label="Slack" onClick={() => Updatestatus(reservation)} disabled={reservation.status ==="Finished"}>
+            //             <i className="pi pi-times px-2"></i>
+            //             <span className="px-2">Cancel</span>
+            //         </Button>
+            //     </div>
+            // </div>
 
 
-                            <div className="flex align-items-center gap-3">
-                                <span className="flex align-items-center gap-2">
-                                    <i className="pi pi-tag"></i>
-                                    <span className="font-semibold">{formatCommentDate(reservation.dateCreated)}</span>
-                                </span>
-                                <Tag severity="success">{formatCommentDate(reservation.reservationDate)}</Tag>
+            <div className="col-12">
+                <div className="flex flex-row  align-items-center gap-2 p-1 ">
+                    <img className="w-4rem shadow-2 flex-shrink-0 border-round" src={reservation.restaurant && reservation.restaurant.photo} alt={reservation.restaurant.nom }/>
+                    <div className="flex-1 flex flex-column gap-1  ">
+                        <div className="flex justify-content-between">
+                            <Tag style={{float:"left",backgroundColor:"rgba(245,241,241,0.89)",color:"black"}} icon={<RestaurantIcon style={{fontSize:"12px",marginRight:'3px'}}/>}  >{reservation.restaurant && reservation.restaurant.nom}</Tag>
+                            <div className="flex align-items-center mr-2 ">
+                                {reservation.status === "Finished" ? (
+                                    <Tag value={reservation.status} severity="warning" className="justify-content-end px-3" icon="pi pi-exclamation-triangle" />
+                                ) : (
+                                    <Tag value={reservation.status} severity="success" className="justify-content-end px-2"  icon="pi pi-check-square" />
+                                )}
                             </div>
                         </div>
-                        <div className="flex template sm:flex-column align-items-center sm:align-items-end gap-3 sm:gap-2">
-                            <span className="text-2xl font-semibold">{reservation.type}</span>
-                                <Button className="edit p-0" aria-label="Slack" onClick={() => Updatestatus(reservation)} disabled={reservation.status ==="Finished"}>
-                                <i className="pi pi-times px-2"></i>
-                                <span className="px-2">Cancel</span>
-                            </Button>
+                        <Typography variant="body1" gutterBottom >
+                            <div style={{float:"left"}}>
+                                <Tag icon={"pi pi-clock"} className="font-monospace mb-1" style={{float:"left",fontSize:"10px",backgroundColor:"rgba(245,241,241,0.89)",color:"black"}}  >{formatCommentDate(reservation.dateCreated)} </Tag><br/>
+                                <Tag icon={"pi pi-calendar-plus"}  className="font-monospace" style={{float:"left",fontSize:"10px",backgroundColor:"rgba(245,241,241,0.89)",color:"black"}}  >{formatCommentDate(reservation.reservationDate)} </Tag>
+                            </div>
+                        </Typography>
+
+                        <div className=" template flex justify-content-between">
+                            <Tag value={reservation.type} style={{backgroundColor:"rgba(56,141,152,0.93)",fontSize:"12px"}} icon="pi pi-home" className="-mt-2 "   />
+                            <div>
+                                <Button className="edit p-0 " aria-label="Slack" onClick={() => Updatestatus(reservation)} disabled={reservation.status ==="Finished"}>
+                                    <i className="pi pi-times px-2"></i>
+                                    <span className="px-2">Cancel</span>
+                                </Button>
+                            </div>
                         </div>
+
+
                     </div>
                 </div>
             </div>
