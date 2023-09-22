@@ -16,6 +16,8 @@ import {useRef} from "react";
 import {Dialog} from "primereact/dialog";
 import {InputText} from "primereact/inputtext";
 import {Link} from "react-router-dom";
+import {Divider} from "primereact/divider";
+
 
 
 
@@ -334,7 +336,7 @@ export default function Reservations(){
 
     const reservationTemplate = (reservation) => {
         return (
-            <div className="col-12">
+            <div className="col-12 ">
                 <div className="flex flex-row  align-items-center gap-2 -m-3 ">
                     <Link to={`/ifoulki_meals/restaurants/${reservation.restaurant && reservation.restaurant.id}`}>
                     <img className="w-4rem shadow-2 flex-shrink-0 border-round" src={reservation.restaurant && reservation.restaurant.photo} alt={reservation.restaurant.nom }/>
@@ -359,9 +361,10 @@ export default function Reservations(){
                         <div className="flex align-items-center ">
                             <Tag  value={reservation.type} style={{backgroundColor:"rgba(245,241,241,0.89)",color:"black"}} icon="pi pi-home"  />
                         </div>
-
                     </div>
-            </div>
+                </div>
+                <Divider className="-mb-3"/>
+
             </div>
         );
     };
@@ -376,10 +379,11 @@ export default function Reservations(){
                     <Grid item reservation sm={14} lg={5} xs={14} md={6}  className="justify-content-start" >
                         <div >
                             <OrderList
+                                // style={{fontSize:"25px"}}
                                 value={cancelledeservations}
                                 onChange={(e) => setReservations(e.value)}
                                 itemTemplate={reservationTemplate}
-                                header="Cancelled Reservations"
+                                header={<div className="m-2"><Typography variant={"body2"} className="font-monospace text-lg">Cancelled Reservations</Typography></div>}
                                 filter
                                 filterIcon={"pi pi-search"}
                                 filterBy="restaurant.nom"
