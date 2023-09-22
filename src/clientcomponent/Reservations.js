@@ -23,15 +23,12 @@ export default function Reservations(){
     const [reservations, setReservations] = useState([]);
     const [cancelledeservations, setCancelledReservations] = useState([]);
     const [confirmedreservations, setConfirmedReservations] = useState([]);
-    const [finishedReservations, setFinishedReservations] = useState([]);
     const [reservationsDialog, setReservationsDialog] = useState(false);
-
     const [userId, setUserId] = useState("");
     const [restaurants, setRestaurants] = useState([]);
     const [restaurantid, setRestaurantid] = useState("");
     const [reservationDate, setreservationDate] = useState("");
     const [type, settype] = useState("");
-
     const toast = useRef(null);
     const [sortKey, setSortKey] = useState('');
     const [sortOrder, setSortOrder] = useState(0);
@@ -90,8 +87,7 @@ export default function Reservations(){
             setCancelledReservations(cancelledRes);
             const  confirmedRes = response.data.filter((reservation) => reservation.status === 'Confirmed' || reservation.status=== 'Finished');
             setConfirmedReservations(confirmedRes);
-            const finishedRes = response.data.filter((reservation) => reservation.status ==='Finished' );
-            setFinishedReservations(finishedRes);
+
         });
 
     }
@@ -266,7 +262,7 @@ export default function Reservations(){
                     <i className="pi pi-plus p-1"></i>
                     <span className="px-3  font-bold text-white">Make a reservation</span>
                 </Button>
-                <Dropdown options={sortOptions} value={sortKey} optionLabel="label" placeholder="Sort By Price" onChange={onSortChange}  />
+                <Dropdown options={sortOptions} value={sortKey} optionLabel="label" placeholder="Sort By Status" onChange={onSortChange}  />
 
             </div>
         );
@@ -367,7 +363,7 @@ export default function Reservations(){
 
 
             <div className="col-12">
-                <div className="flex flex-row  align-items-center gap-2 p-1 ">
+                <div className="flex flex-row  align-items-center gap-2 p-2 ">
                  <Link to={`/ifoulki_meals/restaurants/${reservation.restaurant && reservation.restaurant.id}`}>
                 <img className="w-4rem shadow-2 flex-shrink-0 border-round" src={reservation.restaurant && reservation.restaurant.photo} alt={reservation.restaurant.nom }/>
                  </Link>
@@ -378,7 +374,7 @@ export default function Reservations(){
                                 {reservation.status === "Finished" ? (
                                     <Tag value={reservation.status} severity="warning" className="justify-content-end px-3" icon="pi pi-exclamation-triangle" />
                                 ) : (
-                                    <Tag value={reservation.status} severity="success" className="justify-content-end px-2"  icon="pi pi-check-square" />
+                                    <Tag value={reservation.status} style={{backgroundColor:"rgb(200,61,129)"}} className="justify-content-end px-2"  icon="pi pi-check-square" />
                                 )}
                             </div>
                         </div>
@@ -390,18 +386,15 @@ export default function Reservations(){
                         </Typography>
 
                         <div className=" template flex justify-content-between">
-                            <Tag value={reservation.type} style={{backgroundColor:"rgba(56,141,152,0.93)",fontSize:"12px"}} icon="pi pi-home" className="-mt-2 "   />
+                            <Tag value={`Type :${reservation.type}`} style={{backgroundColor:"rgba(245,241,241,0.89)",color:"black"}} icon="pi pi-home" className="-mt-2 "   />
                             <div>
-                                {reservation.status ==="Finished" ?(
-                                    <Button className="cancel p-0 " aria-label="Slack" onClick={() => Updatestatus(reservation)} disabled={true}>
-                                        <i className="pi pi-exclamation-triangle px-2"></i>
-                                        <span className="px-2">Finished</span>
-                                    </Button>
-                                ):(
+                                {reservation.status ==="Confirmed" ?(
                                     <Button className="export p-0 " aria-label="Slack" onClick={() => Updatestatus(reservation)} >
                                         <i className="pi pi-times px-2"></i>
                                         <span className="px-2">Cancel</span>
                                     </Button>
+                                ):(
+                                  ""
                                 )}
 
                             </div>
@@ -419,8 +412,10 @@ export default function Reservations(){
         return (
             <div className="col-12">
                 <div className="flex flex-row  align-items-center gap-2 -m-3 ">
-                <img className="w-4rem shadow-2 flex-shrink-0 border-round" src={reservation.restaurant && reservation.restaurant.photo} alt={reservation.restaurant.nom }/>
-                    <div className="flex-1 flex flex-column gap-1  ">
+                    <Link to={`/ifoulki_meals/restaurants/${reservation.restaurant && reservation.restaurant.id}`}>
+                    <img className="w-4rem shadow-2 flex-shrink-0 border-round" src={reservation.restaurant && reservation.restaurant.photo} alt={reservation.restaurant.nom }/>
+                    </Link>
+                        <div className="flex-1 flex flex-column gap-1  ">
                         <div className="flex justify-content-between">
                             <Tag style={{float:"left",backgroundColor:"rgba(245,241,241,0.89)",color:"black"}} icon={<RestaurantIcon style={{fontSize:"12px",marginRight:'3px'}}/>}  >{reservation.restaurant && reservation.restaurant.nom}</Tag>
                             <div className="flex align-items-center ">
@@ -438,7 +433,7 @@ export default function Reservations(){
                             </div>
                         </Typography>
                         <div className="flex align-items-center ">
-                            <Tag  value={reservation.type} style={{backgroundColor:"rgba(56,141,152,0.93)"}} icon="pi pi-home"  />
+                            <Tag  value={reservation.type} style={{backgroundColor:"rgba(245,241,241,0.89)",color:"black"}} icon="pi pi-home"  />
                         </div>
 
                     </div>
@@ -456,7 +451,16 @@ export default function Reservations(){
                 <Grid reservation container spacing={2} columns={14} className="flex justify-content-between">
                     <Grid item reservation sm={14} lg={5} xs={14} md={6}  className="justify-content-start" >
                         <div >
-                            <OrderList value={cancelledeservations} onChange={(e) => setReservations(e.value)} itemTemplate={reservationTemplate} header="Cancelled Reservations" filter filterBy="restaurant.nom"  ></OrderList>
+                            <OrderList
+                                value={cancelledeservations}
+                                onChange={(e) => setReservations(e.value)}
+                                itemTemplate={reservationTemplate}
+                                header="Cancelled Reservations"
+                                filter
+                                filterIcon={"pi pi-search"}
+                                filterBy="restaurant.nom"
+                                filterPlaceholder={"Enter a filter..."}
+                            />
                         </div>
                     </Grid>
                     <Grid item sm={14} lg={9} xs={14} md={8}  className="justify-content-end ">
@@ -472,20 +476,6 @@ export default function Reservations(){
                             />
                         </div>
                     </Grid>
-                </Grid>
-
-                <Grid item sm={14} lg={9} xs={14} md={8}  className="justify-content-end ">
-                    <div className="card">
-                        <DataView
-                            value={finishedReservations}
-                            itemTemplate={confirmedResTemplate}
-                            header={header()}
-                            sortField={sortField}
-                            sortOrder={sortOrder}
-                            paginator
-                            rows={3}
-                        />
-                    </div>
                 </Grid>
             </Box>
         </div>
