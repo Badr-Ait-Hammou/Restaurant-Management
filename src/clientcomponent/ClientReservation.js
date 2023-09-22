@@ -3,7 +3,7 @@ import { Button } from 'primereact/button';
 import { Fieldset } from 'primereact/fieldset';
 import "../styles/clientreservation.css"
 import axios from '../service/callerService';
-import React,{useState,useEffect,useReducer} from "react";
+import React,{useState,useEffect} from "react";
 import { Card, CardContent } from '@mui/material';
 import Modal from "react-modal";
 import {useRef} from "react";
@@ -102,8 +102,7 @@ export default function ClientReservation() {
             return; // Stop further execution
         }
 
-        axios
-            .post("/api/controller/reservations/", {
+        axios.post("/api/controller/reservations/", {
                 type,
                 reservationDate,
                 restaurant: {

@@ -1,5 +1,5 @@
 import React, {useState} from "react"
-import {Grid, Typography} from "@mui/material";
+import { Grid, Typography} from "@mui/material";
 import Box from "@mui/material/Box";
 import { OrderList } from 'primereact/orderlist';
 import {format, formatDistanceToNow} from "date-fns";
@@ -11,25 +11,51 @@ import RestaurantIcon from '@mui/icons-material/Restaurant';
 import {Tag} from "primereact/tag";
 import { Dropdown } from 'primereact/dropdown';
 import {Button} from "primereact/button";
+import {Toast} from "primereact/toast";
+import {useRef} from "react";
+import {Dialog} from "primereact/dialog";
+import {InputText} from "primereact/inputtext";
 
 
 export default function Reservations(){
     const [reservations, setReservations] = useState([]);
     const [cancelledeservations, setCancelledReservations] = useState([]);
     const [confirmedreservations, setConfirmedReservations] = useState([]);
+    const [reservationsDialog, setReservationsDialog] = useState(false);
+
     const [userId, setUserId] = useState("");
+    const [restaurants, setRestaurants] = useState([]);
+    const [restaurantid, setRestaurantid] = useState("");
+    const [reservationDate, setreservationDate] = useState("");
+    const [type, settype] = useState("");
+
+    const toast = useRef(null);
     const [sortKey, setSortKey] = useState('');
     const [sortOrder, setSortOrder] = useState(0);
     const [sortField, setSortField] = useState('');
+
     const sortOptions = [
         { label: 'Price High to Low', value: '!price' },
         { label: 'Price Low to High', value: 'price' }
+    ];
+    const types = [
+        {  id: 1,nom: 'Table for 2' },
+        {  id: 2 ,nom: 'Table for 4'},
+        {  id: 3 ,nom: 'Table for 6+'},
+        {  id: 4 ,nom: 'Private Dining Room'},
+        {  id: 6 ,nom: 'Outdoor Seating'},
     ];
 
 
 
 
 
+    const handleRestaurantChange = (e) => {
+        setRestaurantid(e.value);
+    };
+    const handleTypeChange = (e) => {
+        settype(e.value);
+    };
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -49,15 +75,54 @@ export default function Reservations(){
     }, []);
 
     useEffect(() => {
+       loadReservations();
+    }, [userId]);
+
+
+    const loadReservations=async ()=>{
         axios.get(`/api/controller/reservations/user/${userId}`).then((response) => {
             setReservations(response.data);
-            // const confirmedRes = response.data;
             const  cancelledRes = response.data.filter((reservation) => reservation.status === 'Cancelled');
             setCancelledReservations(cancelledRes);
             const  confirmedRes = response.data.filter((reservation) => reservation.status === 'Confirmed');
             setConfirmedReservations(confirmedRes);
         });
-    }, [userId]);
+
+    }
+
+    useEffect(() => {
+        axios.get("/api/controller/restaurants/").then((response) => {
+            setRestaurants(response.data);
+        });
+    }, []);
+
+    const Updatestatus = async (reservationToUpdate) => {
+        try {
+            const newStatus = reservationToUpdate.status === "Cancelled" ? "Confirmed" : "Cancelled";
+            await axios.put(`/api/controller/reservations/status/${reservationToUpdate.id}`, {
+                status: newStatus,
+            });
+
+            const updatedReservation = reservations.map((reservation) =>
+                reservation.id === reservationToUpdate.id ? { ...reservation, status: newStatus } : reservation
+            );
+
+            setReservations(updatedReservation);
+            showupdateStatus();
+            loadReservations();
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+
+    const showupdateStatus = () => {
+        toast.current.show({severity:'info', summary: 'done', detail:'reservation status updated ', life: 3000});
+    }
+    const showSave = () => {
+        toast.current.show({severity:'success', summary: 'done', detail:'reservation submitted successfully ', life: 3000});
+    }
+
 
     function formatCommentDate(commentDate) {
         const now = new Date();
@@ -71,6 +136,32 @@ export default function Reservations(){
         }
     }
 
+    const handleSubmit = (event) => {
+        event?.preventDefault();
+
+        if (!restaurantid || !type || reservationDate.trim() ==="" ) {
+            toast.current.show({ severity: 'error', summary: 'Error', detail: 'Fields cannot be empty', life: 3000 });
+            return;
+        }
+        axios.post("/api/controller/reservations/", {
+            type,
+            status:"Confirmed",
+            reservationDate,
+            restaurant: {
+                id: restaurantid,
+            },
+            user: {
+                id: userId,
+            },
+        }).then((response) => {
+
+            loadReservations();
+            hideDialog();
+            showSave();
+        }).catch((error) => {
+            console.error("Error while saving image:", error);
+        });
+    };
 
 
 
@@ -89,15 +180,54 @@ export default function Reservations(){
         }
     };
 
-    const header = () => {
-        return <Dropdown options={sortOptions} value={sortKey} optionLabel="label" placeholder="Sort By Price" onChange={onSortChange} className="w-full sm:w-14rem" />;
+    const hideDialog = () => {
+        setReservationsDialog(false);
     };
+
+
+    const openNew = () => {
+        setReservations(reservations);
+        setRestaurantid("");
+        setreservationDate("");
+        setReservationsDialog(true);
+    };
+
+    const header = () => {
+        return (
+            <div className="template flex flex-wrap justify-content-between gap-2">
+                <Button className="pay p-0" onClick={openNew} >
+                    <i className="pi pi-plus p-1"></i>
+                    <span className="px-3  font-bold text-white">Make a reservation</span>
+                </Button>
+                <Dropdown options={sortOptions} value={sortKey} optionLabel="label" placeholder="Sort By Price" onChange={onSortChange} className="w-full sm:w-14rem" />
+
+            </div>
+        );
+    };
+
+
+    const ReservationsDialogFooter = (
+        <React.Fragment>
+            <div className="template flex justify-content-end mt-1">
+                <Button className="cancel p-0 " aria-label="Slack" onClick={hideDialog}>
+                    <i className="pi pi-times px-2"></i>
+                    <span className="px-3">Cancel</span>
+                </Button>
+                {/*<Button className="edit p-0 " aria-label="Slack" onClick={(e) => handleSubmit(e)}>*/}
+                <Button className="edit p-0 " aria-label="Slack" onClick={(e) => handleSubmit(e)} >
+                    <i className="pi pi-check px-2"></i>
+                    <span className="px-3">Submit</span>
+                </Button>
+            </div>
+        </React.Fragment>
+    );
 
     const confirmedResTemplate = (reservation) => {
         return (
-            <div className="col-12">
-                <div className="flex flex-column xl:flex-row xl:align-items-start p-4 gap-4">
-                    <img className="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round"  src={reservation.restaurant && reservation.restaurant.photo} alt={reservation.restaurant.nom } />
+
+        <div className="col-12">
+            <div className="flex flex-column xl:flex-row xl:align-items-start p-4 gap-4">
+                    <img className="w-6 sm:w-6rem xl:w-6rem shadow-2 align-items-center block xl:block mx-auto border-round"  src={reservation.restaurant && reservation.restaurant.photo} alt={reservation.restaurant.nom } />
                     <div className="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4">
                         <div className="flex flex-column align-items-center sm:align-items-start gap-3">
                             <div className="text-2xl font-bold text-900">{reservation.restaurant && reservation.restaurant.nom}</div>
@@ -111,8 +241,8 @@ export default function Reservations(){
                             </div>
                         </div>
                         <div className="flex template sm:flex-column align-items-center sm:align-items-end gap-3 sm:gap-2">
-                            {/*<span className="text-2xl font-semibold">hola</span>*/}
-                            <Button className="edit p-0" aria-label="Slack" >
+                            <span className="text-2xl font-semibold">{reservation.type}</span>
+                                <Button className="edit p-0" aria-label="Slack" onClick={() => Updatestatus(reservation)}>
                                 <i className="pi pi-times px-2"></i>
                                 <span className="px-2">Cancel</span>
                             </Button>
@@ -157,15 +287,18 @@ export default function Reservations(){
     };
 
     return(
+        <>
         <div className=" mt-5 mx-2  card">
+            <Toast ref={toast} />
+
             <Box sx={{mx:1,mt:2 ,mb:3}} >
-                <Grid reservation container  columns={14} className="flex justify-content-between">
-                    <Grid item reservation sm={14} lg={6} xs={14} md={6}  className="justify-content-start" >
+                <Grid reservation container spacing={2} columns={14} className="flex justify-content-between">
+                    <Grid item reservation sm={14} lg={5} xs={14} md={5}  className="justify-content-start" >
                         <div >
-                            <OrderList value={cancelledeservations} onChange={(e) => setReservations(e.value)} itemTemplate={reservationTemplate} header="Reservations" filter filterBy="restaurant.nom"  ></OrderList>
+                            <OrderList value={cancelledeservations} onChange={(e) => setReservations(e.value)} itemTemplate={reservationTemplate} header="Cancelled Reservations" filter filterBy="restaurant.nom"  ></OrderList>
                         </div>
                     </Grid>
-                    <Grid item sm={14} lg={7} xs={14} md={7}  className="justify-content-end">
+                    <Grid item sm={14} lg={9} xs={14} md={8}  className="justify-content-end ">
                         <div className="card">
                             <DataView value={confirmedreservations} itemTemplate={confirmedResTemplate} header={header()} sortField={sortField} sortOrder={sortOrder} />
                         </div>
@@ -173,5 +306,46 @@ export default function Reservations(){
                 </Grid>
             </Box>
         </div>
+
+
+
+            <Dialog visible={reservationsDialog} style={{ width: '40rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} header="Make a reservation" modal className="p-fluid" footer={ReservationsDialogFooter} onHide={hideDialog}>
+                <Grid container spacing={2} columns={12} mt={1} >
+                    <Grid item xs={6} className="-mt-2" >
+                        <Box className="field">
+                            <label htmlFor="reservationDate">Reservation Day :</label>
+                                <InputText type={"datetime-local"}  value={reservationDate} onChange={(e) => setreservationDate(e.target.value)}  />
+
+                        </Box>
+                    </Grid>
+                    <Grid item xs={6} className="-mt-2" >
+                        <Box className="field">
+                            <span className="p-float-label">
+                            <Dropdown inputId="dropdown" value={restaurantid}  options={restaurants.map((restaurant) => ({ label: restaurant.nom, value: restaurant.id }))}
+                                      onChange={handleRestaurantChange} />
+                            <label htmlFor="restaurantid">Restaurant</label>
+                        </span>
+                        </Box>
+                    </Grid>
+                </Grid>
+
+                <Grid container spacing={2} columns={12} mt={1}>
+                    <Grid item xs={12} className="-mt-3">
+                        <Box className="field">
+                            <span className="p-float-label">
+                            <Dropdown inputId="dropdown" value={type}  options={types.map((type) => ({ label: type.nom, value: type.nom }))}
+                                      onChange={handleTypeChange} />
+                            <label htmlFor="type">Type</label>
+                        </span>
+                        </Box>
+                    </Grid>
+
+
+                </Grid>
+
+
+            </Dialog>
+
+        </>
     )
 }
