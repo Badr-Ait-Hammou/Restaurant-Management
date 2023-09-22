@@ -22,6 +22,7 @@ export default function Reservations(){
     const [reservations, setReservations] = useState([]);
     const [cancelledeservations, setCancelledReservations] = useState([]);
     const [confirmedreservations, setConfirmedReservations] = useState([]);
+    const [finishedReservations, setFinishedReservations] = useState([]);
     const [reservationsDialog, setReservationsDialog] = useState(false);
 
     const [userId, setUserId] = useState("");
@@ -89,7 +90,8 @@ export default function Reservations(){
             setCancelledReservations(cancelledRes);
             const  confirmedRes = response.data.filter((reservation) => reservation.status === 'Confirmed');
             setConfirmedReservations(confirmedRes);
-            // setDataViewData(confirmedRes);
+            const finishedRes = response.data.filter((reservation) => reservation.status ==='Finished' );
+            setFinishedReservations(finishedRes);
         });
 
     }
@@ -147,21 +149,13 @@ export default function Reservations(){
             toast.current.show({ severity: 'error', summary: 'Error', detail: 'Fields cannot be empty', life: 3000 });
             return;
         }
-
-        // Define the allowed reservation time range (9:00 AM to 8:59 PM)
         const allowedStartTime = new Date();
         allowedStartTime.setHours(9, 0, 0, 0);
         const allowedEndTime = new Date();
         allowedEndTime.setHours(20, 59, 59, 999);
-
-        // Parse the selected reservation date
         const selectedReservationDate = new Date(reservationDate);
-
-        // Calculate the current time plus 4 hours (minimum advance reservation time)
         const minAdvanceReservationTime = new Date();
         minAdvanceReservationTime.setHours(minAdvanceReservationTime.getHours() + 4);
-
-        // Check if the selected date is within the allowed time range
         if (
             selectedReservationDate < allowedStartTime ||
             selectedReservationDate > allowedEndTime
@@ -174,9 +168,6 @@ export default function Reservations(){
             });
             return;
         }
-
-
-        // Check if the selected date is within 4 hours from now (minimum advance reservation time)
         if (selectedReservationDate <= minAdvanceReservationTime) {
             toast.current.show({
                 severity: 'error',
@@ -208,6 +199,36 @@ export default function Reservations(){
                 console.error("Error while saving image:", error);
             });
     };
+
+    const updateStatusAutomatically = async (reservation) => {
+        if (new Date(reservation.reservationDate) < new Date()) {
+            try {
+                const newStatus = "Finished"; // Set the desired status
+                await axios.put(`/api/controller/reservations/status/${reservation.id}`, {
+                    status: newStatus,
+                });
+
+                const updatedReservations = confirmedreservations.map((r) =>
+                    r.id === reservation.id ? { ...r, status: newStatus } : r
+                );
+                setConfirmedReservations(updatedReservations);
+            } catch (error) {
+                console.error("Error updating reservation status:", error);
+            }
+        }
+    };
+
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            confirmedreservations.forEach((reservation) => {
+                updateStatusAutomatically(reservation);
+                loadReservations();
+            });
+        }, 70000);
+        return () => {
+            clearInterval(intervalId);
+        };
+    }, [confirmedreservations]);
 
 
 
@@ -277,7 +298,13 @@ export default function Reservations(){
                     <div className="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4">
                         <div className="flex flex-column align-items-center sm:align-items-start gap-3">
                             <div className="text-2xl font-bold text-900">{reservation.restaurant && reservation.restaurant.nom}</div>
-                            <Tag  value={reservation.status} severity="success" icon="pi pi-check-square"  />
+                            {reservation.status === "Finished" ? (
+                                <Tag value={reservation.status} severity="warning" icon="pi pi-exclamation-triangle" />
+                            ) : (
+                                <Tag value={reservation.status} severity="success" icon="pi pi-check-square" />
+                            )}
+
+
                             <div className="flex align-items-center gap-3">
                                 <span className="flex align-items-center gap-2">
                                     <i className="pi pi-tag"></i>
@@ -288,7 +315,7 @@ export default function Reservations(){
                         </div>
                         <div className="flex template sm:flex-column align-items-center sm:align-items-end gap-3 sm:gap-2">
                             <span className="text-2xl font-semibold">{reservation.type}</span>
-                                <Button className="edit p-0" aria-label="Slack" onClick={() => Updatestatus(reservation)}>
+                                <Button className="edit p-0" aria-label="Slack" onClick={() => Updatestatus(reservation)} disabled={reservation.status ==="Finished"}>
                                 <i className="pi pi-times px-2"></i>
                                 <span className="px-2">Cancel</span>
                             </Button>
@@ -339,7 +366,7 @@ export default function Reservations(){
 
             <Box sx={{mx:1,mt:2 ,mb:3}} >
                 <Grid reservation container spacing={2} columns={14} className="flex justify-content-between">
-                    <Grid item reservation sm={14} lg={5} xs={14} md={5}  className="justify-content-start" >
+                    <Grid item reservation sm={14} lg={5} xs={14} md={6}  className="justify-content-start" >
                         <div >
                             <OrderList value={cancelledeservations} onChange={(e) => setReservations(e.value)} itemTemplate={reservationTemplate} header="Cancelled Reservations" filter filterBy="restaurant.nom"  ></OrderList>
                         </div>
@@ -357,6 +384,20 @@ export default function Reservations(){
                             />
                         </div>
                     </Grid>
+                </Grid>
+
+                <Grid item sm={14} lg={9} xs={14} md={8}  className="justify-content-end ">
+                    <div className="card">
+                        <DataView
+                            value={finishedReservations}
+                            itemTemplate={confirmedResTemplate}
+                            header={header()}
+                            sortField={sortField}
+                            sortOrder={sortOrder}
+                            paginator
+                            rows={3}
+                        />
+                    </div>
                 </Grid>
             </Box>
         </div>
