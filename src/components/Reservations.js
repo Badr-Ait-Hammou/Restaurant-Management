@@ -24,7 +24,6 @@ export default function Orders( )  {
     const dt = useRef(null);
     const [globalFilter, setGlobalFilter] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [isCancelled, setIsCancelled] = useState(false);
 
 
 
@@ -154,12 +153,14 @@ export default function Orders( )  {
                             <i className="pi pi-undo px-2"></i>
                             <span className="px-1">Confirm</span>
                         </Button>
-                    ) : (
+                    ) :rowData.status ==="Confirmed" ?  (
                         <Button className="edit p-0" aria-label="Slack" onClick={() => handleUpdatestatus(rowData)}>
                             <i className="pi pi-times px-2"></i>
                             <span className="px-2">Cancel</span>
                         </Button>
-                    )}
+                    ):(
+                        ""
+                        )}
                 </div>
             </React.Fragment>
         );
@@ -227,8 +228,11 @@ export default function Orders( )  {
                             <div>
                                 {rowData.status ==="Cancelled" ? (
                                     <Tag style={{backgroundColor:"rgba(255,0,0,0.82)"}} value={rowData.status}/>
-                                ) : (
-                                    <Tag style={{backgroundColor:"rgba(45,154,141,0.82)"}} value={rowData.status}/>
+                                ) :rowData.status ==="Confirmed" ?(
+                                        <Tag style={{backgroundColor:"rgba(45,154,141,0.82)"}} value={rowData.status}/>
+
+                                    ) : (
+                                    <Tag severity="warning"  value={rowData.status}/>
                                 )}
                             </div>
                         )}></Column>
