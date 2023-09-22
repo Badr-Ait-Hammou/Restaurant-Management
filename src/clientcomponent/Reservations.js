@@ -254,17 +254,18 @@ export default function Reservations(){
         setReservations(reservations);
         setRestaurantid("");
         setreservationDate("");
+        settype("");
         setReservationsDialog(true);
     };
 
     const header = () => {
         return (
-            <div className="template flex  justify-content-between ">
+            <div className="template flex  justify-content-between  ">
                 <Button className="pay p-0" onClick={openNew} >
-                    <i className="pi pi-plus p-1"></i>
-                    <span className="px-3  font-bold text-white">Make a reservation</span>
+                    <i className="pi pi-plus p-1 "></i>
+                    <span className="px-1  font-monospace text-white " style={{fontSize:"12px"}}>Make a reservation</span>
                 </Button>
-                <Dropdown options={sortOptions} value={sortKey} optionLabel="label" placeholder="Sort By Status" onChange={onSortChange}  />
+                <Dropdown style={{fontSize:"10px"}} options={sortOptions} value={sortKey} optionLabel="label" placeholder="Sort By Status" onChange={onSortChange}  />
 
             </div>
         );
@@ -379,7 +380,6 @@ export default function Reservations(){
                     <Grid item reservation sm={14} lg={5} xs={14} md={6}  className="justify-content-start" >
                         <div >
                             <OrderList
-                                // style={{fontSize:"25px"}}
                                 value={cancelledeservations}
                                 onChange={(e) => setReservations(e.value)}
                                 itemTemplate={reservationTemplate}
@@ -421,11 +421,8 @@ export default function Reservations(){
                     </Grid>
                     <Grid item xs={6} className="-mt-2" >
                         <Box className="field">
-                            <span className="p-float-label">
-                            <Dropdown inputId="dropdown" value={restaurantid}  options={restaurants.map((restaurant) => ({ label: restaurant.nom, value: restaurant.id }))}
-                                      onChange={handleRestaurantChange} />
                             <label htmlFor="restaurantid">Restaurant</label>
-                        </span>
+                            <Dropdown inputId="dropdown" value={restaurantid}  options={restaurants.map((restaurant) => ({ label: restaurant.nom, value: restaurant.id }))} onChange={handleRestaurantChange} />
                         </Box>
                     </Grid>
                 </Grid>
@@ -433,11 +430,8 @@ export default function Reservations(){
                 <Grid container spacing={2} columns={12} mt={1}>
                     <Grid item xs={12} className="-mt-3">
                         <Box className="field">
-                            <span className="p-float-label">
-                            <Dropdown inputId="dropdown" value={type}  options={types.map((type) => ({ label: type.nom, value: type.nom }))}
-                                      onChange={handleTypeChange} />
                             <label htmlFor="type">Type</label>
-                        </span>
+                            <Dropdown inputId="dropdown" value={type}  options={types.map((type) => ({ label: type.nom, value: type.nom }))} onChange={handleTypeChange} />
                         </Box>
                     </Grid>
 
