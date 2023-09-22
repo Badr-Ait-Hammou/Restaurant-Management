@@ -39,7 +39,7 @@ export default function Reservations(){
 
     const sortOptions = [
         { label: 'Finished', value: '!status' },
-        { label: 'confirmed', value: 'status' }
+        { label: 'Confirmed', value: 'status' }
     ];
     const types = [
         {  id: 1,nom: 'Table for 2' },
@@ -301,7 +301,7 @@ export default function Reservations(){
                                 {reservation.status === "Finished" ? (
                                     <Tag value={reservation.status} severity="warning" className="justify-content-end px-3" icon="pi pi-exclamation-triangle" />
                                 ) : (
-                                    <Tag value={reservation.status} style={{backgroundColor:"rgb(200,61,129)"}} className="justify-content-end px-2"  icon="pi pi-check-square" />
+                                    <Tag value={reservation.status}  className="justify-content-end px-2"  icon="pi pi-check-square" />
                                 )}
                             </div>
                         </div>
@@ -316,7 +316,7 @@ export default function Reservations(){
                             <Tag value={`Type :${reservation.type}`} style={{backgroundColor:"rgba(245,241,241,0.89)",color:"black"}} icon="pi pi-home" className="-mt-2 "   />
                             <div>
                                 {reservation.status ==="Confirmed" ?(
-                                    <Button className="export p-0 " aria-label="Slack" onClick={() => Updatestatus(reservation)} >
+                                    <Button className="edit p-0 " aria-label="Slack" onClick={() => Updatestatus(reservation)} >
                                         <i className="pi pi-times px-2"></i>
                                         <span className="px-2">Cancel</span>
                                     </Button>
