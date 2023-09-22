@@ -26,11 +26,6 @@ export default function Orders( )  {
     const [loading, setLoading] = useState(true);
 
 
-
-
-
-
-
     const handleDataTableLoad = () => {
         setLoading(false);
     };
