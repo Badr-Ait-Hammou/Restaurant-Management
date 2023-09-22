@@ -17,6 +17,7 @@ import {Dialog} from "primereact/dialog";
 import {InputText} from "primereact/inputtext";
 
 
+
 export default function Reservations(){
     const [reservations, setReservations] = useState([]);
     const [cancelledeservations, setCancelledReservations] = useState([]);
@@ -33,10 +34,12 @@ export default function Reservations(){
     const [sortKey, setSortKey] = useState('');
     const [sortOrder, setSortOrder] = useState(0);
     const [sortField, setSortField] = useState('');
+    // const [dataViewData, setDataViewData] = useState(confirmedreservations);
+
 
     const sortOptions = [
-        { label: 'Price High to Low', value: '!price' },
-        { label: 'Price Low to High', value: 'price' }
+        { label: 'id', value: '!id' },
+        { label: 'id', value: 'id' }
     ];
     const types = [
         {  id: 1,nom: 'Table for 2' },
@@ -86,6 +89,7 @@ export default function Reservations(){
             setCancelledReservations(cancelledRes);
             const  confirmedRes = response.data.filter((reservation) => reservation.status === 'Confirmed');
             setConfirmedReservations(confirmedRes);
+            // setDataViewData(confirmedRes);
         });
 
     }
@@ -139,28 +143,70 @@ export default function Reservations(){
     const handleSubmit = (event) => {
         event?.preventDefault();
 
-        if (!restaurantid || !type || reservationDate.trim() ==="" ) {
+        if (!restaurantid || !type || reservationDate.trim() === "") {
             toast.current.show({ severity: 'error', summary: 'Error', detail: 'Fields cannot be empty', life: 3000 });
             return;
         }
-        axios.post("/api/controller/reservations/", {
-            type,
-            status:"Confirmed",
-            reservationDate,
-            restaurant: {
-                id: restaurantid,
-            },
-            user: {
-                id: userId,
-            },
-        }).then((response) => {
 
-            loadReservations();
-            hideDialog();
-            showSave();
-        }).catch((error) => {
-            console.error("Error while saving image:", error);
-        });
+        // Define the allowed reservation time range (9:00 AM to 8:59 PM)
+        const allowedStartTime = new Date();
+        allowedStartTime.setHours(9, 0, 0, 0);
+        const allowedEndTime = new Date();
+        allowedEndTime.setHours(20, 59, 59, 999);
+
+        // Parse the selected reservation date
+        const selectedReservationDate = new Date(reservationDate);
+
+        // Calculate the current time plus 4 hours (minimum advance reservation time)
+        const minAdvanceReservationTime = new Date();
+        minAdvanceReservationTime.setHours(minAdvanceReservationTime.getHours() + 4);
+
+        // Check if the selected date is within the allowed time range
+        if (
+            selectedReservationDate < allowedStartTime ||
+            selectedReservationDate > allowedEndTime
+        ) {
+            toast.current.show({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'Reservations are only allowed between 9:00 AM and 8:59 PM',
+                life: 3000,
+            });
+            return;
+        }
+
+
+        // Check if the selected date is within 4 hours from now (minimum advance reservation time)
+        if (selectedReservationDate <= minAdvanceReservationTime) {
+            toast.current.show({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'Reservations must be made at least 4 hours in advance',
+                life: 3000,
+            });
+            return;
+        }
+
+        axios
+            .post("/api/controller/reservations/", {
+                type,
+                status: "Confirmed",
+                reservationDate,
+                restaurant: {
+                    id: restaurantid,
+                },
+                user: {
+                    id: userId,
+                },
+            })
+            .then((response) => {
+                loadReservations();
+                hideDialog();
+                showSave();
+            })
+            .catch((error) => {
+                console.error("Error while saving image:", error);
+            });
     };
 
 
@@ -300,7 +346,15 @@ export default function Reservations(){
                     </Grid>
                     <Grid item sm={14} lg={9} xs={14} md={8}  className="justify-content-end ">
                         <div className="card">
-                            <DataView value={confirmedreservations} itemTemplate={confirmedResTemplate} header={header()} sortField={sortField} sortOrder={sortOrder} />
+                            <DataView
+                                value={confirmedreservations}
+                                itemTemplate={confirmedResTemplate}
+                                header={header()}
+                                sortField={sortField}
+                                sortOrder={sortOrder}
+                                paginator
+                                rows={3}
+                            />
                         </div>
                     </Grid>
                 </Grid>
