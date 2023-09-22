@@ -36,12 +36,11 @@ export default function Reservations(){
     const [sortKey, setSortKey] = useState('');
     const [sortOrder, setSortOrder] = useState(0);
     const [sortField, setSortField] = useState('');
-    // const [dataViewData, setDataViewData] = useState(confirmedreservations);
 
 
     const sortOptions = [
-        { label: 'id', value: '!id' },
-        { label: 'id', value: 'id' }
+        { label: 'Finished', value: '!status' },
+        { label: 'confirmed', value: 'status' }
     ];
     const types = [
         {  id: 1,nom: 'Table for 2' },
@@ -369,7 +368,9 @@ export default function Reservations(){
 
             <div className="col-12">
                 <div className="flex flex-row  align-items-center gap-2 p-1 ">
-                    <img className="w-4rem shadow-2 flex-shrink-0 border-round" src={reservation.restaurant && reservation.restaurant.photo} alt={reservation.restaurant.nom }/>
+                 <Link to={`/ifoulki_meals/restaurants/${reservation.restaurant && reservation.restaurant.id}`}>
+                <img className="w-4rem shadow-2 flex-shrink-0 border-round" src={reservation.restaurant && reservation.restaurant.photo} alt={reservation.restaurant.nom }/>
+                 </Link>
                     <div className="flex-1 flex flex-column gap-1  ">
                         <div className="flex justify-content-between">
                             <Tag style={{float:"left",backgroundColor:"rgba(245,241,241,0.89)",color:"black"}} icon={<RestaurantIcon style={{fontSize:"12px",marginRight:'3px'}}/>}  >{reservation.restaurant && reservation.restaurant.nom}</Tag>
@@ -383,18 +384,26 @@ export default function Reservations(){
                         </div>
                         <Typography variant="body1" gutterBottom >
                             <div style={{float:"left"}}>
-                                <Tag icon={"pi pi-clock"} className="font-monospace mb-1" style={{float:"left",fontSize:"10px",backgroundColor:"rgba(245,241,241,0.89)",color:"black"}}  >{formatCommentDate(reservation.dateCreated)} </Tag><br/>
-                                <Tag icon={"pi pi-calendar-plus"}  className="font-monospace" style={{float:"left",fontSize:"10px",backgroundColor:"rgba(245,241,241,0.89)",color:"black"}}  >{formatCommentDate(reservation.reservationDate)} </Tag>
+                                <Tag icon={"pi pi-clock"} className="font-monospace mb-1" style={{float:"left",fontSize:"10px",backgroundColor:"rgba(245,241,241,0.89)",color:"black"}}  >Reservation submitted on: {formatCommentDate(reservation.dateCreated)} </Tag><br/>
+                                <Tag icon={"pi pi-calendar-plus"}  className="font-monospace" style={{float:"left",fontSize:"10px",backgroundColor:"rgba(245,241,241,0.89)",color:"black"}}  >Reservation date: {formatCommentDate(reservation.reservationDate)} </Tag>
                             </div>
                         </Typography>
 
                         <div className=" template flex justify-content-between">
                             <Tag value={reservation.type} style={{backgroundColor:"rgba(56,141,152,0.93)",fontSize:"12px"}} icon="pi pi-home" className="-mt-2 "   />
                             <div>
-                                <Button className="edit p-0 " aria-label="Slack" onClick={() => Updatestatus(reservation)} disabled={reservation.status ==="Finished"}>
-                                    <i className="pi pi-times px-2"></i>
-                                    <span className="px-2">Cancel</span>
-                                </Button>
+                                {reservation.status ==="Finished" ?(
+                                    <Button className="cancel p-0 " aria-label="Slack" onClick={() => Updatestatus(reservation)} disabled={true}>
+                                        <i className="pi pi-exclamation-triangle px-2"></i>
+                                        <span className="px-2">Finished</span>
+                                    </Button>
+                                ):(
+                                    <Button className="export p-0 " aria-label="Slack" onClick={() => Updatestatus(reservation)} >
+                                        <i className="pi pi-times px-2"></i>
+                                        <span className="px-2">Cancel</span>
+                                    </Button>
+                                )}
+
                             </div>
                         </div>
 
