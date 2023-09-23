@@ -85,6 +85,7 @@ export default function HomePage() {
     const loadProductsUser = () => {
         const checkProductInCart = (productId) => {
             if (userId) {
+
                 axios.get(`/api/controller/carts/incart/${userId}/${productId}`)
                     .then(response => {
                         setProductInCart(prevProductInCart => ({
@@ -98,7 +99,8 @@ export default function HomePage() {
             }
         };
 
-        products.forEach((product) => {
+
+        [...products, ...productsno].forEach((product) => {
             checkProductInCart(product.id);
         });
     };
@@ -125,8 +127,9 @@ export default function HomePage() {
         axios.post('/api/controller/carts/', cartItem)
             .then(response => {
                 console.log('Product added to cart successfully!');
-                showSuccess();
                 loadProductsUser();
+                showSuccess();
+
             })
             .catch(error => {
                 console.error('Error adding product to cart:', error);
