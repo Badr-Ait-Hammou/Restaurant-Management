@@ -1,6 +1,6 @@
 import {Button} from 'primereact/button';
 import {Fieldset} from 'primereact/fieldset';
-import "../styles/clientreservation.css";
+// import "../styles/clientreservation.css";
 import axios from '../service/callerService';
 import React, {useState, useEffect, useRef} from "react";
 import {Card, CardContent} from '@mui/material';
@@ -45,8 +45,8 @@ export default function ClientOrders() {
 
 
     useEffect(() => {
-        loadOrders();
         loadComments();
+        loadOrders();
     }, [userId]);
 
 
@@ -72,15 +72,11 @@ export default function ClientOrders() {
         axios.get(`/api/controller/avis/user/${userId}`).then((response) => {
                 setComments(response.data);
             })
-            .catch((error) => {
-                console.error("Error loading comments:", error);
-            });
     };
 
 
 
     const loadOrders = () => {
-        // axios.get(`/api/controller/orders/userrole/${userId}`)
         axios.get(`/api/controller/orders/userorder/${userId}`)
             .then((response) => {
                 setOrders(response.data);

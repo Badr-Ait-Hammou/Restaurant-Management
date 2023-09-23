@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { accountService } from '../service/accountService'
+import { accountService } from './accountService'
 
 
 const Axios = axios.create({

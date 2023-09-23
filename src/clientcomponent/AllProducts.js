@@ -26,6 +26,7 @@ export default function AllProduct() {
     const [loading, setLoading] = useState(true);
 
 
+
     const sortOptions = [
         {label: 'Price High to Low', value: '!prix'},
         {label: 'Price Low to High', value: 'prix'}
@@ -132,7 +133,7 @@ export default function AllProduct() {
     }
 
 
-    if (loading) {
+    if (loading || products.length<6) {
         return (
             <>
                 <DataviewSkeleton/>
