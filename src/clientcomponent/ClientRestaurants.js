@@ -191,7 +191,7 @@ export default function ClientRestaurants() {
                              style={{backgroundColor: "rgb(23,113,122)"}}>
 
                         </Tag>
-                        <Rating value={getAverageRating(restaurant)} readOnly cancel={false} precision={0.5}></Rating>
+                        <Rating value={getAverageRating(restaurant)} readOnly  precision={0.5}></Rating>
                         <Typography
                             className="font-monospace ">({getReviews(restaurant)})review{getReviews(restaurant) !== 1 ? 's' : ''}
                         </Typography>
@@ -256,7 +256,7 @@ export default function ClientRestaurants() {
                             </div>
                         </div>
                         <div className="flex flex-column align-items-center sm:align-items-start gap-3">
-                            <Rating value={getAverageRating(restaurant)} readOnly cancel={false}
+                            <Rating value={getAverageRating(restaurant)} readOnly
                                     precision={0.5}></Rating>
                             <Typography
                                 className="font-monospace align-items-center">({getReviews(restaurant)})review{getReviews(restaurant) !== 1 ? 's' : ''}</Typography>

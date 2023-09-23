@@ -35,6 +35,7 @@ export default function Reservations(){
     const [sortKey, setSortKey] = useState('');
     const [sortOrder, setSortOrder] = useState(0);
     const [sortField, setSortField] = useState('');
+    // const userId=accountService.getUserIdFromToken();
 
 
     const sortOptions = [
@@ -67,7 +68,7 @@ export default function Reservations(){
                 try {
                     const user = await accountService.getUserByEmail(tokenInfo.sub);
                     setUserId(user.id);
-                    console.log('user',user.id);
+                    console.log('user', user.id);
                 } catch (error) {
                     console.log('Error retrieving user:', error);
                 }
@@ -75,7 +76,7 @@ export default function Reservations(){
         };
 
         fetchUserData();
-    }, []);
+    }, [setUserId]);
 
     useEffect(() => {
        loadReservations();
