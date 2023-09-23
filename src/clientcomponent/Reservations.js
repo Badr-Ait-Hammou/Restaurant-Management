@@ -387,8 +387,7 @@ export default function Reservations(){
                                 header={<div className="m-2"><Typography variant={"body2"} className="font-monospace text-lg">Cancelled Reservations</Typography></div>}
                                 filter
                                 filterIcon={"pi pi-search"}
-                                filterBy="restaurant.nom"
-                                filterPlaceholder={"Enter a filter..."}
+                                filterBy="restaurant.nom ,type,reservationDate"
                             />
                         </div>
                     </Grid>
