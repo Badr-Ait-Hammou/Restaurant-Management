@@ -382,7 +382,7 @@ export default function Reservations(){
                         <div >
                             <OrderList
                                 value={cancelledeservations}
-                                onChange={(e) => setReservations(e.value)}
+                                onChange={(e) => setCancelledReservations(e.value)}
                                 itemTemplate={reservationTemplate}
                                 header={<div className="m-2"><Typography variant={"body2"} className="font-monospace text-lg">Cancelled Reservations</Typography></div>}
                                 filter
