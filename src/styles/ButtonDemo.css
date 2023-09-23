@@ -63,21 +63,21 @@
     box-shadow: 0 0 0 1px var(--green-400);
 }
  /****************************/
- .template .p-tag.facebook {
-    background: linear-gradient(to left, var(--indigo-600) 50%, var(--indigo-700) 50%);
+ .template .p-button.facebook {
+    background: linear-gradient(to left, var(--indigo-500) 50%, var(--indigo-600) 50%);
     background-size: 200% 100%;
     background-position: right bottom;
     transition: background-position 0.5s ease-out;
     color: #fff;
-    border-color: var(--indigo-700);
+    border-color: var(--indigo-600);
 }
- .template .p-tag.facebook:hover {
+ .template .p-button.facebook:hover {
     background-position: left bottom;
 }
- .template .p-tag.facebook i {
-    background-color: var(--indigo-700);
+ .template .p-button.facebook i {
+    background-color: var(--indigo-600);
 }
- .template .p-tag.facebook:focus {
+ .template .p-button.facebook:focus {
     box-shadow: 0 0 0 1px var(--indigo-400);
 }
  /************************/

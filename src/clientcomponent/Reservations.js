@@ -316,7 +316,7 @@ export default function Reservations(){
                             <Tag value={`Type :${reservation.type}`} style={{backgroundColor:"rgba(245,241,241,0.89)",color:"black"}} icon="pi pi-home" className="-mt-2 "   />
                             <div>
                                 {reservation.status ==="Confirmed" ?(
-                                    <Button className="edit p-0 " aria-label="Slack" onClick={() => Updatestatus(reservation)} >
+                                    <Button className="facebook p-0 " aria-label="Slack" onClick={() => Updatestatus(reservation)} >
                                         <i className="pi pi-times px-2"></i>
                                         <span className="px-2">Cancel</span>
                                     </Button>
