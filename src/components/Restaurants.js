@@ -31,6 +31,8 @@ export default function Restaurants() {
     const dt = useRef(null);
     const [nom, setNom] = useState('');
     const [zone, setZones] =  useState([]);
+    const [user, setUsers] =  useState([]);
+    const [userid, setUserid] = useState("");
     const [series, setSeries] = useState([]);
     const [specialites, setSpecialites] = useState([]);
     const [restaurants, setRestaurants] = useState([]);
@@ -67,6 +69,10 @@ export default function Restaurants() {
     const handleSpecialityChange = (e) => {
         setSpecialiteid(e.value);
     };
+    const handleUserChange = (e) => {
+        setUserid(e.value);
+        console.log("user:", e.value)
+    };
 
 
 
@@ -89,6 +95,9 @@ export default function Restaurants() {
             const respo= await axios.get("/api/controller/restaurants/");
             setRestaurants(respo.data);
 
+            const respon= await axios.get("/api/controller/users/userrole/EMPLOYEE");
+            setUsers(respon.data);
+
 
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -105,6 +114,8 @@ export default function Restaurants() {
             toast.current.show({ severity: 'error', summary: 'Error', detail: 'Fields cannot be empty', life: 3000 });
             return;
         }
+        console.log("userid jjjjjjj:", userid);
+
         axios.post("/api/controller/restaurants/save", {
             nom,
             longitude,
@@ -121,6 +132,9 @@ export default function Restaurants() {
             },
             specialite: {
                 id: specialiteid
+            },
+            user: {
+                id: userid
             }
         }).then((response) => {
             setNom("");
@@ -132,6 +146,7 @@ export default function Restaurants() {
             setPhotos("");
             setZoneid("");
             setSerieid("");
+            setUserid("");
             setSpecialiteid("");
             hideDialog();
             loadRestaurants();
@@ -182,6 +197,8 @@ export default function Restaurants() {
         const respo= await axios.get("/api/controller/restaurants/");
         setRestaurants(respo.data);
 
+        const respon= await axios.get("/api/controller/users/userrole/EMPLOYEE");
+        setUsers(respon.data);
     }
 
     /******************************************** Delete *************************/
@@ -225,6 +242,7 @@ export default function Restaurants() {
         setSpecialiteid("");
         setZoneid("");
         setPhotos("");
+        setUserid("");
         setSerieid("");
         setRestaurantDialog(true);
     };
@@ -249,6 +267,7 @@ export default function Restaurants() {
         setLongitude(rowData.longitude);
         setSpecialiteid(rowData.specialite.id);
         setZoneid(rowData.zone.id);
+        setUserid(rowData.user && rowData.user.id);
         setPhotos(rowData.photo);
         setSerieid(rowData.serie.id);
         seteditRestaurantDialog(true);
@@ -276,6 +295,9 @@ export default function Restaurants() {
                 },
                 specialite: {
                     id: specialiteid
+                },
+                user: {
+                    id: userid
                 }
 
             });
@@ -450,6 +472,7 @@ export default function Restaurants() {
                             <Column field="id"  header="ID" sortable style={{ minWidth: '5rem' }}></Column>
                             <Column field="nom" className="font-bold"  filter filterPlaceholder="Search Name ..." header="Name" sortable style={{ minWidth: '10rem' }}></Column>
                             <Column field="photo" header="Photo" body={photoBodyTemplate} exportable={false} style={{ minWidth: '6rem' }}></Column>
+                            <Column field="user.email" className="font-bold"  filter filterPlaceholder="Search Owner ..." header="Owner" sortable style={{ minWidth: '10rem' }}></Column>
                             <Column field="adresse"   filter filterPlaceholder="Search Name ..." header="Address" sortable style={{ minWidth: '14rem' }}></Column>
                             <Column field="serie.nom"   filter filterPlaceholder="Search Name ..." header="Serie" sortable style={{ minWidth: '14rem' }}></Column>
                             <Column field="specialite.nom"   filter filterPlaceholder="Search Name ..." header="Specialite" sortable style={{ minWidth: '14rem' }}></Column>
@@ -457,7 +480,7 @@ export default function Restaurants() {
                             <Column field="latitude"   filter filterPlaceholder="Search Name ..." header="latitude" sortable style={{ minWidth: '8rem' }}></Column>
                             <Column field="dateOuverture"    header="Open" sortable style={{ minWidth: '8rem' }}></Column>
                             <Column field="dateFermeture"    header="Close" sortable style={{ minWidth: '8rem' }}></Column>
-                            <Column   field={(rowData) => `${rowData.zone.ville.nom} -- ${rowData.zone.nom} `} header="Zone" sortable style={{ minWidth: '12rem' }}></Column>
+                            <Column field={(rowData) => `${rowData.zone.ville.nom} -- ${rowData.zone.nom} `} header="Zone" sortable style={{ minWidth: '12rem' }}></Column>
                             <Column header="Action" body={actionBodyTemplate} exportable={false} style={{ minWidth: '16rem' }}></Column>
                         </DataTable>
                 </div>
@@ -481,7 +504,7 @@ export default function Restaurants() {
                     </Box>
                 </Grid>
                 <Grid container spacing={2} columns={12} mt={1} >
-                    <Grid item xs={6} className="-mt-2" >
+                    <Grid item xs={4} className="-mt-2" >
                         <Box className="field">
                              <span className="p-float-label">
                             <InputText  id="inputtext" value={nom} onChange={(e) => setNom(e.target.value)} />
@@ -489,7 +512,7 @@ export default function Restaurants() {
                              </span>
                         </Box>
                     </Grid>
-                    <Grid item xs={6} className="-mt-2" >
+                    <Grid item xs={4} className="-mt-2" >
                             <Box className="field">
                                 <span className="p-float-label">
                             <InputText  id="inputtext" value={adresse} onChange={(e) => setAdresse(e.target.value)} />
@@ -497,6 +520,16 @@ export default function Restaurants() {
                              </span>
                             </Box>
                         </Grid>
+
+                    <Grid item xs={4} className="-mt-2" >
+                        <Box className="field">
+                            <span className="p-float-label">
+                            <Dropdown inputId="dropdown" value={userid}  options={user.map((user) => ({ label: user.email, value: user.id }))}
+                                      onChange={handleUserChange} />
+                            <label htmlFor="userid">Owner</label>
+                        </span>
+                        </Box>
+                    </Grid>
                 </Grid>
 
                 <Grid container spacing={2} columns={12} mt={1}>
@@ -592,7 +625,7 @@ export default function Restaurants() {
                     </Box>
                 </Grid>
                 <Grid container spacing={2} columns={12} mt={1} >
-                    <Grid item xs={6} className="-mt-2" >
+                    <Grid item xs={4} className="-mt-2" >
                         <Box className="field">
                              <span className="p-float-label">
                             <InputText  id="inputtext" value={nom} onChange={(e) => setNom(e.target.value)} />
@@ -600,12 +633,22 @@ export default function Restaurants() {
                              </span>
                         </Box>
                     </Grid>
-                    <Grid item xs={6} className="-mt-2" >
+                    <Grid item xs={4} className="-mt-2" >
                         <Box className="field">
                                 <span className="p-float-label">
                             <InputText  id="inputtext" value={adresse} onChange={(e) => setAdresse(e.target.value)} />
                             <label htmlFor="adresse">Address</label>
                              </span>
+                        </Box>
+                    </Grid>
+
+                    <Grid item xs={4} className="-mt-2" >
+                        <Box className="field">
+                            <span className="p-float-label">
+                            <Dropdown inputId="dropdown" value={userid}  options={user.map((user) => ({ label: user.email, value: user.id }))}
+                                      onChange={handleUserChange} />
+                            <label htmlFor="userid">Owner</label>
+                        </span>
                         </Box>
                     </Grid>
                 </Grid>
