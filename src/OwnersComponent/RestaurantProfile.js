@@ -1,7 +1,11 @@
 import React from "react"
 import {Button} from "primereact/button"
 import Image1 from "../images/deliver.jpg"
-import Avatar from '@mui/material/Avatar';
+// import Avatar from '@mui/material/Avatar';
+import { Avatar } from 'primereact/avatar';
+import { Badge } from 'primereact/badge';
+
+
 import ordersImage from "../images/flowers.jpg";
 
 export default function RestaurantProfile(){
@@ -9,15 +13,20 @@ export default function RestaurantProfile(){
 
         <>
 
-            <div className="  relative text-center bg-cover sm:h-80 h-56 " style={{backgroundImage: `url(${ordersImage})`,}}>
-                {/* Avatar Image */}
-                <div className="absolute left-1/2 transform -translate-x-1/2 sm:-bottom-1/4  -bottom-1/3 ">
-                    <Avatar src={Image1} sx={{width:150,height:150}}   />
+            {/*<div className="relative text-center bg-cover w-full sm:h-80 h-56" style={{ backgroundImage: `url(${ordersImage})` }}>*/}
+            <div className=" relative shadow-2  p-1 border-50 w-full sm:h-64 h-44 bg-cover bg-center" style={{backgroundImage: `url(${ordersImage})`}}>
+
+            <div className=" w-full h-full p-2  justify-content-between  backdrop-blur-sm  border-spacing-1 shadow-2 p-0.5 border-50 border-round"></div>
+                <div className="absolute left-1/2 transform -translate-x-1/2 sm:-bottom-1/3 -bottom-1/2">
+                    {/*<Avatar src={Image1} sx={{ width: 150, height: 150,backgroundSize: 'filled', }}   />*/}
+                    <Avatar image={Image1}  style={{width:"160px",height:"160px"}} shape="circle"  className=" shadow-4 shadow-indigo-400  "/>
                 </div>
-                {/* User's Name */}
-                <div className=" absolute left-1/2 transform -translate-x-1/2 bottom-1/2 text-white text-2xl ">John Doe</div>
+                <div className="absolute left-1/2 transform -translate-x-1/2 bottom-1/2 text-white text-2xl">
+                    John Doe
+                </div>
             </div>
-        <div className="grid grid-nogutter surface-0 text-800 mt-8">
+
+            <div className="grid grid-nogutter surface-0 text-800 mt-8">
             <div className="col-12 md:col-6 p-6 text-center md:text-left flex align-items-center ">
                 <section>
                     <span className="block text-6xl font-bold mb-1">Create the screens</span>
