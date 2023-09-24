@@ -111,11 +111,11 @@ export default function Owners() {
                         telephone: values.telephone,
                         adresse: values.adresse,
                         role: 'EMPLOYEE',
-                        email: values.email
-                    });
+                        email: values.email,
 
-                    console.log("API Response:", response.data);
-                    formik.resetForm();
+                    });
+                    //console.log("API Response:", response.data);
+                    //formik.resetForm();
                     setUserDialog(false);
                     loadClients();
                     setShowMessage(true);
