@@ -6,7 +6,7 @@ import Restaurant from '../components/Restaurants';
 import Zone from '../components/Zones';
 import Serie from '../components/Series';
 import Specilite from '../components/Specialities';
-import User from '../components/UserTable';
+import User from '../components/Owners';
 import Produit from '../components/Products';
 import Header from '../components/Header';
 import CltRest from '../clientcomponent/ClientRestaurants';
