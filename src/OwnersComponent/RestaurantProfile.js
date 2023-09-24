@@ -1,18 +1,84 @@
 import React from "react"
 import {Button} from "primereact/button"
 import Image1 from "../images/deliver.jpg"
-// import Avatar from '@mui/material/Avatar';
 import {Avatar} from 'primereact/avatar';
 import {Divider} from 'primereact/divider';
-import {Badge} from 'primereact/badge';
 import ordersImage from "../images/flowers.jpg";
 import Chip from "@mui/material/Chip";
 import Typography from "@mui/material/Typography";
 import {Box, Grid} from "@mui/material";
 import {InputText} from "primereact/inputtext";
-import {classNames} from "primereact/utils";
+import {useState} from "react";
+import {Dropdown} from "primereact/dropdown";
+import axios from "../service/callerService";
+import {useEffect} from "react";
 
 export default function RestaurantProfile() {
+    const [nom, setNom] = useState('');
+    const [zone, setZones] =  useState([]);
+    const [user, setUsers] =  useState([]);
+    const [userid, setUserid] = useState("");
+    const [series, setSeries] = useState([]);
+    const [specialites, setSpecialites] = useState([]);
+    const [restaurant, setRestaurant] = useState([]);
+    const [zoneid, setZoneid] = useState("");
+    const [serieid, setSerieid] = useState("");
+    const [specialiteid, setSpecialiteid] = useState("");
+    const [longitude, setLongitude] = useState("");
+    const [latitude, setLatitude] = useState("");
+    const [dateOuverture, setdateopen] = useState("");
+    const [dateFermeture, setdateclose] = useState("");
+    const [adresse, setAdresse] = useState("");
+    const [photo, setPhotos] = useState("");
+    const [loading, setLoading] = useState(true);
+
+
+
+    const handleZoneChange = (e) => {
+        setZoneid(e.value);
+    };
+    const handleSerieChange = (e) => {
+        setSerieid(e.value);
+    };
+    const handleSpecialityChange = (e) => {
+        setSpecialiteid(e.value);
+    };
+    const handleDataTableLoad = () => {
+        setLoading(false);
+    };
+
+
+
+    const fetchData = async () => {
+        try {
+            const Response = await axios.get('/api/controller/series/');
+            setSeries(Response.data);
+
+            const res= await axios.get("/api/controller/zones/");
+            setZones(res.data);
+
+            const resp= await axios.get("/api/controller/specialites/");
+            setSpecialites(resp.data);
+
+            const respo= await axios.get("/api/controller/restaurants/");
+            setRestaurant(respo.data);
+
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchData();
+        handleDataTableLoad();
+    }, []);
+
+
+    const loadRestaurant=async ()=>{
+        const respo= await axios.get("/api/controller/restaurants/");
+        setRestaurant(respo.data);
+    }
+
     return (
 
         <>
@@ -50,36 +116,79 @@ export default function RestaurantProfile() {
                     <Grid item xs={12} sm={6} md={3} >
                         <Box className="field col-12 md:col-12">
                             <span className="p-float-label">
-                                <InputText id="firstname" name="firstname"/>
-                                <label htmlFor="firstname">FirstName*</label>
+                                <InputText id="firstname" name="firstname" value={nom} onChange={(e) => setNom(e.target.value)}/>
+                                <label htmlFor="firstname">Name</label>
                             </span>
                         </Box>
                     </Grid>
                     <Grid item xs={12} sm={6} md={3}>
                         <Box className="field col-12 md:col-12">
                             <span className="p-float-label">
-                                <InputText id="firstname" name="firstname"/>
-                                <label htmlFor="firstname">FirstName*</label>
+                                <InputText id="address" name="address" value={adresse} onChange={(e) => setAdresse(e.target.value)}/>
+                                <label htmlFor="adresse">Address</label>
                             </span>
                         </Box>
                     </Grid>
                     <Grid item xs={12} sm={6} md={3}>
                         <Box className="field col-12 md:col-12">
                             <span className="p-float-label">
-                                <InputText id="firstname" name="firstname"/>
-                                <label htmlFor="firstname">FirstName*</label>
+                                <InputText id="longitude" name="longitude" value={longitude} onChange={(e) => setLongitude(e.target.value)}/>
+                                <label htmlFor="longitude">Longitude</label>
                             </span>
                         </Box>
                     </Grid>
                     <Grid item xs={12} sm={6} md={3}>
                         <Box className="field col-12 md:col-12">
                              <span className="p-float-label">
-                                 <InputText id="firstname" name="firstname"/>
-                                 <label htmlFor="firstname">FirstName*</label>
+                                <InputText id="latitude" name="latitude" value={latitude} onChange={(e) => setLatitude(e.target.value)}/>
+                                 <label htmlFor="latitude">Latitude</label>
                              </span>
                         </Box>
                     </Grid>
+
+
+                    <Divider/>
+
+                    <Grid item xs={12} sm={6} md={3} >
+                        <Box className="field col-12 md:col-12">
+                            <span className="p-float-label">
+                                <InputText id="dateOuverture" name="dateOuverture" value={dateOuverture} onChange={(e) => setdateopen(e.target.value)}/>
+                                <label htmlFor="dateOuverture">Open at :</label>
+                            </span>
+                        </Box>
+                    </Grid>
+                    <Grid item xs={12} sm={6} md={3}>
+                        <Box className="field col-12 md:col-12">
+                            <span className="p-float-label">
+                                <Dropdown inputId="dropdown" value={zoneid}  options={zone.map((zone) => ({ label: zone.nom, value: zone.id }))}
+                                          onChange={handleZoneChange} />
+                            <label htmlFor="zoneid">Zone</label>
+                            </span>
+                        </Box>
+                    </Grid>
+                    <Grid item xs={12} sm={6} md={3}>
+                        <Box className="field col-12 md:col-12">
+                            <span className="p-float-label">
+                               <Dropdown inputId="dropdown" value={specialiteid}   options={specialites.map((sp) => ({ label: sp.nom, value: sp.id }))}
+                                         onChange={handleSpecialityChange} />
+                            <label htmlFor="specialiteid">Speciality</label>
+                            </span>
+                        </Box>
+                    </Grid>
+                    <Grid item xs={12} sm={6} md={3}>
+                        <Box className="field col-12 md:col-12">
+                             <span className="p-float-label">
+                               <Dropdown inputId="dropdown" value={serieid}
+                                         options={series.map((serie) => ({ label: serie.nom, value: serie.id }))}
+                                         onChange={handleSerieChange}  />
+                            <label htmlFor="serieid">Serie</label>
+                             </span>
+                        </Box>
+                    </Grid>
+
                 </Grid>
+
+
 
             </div>
 
