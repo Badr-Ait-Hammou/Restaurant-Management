@@ -12,9 +12,12 @@ import {useState} from "react";
 import {Dropdown} from "primereact/dropdown";
 import axios from "../service/callerService";
 import {useEffect} from "react";
+import {Toolbar} from "primereact/toolbar";
 
 export default function RestaurantProfile() {
     const [nom, setNom] = useState('');
+    const [RestaurantDialog, setRestaurantDialog] = useState(false);
+
     const [zone, setZones] =  useState([]);
     const [user, setUsers] =  useState([]);
     const [userid, setUserid] = useState("");
@@ -79,6 +82,22 @@ export default function RestaurantProfile() {
         setRestaurant(respo.data);
     }
 
+    const openNew = () => {
+        setRestaurant(restaurant);
+        setNom(nom);
+        setdateopen(dateOuverture);
+        setdateclose(dateFermeture);
+        setAdresse(adresse);
+        setLatitude(latitude);
+        setLongitude(longitude);
+        setSpecialiteid(specialites.id);
+        setZoneid(zone.id);
+        setPhotos(photo);
+        setSerieid(series.id);
+        setRestaurantDialog(true);
+    };
+
+
     return (
 
         <>
@@ -97,18 +116,20 @@ export default function RestaurantProfile() {
             </div>
 
             <div className=" mx-2 p-1 card  mt-8 ">
-                <div className="flex flex-2  sm:justify-content-between   ">
-                    <Chip
-                        avatar={<Avatar alt={"restaurantName"} style={{width: "60px", height: "60px"}} image={Image1}
-                                        shape="circle" className=" shadow-4 shadow-indigo-400  "/>}
-                        label={<Typography className="font-monospace mx-2"><span className="font-bold">Owner :</span>
-                        </Typography>}
-                        variant="filled"
-                        size="medium"
-                        sx={{width: 200, height: 70, backgroundColor: "transparent"}}
-                    />
-                    <Button label="Update" severity="info"></Button>
-                </div>
+
+                <Toolbar className="mb-2 p-1"
+                         start={ <Chip
+                             avatar={<Avatar alt={"restaurantName"} style={{width: "60px", height: "60px"}} image={Image1}
+                                             shape="circle" className=" shadow-4 shadow-indigo-400  "/>}
+                             label={<Typography className="font-monospace mx-2"><span className="font-bold">Owner :</span>
+                         </Typography>}
+                             variant="filled"
+                             size="medium"
+                             sx={{width: 200, height: 70, backgroundColor: "transparent"}}
+                         />}
+                         end={<Button label="Update" severity="info"></Button>}>
+                </Toolbar>
+
                 <Divider/>
 
 
@@ -154,6 +175,14 @@ export default function RestaurantProfile() {
                             <span className="p-float-label">
                                 <InputText id="dateOuverture" name="dateOuverture" value={dateOuverture} onChange={(e) => setdateopen(e.target.value)}/>
                                 <label htmlFor="dateOuverture">Open at :</label>
+                            </span>
+                        </Box>
+                    </Grid>
+                    <Grid item xs={12} sm={6} md={3} >
+                        <Box className="field col-12 md:col-12">
+                            <span className="p-float-label">
+                                <InputText id="dateFermeture" name="dateFermeture" value={dateFermeture} onChange={(e) => setdateclose(e.target.value)}/>
+                                <label htmlFor="dateFermeture">Close at :</label>
                             </span>
                         </Box>
                     </Grid>
