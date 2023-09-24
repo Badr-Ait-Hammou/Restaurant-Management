@@ -13,14 +13,15 @@ import {Dropdown} from "primereact/dropdown";
 import axios from "../service/callerService";
 import {useEffect} from "react";
 import {Toolbar} from "primereact/toolbar";
+import {accountService} from "../service/accountService";
 
 export default function RestaurantProfile() {
     const [nom, setNom] = useState('');
     const [RestaurantDialog, setRestaurantDialog] = useState(false);
 
     const [zone, setZones] =  useState([]);
-    const [user, setUsers] =  useState([]);
-    const [userid, setUserid] = useState("");
+    const [user, setUser] =  useState([]);
+    const [userid, setUserId] = useState("");
     const [series, setSeries] = useState([]);
     const [specialites, setSpecialites] = useState([]);
     const [restaurant, setRestaurant] = useState([]);
@@ -51,9 +52,28 @@ export default function RestaurantProfile() {
     };
 
 
+    useEffect(() => {
+        const fetchUserData = async () => {
+            const tokenInfo = accountService.getTokenInfo();
+            if (tokenInfo) {
+                try {
+                    const user = await accountService.getUserByEmail(tokenInfo.sub);
+                    setUserId(user.id);
+                    console.log('user', user.id);
+                } catch (error) {
+                    console.log('Error retrieving user:', error);
+                }
+            }
+        };
+        fetchUserData();
+    }, []);
+
+
 
     const fetchData = async () => {
         try {
+            // const restaurantId = user.restaurantList  && user.restaurantList[0].id ;
+            // console.log("restaurant id", restaurantId);
             const Response = await axios.get('/api/controller/series/');
             setSeries(Response.data);
 
@@ -63,8 +83,13 @@ export default function RestaurantProfile() {
             const resp= await axios.get("/api/controller/specialites/");
             setSpecialites(resp.data);
 
-            const respo= await axios.get("/api/controller/restaurants/");
-            setRestaurant(respo.data);
+            const respon= await axios.get(`/api/controller/users/${userid}`);
+            setUser(respon.data);
+            console.log("userid data", respon.data);
+
+            // const respo= await axios.get(`/api/controller/restaurants/${restaurantId}`);
+            // setRestaurant(respo.data);
+            // console.log("restaurant id",restaurantId);
 
         } catch (error) {
             console.error('Error fetching data:', error);
