@@ -174,7 +174,7 @@ export default function Owners() {
     };
     const centerToolbarTemplate = () => {
         return <div className="flex flex-wrap gap-2 align-items-center justify-content-between ">
-            <h4 className="m-0 font-monospace">Manage Restaurants</h4>
+            <h4 className="m-0 font-monospace">Manage Owners</h4>
         </div>;
     };
 

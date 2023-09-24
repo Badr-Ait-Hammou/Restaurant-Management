@@ -25,7 +25,9 @@ import RestaurantBySpeciality from "../clientcomponent/RestaurantSpeciality";
 import RestaurantProductDetail from "../clientcomponent/RestaurantProductDetails";
 import AdminDash from "../components/Dashboard";
 import OwnerDash from "../OwnersComponent/Dashboard";
-import OwnerHeader from "../OwnersComponent/Header"
+import OwnerHeader from "../OwnersComponent/Header";
+import OwnerResturant from "../OwnersComponent/RestaurantProfile";
+
 const userRoutes = (
     <>
         <Route index element={<Home/>}/>
@@ -50,19 +52,8 @@ const employeRoutes = (
     <>
         <Route index element={<OwnerDash/>}/>
         <Route path="/" element={<OwnerDash/>}/>
-        <Route path="/restaurants" element={<CltRest/>}/>
-        <Route path="/home/restaurants" element={<CltRest/>}/>
-        <Route path="/cart" element={<Cart/>}/>
-        <Route path="/orders" element={<ClientOrders/>}/>
-        <Route path="/reservation" element={<Reservation/>}/>
-        <Route path="/profile" element={<Profile/>}/>
-        <Route path="/all_products" element={<AllProducts/>}/>
-        <Route exact path="/restaurants/:id" element={<RestaurantDetails/>}/>
-        <Route exact path="/home/restaurants_speciality/:id" element={<RestaurantBySpeciality/>}/>
-        <Route exact path="/home/restaurants/:id" element={<RestaurantDetails/>}/>
-        <Route exact path="/home/product/:id" element={<RestaurantProductDetail/>}/>
-        <Route exact path="/home/restaurants/:id/product/:id" element={<RestaurantProductDetail/>}/>
-        <Route exact path="/all_products/product/:id" element={<RestaurantProductDetail/>}/>
+        <Route path="/restaurant" element={<OwnerResturant/>}/>
+
     </>
 );
 const AdminRoute = () => {
