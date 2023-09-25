@@ -17,13 +17,13 @@ import {accountService} from "../service/accountService";
 import { Dialog } from 'primereact/dialog';
 import {useRef} from "react";
 import {Toast} from "primereact/toast";
+import {Tag} from "primereact/tag";
 
 
 
 export default function RestaurantProfile() {
     const [nom, setNom] = useState('');
     const [RestaurantDialog, setRestaurantDialog] = useState(false);
-
     const [zone, setZones] =  useState([]);
     const [userRestaurantid, setUserRestaurantId] =  useState([]);
     const [userid, setUserId] = useState("");
@@ -94,8 +94,6 @@ export default function RestaurantProfile() {
             console.error('Error fetching data:', error);
         }
     };
-
-
 
 
     const loadRestaurant=async ()=>{
@@ -241,7 +239,6 @@ export default function RestaurantProfile() {
             </div>
 
             <div className=" mx-2 p-1 card  mt-8 ">
-
                 <Toolbar className="mb-2 p-1"
                          start={ <Chip
                              avatar={<Avatar alt={"restaurantName"} style={{width: "60px", height: "60px"}} image={Image1}
@@ -254,30 +251,145 @@ export default function RestaurantProfile() {
                          />}
                          end={<Button label="Update" severity="info" onClick={openNew}/>}>
                 </Toolbar>
-
                 <Divider/>
+                {/*<Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} className="p-fluid grid">*/}
+                {/*    <Grid item xs={12} sm={6} md={3} >*/}
+                {/*        <Box className="field col-12 md:col-12">*/}
+                {/*            <span className="p-float-label">*/}
+                {/*                <InputText id="firstname" name="firstname" value={nom} onChange={(e) => setNom(e.target.value)}/>*/}
+                {/*                <label htmlFor="firstname">Name</label>*/}
+                {/*            </span>*/}
+                {/*        </Box>*/}
+                {/*    </Grid>*/}
+                {/*    <Grid item xs={12} sm={6} md={3}>*/}
+                {/*        <Box className="field col-12 md:col-12">*/}
+                {/*            <span className="p-float-label">*/}
+                {/*                <InputText id="address" name="address" value={adresse} onChange={(e) => setAdresse(e.target.value)}/>*/}
+                {/*                <label htmlFor="adresse">Address</label>*/}
+                {/*            </span>*/}
+                {/*        </Box>*/}
+                {/*    </Grid>*/}
+                {/*    <Grid item xs={12} sm={6} md={3}>*/}
+                {/*        <Box className="field col-12 md:col-12">*/}
+                {/*            <span className="p-float-label">*/}
+                {/*                <InputText id="longitude" name="longitude" value={longitude} onChange={(e) => setLongitude(e.target.value)}/>*/}
+                {/*                <label htmlFor="longitude">Longitude</label>*/}
+                {/*            </span>*/}
+                {/*        </Box>*/}
+                {/*    </Grid>*/}
+                {/*    <Grid item xs={12} sm={6} md={3}>*/}
+                {/*        <Box className="field col-12 md:col-12">*/}
+                {/*             <span className="p-float-label">*/}
+                {/*                <InputText id="latitude" name="latitude" value={latitude} onChange={(e) => setLatitude(e.target.value)}/>*/}
+                {/*                 <label htmlFor="latitude">Latitude</label>*/}
+                {/*             </span>*/}
+                {/*        </Box>*/}
+                {/*    </Grid>*/}
+
+
+                {/*    <Divider/>*/}
+
+                {/*    <Grid item xs={12} sm={6} md={3} >*/}
+                {/*        <Box className="field col-12 md:col-12">*/}
+                {/*            <span className="p-float-label">*/}
+                {/*                <InputText id="dateOuverture" name="dateOuverture" value={dateOuverture} onChange={(e) => setdateopen(e.target.value)}/>*/}
+                {/*                <label htmlFor="dateOuverture">Open at :</label>*/}
+                {/*            </span>*/}
+                {/*        </Box>*/}
+                {/*    </Grid>*/}
+                {/*    <Grid item xs={12} sm={6} md={3} >*/}
+                {/*        <Box className="field col-12 md:col-12">*/}
+                {/*            <span className="p-float-label">*/}
+                {/*                <InputText id="dateFermeture" name="dateFermeture" value={dateFermeture} onChange={(e) => setdateclose(e.target.value)}/>*/}
+                {/*                <label htmlFor="dateFermeture">Close at :</label>*/}
+                {/*            </span>*/}
+                {/*        </Box>*/}
+                {/*    </Grid>*/}
+                {/*    <Grid item xs={12} sm={6} md={3}>*/}
+                {/*        <Box className="field col-12 md:col-12">*/}
+                {/*            <span className="p-float-label">*/}
+                {/*                <Dropdown inputId="dropdown" value={zoneid}  options={zone.map((zone) => ({ label: zone.nom, value: zone.id }))}*/}
+                {/*                          onChange={handleZoneChange} />*/}
+                {/*            <label htmlFor="zoneid">Zone</label>*/}
+                {/*            </span>*/}
+                {/*        </Box>*/}
+                {/*    </Grid>*/}
+                {/*    <Grid item xs={12} sm={6} md={3}>*/}
+                {/*        <Box className="field col-12 md:col-12">*/}
+                {/*            <span className="p-float-label">*/}
+                {/*               <Dropdown inputId="dropdown" value={specialiteid}   options={specialites.map((sp) => ({ label: sp.nom, value: sp.id }))}*/}
+                {/*                         onChange={handleSpecialityChange} />*/}
+                {/*            <label htmlFor="specialiteid">Speciality</label>*/}
+                {/*            </span>*/}
+                {/*        </Box>*/}
+                {/*    </Grid>*/}
+                {/*    <Grid item xs={12} sm={6} md={3}>*/}
+                {/*        <Box className="field col-12 md:col-12">*/}
+                {/*             <span className="p-float-label">*/}
+                {/*               <Dropdown inputId="dropdown" value={serieid}*/}
+                {/*                         options={series.map((serie) => ({ label: serie.nom, value: serie.id }))}*/}
+                {/*                         onChange={handleSerieChange}  />*/}
+                {/*            <label htmlFor="serieid">Serie</label>*/}
+                {/*             </span>*/}
+                {/*        </Box>*/}
+                {/*    </Grid>*/}
+
+                {/*</Grid>*/}
+
+
+                <div className="surface-section">
+                    <div className="font-medium text-3xl text-900 mb-3">Restaurant Information</div>
+                    <div className="text-500 mb-5">Morbi tristique blandit turpis. In viverra ligula id nulla hendrerit
+                        rutrum.
+                    </div>
+                    <ul className="list-none p-0 m-0">
+                        <div className="flex flex-row  justify-content-between py-3 px-2 border-top-1 surface-border ">
+                            <div className="text-500 w-6 md:w-2 font-medium">Restaurant Name</div>
+                            <div className="text-900 w-6 md:w-2  ">
+                                <Tag value={userRestaurantid.nom}/>
+                            </div>
+                        </div>
+                        <div className="flex flex-row  justify-content-between py-3 px-2 border-top-1 surface-border ">
+                            <div className="text-500 w-6 md:w-2 font-medium">Restaurant Address </div>
+                            <div className="text-900 w-6 md:w-2  ">
+                                <Tag value={userRestaurantid.adresse}/>
+                            </div>
+                        </div>
+                    </ul>
+                </div>
+
             </div>
 
-            <Dialog visible={RestaurantDialog} style={{ width: '50rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} header="Edit Restaurant" modal className="p-fluid" footer={RestaurantDialogFooter} onHide={hideDialog}>
 
-                <div className=" relative shadow-2  p-1 border-50 w-full sm:h-64 h-44 bg-cover bg-center"
+
+
+
+
+
+
+
+
+
+
+            <Dialog visible={RestaurantDialog} style={{ width: '50rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} header="Edit Restaurant" modal className="p-fluid" footer={RestaurantDialogFooter} onHide={hideDialog}>
+                <div className=" relative shadow-2  p-1 border-50 w-full sm:h-40 h-44 bg-cover bg-center"
                      style={{backgroundImage: `url(${ordersImage})`}}>
                     <div className=" w-full h-full p-2  justify-content-between  backdrop-blur-sm  border-spacing-1 shadow-2 p-0.5 border-50 border-round"></div>
                     <label htmlFor="uploadImage">
-                    <div className="absolute left-1/2 transform -translate-x-1/2 sm:-bottom-1/3 -bottom-1/2"  >
+                    <div className="absolute left-1/2 transform -translate-x-1/2 sm:-bottom-1/2 -bottom-1/2"  >
                         <InputText
                             type="file"
                             id="uploadImage"
                             style={{cursor:"grab",display:"none" }}
                             onChange={handlePhotoChange}
                         />
-                        <Avatar image={userRestaurantid.photo } style={{width: "160px", height: "160px"}} shape="circle"
+                        <Avatar image={userRestaurantid.photo } style={{width: "120px", height: "120px"}} shape="circle"
                                 className=" shadow-4 shadow-indigo-400 mb-3 "
                         />
                     </div>
                     </label>
-                    <div className="absolute left-1/2 transform -translate-x-1/2 bottom-1/2 text-white text-2xl text-uppercase">
-                        {userRestaurantid.nom ||"Restaurant Name"} Restaurant
+                    <div className="absolute left-1/2 transform -translate-x-1/2 bottom-1/2 text-white text-sm   text-uppercase">
+                        {userRestaurantid.nom ||"Restaurant Name"}
                     </div>
                 </div>
                 <Grid container rowSpacing={1}  className="p-fluid grid mt-8">
@@ -313,7 +425,6 @@ export default function RestaurantProfile() {
                              </span>
                         </Box>
                     </Grid>
-
                     <Grid item xs={12} sm={6} md={3} >
                         <Box className="field col-12 md:col-12">
                             <span className="p-float-label">
@@ -333,7 +444,7 @@ export default function RestaurantProfile() {
                     <Grid item xs={12} sm={6} md={3}>
                         <Box className="field col-12 md:col-12">
                             <span className="p-float-label">
-                                <Dropdown inputId="dropdown" value={zoneid}  options={zone.map((zone) => ({ label: zone.nom, value: zone.id }))}
+                                <Dropdown inputId="zoneid" value={zoneid}  options={zone.map((zone) => ({ label: zone.nom, value: zone.id }))}
                                           onChange={handleZoneChange} />
                             <label htmlFor="zoneid">Zone</label>
                             </span>
@@ -342,7 +453,7 @@ export default function RestaurantProfile() {
                     <Grid item xs={12} sm={6} md={3}>
                         <Box className="field col-12 md:col-12">
                             <span className="p-float-label">
-                               <Dropdown inputId="dropdown" value={specialiteid}   options={specialites.map((sp) => ({ label: sp.nom, value: sp.id }))}
+                               <Dropdown inputId="specialiteid" value={specialiteid}   options={specialites.map((sp) => ({ label: sp.nom, value: sp.id }))}
                                          onChange={handleSpecialityChange} />
                             <label htmlFor="specialiteid">Speciality</label>
                             </span>
@@ -351,18 +462,14 @@ export default function RestaurantProfile() {
                     <Grid item xs={12} sm={6} md={3}>
                         <Box className="field col-12 md:col-12">
                              <span className="p-float-label">
-                               <Dropdown inputId="dropdown" value={serieid}
+                               <Dropdown inputId="serieid" value={serieid}
                                          options={series.map((serie) => ({ label: serie.nom, value: serie.id }))}
                                          onChange={handleSerieChange}  />
                             <label htmlFor="serieid">Serie</label>
                              </span>
                         </Box>
                     </Grid>
-
                 </Grid>
-
-
-
             </Dialog>
             </>
 
