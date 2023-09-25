@@ -1,8 +1,7 @@
 import {Link, useParams} from 'react-router-dom';
 import axios from '../service/callerService';
 import {useEffect, useState, useRef} from "react";
-import {Card, CardContent, Rating} from "@mui/material";
-import {Col, Row} from "react-bootstrap";
+import { Rating} from "@mui/material";
 import React from "react";
 import {accountService} from "../service/accountService";
 import {Button} from 'primereact/button';
@@ -14,6 +13,18 @@ import {Tag} from "primereact/tag";
 import Skeleton from "../skeleton/ProfileSkeleton"
 import Typography from "@mui/material/Typography";
 import {DataView} from "primereact/dataview";
+import blackImage from "../images/blackbackground.jpg";
+import {Avatar} from "primereact/avatar";
+import Image1 from "../images/deliver.jpg";
+import {Toolbar} from "primereact/toolbar";
+import Chip from "@mui/material/Chip";
+import ShareLocationIcon from "@mui/icons-material/ShareLocation";
+import AccessTimeFilledIcon from "@mui/icons-material/AccessTimeFilled";
+import NightsStayIcon from "@mui/icons-material/NightsStay";
+import LocationCityIcon from "@mui/icons-material/LocationCity";
+import LinkIcon from "@mui/icons-material/Link";
+import SmartButtonIcon from "@mui/icons-material/SmartButton";
+import {Divider} from "primereact/divider";
 
 export default function RestaurantDetails() {
     const [longitude, setLongitude] = useState();
@@ -245,46 +256,133 @@ export default function RestaurantDetails() {
         <>
             <Toast ref={toast}/>
 
-            <Card className="mt-4 mx-2" style={{backgroundColor: "whitesmoke"}}>
-                <CardContent>
-                    <Row>
-                        <Col sm={12} md={6} className="mb-3 mb-md-0">
-                            <div className="justify-content-center d-flex">
-                                <img alt="badr" src={restaurant.photo} style={{
-                                    width: "70%",
-                                    height: "300px", objectFit: "fill", borderRadius: "20px"
-                                }}/>
-                            </div>
-                            <div className="details-container" style={{padding: '10px', marginBottom: '10px'}}>
-                                <h3 style={{
-                                    fontFamily: 'sans-serif',
-                                    fontSize: '40px',
-                                    marginBottom: '20px',
-                                    color: '#20b0a8'}}>
-                                    {restaurant.nom}
-                                </h3>
-                                <Rating value={restaurantRating} readOnly cancel={false} precision={0.5} ></Rating>
-                                <Typography className="font-monospace ">({products.length})review</Typography>
-                                <strong
-                                    style={{fontSize: '18px', color: '#181818'}}>Address: {restaurant.adresse}</strong>
-                            </div>
-                            <div className="details-container" style={{padding: '10px'}}>
-                                <strong className="card-title" style={{fontSize: '18px', color: '#333'}}>OPEN
-                                    : {restaurant.dateOuverture} / {restaurant.dateFermeture}</strong>
-                            </div>
+            <div className=" relative shadow-2  p-1 border-50 w-full sm:h-64 h-64 bg-cover bg-center"
+                 style={{backgroundImage: `url(${blackImage})`}}>
+                <div className=" w-full h-full p-2  justify-content-between  backdrop-blur-sm  border-spacing-1 shadow-2 p-0.5 border-50 border-round"></div>
+                <div className="absolute left-1/2 transform -translate-x-1/2 sm:-bottom-1/3 -bottom-1/3">
+                    <Avatar image={restaurant.photo || Image1} style={{width: "160px", height: "160px"}}
+                            shape="circle"
+                            className=" shadow-4 shadow-indigo-400 mb-3 "/>
+                </div>
+                <div className="absolute left-1/2 transform -translate-x-1/2 bottom-1/2 text-white text-2xl text-uppercase">
+                    {restaurant.nom || "Restaurant Name"} Restaurant<br/>
+                    <Rating value={restaurantRating}  readOnly cancel={false} precision={0.5} />
+                </div>
+            </div>
 
+            <div className=" mx-2 p-1 card  mt-8 ">
+                <Toolbar className="mb-2 p-1"
+                         start={<Chip
+                             avatar={<Avatar alt={"restaurantName"} style={{width: "60px", height: "60px"}}
+                                             image={Image1}
+                                             shape="circle" className=" shadow-4 shadow-indigo-400  "/>}
+                             label={<Typography className="font-monospace mx-2"><span
+                                 className="font-bold">Owner : {restaurant.user && restaurant.user.username} </span>
+                             </Typography>}
+                             variant="filled"
+                             size="medium"
+                             sx={{width: 300, height: 70, backgroundColor: "transparent"}}
+                         />}
+                         // end={<div className="template"><Button className="pay" label="Update"  onClick={openNew}/></div>}
+                >
+                </Toolbar>
+                <div
+                    className="font-monospace text-3xl text-black mb-5 mt-2  ">Restaurant Information</div>
+                <div className="surface-section w-full h-full border-1 shadow-2 bg-cover bg-center border-round" style={{backgroundImage: `url(${blackImage})`}}>
 
-                        </Col>
-                        <Col sm={12} md={6}>
-                            <div className="map-container justify-content-center d-flex">
-                                <iframe id="iframeId" height="450px" width="80%" title="Example website"
-                                        style={{borderRadius: "20px"}}></iframe>
+                    <div className=" my-1 px-5">
+                        <div
+                            className="flex flex-row  justify-content-between py-3   border-1 border-black  backdrop-blur-sm  border-round hover:transform hover:scale-105 transition-transform ">
+                            <div className="text-500 w-6 md:w-2 font-medium">Restaurant Name</div>
+                            <div className="text-900 w-6 md:w-2 text-uppercase ">
+                                <Tag value={restaurant.nom} style={{backgroundColor: "rgb(23,113,122)"}}/>
                             </div>
-                        </Col>
-                    </Row>
+                        </div>
+                    </div>
+                    <div className=" my-1 px-5">
+                        <div
+                            className="flex flex-row  justify-content-between py-3   border-1 border-black  backdrop-blur-sm  border-round hover:transform hover:scale-105 transition-transform ">
+                            <div className="text-500 w-6 md:w-6 font-medium">
+                                <Tag value={"Address"}
+                                     style={{backgroundColor: "rgba(248,246,245,0.93)", color: "black",width:"110px"}}
+                                     icon={<ShareLocationIcon
+                                         style={{fontSize: "20px", marginRight: "8px", color: "rgb(23,113,122)"}}/>}/>
+                            </div>
+                            <div className="text-900 w-6 md:w-6  ">
+                                <Tag value={restaurant.adresse}  style={{backgroundColor: "rgb(23,113,122)"}}/>
+                            </div>
+                        </div>
+                    </div>
+                    <div className=" my-1 px-5">
+                        <div
+                            className="flex flex-row  justify-content-between py-3   border-1 border-black  backdrop-blur-sm  border-round hover:transform hover:scale-105 transition-transform ">
+                            <div className="text-500 w-6 md:w-6 font-medium">
+                                <Tag value={"Open at :"}
+                                     style={{backgroundColor: "rgba(248,246,245,0.93)", color: "black",width:"110px"}}
+                                     icon={<AccessTimeFilledIcon
+                                         style={{fontSize: "20px", marginRight: "8px", color: "rgb(38,243,95)"}}/>}/>
+                            </div>
+                            <div className="text-900 w-6 md:w-6  ">
+                                <Tag  value={restaurant.dateOuverture} style={{backgroundColor: "rgb(23,113,122)"}}/>
+                            </div>
+                        </div>
+                    </div>
+                    <div className=" my-1 px-5">
+                        <div
+                            className="flex flex-row  justify-content-between py-3   border-1 border-black  backdrop-blur-sm  border-round hover:transform hover:scale-105 transition-transform ">
+                            <div className="text-500 w-6 md:w-6 font-medium">
+                                <Tag value={"Close at :"}
+                                     style={{backgroundColor: "rgba(248,246,245,0.93)", color: "black",width:"110px"}}
+                                     icon={<NightsStayIcon
+                                         style={{fontSize: "20px", marginRight: "8px", color: "rgb(239,90,90)"}}/>}/>
+                            </div>
+                            <div className="text-900 w-6 md:w-6  ">
+                                <Tag  value={restaurant.dateFermeture} style={{backgroundColor: "rgb(23,113,122)"}}/>
+                            </div>
+                        </div>
+                    </div>
+                    <div className=" my-1 px-5">
+                        <div
+                            className="flex flex-row  justify-content-between py-3   border-1 border-black  backdrop-blur-sm  border-round hover:transform hover:scale-105 transition-transform ">
+                            <div className="text-500 w-6 md:w-6 font-medium">
+                                <Tag value={"City  :"} style={{backgroundColor: "rgba(248,246,245,0.93)", color: "black",width:"110px"}} icon={<LocationCityIcon style={{fontSize: "20px", marginRight: "8px", color: "rgb(90,150,239)"}}/>}/>
+                            </div>
+                            <div className="text-900 w-6 md:w-6 text-uppercase ">
+                                <Tag value={`${restaurant.zone && restaurant.zone.ville.nom} -- ${restaurant.zone && restaurant.zone.nom}`} style={{backgroundColor: "rgb(23,113,122)"}}/>
+                            </div>
+                        </div>
+                    </div>
+                    <div className=" my-1 px-5">
+                        <div className="flex flex-row  justify-content-between py-3   border-1 border-black  backdrop-blur-sm  border-round hover:transform hover:scale-105 transition-transform ">
+                            <div className="text-500 w-6 md:w-6 font-medium">
+                                <Tag value={"Serie  :"} style={{backgroundColor: "rgba(248,246,245,0.93)", color: "black",width:"110px"}} icon={<LinkIcon style={{fontSize: "20px", marginRight: "8px", color: "rgb(49,141,141)"}}/>}/>
+                            </div>
+                            <div className="text-900 w-6 md:w-6 text-uppercase ">
+                                <Tag  value={restaurant.serie && restaurant.serie.nom} style={{backgroundColor: "rgb(23,113,122)"}}/>
+                            </div>
+                        </div>
+                    </div>
+                    <div className=" my-1 px-5">
+                        <div className="flex flex-row  justify-content-between py-3   border-1 border-black  backdrop-blur-sm  border-round hover:transform hover:scale-105 transition-transform ">
+                            <div className="text-500 w-6 md:w-6 font-medium">
+                                <Tag value={"Speciality  :"} style={{backgroundColor: "rgba(248,246,245,0.93)", color: "black",width:"110px"}} icon={<SmartButtonIcon style={{fontSize: "20px", marginRight: "8px", color: "rgb(191,20,238)"}}/>}/>
+                            </div>
+                            <div className="text-900 w-6 md:w-6 text-uppercase ">
+                                <Tag  value={restaurant.specialite && restaurant.specialite.nom} style={{backgroundColor: "rgb(23,113,122)"}}/>
+                            </div>
+                        </div>
+                    </div>
+                    <div className=" my-1 px-5">
+                        <div
+                            className="flex flex-row  justify-content-between py-3   border-1 border-black  backdrop-blur-sm  border-round hover:transform hover:scale-105 transition-transform ">
+                            <iframe id="iframeId" height="250px" width="100%"
+                                    style={{borderRadius: "10px"}}></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <Divider/>
 
-                </CardContent>
-            </Card>
             <div>
                 <DataView value={products} itemTemplate={itemTemplate}
                             paginator paginatorTemplate={'PrevPageLink CurrentPageReport NextPageLink'} rows={12}/>

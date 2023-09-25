@@ -25,7 +25,6 @@ import NightsStayIcon from '@mui/icons-material/NightsStay';
 import LocationCityIcon from '@mui/icons-material/LocationCity';
 import LinkIcon from '@mui/icons-material/Link';
 import SmartButtonIcon from '@mui/icons-material/SmartButton';
-import {Link} from "react-router-dom";
 import {DataView} from "primereact/dataview";
 
 
@@ -277,7 +276,7 @@ export default function RestaurantProfile() {
                         <Tag value={product.restaurant && product.restaurant.specialite.nom} style={{backgroundColor:"rgb(23,113,122)"}}></Tag>
                     </div>
                     <div className="flex flex-column align-items-center gap-2 py-2">
-                        <Link to={`product/${product.id}`}>
+                        {/*<Link to={`product/${product.id}`}>*/}
                             <div style={{position: 'relative'}}>
                                 <img className=" w-16 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round"
                                      src={product.photo}
@@ -311,7 +310,7 @@ export default function RestaurantProfile() {
                                     />
                                 )}
                             </div>
-                        </Link>
+                        {/*</Link>*/}
                         <div className="text-2xl font-bold">{product.nom}</div>
                         <Typography variant="body2" className="ml-1"
                                     color="text.secondary">{product.description}</Typography>
