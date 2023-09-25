@@ -109,10 +109,10 @@ export default function RestaurantProfile() {
         setAdresse(userRestaurantid.adresse);
         setLatitude(userRestaurantid.latitude);
         setLongitude(userRestaurantid.longitude);
-        setSpecialiteid(userRestaurantid.specialites && userRestaurantid.specialites.id);
+        setSpecialiteid(userRestaurantid.specialite && userRestaurantid.specialite.id);
         setZoneid(userRestaurantid.zone && userRestaurantid.zone.id);
         setPhotos(userRestaurantid.photo);
-        setSerieid(userRestaurantid.series && userRestaurantid.series.id);
+        setSerieid(userRestaurantid.serie && userRestaurantid.serie.id);
         setRestaurantDialog(true);
     };
 
@@ -252,91 +252,6 @@ export default function RestaurantProfile() {
                          end={<Button label="Update" severity="info" onClick={openNew}/>}>
                 </Toolbar>
                 <Divider/>
-                {/*<Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} className="p-fluid grid">*/}
-                {/*    <Grid item xs={12} sm={6} md={3} >*/}
-                {/*        <Box className="field col-12 md:col-12">*/}
-                {/*            <span className="p-float-label">*/}
-                {/*                <InputText id="firstname" name="firstname" value={nom} onChange={(e) => setNom(e.target.value)}/>*/}
-                {/*                <label htmlFor="firstname">Name</label>*/}
-                {/*            </span>*/}
-                {/*        </Box>*/}
-                {/*    </Grid>*/}
-                {/*    <Grid item xs={12} sm={6} md={3}>*/}
-                {/*        <Box className="field col-12 md:col-12">*/}
-                {/*            <span className="p-float-label">*/}
-                {/*                <InputText id="address" name="address" value={adresse} onChange={(e) => setAdresse(e.target.value)}/>*/}
-                {/*                <label htmlFor="adresse">Address</label>*/}
-                {/*            </span>*/}
-                {/*        </Box>*/}
-                {/*    </Grid>*/}
-                {/*    <Grid item xs={12} sm={6} md={3}>*/}
-                {/*        <Box className="field col-12 md:col-12">*/}
-                {/*            <span className="p-float-label">*/}
-                {/*                <InputText id="longitude" name="longitude" value={longitude} onChange={(e) => setLongitude(e.target.value)}/>*/}
-                {/*                <label htmlFor="longitude">Longitude</label>*/}
-                {/*            </span>*/}
-                {/*        </Box>*/}
-                {/*    </Grid>*/}
-                {/*    <Grid item xs={12} sm={6} md={3}>*/}
-                {/*        <Box className="field col-12 md:col-12">*/}
-                {/*             <span className="p-float-label">*/}
-                {/*                <InputText id="latitude" name="latitude" value={latitude} onChange={(e) => setLatitude(e.target.value)}/>*/}
-                {/*                 <label htmlFor="latitude">Latitude</label>*/}
-                {/*             </span>*/}
-                {/*        </Box>*/}
-                {/*    </Grid>*/}
-
-
-                {/*    <Divider/>*/}
-
-                {/*    <Grid item xs={12} sm={6} md={3} >*/}
-                {/*        <Box className="field col-12 md:col-12">*/}
-                {/*            <span className="p-float-label">*/}
-                {/*                <InputText id="dateOuverture" name="dateOuverture" value={dateOuverture} onChange={(e) => setdateopen(e.target.value)}/>*/}
-                {/*                <label htmlFor="dateOuverture">Open at :</label>*/}
-                {/*            </span>*/}
-                {/*        </Box>*/}
-                {/*    </Grid>*/}
-                {/*    <Grid item xs={12} sm={6} md={3} >*/}
-                {/*        <Box className="field col-12 md:col-12">*/}
-                {/*            <span className="p-float-label">*/}
-                {/*                <InputText id="dateFermeture" name="dateFermeture" value={dateFermeture} onChange={(e) => setdateclose(e.target.value)}/>*/}
-                {/*                <label htmlFor="dateFermeture">Close at :</label>*/}
-                {/*            </span>*/}
-                {/*        </Box>*/}
-                {/*    </Grid>*/}
-                {/*    <Grid item xs={12} sm={6} md={3}>*/}
-                {/*        <Box className="field col-12 md:col-12">*/}
-                {/*            <span className="p-float-label">*/}
-                {/*                <Dropdown inputId="dropdown" value={zoneid}  options={zone.map((zone) => ({ label: zone.nom, value: zone.id }))}*/}
-                {/*                          onChange={handleZoneChange} />*/}
-                {/*            <label htmlFor="zoneid">Zone</label>*/}
-                {/*            </span>*/}
-                {/*        </Box>*/}
-                {/*    </Grid>*/}
-                {/*    <Grid item xs={12} sm={6} md={3}>*/}
-                {/*        <Box className="field col-12 md:col-12">*/}
-                {/*            <span className="p-float-label">*/}
-                {/*               <Dropdown inputId="dropdown" value={specialiteid}   options={specialites.map((sp) => ({ label: sp.nom, value: sp.id }))}*/}
-                {/*                         onChange={handleSpecialityChange} />*/}
-                {/*            <label htmlFor="specialiteid">Speciality</label>*/}
-                {/*            </span>*/}
-                {/*        </Box>*/}
-                {/*    </Grid>*/}
-                {/*    <Grid item xs={12} sm={6} md={3}>*/}
-                {/*        <Box className="field col-12 md:col-12">*/}
-                {/*             <span className="p-float-label">*/}
-                {/*               <Dropdown inputId="dropdown" value={serieid}*/}
-                {/*                         options={series.map((serie) => ({ label: serie.nom, value: serie.id }))}*/}
-                {/*                         onChange={handleSerieChange}  />*/}
-                {/*            <label htmlFor="serieid">Serie</label>*/}
-                {/*             </span>*/}
-                {/*        </Box>*/}
-                {/*    </Grid>*/}
-
-                {/*</Grid>*/}
-
-
                 <div className="surface-section">
                     <div className="font-medium text-3xl text-900 mb-3">Restaurant Information</div>
                     <div className="text-500 mb-5">Morbi tristique blandit turpis. In viverra ligula id nulla hendrerit
@@ -350,9 +265,39 @@ export default function RestaurantProfile() {
                             </div>
                         </div>
                         <div className="flex flex-row  justify-content-between py-3 px-2 border-top-1 surface-border ">
-                            <div className="text-500 w-6 md:w-2 font-medium">Restaurant Address </div>
-                            <div className="text-900 w-6 md:w-2  ">
+                            <div className="text-500 w-6 md:w-6 font-medium"> Address </div>
+                            <div className="text-900 w-6 md:w-6  ">
                                 <Tag value={userRestaurantid.adresse}/>
+                            </div>
+                        </div>
+                        <div className="flex flex-row  justify-content-between py-3 px-2 border-top-1 surface-border ">
+                            <div className="text-500 w-6 md:w-6 font-medium"> Open at : </div>
+                            <div className="text-900 w-6 md:w-6  ">
+                                <Tag icon={"pi pi-clock"} value={userRestaurantid.dateOuverture}/>
+                            </div>
+                        </div>
+                        <div className="flex flex-row  justify-content-between py-3 px-2 border-top-1 surface-border ">
+                            <div className="text-500 w-6 md:w-6 font-medium"> Close at : </div>
+                            <div className="text-900 w-6 md:w-6  ">
+                                <Tag icon={"pi pi-moon"} value={userRestaurantid.dateFermeture}/>
+                            </div>
+                        </div>
+                        <div className="flex flex-row  justify-content-between py-3 px-2 border-top-1 surface-border ">
+                            <div className="text-500 w-6 md:w-6 font-medium"> City  : </div>
+                            <div className="text-900 w-6 md:w-6 text-uppercase ">
+                                <Tag icon={"pi pi-home"} value={`${userRestaurantid.zone && userRestaurantid.zone.ville.nom} -- ${userRestaurantid.zone && userRestaurantid.zone.nom}`}/>
+                            </div>
+                        </div>
+                        <div className="flex flex-row  justify-content-between py-3 px-2 border-top-1 surface-border ">
+                            <div className="text-500 w-6 md:w-6 font-medium"> Serie  : </div>
+                            <div className="text-900 w-6 md:w-6 text-uppercase ">
+                                <Tag icon={"pi pi-home"} value={userRestaurantid.serie && userRestaurantid.serie.nom}/>
+                            </div>
+                        </div>
+                        <div className="flex flex-row  justify-content-between py-3 px-2 border-top-1 surface-border ">
+                            <div className="text-500 w-6 md:w-6 font-medium"> Speciality  : </div>
+                            <div className="text-900 w-6 md:w-6 text-uppercase ">
+                                <Tag icon={"pi pi-home"} value={userRestaurantid.specialite && userRestaurantid.specialite.nom}/>
                             </div>
                         </div>
                     </ul>
