@@ -249,6 +249,22 @@ export default function RestaurantDetails() {
         );
     };
 
+    function isRestaurantOpen(openingTime, closingTime) {
+        const now = new Date();
+        const openTime = parseTimeString(openingTime);
+        const closeTime = parseTimeString(closingTime);
+
+        return now >= openTime && now <= closeTime;
+    }
+
+    function parseTimeString(timeString) {
+        const [hours, minutes] = timeString.split(':');
+        const now = new Date();
+        now.setHours(parseInt(hours, 10));
+        now.setMinutes(parseInt(minutes, 10));
+        return now;
+    }
+
 
 
 
@@ -283,7 +299,23 @@ export default function RestaurantDetails() {
                              size="medium"
                              sx={{width: 300, height: 70, backgroundColor: "transparent"}}
                          />}
-                         // end={<div className="template"><Button className="pay" label="Update"  onClick={openNew}/></div>}
+                         end={
+                             <span className="card-text-value mx-2">
+                                    {restaurant.dateOuverture && restaurant.dateFermeture ? (
+                                        isRestaurantOpen(restaurant.dateOuverture, restaurant.dateFermeture) ? (
+                                            <Tag severity="info" icon="pi pi-check">
+                                                Open
+                                            </Tag>
+                                        ) : (
+                                            <Tag severity="danger" icon="pi pi-moon">
+                                                Closed
+                                            </Tag>
+                                        )
+                                    ) : (
+                                        "N/A"
+                                    )}
+                                </span>
+                         }
                 >
                 </Toolbar>
                 <div
