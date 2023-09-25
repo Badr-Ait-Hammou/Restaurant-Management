@@ -18,6 +18,10 @@ import { Dialog } from 'primereact/dialog';
 import {useRef} from "react";
 import {Toast} from "primereact/toast";
 import {Tag} from "primereact/tag";
+import ShareLocationIcon from '@mui/icons-material/ShareLocation';
+import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
+import NightsStayIcon from '@mui/icons-material/NightsStay';
+import LocationCityIcon from '@mui/icons-material/LocationCity';
 
 
 
@@ -95,6 +99,24 @@ export default function RestaurantProfile() {
         }
     };
 
+    useEffect(() => {
+        const iframeData = document.getElementById("iframeId");
+        if (iframeData) {
+            const zoomLevel = 16; // Adjust the zoom level as needed
+            iframeData.src = `https://maps.google.com/maps?q=${userRestaurantid.latitude},${userRestaurantid.longitude}&hl=es;z=${zoomLevel}&output=embed`;
+        }
+    }, [userRestaurantid.latitude, userRestaurantid.longitude]);
+
+
+    // const apiKey = 'AIzaSyDzmu1dHaje4yWHlQkP4cGC6lwWBRuwaUA';
+    // const zoomLevel = 15;
+    //
+    // useEffect(() => {
+    //     const iframeData = document.getElementById("iframeId");
+    //     if (iframeData) {
+    //         iframeData.src = `https://maps.google.com/maps?q=${userRestaurantid.latitude},${userRestaurantid.longitude}&hl=es&z=${zoomLevel}&output=embed&key=${apiKey}`;
+    //     }
+    // }, [userRestaurantid.latitude, userRestaurantid.longitude, apiKey]);
 
     const loadRestaurant=async ()=>{
         const respo= await axios.get(`/api/controller/restaurants/${userRestaurantid.id}`);
@@ -265,25 +287,34 @@ export default function RestaurantProfile() {
                             </div>
                         </div>
                         <div className="flex flex-row  justify-content-between py-3 px-2 border-top-1 surface-border ">
-                            <div className="text-500 w-6 md:w-6 font-medium"> Address </div>
+                            {/*<div className="text-500 w-6 md:w-6 font-medium"><ShareLocationIcon style={{fontSize:"20px"}}/> Address </div>*/}
+                            <div className="text-500 w-6 md:w-6 font-medium">
+                            <Tag value={"Address"} style={{backgroundColor:"rgba(248,246,245,0.93)",color:"black"}} icon={<ShareLocationIcon style={{fontSize:"20px",marginRight:"8px",color:"rgb(23,113,122)"}}/>}/>
+                            </div>
                             <div className="text-900 w-6 md:w-6  ">
-                                <Tag value={userRestaurantid.adresse}/>
+                                <Tag  value={userRestaurantid.adresse}/>
                             </div>
                         </div>
                         <div className="flex flex-row  justify-content-between py-3 px-2 border-top-1 surface-border ">
-                            <div className="text-500 w-6 md:w-6 font-medium"> Open at : </div>
+                            <div className="text-500 w-6 md:w-6 font-medium">
+                                <Tag value={"Open at :"} style={{backgroundColor:"rgba(248,246,245,0.93)",color:"black"}}  icon={<AccessTimeFilledIcon style={{fontSize:"20px",marginRight:"8px",color:"rgb(38,243,95)"}}/>}/>
+                            </div>
                             <div className="text-900 w-6 md:w-6  ">
-                                <Tag icon={"pi pi-clock"} value={userRestaurantid.dateOuverture}/>
+                                <Tag icon={"pi pi-clock"}   value={userRestaurantid.dateOuverture}/>
                             </div>
                         </div>
                         <div className="flex flex-row  justify-content-between py-3 px-2 border-top-1 surface-border ">
-                            <div className="text-500 w-6 md:w-6 font-medium"> Close at : </div>
+                            <div className="text-500 w-6 md:w-6 font-medium">
+                                <Tag value={"Close at :"} style={{backgroundColor:"rgba(248,246,245,0.93)",color:"black"}}  icon={<NightsStayIcon style={{fontSize:"20px",marginRight:"8px",color:"rgb(239,90,90)"}}/>}/>
+                            </div>
                             <div className="text-900 w-6 md:w-6  ">
                                 <Tag icon={"pi pi-moon"} value={userRestaurantid.dateFermeture}/>
                             </div>
                         </div>
                         <div className="flex flex-row  justify-content-between py-3 px-2 border-top-1 surface-border ">
-                            <div className="text-500 w-6 md:w-6 font-medium"> City  : </div>
+                            <div className="text-500 w-6 md:w-6 font-medium">
+                                <Tag value={"City  :"} style={{backgroundColor:"rgba(248,246,245,0.93)",color:"black"}}  icon={<LocationCityIcon style={{fontSize:"20px",marginRight:"8px",color:"rgb(90,150,239)"}}/>}/>
+                            </div>
                             <div className="text-900 w-6 md:w-6 text-uppercase ">
                                 <Tag icon={"pi pi-home"} value={`${userRestaurantid.zone && userRestaurantid.zone.ville.nom} -- ${userRestaurantid.zone && userRestaurantid.zone.nom}`}/>
                             </div>
@@ -299,6 +330,10 @@ export default function RestaurantProfile() {
                             <div className="text-900 w-6 md:w-6 text-uppercase ">
                                 <Tag icon={"pi pi-home"} value={userRestaurantid.specialite && userRestaurantid.specialite.nom}/>
                             </div>
+                        </div>
+                        <div className="map-container justify-content-center d-flex  py-3 px-2 border-top-1 surface-border">
+                            <iframe id="iframeId" height="250px" width="100%"
+                                    style={{borderRadius: "10px"}}></iframe>
                         </div>
                     </ul>
                 </div>
