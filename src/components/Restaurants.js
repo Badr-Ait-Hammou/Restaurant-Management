@@ -96,7 +96,6 @@ export default function Restaurants() {
             setRestaurants(respo.data);
 
             const respon= await axios.get("/api/controller/users/userrole/EMPLOYEE");
-            //setUsers(respon.data);
             const usersData = respon.data;
             const usersWithoutRestaurant = usersData.filter(user => !user.restaurantList || user.restaurantList.length === 0);
             setUsers(usersWithoutRestaurant);

@@ -74,8 +74,6 @@ export default function RestaurantProfile() {
         };
 
 
-
-
     const fetchData = async () => {
         try {
             const Response = await axios.get('/api/controller/series/');
@@ -86,11 +84,6 @@ export default function RestaurantProfile() {
 
             const resp= await axios.get("/api/controller/specialites/");
             setSpecialites(resp.data);
-
-            // const respo= await axios.get(`/api/controller/restaurants/${userRestaurantid}`);
-            // setRestaurant(respo.data);
-            //  console.log("restaurant data",respo.data);
-
         } catch (error) {
             console.error('Error fetching data:', error);
         }
@@ -148,7 +141,7 @@ export default function RestaurantProfile() {
                              size="medium"
                              sx={{width: 300, height: 70, backgroundColor: "transparent"}}
                          />}
-                         end={<Button label="Update" severity="info"></Button>}>
+                         end={<Button label="Update" severity="info" onClick={openNew}/>}>
                 </Toolbar>
 
                 <Divider/>
