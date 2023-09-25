@@ -20,7 +20,7 @@ export default function RestaurantProfile() {
     const [RestaurantDialog, setRestaurantDialog] = useState(false);
 
     const [zone, setZones] =  useState([]);
-    const [user, setUser] =  useState([]);
+    const [userRestaurantid, setUserRestaurantId] =  useState([]);
     const [userid, setUserId] = useState("");
     const [series, setSeries] = useState([]);
     const [specialites, setSpecialites] = useState([]);
@@ -51,8 +51,13 @@ export default function RestaurantProfile() {
         setLoading(false);
     };
 
-
     useEffect(() => {
+        fetchUserData();
+        fetchData();
+        handleDataTableLoad();
+    }, []);
+
+
         const fetchUserData = async () => {
             const tokenInfo = accountService.getTokenInfo();
             if (tokenInfo) {
@@ -60,20 +65,19 @@ export default function RestaurantProfile() {
                     const user = await accountService.getUserByEmail(tokenInfo.sub);
                     setUserId(user.id);
                     console.log('user', user.id);
+                    setUserRestaurantId(user.restaurantList[0] );
+                    console.log('user rest', user.restaurantList[0] );
                 } catch (error) {
                     console.log('Error retrieving user:', error);
                 }
             }
         };
-        fetchUserData();
-    }, []);
+
 
 
 
     const fetchData = async () => {
         try {
-            // const restaurantId = user.restaurantList  && user.restaurantList[0].id ;
-            // console.log("restaurant id", restaurantId);
             const Response = await axios.get('/api/controller/series/');
             setSeries(Response.data);
 
@@ -83,23 +87,16 @@ export default function RestaurantProfile() {
             const resp= await axios.get("/api/controller/specialites/");
             setSpecialites(resp.data);
 
-            const respon= await axios.get(`/api/controller/users/${userid}`);
-            setUser(respon.data);
-            console.log("userid data", respon.data);
-
-            // const respo= await axios.get(`/api/controller/restaurants/${restaurantId}`);
+            // const respo= await axios.get(`/api/controller/restaurants/${userRestaurantid}`);
             // setRestaurant(respo.data);
-            // console.log("restaurant id",restaurantId);
+            //  console.log("restaurant data",respo.data);
 
         } catch (error) {
             console.error('Error fetching data:', error);
         }
     };
 
-    useEffect(() => {
-        fetchData();
-        handleDataTableLoad();
-    }, []);
+
 
 
     const loadRestaurant=async ()=>{
@@ -126,17 +123,16 @@ export default function RestaurantProfile() {
     return (
 
         <>
-
             <div className=" relative shadow-2  p-1 border-50 w-full sm:h-64 h-44 bg-cover bg-center"
                  style={{backgroundImage: `url(${ordersImage})`}}>
                 <div
                     className=" w-full h-full p-2  justify-content-between  backdrop-blur-sm  border-spacing-1 shadow-2 p-0.5 border-50 border-round"></div>
                 <div className="absolute left-1/2 transform -translate-x-1/2 sm:-bottom-1/3 -bottom-1/2">
-                    <Avatar image={Image1} style={{width: "160px", height: "160px"}} shape="circle"
+                    <Avatar image={userRestaurantid.photo || Image1} style={{width: "160px", height: "160px"}} shape="circle"
                             className=" shadow-4 shadow-indigo-400 mb-3 "/>
                 </div>
-                <div className="absolute left-1/2 transform -translate-x-1/2 bottom-1/2 text-white text-2xl">
-                    John Doe
+                <div className="absolute left-1/2 transform -translate-x-1/2 bottom-1/2 text-white text-2xl text-uppercase">
+                    {userRestaurantid.nom ||"Restaurant Name"} Restaurant
                 </div>
             </div>
 
@@ -146,18 +142,16 @@ export default function RestaurantProfile() {
                          start={ <Chip
                              avatar={<Avatar alt={"restaurantName"} style={{width: "60px", height: "60px"}} image={Image1}
                                              shape="circle" className=" shadow-4 shadow-indigo-400  "/>}
-                             label={<Typography className="font-monospace mx-2"><span className="font-bold">Owner :</span>
+                             label={<Typography className="font-monospace mx-2"><span className="font-bold">Owner : {userRestaurantid.user && userRestaurantid.user.username} </span>
                          </Typography>}
                              variant="filled"
                              size="medium"
-                             sx={{width: 200, height: 70, backgroundColor: "transparent"}}
+                             sx={{width: 300, height: 70, backgroundColor: "transparent"}}
                          />}
                          end={<Button label="Update" severity="info"></Button>}>
                 </Toolbar>
 
                 <Divider/>
-
-
                 <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} className="p-fluid grid">
                     <Grid item xs={12} sm={6} md={3} >
                         <Box className="field col-12 md:col-12">
