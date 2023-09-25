@@ -14,6 +14,11 @@ import axios from "../service/callerService";
 import {useEffect} from "react";
 import {Toolbar} from "primereact/toolbar";
 import {accountService} from "../service/accountService";
+import { Dialog } from 'primereact/dialog';
+import {useRef} from "react";
+import {Toast} from "primereact/toast";
+
+
 
 export default function RestaurantProfile() {
     const [nom, setNom] = useState('');
@@ -24,7 +29,6 @@ export default function RestaurantProfile() {
     const [userid, setUserId] = useState("");
     const [series, setSeries] = useState([]);
     const [specialites, setSpecialites] = useState([]);
-    const [restaurant, setRestaurant] = useState([]);
     const [zoneid, setZoneid] = useState("");
     const [serieid, setSerieid] = useState("");
     const [specialiteid, setSpecialiteid] = useState("");
@@ -35,6 +39,8 @@ export default function RestaurantProfile() {
     const [adresse, setAdresse] = useState("");
     const [photo, setPhotos] = useState("");
     const [loading, setLoading] = useState(true);
+    const toast = useRef(null);
+
 
 
 
@@ -93,29 +99,134 @@ export default function RestaurantProfile() {
 
 
     const loadRestaurant=async ()=>{
-        const respo= await axios.get("/api/controller/restaurants/");
-        setRestaurant(respo.data);
+        const respo= await axios.get(`/api/controller/restaurants/${userRestaurantid.id}`);
+        setUserRestaurantId(respo.data);
     }
 
     const openNew = () => {
-        setRestaurant(restaurant);
-        setNom(nom);
-        setdateopen(dateOuverture);
-        setdateclose(dateFermeture);
-        setAdresse(adresse);
-        setLatitude(latitude);
-        setLongitude(longitude);
-        setSpecialiteid(specialites.id);
-        setZoneid(zone.id);
-        setPhotos(photo);
-        setSerieid(series.id);
+        setUserRestaurantId(userRestaurantid);
+        setNom(userRestaurantid.nom);
+        setdateopen(userRestaurantid.dateOuverture);
+        setdateclose(userRestaurantid.dateFermeture);
+        setAdresse(userRestaurantid.adresse);
+        setLatitude(userRestaurantid.latitude);
+        setLongitude(userRestaurantid.longitude);
+        setSpecialiteid(userRestaurantid.specialites && userRestaurantid.specialites.id);
+        setZoneid(userRestaurantid.zone && userRestaurantid.zone.id);
+        setPhotos(userRestaurantid.photo);
+        setSerieid(userRestaurantid.series && userRestaurantid.series.id);
         setRestaurantDialog(true);
     };
 
 
+    const hideDialog = () => {
+        setRestaurantDialog(false);
+    };
+
+    const RestaurantDialogFooter = (
+        <React.Fragment>
+            <div className="template flex justify-content-end mt-1">
+                <Button className="cancel p-0" aria-label="Slack" onClick={hideDialog}>
+                    <i className="pi pi-times px-2"></i>
+                    <span className="px-3">Cancel</span>
+                </Button>
+                <Button className="edit p-0" aria-label="Slack" onClick={() => handleEdit(userRestaurantid)}>
+                    <i className="pi pi-check px-2"></i>
+                    <span className="px-3">Create</span>
+                </Button>
+            </div>
+        </React.Fragment>
+    );
+
+    const handlePhotoChange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                setPhotos(e.target.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+
+    const handleEdit = async (restaurantToUpdate) => {
+        try {
+            if (nom.trim() === '' || !zoneid || !serieid || !specialiteid) {
+                toast.current.show({
+                    severity: 'error',
+                    summary: 'Error',
+                    detail: 'Fields cannot be empty',
+                    life: 3000,
+                });
+                return;
+            }
+
+            const response = await axios.put(
+                `/api/controller/restaurants/${restaurantToUpdate.id}`,
+                {
+                    nom: nom,
+                    longitude: longitude,
+                    latitude: latitude,
+                    dateOuverture: dateOuverture,
+                    dateFermeture: dateFermeture,
+                    adresse: adresse,
+                    photo: photo,
+                    zone: {
+                        id: zoneid,
+                    },
+                    serie: {
+                        id: serieid,
+                    },
+                    specialite: {
+                        id: specialiteid,
+                    },
+                    user: {
+                        id: userid,
+                    },
+                }
+            );
+
+            const updatedRestaurant = {
+                ...restaurantToUpdate,
+                nom: nom,
+                longitude: longitude,
+                latitude: latitude,
+                dateOuverture: dateOuverture,
+                dateFermeture: dateFermeture,
+                adresse: adresse,
+                photo: photo,
+                zone: {
+                    id: zoneid,
+                },
+                serie: {
+                    id: serieid,
+                },
+                specialite: {
+                    id: specialiteid,
+                },
+                user: {
+                    id: userid,
+                },
+            };
+
+            hideDialog();
+            loadRestaurant();
+            showupdate();
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const showupdate = () => {
+        toast.current.show({severity:'info', summary: 'success', detail:'item updated successfully', life: 3000});
+    }
+
     return (
 
         <>
+            <Toast ref={toast} />
+
             <div className=" relative shadow-2  p-1 border-50 w-full sm:h-64 h-44 bg-cover bg-center"
                  style={{backgroundImage: `url(${ordersImage})`}}>
                 <div
@@ -145,8 +256,32 @@ export default function RestaurantProfile() {
                 </Toolbar>
 
                 <Divider/>
-                <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} className="p-fluid grid">
-                    <Grid item xs={12} sm={6} md={3} >
+            </div>
+
+            <Dialog visible={RestaurantDialog} style={{ width: '50rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} header="Edit Restaurant" modal className="p-fluid" footer={RestaurantDialogFooter} onHide={hideDialog}>
+
+                <div className=" relative shadow-2  p-1 border-50 w-full sm:h-64 h-44 bg-cover bg-center"
+                     style={{backgroundImage: `url(${ordersImage})`}}>
+                    <div className=" w-full h-full p-2  justify-content-between  backdrop-blur-sm  border-spacing-1 shadow-2 p-0.5 border-50 border-round"></div>
+                    <label htmlFor="uploadImage">
+                    <div className="absolute left-1/2 transform -translate-x-1/2 sm:-bottom-1/3 -bottom-1/2"  >
+                        <InputText
+                            type="file"
+                            id="uploadImage"
+                            style={{cursor:"grab",display:"none" }}
+                            onChange={handlePhotoChange}
+                        />
+                        <Avatar image={userRestaurantid.photo } style={{width: "160px", height: "160px"}} shape="circle"
+                                className=" shadow-4 shadow-indigo-400 mb-3 "
+                        />
+                    </div>
+                    </label>
+                    <div className="absolute left-1/2 transform -translate-x-1/2 bottom-1/2 text-white text-2xl text-uppercase">
+                        {userRestaurantid.nom ||"Restaurant Name"} Restaurant
+                    </div>
+                </div>
+                <Grid container rowSpacing={1}  className="p-fluid grid mt-8">
+                    <Grid item xs={12} sm={6} md={3}  >
                         <Box className="field col-12 md:col-12">
                             <span className="p-float-label">
                                 <InputText id="firstname" name="firstname" value={nom} onChange={(e) => setNom(e.target.value)}/>
@@ -179,13 +314,10 @@ export default function RestaurantProfile() {
                         </Box>
                     </Grid>
 
-
-                    <Divider/>
-
                     <Grid item xs={12} sm={6} md={3} >
                         <Box className="field col-12 md:col-12">
                             <span className="p-float-label">
-                                <InputText id="dateOuverture" name="dateOuverture" value={dateOuverture} onChange={(e) => setdateopen(e.target.value)}/>
+                                <InputText type={"time"} id="dateOuverture" name="dateOuverture" value={dateOuverture} onChange={(e) => setdateopen(e.target.value)}/>
                                 <label htmlFor="dateOuverture">Open at :</label>
                             </span>
                         </Box>
@@ -193,7 +325,7 @@ export default function RestaurantProfile() {
                     <Grid item xs={12} sm={6} md={3} >
                         <Box className="field col-12 md:col-12">
                             <span className="p-float-label">
-                                <InputText id="dateFermeture" name="dateFermeture" value={dateFermeture} onChange={(e) => setdateclose(e.target.value)}/>
+                                <InputText type={"time"} id="dateFermeture" name="dateFermeture" value={dateFermeture} onChange={(e) => setdateclose(e.target.value)}/>
                                 <label htmlFor="dateFermeture">Close at :</label>
                             </span>
                         </Box>
@@ -231,10 +363,10 @@ export default function RestaurantProfile() {
 
 
 
-            </div>
-
-
-        </>
+            </Dialog>
+            </>
 
     )
 }
+
+
