@@ -23,6 +23,8 @@ import ShareLocationIcon from '@mui/icons-material/ShareLocation';
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import NightsStayIcon from '@mui/icons-material/NightsStay';
 import LocationCityIcon from '@mui/icons-material/LocationCity';
+import LinkIcon from '@mui/icons-material/Link';
+import SmartButtonIcon from '@mui/icons-material/SmartButton';
 
 
 export default function RestaurantProfile() {
@@ -247,7 +249,8 @@ export default function RestaurantProfile() {
 
             <div
                 className=" relative shadow-2  p-1 border-50 w-full sm:h-64 h-44 bg-cover bg-center"
-                 style={{backgroundImage: `url(${ordersImage})`}}>
+                 // style={{backgroundImage: `url(${userRestaurantid.photo})`}}>
+                 style={{backgroundImage: `url(${blackImage})`}}>
                 <div
                     className=" w-full h-full p-2  justify-content-between  backdrop-blur-sm  border-spacing-1 shadow-2 p-0.5 border-50 border-round"></div>
                 <div className="absolute left-1/2 transform -translate-x-1/2 sm:-bottom-1/3 -bottom-1/2">
@@ -299,7 +302,7 @@ export default function RestaurantProfile() {
                                          style={{fontSize: "20px", marginRight: "8px", color: "rgb(23,113,122)"}}/>}/>
                             </div>
                             <div className="text-900 w-6 md:w-6  ">
-                                <Tag value={userRestaurantid.adresse}/>
+                                <Tag value={userRestaurantid.adresse}  style={{backgroundColor: "rgb(23,113,122)"}}/>
                             </div>
                         </div>
                     </div>
@@ -313,7 +316,7 @@ export default function RestaurantProfile() {
                                          style={{fontSize: "20px", marginRight: "8px", color: "rgb(38,243,95)"}}/>}/>
                             </div>
                             <div className="text-900 w-6 md:w-6  ">
-                                <Tag icon={"pi pi-clock"} value={userRestaurantid.dateOuverture}/>
+                                <Tag  value={userRestaurantid.dateOuverture} style={{backgroundColor: "rgb(23,113,122)"}}/>
                             </div>
                         </div>
                     </div>
@@ -327,7 +330,7 @@ export default function RestaurantProfile() {
                                          style={{fontSize: "20px", marginRight: "8px", color: "rgb(239,90,90)"}}/>}/>
                             </div>
                             <div className="text-900 w-6 md:w-6  ">
-                                <Tag icon={"pi pi-moon"} value={userRestaurantid.dateFermeture}/>
+                                <Tag  value={userRestaurantid.dateFermeture} style={{backgroundColor: "rgb(23,113,122)"}}/>
                             </div>
                         </div>
                     </div>
@@ -335,33 +338,30 @@ export default function RestaurantProfile() {
                         <div
                             className="flex flex-row  justify-content-between py-3   border-1 border-black  backdrop-blur-sm  border-round hover:transform hover:scale-105 transition-transform ">
                             <div className="text-500 w-6 md:w-6 font-medium">
-                                <Tag value={"City  :"}
-                                     style={{backgroundColor: "rgba(248,246,245,0.93)", color: "black"}}
-                                     icon={<LocationCityIcon
-                                         style={{fontSize: "20px", marginRight: "8px", color: "rgb(90,150,239)"}}/>}/>
+                                <Tag value={"City  :"} style={{backgroundColor: "rgba(248,246,245,0.93)", color: "black"}} icon={<LocationCityIcon style={{fontSize: "20px", marginRight: "8px", color: "rgb(90,150,239)"}}/>}/>
                             </div>
                             <div className="text-900 w-6 md:w-6 text-uppercase ">
-                                <Tag icon={"pi pi-home"}
-                                     value={`${userRestaurantid.zone && userRestaurantid.zone.ville.nom} -- ${userRestaurantid.zone && userRestaurantid.zone.nom}`}/>
+                                <Tag value={`${userRestaurantid.zone && userRestaurantid.zone.ville.nom} -- ${userRestaurantid.zone && userRestaurantid.zone.nom}`} style={{backgroundColor: "rgb(23,113,122)"}}/>
                             </div>
                         </div>
                     </div>
                     <div className=" my-1 px-5">
-                        <div
-                            className="flex flex-row  justify-content-between py-3   border-1 border-black  backdrop-blur-sm  border-round hover:transform hover:scale-105 transition-transform ">
-                            <div className="text-500 w-6 md:w-6 font-medium"> Serie :</div>
-                            <div className="text-900 w-6 md:w-6 text-uppercase ">
-                                <Tag icon={"pi pi-home"} value={userRestaurantid.serie && userRestaurantid.serie.nom}/>
+                        <div className="flex flex-row  justify-content-between py-3   border-1 border-black  backdrop-blur-sm  border-round hover:transform hover:scale-105 transition-transform ">
+                            <div className="text-500 w-6 md:w-6 font-medium">
+                            <Tag value={"Serie  :"} style={{backgroundColor: "rgba(248,246,245,0.93)", color: "black"}} icon={<LinkIcon style={{fontSize: "20px", marginRight: "8px", color: "rgb(49,141,141)"}}/>}/>
+                            </div>
+                                <div className="text-900 w-6 md:w-6 text-uppercase ">
+                                <Tag  value={userRestaurantid.serie && userRestaurantid.serie.nom} style={{backgroundColor: "rgb(23,113,122)"}}/>
                             </div>
                         </div>
                     </div>
                     <div className=" my-1 px-5">
-                        <div
-                            className="flex flex-row  justify-content-between py-3   border-1 border-black  backdrop-blur-sm  border-round hover:transform hover:scale-105 transition-transform ">
-                            <div className="text-500 w-6 md:w-6 font-medium"> Speciality :</div>
-                            <div className="text-900 w-6 md:w-6 text-uppercase ">
-                                <Tag icon={"pi pi-home"}
-                                     value={userRestaurantid.specialite && userRestaurantid.specialite.nom}/>
+                        <div className="flex flex-row  justify-content-between py-3   border-1 border-black  backdrop-blur-sm  border-round hover:transform hover:scale-105 transition-transform ">
+                            <div className="text-500 w-6 md:w-6 font-medium">
+                            <Tag value={"Speciality  :"} style={{backgroundColor: "rgba(248,246,245,0.93)", color: "black"}} icon={<SmartButtonIcon style={{fontSize: "20px", marginRight: "8px", color: "rgb(191,20,238)"}}/>}/>
+                            </div>
+                                <div className="text-900 w-6 md:w-6 text-uppercase ">
+                                <Tag  value={userRestaurantid.specialite && userRestaurantid.specialite.nom} style={{backgroundColor: "rgb(23,113,122)"}}/>
                             </div>
                         </div>
                     </div>
