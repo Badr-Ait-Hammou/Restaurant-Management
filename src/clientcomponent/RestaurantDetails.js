@@ -13,6 +13,7 @@ import "primereact/resources/primereact.min.css";
 import {Tag} from "primereact/tag";
 import Skeleton from "../skeleton/ProfileSkeleton"
 import Typography from "@mui/material/Typography";
+import {DataView} from "primereact/dataview";
 
 export default function RestaurantDetails() {
     const [longitude, setLongitude] = useState();
@@ -159,16 +160,24 @@ export default function RestaurantDetails() {
             return;
         }
         return (
-            <div key={product.id} className={`col mb-4 ${product.stock <= 0 ? 'out-of-stock' : ''}`}>
-                <div className="card h-100">
-                    <div className="flex flex-column xl:flex-row xl:align-items-start p-2 gap-4">
+            <div className="col-6 sm:col-6 lg:col-4 xl:col-3 p-2">
+                <div className="p-4 border-1 surface-border surface-card border-round">
+                    <div className="flex flex-wrap align-items-center justify-content-between gap-2">
+                        <div className="flex align-items-center gap-2">
+                            {product.promotion === true && (
+                                <Tag value="On Sale" severity="danger" icon="pi pi-tag"/>
+                            )}
+                        </div>
+                        <Tag value={product.restaurant && product.restaurant.specialite.nom} style={{backgroundColor:"rgb(23,113,122)"}}></Tag>
+                    </div>
+                    <div className="flex flex-column align-items-center gap-2 py-2">
                         <Link to={`product/${product.id}`}>
                             <div style={{position: 'relative'}}>
-                                <img className="w-90 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round"
+                                <img className=" w-16 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round"
                                      src={product.photo}
                                      alt={product.nom}
                                      style={{
-                                         width: '180px',
+                                         width: '100%',
                                          height: '140px',
                                          borderRadius: '8px'
                                      }}/>
@@ -177,10 +186,10 @@ export default function RestaurantDetails() {
                                         severity="warning"
                                         value="Out of Stock"
                                         style={{
-                                            fontSize:"10px",
+                                            fontSize: "10px",
                                             position: 'absolute',
                                             top: '3px',
-                                            right: '11px',
+                                            right: '5px',
                                         }}
                                     />
                                 ) : (
@@ -188,52 +197,41 @@ export default function RestaurantDetails() {
                                         severity="success"
                                         value="In Stock"
                                         style={{
-                                            fontSize:"10px",
+                                            fontSize: "10px",
                                             position: 'absolute',
                                             top: '3px',
-                                            right: '11px',
+                                            right: '5px',
                                         }}
                                     />
                                 )}
                             </div>
                         </Link>
-                        <div
-                            className="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4">
-                            <div className="flex flex-column align-items-center sm:align-items-start gap-3">
-                                <div className="text-2xl font-bold text-900">{product.nom}</div>
-                                <Rating value={getAverageRating(product)} readOnly cancel={false}  ></Rating>
-                                <Typography className="font-monospace ">({getReviews(product)})review</Typography>
-                                <div className="flex align-items-center gap-3">
-                                    {product.promotion === true && (
-                                        <Tag value="On Sale" severity="danger" icon="pi pi-tag" />
-                                    )}
-                                <span className="flex align-items-center gap-2">
-                                    <span className="font-semibold">{product.stock} Pcs</span>
-                                </span>
-                                </div>
-                            </div>
-                            <div className="d-flex justify-content-lg-between gap-3 align-items-center mt-3">
-                                <span className="text-2xl font-semibold">{product.prix} Dh</span>
-
-                                {productInCart[product.id] ? (
-                                    <Link to="/admin/cart">
-                                        <Button
-                                            style={{background: 'linear-gradient(-225deg,#AC32E4 0%,#7918F2 48%,#4801FF 100%)'}}
-                                            icon="pi pi-external-link"
-                                            className="p-button-rounded mt-2"
-                                            disabled={product.stock <= 0}
-                                        />
-                                    </Link>
-                                ) : (
-                                    <Button
-                                        icon="pi pi-shopping-cart"
-                                        className="p-button-rounded mt-2"
-                                        onClick={() => handleAddToCart(product)}
-                                        disabled={product.stock <= 0 || productInCart[product.id]}
-                                    />
-                                )}
-                            </div>
-                        </div>
+                        <div className="text-2xl font-bold">{product.nom}</div>
+                        <Typography variant="body2" className="ml-1"
+                                    color="text.secondary">{product.description}</Typography>
+                        <Rating value={getAverageRating(product)} readOnly cancel={false} precision={0.5}></Rating>
+                        <Typography
+                            className="font-monospace ">({getReviews(product)})review{getReviews(product) !== 1 ? 's' : ''}</Typography>
+                    </div>
+                    <div className=" flex align-items-center justify-content-between">
+                        <span className="text-2xl font-semibold">{product.prix} Dh</span>
+                        {productInCart[product.id] ? (
+                            <Link to="/admin/cart">
+                                <Button
+                                    style={{background: 'linear-gradient(-225deg,#AC32E4 0%,#7918F2 48%,#4801FF 100%)'}}
+                                    icon="pi pi-external-link"
+                                    className="p-button-rounded mt-2"
+                                    disabled={product.stock <= 0}
+                                />
+                            </Link>
+                        ) : (
+                            <Button
+                                icon="pi pi-shopping-cart"
+                                className="p-button-rounded mt-2"
+                                onClick={() => handleAddToCart(product)}
+                                disabled={product.stock <= 0 || productInCart[product.id]}
+                            />
+                        )}
                     </div>
                 </div>
             </div>
@@ -241,20 +239,11 @@ export default function RestaurantDetails() {
     };
 
 
-    const groupedProducts = [];
-    for (let i = 0; i < products.length; i += 4) {
-        groupedProducts.push(products.slice(i, i + 4));
-    }
 
 
     return (
         <>
             <Toast ref={toast}/>
-
-            {/*<Button icon="pi pi-shopping-cart"*/}
-            {/*        raised*/}
-            {/*        className="mx-2 mt-2"*/}
-            {/*        style={{backgroundColor: "transparent", color: "lightseagreen", fontSize: "20px"}}/>*/}
 
             <Card className="mt-4 mx-2" style={{backgroundColor: "whitesmoke"}}>
                 <CardContent>
@@ -296,12 +285,9 @@ export default function RestaurantDetails() {
 
                 </CardContent>
             </Card>
-            <div className="container mt-5">
-                {groupedProducts.map((group) => (
-                    <div className="row row-cols-2 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-                        {group.map((product) => itemTemplate(product))}
-                    </div>
-                ))}
+            <div>
+                <DataView value={products} itemTemplate={itemTemplate}
+                            paginator paginatorTemplate={'PrevPageLink CurrentPageReport NextPageLink'} rows={12}/>
             </div>
         </>
     );
