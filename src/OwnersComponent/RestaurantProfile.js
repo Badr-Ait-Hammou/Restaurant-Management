@@ -376,7 +376,7 @@ export default function RestaurantProfile() {
             <div className=" mx-2 p-1 card  mt-8 ">
                 <Toolbar className="mb-2 p-1"
                          start={<Chip
-                             avatar={<Avatar alt={"restaurantName"} style={{width: "60px", height: "60px"}}
+                             avatar={<Avatar alt={"restaurantName"} style={{width: "30px", height: "30px"}}
                                              image={Image1}
                                              shape="circle" className=" shadow-4 shadow-indigo-400  "/>}
                              label={<Typography className="font-monospace mx-2"><span
@@ -384,23 +384,16 @@ export default function RestaurantProfile() {
                              </Typography>}
                              variant="filled"
                              size="medium"
-                             sx={{width: 300, height: 70, backgroundColor: "transparent"}}
+                             // sx={{width: 300, height: 70, backgroundColor: "transparent"}}
                          />}
                          end={<div className="template"><Button className="pay" label="Update"  onClick={openNew}/></div>}>
                 </Toolbar>
                 <div
-                    className="font-monospace text-3xl text-black mb-5 mt-2  ">Restaurant Information</div>
+                    className="font-monospace text-3xl text-black mb-5 mt-2  ">About {userRestaurantid.nom}
+                </div>
                 <div className="surface-section w-full h-full border-1 shadow-2 bg-cover bg-center border-round" style={{backgroundImage: `url(${blackImage})`}}>
 
-                    <div className=" my-1 px-5">
-                        <div
-                            className="flex flex-row  justify-content-between py-3   border-1 border-black  backdrop-blur-sm  border-round hover:transform hover:scale-105 transition-transform ">
-                            <div className="text-500 w-6 md:w-2 font-medium">Restaurant Name</div>
-                            <div className="text-900 w-6 md:w-2 text-uppercase ">
-                                <Tag value={userRestaurantid.nom} style={{backgroundColor: "rgb(23,113,122)"}}/>
-                            </div>
-                        </div>
-                    </div>
+
                     <div className=" my-1 px-5">
                         <div
                             className="flex flex-row  justify-content-between py-3   border-1 border-black  backdrop-blur-sm  border-round hover:transform hover:scale-105 transition-transform ">
@@ -484,7 +477,12 @@ export default function RestaurantProfile() {
                 </div>
             </div>
             <Divider/>
-            <div className=" mx-2 p-1 card  mt-8 ">
+            <div
+                className="font-monospace text-3xl text-black mb-5 mt-2  ">{userRestaurantid.nom}'s Products
+            </div>
+            <Divider/>
+
+            <div className=" mx-2 p-1 card   ">
                 <DataView value={products} itemTemplate={itemTemplate}
                           paginator paginatorTemplate={'PrevPageLink CurrentPageReport NextPageLink'} rows={8}/>
             </div>
