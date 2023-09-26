@@ -39,42 +39,35 @@ export default function RestaurantProductDetails() {
     const  restaurantId= products.restaurant && products.restaurant.id;
 
 
-
     useEffect(() => {
-        const specialiteId = products.restaurant && products.restaurant.specialite.id;
-        axios.get(`/api/controller/produits/restaurant/speciality/${specialiteId}`)
-            .then((response) => {
-                setProductsSpeciality(response.data);
-                console.log("specialite",specialiteId);
-
-            })
-            .catch((error) => {
-                console.error('Error fetching products with speciality:', error);
-            });
-
-    }, [products]);
-
-
-
-
-
-
-    useEffect(() => {
-        const fetchUserData = async () => {
-            const tokenInfo = accountService.getTokenInfo();
-            if (tokenInfo) {
-                try {
-                    const user = await accountService.getUserByEmail(tokenInfo.sub);
-                    setUserId(user.id);
-                    console.log('user', user.id);
-                } catch (error) {
-                    console.log('Error retrieving user:', error);
-                }
-            }
-        };
         fetchUserData();
     }, []);
 
+    // Fetch user data and set products speciality
+    const fetchUserData = async () => {
+        const tokenInfo = accountService.getTokenInfo();
+        if (tokenInfo) {
+            try {
+                const user = await accountService.getUserByEmail(tokenInfo.sub);
+                setUserId(user.id);
+
+                // Fetch product details and speciality
+                const respo = await axios.get(`/api/controller/produits/${id}`);
+                setProducts(respo.data);
+
+                const specialiteId = respo.data && respo.data.restaurant.specialite.id;
+                const resp = await axios.get(`/api/controller/produits/restaurant/speciality/${specialiteId}`);
+                setProductsSpeciality(resp.data);
+
+                // Load products for the user
+                loadProductsUser();
+            } catch (error) {
+                console.log('Error retrieving user:', error);
+            }
+        }
+    };
+
+    // Load products for the user and check the cart
     const loadProductsUser = () => {
         const checkProductInCart = (productId) => {
             if (userId) {
@@ -104,14 +97,7 @@ export default function RestaurantProductDetails() {
         }
     };
 
-    useEffect(() => {
-        loadProductsUser();
-    }, [userId, products, productSpeciality]);
-
-
-
-
-
+    // Handle adding a product to the cart
     const handleAddToCart = (product) => {
         const cartItem = {
             quantity: 1,
@@ -135,19 +121,9 @@ export default function RestaurantProductDetails() {
             });
     };
 
-
-    useEffect(() => {
-        axios.get(`/api/controller/produits/${id}`)
-            .then((response) => {
-                setProducts(response.data);
-            });
-    }, [id]);
-
-
-
-
+    // Render loading state
     if (!products) {
-        return <Skeleton/>;
+        return <Skeleton />;
     }
 
     const showSuccess = () => {
