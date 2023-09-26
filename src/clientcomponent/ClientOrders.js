@@ -45,28 +45,35 @@ export default function ClientOrders() {
 
 
     useEffect(() => {
-        loadComments();
-        loadOrders();
+        fetchUserData();
+        handleDataTableLoad();
     }, [userId]);
 
 
+    const handleDataTableLoad = () => {
+        setLoading(false);
+    };
 
 
-    useEffect(() => {
-        const fetchUserData = async () => {
-            const tokenInfo = accountService.getTokenInfo();
-            if (tokenInfo) {
-                try {
-                    const user = await accountService.getUserByEmail(tokenInfo.sub);
-                    setUserId(user.id);
-                    console.log('user', user.id);
-                } catch (error) {
-                    console.log('Error retrieving user:', error);
-                }
+    const fetchUserData = async () => {
+        const tokenInfo = accountService.getTokenInfo();
+        if (tokenInfo) {
+            try {
+                const user = await accountService.getUserByEmail(tokenInfo.sub);
+                const userId =user.id;
+                setUserId(user.id);
+                console.log(user.id);
+                const response = await  axios.get(`/api/controller/orders/userorder/${userId}`);
+                setOrders(response.data);
+                setLoading(false);
+                const res = await axios.get(`/api/controller/avis/user/${userId}`);
+                setComments(res.data);
+            } catch (error) {
+                console.log('Error retrieving user:', error);
             }
-        };
-        fetchUserData();
-    }, []);
+        }
+    };
+
 
     const loadComments = () => {
         axios.get(`/api/controller/avis/user/${userId}`).then((response) => {
@@ -77,12 +84,21 @@ export default function ClientOrders() {
 
 
     const loadOrders = () => {
-        axios.get(`/api/controller/orders/userorder/${userId}`)
-            .then((response) => {
+        axios.get(`/api/controller/orders/userorder/${userId}`).then((response) => {
                 setOrders(response.data);
                 setLoading(false);
             })
     };
+
+
+
+
+
+
+
+
+
+
 
 
 

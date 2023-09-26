@@ -80,7 +80,7 @@ export default function Reservations(){
 
     useEffect(() => {
        loadReservations();
-    }, [userId]);
+    }, );
 
 
     const loadReservations=async ()=>{
@@ -227,7 +227,8 @@ export default function Reservations(){
         return () => {
             clearInterval(intervalId);
         };
-    }, [confirmedreservations]);
+    }, );
+    // }, [confirmedreservations]);
 
 
 

@@ -102,7 +102,8 @@ export default function AllProduct() {
 
     useEffect(() => {
         loadProductsUser();
-    }, [userId, products]);
+    }, );
+    // }, [userId, products]);
 
 
     const handleAddToCart = (product) => {
