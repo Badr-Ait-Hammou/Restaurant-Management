@@ -23,6 +23,8 @@ import NightsStayIcon from "@mui/icons-material/NightsStay";
 import LinkIcon from "@mui/icons-material/Link";
 import SmartButtonIcon from "@mui/icons-material/SmartButton";
 import {Divider} from "primereact/divider";
+import RestaurantProfileSkeleton from "../skeleton/RestaurantProfileSkeleton"
+
 
 export default function RestaurantDetails() {
     const [longitude, setLongitude] = useState();
@@ -126,8 +128,8 @@ export default function RestaurantDetails() {
     }, [latitude, longitude]);
 
 
-    if (!restaurant) {
-        return <Skeleton/>;
+    if (restaurant) {
+        return <RestaurantProfileSkeleton/>;
     }
 
     const showSuccess = () => {
@@ -270,8 +272,7 @@ export default function RestaurantDetails() {
 
             <div className=" relative shadow-2  p-1 border-50 w-full sm:h-64 h-64 bg-cover bg-center"
                  style={{backgroundImage: `url(${blackImage})`}}>
-                <div
-                    className=" w-full h-full p-2  justify-content-between  backdrop-blur-sm  border-spacing-1 shadow-2 p-0.5 border-50 border-round"></div>
+                <div className=" w-full h-full p-2  justify-content-between  backdrop-blur-sm  border-spacing-1 shadow-2 p-0.5 border-50 border-round"></div>
                 <div className="absolute left-1/2 transform -translate-x-1/2 sm:-bottom-1/3 -bottom-1/3">
                     <Avatar image={restaurant.photo || Image1} style={{width: "160px", height: "160px"}}
                             shape="circle"
