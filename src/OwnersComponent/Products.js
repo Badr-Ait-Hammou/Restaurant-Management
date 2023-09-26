@@ -94,7 +94,7 @@ export default function Products() {
             photo,
             stock,
             // promotion: promotion,
-            promotion: promotion ? true : false,
+            promotion: !!promotion,
             prix,
             restaurant: {
                 id: userRestaurantid
@@ -439,7 +439,7 @@ export default function Products() {
                     <Grid item xs={6} className="-mt-2" >
                         <Box className="field">
                              <span className="p-float-label">
-                            <InputText  id="inputtext" value={nom} onChange={(e) => setNom(e.target.value)} />
+                            <InputText  id="nom" value={nom} onChange={(e) => setNom(e.target.value)} />
                             <label htmlFor="nom">Name</label>
                              </span>
                         </Box>
@@ -447,7 +447,7 @@ export default function Products() {
                     <Grid item xs={6} className="-mt-2" >
                         <Box className="field">
                                 <span className="p-float-label">
-                            <InputText  id="inputtext" value={description} onChange={(e) => setDescription(e.target.value)} />
+                            <InputText  id="description" value={description} onChange={(e) => setDescription(e.target.value)} />
                             <label htmlFor="description">Description</label>
                              </span>
                         </Box>
@@ -458,7 +458,7 @@ export default function Products() {
                     <Grid item xs={6} className="-mt-3" >
                         <Box className="field">
                             <span className="p-float-label">
-                            <InputText keyfilter="num"  id="inputtext" value={prix} onChange={(e) => setprix(e.target.value)} />
+                            <InputText keyfilter="num"  id="prix" value={prix} onChange={(e) => setprix(e.target.value)} />
                             <label htmlFor="prix">Price Dh</label>
                              </span>
                         </Box>
@@ -466,7 +466,7 @@ export default function Products() {
                     <Grid item xs={6} className="-mt-3" >
                         <Box className="field">
                             <span className="p-float-label">
-                                <InputText keyfilter="num"  id="inputtext" value={stock} onChange={(e) => setStock(e.target.value)} />
+                                <InputText keyfilter="num"  id="stock" value={stock} onChange={(e) => setStock(e.target.value)} />
                                 <label htmlFor="stock">Stock Pcs</label>
                             </span>
                         </Box>
@@ -480,7 +480,8 @@ export default function Products() {
                                 label={`On Sale: ${promotion ? "Yes" : "No"}`}
                                 control={
                                     <Switch
-                                        checked={promotion}
+                                        // checked={promotion}
+                                        checked={Boolean(promotion)}
                                         onChange={(event) => setpromotion(event.target.checked)}
                                         name="promotion"
                                         color="primary"
@@ -512,7 +513,7 @@ export default function Products() {
                     <Grid item xs={6} className="-mt-2" >
                         <Box className="field">
                              <span className="p-float-label">
-                            <InputText  id="inputtext" value={nom} onChange={(e) => setNom(e.target.value)} />
+                            <InputText  id="nom" value={nom} onChange={(e) => setNom(e.target.value)} />
                             <label htmlFor="nom">Name</label>
                              </span>
                         </Box>
@@ -520,7 +521,7 @@ export default function Products() {
                     <Grid item xs={6} className="-mt-2" >
                         <Box className="field">
                                 <span className="p-float-label">
-                            <InputText  id="inputtext" value={description} onChange={(e) => setDescription(e.target.value)} />
+                            <InputText  id="description" value={description} onChange={(e) => setDescription(e.target.value)} />
                             <label htmlFor="description">Description</label>
                              </span>
                         </Box>
@@ -531,7 +532,7 @@ export default function Products() {
                     <Grid item xs={6} className="-mt-3" >
                         <Box className="field">
                             <span className="p-float-label">
-                            <InputText keyfilter="num"  id="inputtext" value={prix} onChange={(e) => setprix(e.target.value)} />
+                            <InputText keyfilter="num"  id="prix" value={prix} onChange={(e) => setprix(e.target.value)} />
                             <label htmlFor="prix">Price Dh</label>
                              </span>
                         </Box>
@@ -539,7 +540,7 @@ export default function Products() {
                     <Grid item xs={6} className="-mt-3" >
                         <Box className="field">
                             <span className="p-float-label">
-                                <InputText keyfilter="num"  id="inputtext" value={stock} onChange={(e) => setStock(e.target.value)} />
+                                <InputText keyfilter="num"  id="stock" value={stock} onChange={(e) => setStock(e.target.value)} />
                                 <label htmlFor="stock">Stock Pcs</label>
                             </span>
                         </Box>
@@ -553,7 +554,8 @@ export default function Products() {
                                 label={`On Sale: ${promotion ? "Yes" : "No"}`}
                                 control={
                                     <Switch
-                                        checked={promotion}
+                                        // checked={promotion}
+                                        checked={Boolean(promotion)}
                                         onChange={(event) => setpromotion(event.target.checked)}
                                         name="promotion"
                                         color="primary"
