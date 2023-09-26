@@ -19,9 +19,7 @@ import Image1 from "../images/deliver.jpg";
 import {Toolbar} from "primereact/toolbar";
 import Chip from "@mui/material/Chip";
 import ShareLocationIcon from "@mui/icons-material/ShareLocation";
-import AccessTimeFilledIcon from "@mui/icons-material/AccessTimeFilled";
 import NightsStayIcon from "@mui/icons-material/NightsStay";
-import LocationCityIcon from "@mui/icons-material/LocationCity";
 import LinkIcon from "@mui/icons-material/Link";
 import SmartButtonIcon from "@mui/icons-material/SmartButton";
 import {Divider} from "primereact/divider";
@@ -92,7 +90,7 @@ export default function RestaurantDetails() {
         };
 
         axios.post('/api/controller/carts/', cartItem)
-            .then(response => {
+            .then(() => {
                 console.log('Product added to cart successfully!');
                 showSuccess();
                 loadProductsUser();
@@ -282,7 +280,7 @@ export default function RestaurantDetails() {
                 <div
                     className="absolute left-1/2 transform -translate-x-1/2 bottom-1/2 text-white text-2xl text-uppercase">
                     {restaurant.nom || "Restaurant Name"} Restaurant<br/>
-                    <Rating value={restaurantRating} readOnly cancel={false} precision={0.5}/>
+                    <Rating value={restaurantRating} readOnly precision={0.5}/>
                 </div>
             </div>
 
