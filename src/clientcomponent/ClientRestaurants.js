@@ -28,28 +28,23 @@ export default function ClientRestaurants() {
         {label: 'poorly-rated', value: 'rating'}
     ];
 
+
     useEffect(() => {
-        fetchData();
-        handleDataTableLoad();
-    }, );
-
-    const fetchData = async () => {
-            const response = await axios.get("/api/controller/specialites/");
+        axios.get("/api/controller/specialites/").then((response) => {
             setSpecialites(response.data);
-            const resp = await axios.get("/api/controller/villes/");
-            setCities(resp.data);
-            const res = await axios.get("/api/controller/restaurants/");
-            setRestaurants(res.data);
+        });
+        axios.get("/api/controller/villes/").then((response) => {
+            setCities(response.data);
+        });
+        loadRestaurants();
 
-    }
+    }, []);
 
-    const handleDataTableLoad = () => {
-        setLoading(false);
-    };
 
     const loadRestaurants = () => {
         axios.get("/api/controller/restaurants/").then((response) => {
             setRestaurants(response.data);
+            setLoading(false);
         });
     };
 
