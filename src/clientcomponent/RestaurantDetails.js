@@ -10,12 +10,10 @@ import "primereact/resources/themes/lara-light-indigo/theme.css";
 import 'primeicons/primeicons.css';
 import "primereact/resources/primereact.min.css";
 import {Tag} from "primereact/tag";
-import Skeleton from "../skeleton/ProfileSkeleton"
 import Typography from "@mui/material/Typography";
 import {DataView} from "primereact/dataview";
 import blackImage from "../images/blackbackground.jpg";
 import {Avatar} from "primereact/avatar";
-import Image1 from "../images/deliver.jpg";
 import {Toolbar} from "primereact/toolbar";
 import Chip from "@mui/material/Chip";
 import ShareLocationIcon from "@mui/icons-material/ShareLocation";
@@ -128,7 +126,7 @@ export default function RestaurantDetails() {
     }, [latitude, longitude]);
 
 
-    if (restaurant) {
+    if (!restaurant || !blackImage) {
         return <RestaurantProfileSkeleton/>;
     }
 
@@ -185,7 +183,7 @@ export default function RestaurantDetails() {
                             <div style={{position: 'relative'}}>
                                 <img
                                     className=" w-16 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round"
-                                    src={product.photo}
+                                    src={product && product.photo}
                                     alt={product.nom}
                                     style={{
                                         width: '100%',
@@ -274,7 +272,7 @@ export default function RestaurantDetails() {
                  style={{backgroundImage: `url(${blackImage})`}}>
                 <div className=" w-full h-full p-2  justify-content-between  backdrop-blur-sm  border-spacing-1 shadow-2 p-0.5 border-50 border-round"></div>
                 <div className="absolute left-1/2 transform -translate-x-1/2 sm:-bottom-1/3 -bottom-1/3">
-                    <Avatar image={restaurant.photo || Image1} style={{width: "160px", height: "160px"}}
+                    <Avatar image={restaurant && restaurant.photo } style={{width: "160px", height: "160px"}}
                             shape="circle"
                             className=" shadow-4 shadow-indigo-400 mb-3 "/>
                 </div>
