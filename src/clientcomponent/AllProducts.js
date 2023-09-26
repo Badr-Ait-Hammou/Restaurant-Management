@@ -133,7 +133,7 @@ export default function AllProduct() {
     }
 
 
-    if (loading || products.length<6) {
+    if (loading || products.length === 0) {
         return (
             <>
                 <DataviewSkeleton/>

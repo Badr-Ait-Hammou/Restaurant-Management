@@ -33,6 +33,7 @@ export default function RestaurantProfile() {
     const [RestaurantDialog, setRestaurantDialog] = useState(false);
     const [zone, setZones] = useState([]);
     const [userRestaurantid, setUserRestaurantId] = useState([]);
+    const [restaurantid, setRestaurantId] = useState([]);
     const [userid, setUserId] = useState("");
     const [series, setSeries] = useState([]);
     const [specialites, setSpecialites] = useState([]);
@@ -67,9 +68,8 @@ export default function RestaurantProfile() {
 
     useEffect(() => {
         fetchUserData();
-        fetchData();
         handleDataTableLoad();
-    }, []);
+    }, [restaurantid]);
 
 
     const fetchUserData = async () => {
@@ -78,43 +78,27 @@ export default function RestaurantProfile() {
             try {
                 const user = await accountService.getUserByEmail(tokenInfo.sub);
                 setUserId(user.id);
-                console.log('user', user.id);
-                setUserRestaurantId(user.restaurantList[0]);
-                console.log('user rest', user.restaurantList[0]);
+                const restaurantId = user.restaurantList[0]?.id;
+                const restaurant = user.restaurantList[0];
+                setRestaurantId(restaurantId);
+                setUserRestaurantId(restaurant);
+                console.log(restaurantId);
+                const response = await axios.get(`/api/controller/produits/restaurant/${restaurantId}`);
+                setProducts(response.data);
+                const Response = await axios.get('/api/controller/series/');
+                setSeries(Response.data);
+
+                const res = await axios.get("/api/controller/zones/");
+                setZones(res.data);
+
+                const resp = await axios.get("/api/controller/specialites/");
+                setSpecialites(resp.data);
             } catch (error) {
                 console.log('Error retrieving user:', error);
             }
         }
     };
 
-
-    const fetchData = async () => {
-        try {
-            const Response = await axios.get('/api/controller/series/');
-            setSeries(Response.data);
-
-            const res = await axios.get("/api/controller/zones/");
-            setZones(res.data);
-
-            const resp = await axios.get("/api/controller/specialites/");
-            setSpecialites(resp.data);
-        } catch (error) {
-            console.error('Error fetching data:', error);
-        }
-    };
-
-
-
-
-
-    useEffect(() => {
-        if (userRestaurantid) {
-            axios.get(`/api/controller/produits/restaurant/${userRestaurantid.id}`).then((response) => {
-                setProducts(response.data);
-                console.log(response.data);
-            });
-        }
-    }, [userRestaurantid.id, userRestaurantid]);
 
     useEffect(() => {
         const iframeData = document.getElementById("iframeId");
@@ -137,7 +121,7 @@ export default function RestaurantProfile() {
     // }, [userRestaurantid.latitude, userRestaurantid.longitude, apiKey]);
 
     const loadRestaurant = async () => {
-        const respo = await axios.get(`/api/controller/restaurants/${userRestaurantid.id}`);
+        const respo = await axios.get(`/api/controller/restaurants/${restaurantid}`);
         setUserRestaurantId(respo.data);
     }
 
@@ -199,32 +183,6 @@ export default function RestaurantProfile() {
                 });
                 return;
             }
-
-            const response = await axios.put(
-                `/api/controller/restaurants/${restaurantToUpdate.id}`,
-                {
-                    nom: nom,
-                    longitude: longitude,
-                    latitude: latitude,
-                    dateOuverture: dateOuverture,
-                    dateFermeture: dateFermeture,
-                    adresse: adresse,
-                    photo: photo,
-                    zone: {
-                        id: zoneid,
-                    },
-                    serie: {
-                        id: serieid,
-                    },
-                    specialite: {
-                        id: specialiteid,
-                    },
-                    user: {
-                        id: userid,
-                    },
-                }
-            );
-
             const updatedRestaurant = {
                 ...restaurantToUpdate,
                 nom: nom,
@@ -247,6 +205,7 @@ export default function RestaurantProfile() {
                     id: userid,
                 },
             };
+            await axios.put(`/api/controller/restaurants/${restaurantToUpdate.id}`, updatedRestaurant);
             hideDialog();
             loadRestaurant();
             showupdate();
@@ -470,7 +429,7 @@ export default function RestaurantProfile() {
                     <div className=" my-1 px-5">
                         <div
                             className="flex flex-row  justify-content-between py-3   border-1 border-black  backdrop-blur-sm  border-round hover:transform hover:scale-105 transition-transform ">
-                            <iframe id="iframeId" height="250px" width="100%"
+                            <iframe id="iframeId" height="250px" width="100%" title="test"
                                     style={{borderRadius: "10px"}}></iframe>
                         </div>
                     </div>

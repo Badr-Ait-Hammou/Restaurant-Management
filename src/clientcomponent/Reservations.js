@@ -155,18 +155,18 @@ export default function Reservations(){
         const selectedReservationDate = new Date(reservationDate);
         const minAdvanceReservationTime = new Date();
         minAdvanceReservationTime.setHours(minAdvanceReservationTime.getHours() + 4);
-        if (
-            selectedReservationDate < allowedStartTime ||
-            selectedReservationDate > allowedEndTime
-        ) {
-            toast.current.show({
-                severity: 'error',
-                summary: 'Error',
-                detail: 'Reservations are only allowed between 9:00 AM and 8:59 PM',
-                life: 3000,
-            });
-            return;
-        }
+        // if (
+        //     selectedReservationDate < allowedStartTime ||
+        //     selectedReservationDate > allowedEndTime
+        // ) {
+        //     toast.current.show({
+        //         severity: 'error',
+        //         summary: 'Error',
+        //         detail: 'Reservations are only allowed between 9:00 AM and 8:59 PM',
+        //         life: 3000,
+        //     });
+        //     return;
+        // }
         if (selectedReservationDate <= minAdvanceReservationTime) {
             toast.current.show({
                 severity: 'error',

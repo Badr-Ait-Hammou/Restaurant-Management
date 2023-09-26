@@ -74,6 +74,10 @@ export default function Products() {
         }
     };
 
+    const loadProducts=async ()=>{
+        const resp= await axios.get(`/api/controller/produits/restaurant/${userRestaurantid}`);
+        setproducts(resp.data);
+    }
 
 
 
@@ -98,8 +102,8 @@ export default function Products() {
             prix,
             restaurant: {
                 id: userRestaurantid
-            },
-        }).then((response) => {
+            }
+        }).then(() => {
             setNom("");
             setDescription("");
             setPhotos("");
@@ -142,10 +146,7 @@ export default function Products() {
 
 
 
-    const loadProducts=async ()=>{
-        const resp= await axios.get(`/api/controller/produits/restaurant/${userRestaurantid}`);
-        setproducts(resp.data);
-    }
+
 
     /******************************************** Delete *************************/
 
@@ -209,36 +210,73 @@ export default function Products() {
         seteditProductsDialog(true);
     };
 
-    const handleEdit = async (productsToUpdate) => {
+    // const handleEdit = async (productsToUpdate) => {
+    //     try {
+    //         if (nom.trim() === '' || !prix ) {
+    //             toast.current.show({ severity: 'error', summary: 'Error', detail: 'Fields cannot be empty', life: 3000 });
+    //             return;
+    //         }
+    //         const response = await axios.put(`/api/controller/produits/${productsToUpdate.id}`, {
+    //             nom:nom,
+    //             description:description,
+    //             prix:prix,
+    //             stock:stock,
+    //             promotion:promotion,
+    //             photo:photo,
+    //             restaurant: {
+    //                 id: userRestaurantid
+    //             },
+    //
+    //         });
+    //
+    //         const updatedProject = [...products];
+    //         const updatedProjectIndex = updatedProject.findIndex((product) => product.id === productsToUpdate.id);
+    //         updatedProject[updatedProjectIndex] = response.data;
+    //
+    //         hideeditDialog();
+    //         loadProducts();
+    //         showupdate()
+    //     } catch (error) {
+    //         console.error(error);
+    //     }
+    // };
+
+    const handleEdit = async (productToUpdate) => {
         try {
-            if (nom.trim() === '' || !prix ) {
+            if (nom.trim() === '' || !prix) {
                 toast.current.show({ severity: 'error', summary: 'Error', detail: 'Fields cannot be empty', life: 3000 });
                 return;
             }
-            const response = await axios.put(`/api/controller/produits/${productsToUpdate.id}`, {
-                nom:nom,
-                description:description,
-                prix:prix,
-                stock:stock,
-                promotion:promotion,
-                photo:photo,
+
+            // Make the PUT request to update the product
+            const response = await axios.put(`/api/controller/produits/${productToUpdate.id}`, {
+                nom: nom,
+                description: description,
+                prix: prix,
+                stock: stock,
+                promotion: !!promotion,
+                photo: photo,
                 restaurant: {
                     id: userRestaurantid
-                },
-
+                }
             });
 
-            const updatedProject = [...products];
-            const updatedProjectIndex = updatedProject.findIndex((product) => product.id === productsToUpdate.id);
-            updatedProject[updatedProjectIndex] = response.data;
+            // Assuming the update was successful, update the local state
+            const updatedProduct = response.data;
+            const updatedProducts = products.map((product) =>
+                product.id === updatedProduct.id ? updatedProduct : product
+            );
+
+            setproducts(updatedProducts);
 
             hideeditDialog();
             loadProducts();
-            showupdate()
+            showupdate();
         } catch (error) {
-            console.error(error);
+            console.error("Error while updating product:", error);
         }
     };
+
 
     /********************************************Toasts *************************/
 
@@ -373,7 +411,7 @@ export default function Products() {
         />;
     };
 
-    if(loading || products.length=== 0){
+    if(loading || products.length === 0){
         return(
             <DatatableSkeleton/>
         )
