@@ -18,7 +18,7 @@ import {Grid} from "@mui/material";
 import LocalShippingRoundedIcon from "@mui/icons-material/LocalShippingRounded";
 import Ifoulkilogo from "../images/IFOULKIlogo2.svg";
 
-const pages = ['city', 'zone', 'serie', 'specialite', 'restaurant', 'produit', 'orders','reservations'];
+const pages = ['restaurant', 'products', 'orders','reservations'];
 
 export default function Header() {
     const [anchorElNav, setAnchorElNav] = React.useState(null);

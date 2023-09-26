@@ -27,6 +27,7 @@ import AdminDash from "../components/Dashboard";
 import OwnerDash from "../OwnersComponent/Dashboard";
 import OwnerHeader from "../OwnersComponent/Header";
 import OwnerResturant from "../OwnersComponent/RestaurantProfile";
+import OwnerProducts from "../OwnersComponent/Products";
 
 const userRoutes = (
     <>
@@ -53,6 +54,7 @@ const employeRoutes = (
         <Route index element={<OwnerDash/>}/>
         <Route path="/" element={<OwnerDash/>}/>
         <Route path="/restaurant" element={<OwnerResturant/>}/>
+        <Route path="/products" element={<OwnerProducts/>}/>
 
     </>
 );
