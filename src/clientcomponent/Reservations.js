@@ -62,29 +62,37 @@ export default function Reservations(){
     };
 
     useEffect(() => {
+        fetchUserData();
+    }, [userId]);
+
         const fetchUserData = async () => {
             const tokenInfo = accountService.getTokenInfo();
             if (tokenInfo) {
                 try {
                     const user = await accountService.getUserByEmail(tokenInfo.sub);
+                    const userId= user.id;
                     setUserId(user.id);
                     console.log('user', user.id);
+                    const response = await axios.get(`/api/controller/reservations/user/${userId}`);
+                    setReservations(response.data);
+                    const res = await axios.get("/api/controller/restaurants/");
+                    setRestaurants(res.data);
+                    const  cancelledRes = response.data.filter((reservation) => reservation.status === 'Cancelled');
+                    setCancelledReservations(cancelledRes);
+                    const  confirmedRes = response.data.filter((reservation) => reservation.status === 'Confirmed' || reservation.status=== 'Finished');
+                    setConfirmedReservations(confirmedRes);
+
                 } catch (error) {
                     console.log('Error retrieving user:', error);
                 }
             }
         };
 
-        fetchUserData();
-    }, [setUserId]);
 
-    useEffect(() => {
-       loadReservations();
-    }, );
 
 
     const loadReservations=async ()=>{
-        axios.get(`/api/controller/reservations/user/${userId}`).then((response) => {
+            axios.get(`/api/controller/reservations/user/${userId}`).then((response) => {
             setReservations(response.data);
             const  cancelledRes = response.data.filter((reservation) => reservation.status === 'Cancelled');
             setCancelledReservations(cancelledRes);
@@ -95,11 +103,7 @@ export default function Reservations(){
 
     }
 
-    useEffect(() => {
-        axios.get("/api/controller/restaurants/").then((response) => {
-            setRestaurants(response.data);
-        });
-    }, []);
+
 
     const Updatestatus = async (reservationToUpdate) => {
         try {
@@ -189,7 +193,7 @@ export default function Reservations(){
                     id: userId,
                 },
             })
-            .then((response) => {
+            .then(() => {
                 loadReservations();
                 hideDialog();
                 showSave();
