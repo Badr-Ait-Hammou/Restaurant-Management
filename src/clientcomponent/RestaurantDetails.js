@@ -387,7 +387,7 @@ export default function RestaurantDetails() {
                     <div className=" my-1 px-5">
                         <div
                             className="flex flex-row  justify-content-between py-3   border-1 border-black  backdrop-blur-sm  border-round hover:transform hover:scale-105 transition-transform ">
-                            <iframe id="iframeId" height="250px" width="100%"
+                            <iframe id="iframeId" height="250px" width="100%" title="test"
                                     style={{borderRadius: "10px"}}></iframe>
                         </div>
                     </div>
