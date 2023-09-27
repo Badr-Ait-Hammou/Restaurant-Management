@@ -19,23 +19,35 @@ export default function ClientOrdersSkeleton() {
                 </CardContent>
 
                 <div>
-                    <Box sx={{display: 'flex', justifyContent: 'center',marginBottom:2}}>
-                            <Skeleton width="5rem" height="2rem" className="mx-2"/>
-                            <Skeleton width="5rem" height="2rem" className="mx-2"/>
-                            <Skeleton width="5rem" height="2rem" className="mx-2"/>
-                            <Skeleton width="5rem" height="2rem" className="mx-2"/>
-                            <Skeleton width="5rem" height="2rem" className="mx-2"/>
+                    <Box sx={{display: 'flex', justifyContent: 'center', marginBottom: 2}}>
+                        <Skeleton width="5rem" height="2rem" className="mx-2"/>
+                        <Skeleton width="5rem" height="2rem" className="mx-2"/>
+                        <Skeleton width="5rem" height="2rem" className="mx-2"/>
+                        <Skeleton width="5rem" height="2rem" className="mx-2"/>
+                        <Skeleton width="5rem" height="2rem" className="mx-2"/>
                     </Box>
                 </div>
                 <Fieldset toggleable legend="Loading ...">
-                    <Grid container alignItems="center ">
-                        <Grid item xs={12} className="left">
-                            <Skeleton width="100%" height="100px"/>
-                            <Skeleton width="100%" height="100px" className="mt-1"/>
+                    {/*<Grid container alignItems="center ">*/}
+                    {/*    <Grid item xs={12} className="left">*/}
+                    <Box sx={{mx: -2, mt: -3}}>
+                        <Grid item container spacing={1} columns={12}>
+                            <Grid item xs={12} md={8}>
+                                <div className="card ">
+                                    <Skeleton width="100%" height="70px"/>
+                                    <Skeleton width="100%" height="70px" className="mt-1"/>
+                                    <Skeleton width="100%" height="70px" className="mt-1"/>
 
+                                </div>
+                            </Grid>
+                            <Grid item xs={12} md={4}>
+                                <div className="card ">
+                                    <Skeleton width="100%" height="400px"/>
 
+                                </div>
+                            </Grid>
                         </Grid>
-                    </Grid>
+                    </Box>
                     <div className="flex justify-content-center mt-1 mb-1">
                         <Skeleton width="6rem" height="2rem" className="mx-2"/>
                         <Skeleton width="6rem" height="2rem" className="mx-2"/>
