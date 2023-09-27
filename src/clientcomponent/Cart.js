@@ -241,7 +241,7 @@ export default function Cart() {
         }
     };
 
-    if(loading ){
+    if(loading || cartProducts.length===0 ){
         return(
             <CartSkeleton/>
         );

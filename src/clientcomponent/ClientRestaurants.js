@@ -125,7 +125,7 @@ export default function ClientRestaurants() {
     };
 
 
-    if (loading || restaurants.length ===0) {
+    if (loading ) {
         return (<DataviewSkeleton/>)
     }
 

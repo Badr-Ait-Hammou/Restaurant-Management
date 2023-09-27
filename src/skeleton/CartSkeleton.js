@@ -3,11 +3,14 @@ import Box from "@mui/material/Box";
 import {Grid} from "@mui/material";
 import {DataView} from "primereact/dataview";
 import {Skeleton} from "primereact/skeleton";
+import Typography from "@mui/material/Typography";
 export default function CartSkeleton(){
 
     const cartProducts = [
         { id: 1 },
         { id: 2 },
+        { id: 3 },
+        { id: 4 },
 
     ];
 
@@ -39,14 +42,15 @@ export default function CartSkeleton(){
             <Box sx={{mx:3,mt:3}}>
                 <Grid item container spacing={1}  columns={12} >
                     <Grid item xs={12} md={7}  >
+                        <div className="card " style={{width:"100%",height:"40px",backgroundColor:"rgb(23,113,122)",borderBottomRightRadius:"0px",borderBottomLeftRadius:"0px"}}><Typography className="font-monospace text-center text-white text-1xl mt-1">Loading...</Typography></div>
                         <div className="card">
-                            <DataView value={cartProducts} itemTemplate={itemTemplate}   header="Cart" />
+                            <DataView value={cartProducts} itemTemplate={itemTemplate}    />
                         </div>
                     </Grid>
                     <Grid item xs={12} md={5}   >
-                        <div className="card ">
-
-                            <Skeleton width="100%" height="233px"  />
+                        <div className="card " style={{width:"100%",height:"40px",backgroundColor:"rgb(23,113,122)",borderBottomRightRadius:"0px",borderBottomLeftRadius:"0px"}}></div>
+                        <div className="card border-none">
+                            <Skeleton width="100%" height="233px" borderRadius={0}/>
 
                         </div>
                     </Grid>
