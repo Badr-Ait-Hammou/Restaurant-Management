@@ -13,7 +13,7 @@ import RestaurantMenuRoundedIcon from '@mui/icons-material/RestaurantMenuRounded
 import DataviewSkeleton from "../skeleton/DataviewSkeleton"
 import Typography from "@mui/material/Typography";
 import shoppingCartIcon from "../images/shopping-cardIcon.gif"
-import viewCartIcon from "../images/viewIcon.gif"
+import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 
 
 export default function AllProduct() {
@@ -220,20 +220,19 @@ export default function AllProduct() {
                             {productInCart[product.id] ? (
                                 <Link to="/ifoulki_meals/cart" style={{textDecoration: "none", color: "white"}}>
                                     <Button
-                                        style={{borderRadius: "50px",background:'linear-gradient(360deg, rgba(0,30,24,0.9759709547881653) 0%, rgba(9,121,84,1) 25%, rgba(0,255,200,1) 100%)'}}
-                                        icon={<img src={viewCartIcon} alt="Shopping Cart" width="30px" />}
+                                        icon={<ShoppingCartCheckoutIcon style={{fontSize:"28px"}}  />}
                                         label={"View" }
-                                        className="p-button-rounded border-none mt-2 p-2  "
+                                        className="p-button-rounded p-button-raised gap-1 border-teal-400  p-button-text text-teal-600   mt-2 p-2   "
                                         disabled={product.stock <= 0}
                                     />
                                 </Link>
                             ) : (
                                 <div>
                                     <Button
-                                        style={{borderRadius: "50px",backgroundColor:"rgb(1,169,164)"}}
+                                        style={{backgroundColor:"rgb(1,169,164)"}}
                                         icon={<img src={shoppingCartIcon} alt="Shopping Cart"  width="30px" />}
                                         label={"Add"}
-                                        className="p-button-rounded mt-2 p-2  gap-2   shadow-1 hover:bg-teal-400 transition-duration-200 border-none "
+                                        className="p-button-rounded p-button-raised gap-2 border-teal-400  p-button-text text-white   mt-2 p-2   "
                                         onClick={() => handleAddToCart(product)}
                                         disabled={product.stock <= 0 || productInCart[product.id]}
                                     />
@@ -302,27 +301,26 @@ export default function AllProduct() {
                         <Typography
                             className="font-monospace ">({getReviews(product)})review{getReviews(product) !== 1 ? 's' : ''}</Typography>
                     </div>
-                    <div className="flex align-items-center justify-content-between pt-2 px-3 gap-2">
-                        <span className="text-2xl font-semibold text-left">{product.prix} Dh</span>
+                    <div className="flex align-items-center justify-content-between pt-2 ">
+                        <span className="text-2xl font-semibold ">{product.prix} Dh</span>
                         {productInCart[product.id] ? (
                             <Link to="/ifoulki_meals/cart" style={{textDecoration: "none", color: "white"}}>
                                 <Button
-                                    style={{borderRadius: "50px",background:'linear-gradient(360deg, rgba(0,30,24,0.9759709547881653) 0%, rgba(9,121,84,1) 25%, rgba(0,255,200,1) 100%)'}}
-                                    icon={<img src={viewCartIcon} alt="Shopping Cart" width="30px" />}
+                                    // style={{borderRadius: "50px",background:'linear-gradient(360deg, rgba(0,30,24,0.9759709547881653) 0%, rgba(9,121,84,1) 25%, rgba(0,255,200,1) 100%)'}}
+                                    icon={<ShoppingCartCheckoutIcon style={{fontSize:"28px"}}  />}
                                     label={"View" }
-                                    className="p-button-rounded border-none mt-2 p-2  "
+                                    className="p-button-rounded p-button-raised gap-1 border-teal-400  p-button-text text-teal-600   mt-2 p-2   "
                                     disabled={product.stock <= 0}
                                 />
                             </Link>
                         ) : (
                             <div>
                             <Button
-                                style={{borderRadius: "50px",backgroundColor:"rgb(1,169,164)"}}
+                                style={{backgroundColor:"rgb(1,169,164)"}}
                                 icon={<img src={shoppingCartIcon} alt="Shopping Cart"  width="30px" />}
                                 label={"Add"}
-                                className="p-button-rounded mt-2 p-2  gap-2   shadow-1 hover:bg-teal-400 transition-duration-200 border-none "
-
-                                // className="p-3 flex align-items-center justify-content-center w-7 gap-2  border-1 shadow-1 cursor-pointer hover:bg-black-alpha-10 transition-duration-200 border-none"
+                                className="p-button-rounded p-button-raised gap-2 border-teal-400  p-button-text text-white   mt-2 p-2   "
+                                // className="p-button-rounded p-button-raised mt-2 p-2  gap-2 border-teal-400  shadow-1 hover:bg-teal-400 transition-duration-200  "
                                 onClick={() => handleAddToCart(product)}
                                 disabled={product.stock <= 0 || productInCart[product.id]}
                             />
@@ -333,21 +331,6 @@ export default function AllProduct() {
             </div>
         );
     };
-
-
-    // const itemTemplate = (group) => {
-    //     if (!group || group.length === 0) {
-    //         return <Skeleton/>;
-    //     }
-    //
-    //     return (
-    //         <div className="container mt-2">
-    //             <div className="row row-cols-2 row-cols-sm-2 row-cols-md-4 row-cols-lg-4 g-4">
-    //                 {group.map((product) => gridItem(product))}
-    //             </div>
-    //         </div>
-    //     );
-    // };
 
 
     const onSortChange = (event) => {
@@ -387,23 +370,6 @@ export default function AllProduct() {
             </div>
         );
     };
-    const header2 = () => {
-        return (
-            <div className="flex justify-content-end">
-                <DataViewLayoutOptions
-                    layout={layout}
-                    onChange={(e) => setLayout(e.value)}
-                />
-            </div>
-        );
-    };
-
-
-    // const groupedRestaurants = [];
-    // for (let i = 0; i < products.length; i += 4) {
-    //     groupedRestaurants.push(products.slice(i, i + 4));
-    // }
-
 
     return (
         <div>
@@ -419,8 +385,8 @@ export default function AllProduct() {
 
                 {layout === 'grid' && (
                     <div>
-                        <DataView value={products} itemTemplate={gridItem} layout={layout}
-                                  header={header2()} sortField={sortField} paginator paginatorTemplate={'PrevPageLink CurrentPageReport NextPageLink'} rows={12}/>
+                        <DataView value={products} itemTemplate={gridItem} layout={layout} sortOrder={sortOrder}
+                                  header={header()} sortField={sortField} paginator paginatorTemplate={'PrevPageLink CurrentPageReport NextPageLink'} rows={12}/>
                     </div>
                 )}
             </div>
