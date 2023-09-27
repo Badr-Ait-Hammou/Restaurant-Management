@@ -27,6 +27,8 @@ import { formatDistanceToNow, format } from 'date-fns';
 import RestaurantRating from "./RestaurantRating";
 import {InputTextarea} from "primereact/inputtextarea";
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
+import viewCartIcon from "../images/viewIcon.gif";
+import shoppingCartIcon from "../images/shopping-cardIcon.gif";
 
 
 export default function RestaurantProductDetails() {
@@ -339,31 +341,52 @@ export default function RestaurantProductDetails() {
                                     </div>
                                 </div>
                             <Grid columns={12}  container  style={{backgroundColor:"rgba(140,134,134,0.15)",borderRadius:"10px"}}>
-                                <Grid xs={6} >
+                                <Grid xs={6} mt={2}>
 
-                                    <Typography variant="body1" className="mt-2 " gutterBottom>
+                                    <Typography variant="body1" className=" text-left" gutterBottom>
                                         <span className="font-extrabold  mx-2 text-1xl">Price: </span>
                                         <span className="font-monospace text-1xl"> {products.prix} Dh </span>
                                     </Typography>
                                 </Grid>
                                 <Grid xs={6} >
-                                    <div className="flex justify-content-end">
+                                    <div className="flex justify-content-end px-1 pt-1 ">
                                         {productInCart[products.id] ? (
-                                            <Link to="/admin/cart">
+                                        //     <Link to="/admin/cart">
+                                        //         <Button
+                                        //             style={{background: 'linear-gradient(-225deg,#AC32E4 0%,#7918F2 48%,#4801FF 100%)'}}
+                                        //             icon="pi pi-external-link"
+                                        //             className="p-button-rounded"
+                                        //             disabled={products.stock <= 0}
+                                        //         />
+                                        //     </Link>
+                                        // ) : (
+                                        //     <Button
+                                        //         icon="pi pi-shopping-cart"
+                                        //         className="p-button-rounded "
+                                        //         onClick={() => handleAddToCart(products)}
+                                        //         disabled={products.stock <= 0 || productInCart[products.id]}
+                                        //     />
+                                        // )}
+                                            <Link to="/ifoulki_meals/cart" style={{textDecoration: "none", color: "white"}}>
                                                 <Button
-                                                    style={{background: 'linear-gradient(-225deg,#AC32E4 0%,#7918F2 48%,#4801FF 100%)'}}
-                                                    icon="pi pi-external-link"
-                                                    className="p-button-rounded"
+                                                    style={{borderRadius: "50px",background:'linear-gradient(360deg, rgba(0,30,24,0.9759709547881653) 0%, rgba(9,121,84,1) 25%, rgba(0,255,200,1) 100%)'}}
+                                                    icon={<img src={viewCartIcon} alt="Shopping Cart" width="30px" />}
+                                                    label={"View" }
+                                                    className="p-button-rounded  p-2     shadow-1 hover:bg-teal-400 transition-duration-200 border-none "
                                                     disabled={products.stock <= 0}
                                                 />
                                             </Link>
                                         ) : (
-                                            <Button
-                                                icon="pi pi-shopping-cart"
-                                                className="p-button-rounded "
-                                                onClick={() => handleAddToCart(products)}
-                                                disabled={products.stock <= 0 || productInCart[products.id]}
-                                            />
+                                            <div>
+                                                <Button
+                                                    style={{borderRadius: "50px",backgroundColor:"rgb(1,169,164)"}}
+                                                    icon={<img src={shoppingCartIcon} alt="Shopping Cart"  width="30px" />}
+                                                    label={"Add"}
+                                                    className="p-button-rounded  p-2     shadow-1 hover:bg-teal-400 transition-duration-200 border-none "
+                                                    onClick={() => handleAddToCart(products)}
+                                                    disabled={products.stock <= 0 || productInCart[products.id]}
+                                                />
+                                            </div>
                                         )}
                                     </div>
                                 </Grid>

@@ -14,7 +14,6 @@ import DataviewSkeleton from "../skeleton/DataviewSkeleton"
 import Typography from "@mui/material/Typography";
 import shoppingCartIcon from "../images/shopping-cardIcon.gif"
 import viewCartIcon from "../images/viewIcon.gif"
-import onSaleIcon from "../images/saleIcon.gif";
 
 
 export default function AllProduct() {
@@ -159,7 +158,7 @@ export default function AllProduct() {
                             alt={product.nom}
                             style={{
                                 width: '180px',
-                                height: '140px',
+                                height: '160px',
                                 borderRadius: '18px'
                             }}
                         />
@@ -207,7 +206,7 @@ export default function AllProduct() {
                             </div>
                         </div>
                         <div className="flex flex-column align-items-center sm:align-items-start gap-3">
-                            <Rating value={getAverageRating(product)} readOnly cancel={false} precision={0.5}></Rating>
+                            <Rating value={getAverageRating(product)} readOnly  precision={0.5}></Rating>
                             <Typography
                                 className="font-monospace align-items-center">({getReviews(product)})review{getReviews(product) !== 1 ? 's' : ''}</Typography>
                             <Tag
@@ -217,23 +216,28 @@ export default function AllProduct() {
                             </Tag>
                         </div>
                         <div className="flex sm:flex-column align-items-center sm:align-items-end gap-3 sm:gap-2">
-                            <span className="text-2xl font-semibold">${product.prix}</span>
+                            <span className="text-2xl font-semibold text-left">{product.prix} Dh</span>
                             {productInCart[product.id] ? (
-                                <Link to="/admin/cart">
+                                <Link to="/ifoulki_meals/cart" style={{textDecoration: "none", color: "white"}}>
                                     <Button
-                                        style={{background: 'linear-gradient(-225deg,#AC32E4 0%,#7918F2 48%,#4801FF 100%)'}}
-                                        icon="pi pi-external-link"
-                                        className="p-button-rounded mt-2"
+                                        style={{borderRadius: "50px",background:'linear-gradient(360deg, rgba(0,30,24,0.9759709547881653) 0%, rgba(9,121,84,1) 25%, rgba(0,255,200,1) 100%)'}}
+                                        icon={<img src={viewCartIcon} alt="Shopping Cart" width="30px" />}
+                                        label={"View" }
+                                        className="p-button-rounded border-none mt-2 p-2  "
                                         disabled={product.stock <= 0}
                                     />
                                 </Link>
                             ) : (
-                                <Button
-                                    icon="pi pi-shopping-cart"
-                                    className="p-button-rounded mt-2"
-                                    onClick={() => handleAddToCart(product)}
-                                    disabled={product.stock <= 0 || productInCart[product.id]}
-                                />
+                                <div>
+                                    <Button
+                                        style={{borderRadius: "50px",backgroundColor:"rgb(1,169,164)"}}
+                                        icon={<img src={shoppingCartIcon} alt="Shopping Cart"  width="30px" />}
+                                        label={"Add"}
+                                        className="p-button-rounded mt-2 p-2  gap-2   shadow-1 hover:bg-teal-400 transition-duration-200 border-none "
+                                        onClick={() => handleAddToCart(product)}
+                                        disabled={product.stock <= 0 || productInCart[product.id]}
+                                    />
+                                </div>
                             )}
                         </div>
                     </div>
