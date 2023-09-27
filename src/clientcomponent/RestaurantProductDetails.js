@@ -67,6 +67,13 @@ export default function RestaurantProductDetails() {
         }
     };
 
+    useEffect(() => {
+        axios.get(`/api/controller/produits/${id}`)
+            .then((response) => {
+                setProducts(response.data);
+            });
+    }, [id]);
+
     // Load products for the user and check the cart
     const loadProductsUser = () => {
         const checkProductInCart = (productId) => {

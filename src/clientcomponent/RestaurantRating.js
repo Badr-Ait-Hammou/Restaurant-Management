@@ -13,12 +13,20 @@ export default function RestaurantRating({restaurantId} ) {
 
 
     useEffect(() => {
-            axios.get(`/api/controller/produits/restaurant/${restaurantId}`).then((response) => {
-                setProducts(response.data);
-                console.log(response.data);
-            });
+        if (restaurantId !== undefined) {
+            axios.get(`/api/controller/produits/restaurant/${restaurantId}`)
+                .then((response) => {
+                    setProducts(response.data);
+                    //console.log(response.data);
+                })
+                .catch((error) => {
+                    console.error('Error fetching restaurant products:', error);
+                });
+        } else {
 
+        }
     }, [restaurantId]);
+
 
 
     const getAverageRating = (product) => {

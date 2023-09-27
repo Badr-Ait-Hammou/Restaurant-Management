@@ -300,6 +300,7 @@ export default function Reservations(){
                  <Link to={`/ifoulki_meals/restaurants/${reservation.restaurant && reservation.restaurant.id}`}>
                 <img className="w-4rem shadow-2 flex-shrink-0 border-round" src={reservation.restaurant && reservation.restaurant.photo} alt={reservation.restaurant.nom }/>
                  </Link>
+
                     <div className="flex-1 flex flex-column gap-1  ">
                         <div className="flex justify-content-between">
                             <Tag style={{float:"left",backgroundColor:"rgba(245,241,241,0.89)",color:"black"}} icon={<RestaurantIcon style={{fontSize:"12px",marginRight:'3px'}}/>}  >{reservation.restaurant && reservation.restaurant.nom}</Tag>
