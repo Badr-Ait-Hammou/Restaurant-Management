@@ -12,6 +12,9 @@ import {Toast} from "primereact/toast";
 import RestaurantMenuRoundedIcon from '@mui/icons-material/RestaurantMenuRounded';
 import DataviewSkeleton from "../skeleton/DataviewSkeleton"
 import Typography from "@mui/material/Typography";
+import shoppingCartIcon from "../images/shopping-cardIcon.gif"
+import viewCartIcon from "../images/viewIcon.gif"
+import onSaleIcon from "../images/saleIcon.gif";
 
 
 export default function AllProduct() {
@@ -33,12 +36,7 @@ export default function AllProduct() {
     ];
 
 
-    useEffect(() => {
-        axios.get("/api/controller/produits/").then((response) => {
-            setProducts(response.data);
-            setLoading(false);
-        });
-    }, []);
+
 
 
     useEffect(() => {
@@ -102,9 +100,15 @@ export default function AllProduct() {
 
     useEffect(() => {
         loadProductsUser();
-    }, );
-    // }, [userId, products]);
+    // }, );
+    }, [userId, products]);
 
+    useEffect(() => {
+        axios.get("/api/controller/produits/").then((response) => {
+            setProducts(response.data);
+            setLoading(false);
+        });
+    }, []);
 
     const handleAddToCart = (product) => {
         const cartItem = {
@@ -248,20 +252,18 @@ export default function AllProduct() {
                             {product.promotion === true && (
                                 <Tag value="On Sale" severity="danger" icon="pi pi-tag"/>
                             )}
-                            {/*<i className="pi pi-tag"></i>*/}
-                            {/*<span className="font-semibold">{product.category}</span>*/}
                         </div>
                         <Tag value={product.restaurant && product.restaurant.specialite.nom} style={{backgroundColor:"rgb(23,113,122)"}}></Tag>
                     </div>
-                    <div className="flex flex-column align-items-center gap-2 py-2">
+                    <div className="flex flex-column align-items-center gap-1 py-1">
                         <Link to={`product/${product.id}`}>
                         <div style={{position: 'relative'}}>
-                            <img className=" w-16 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round"
+                            <img className=" w-20 sm:w-20rem xl:w-20rem  shadow-2 block xl:block mx-auto border-round"
                                  src={product.photo}
                                  alt={product.nom}
                                  style={{
                                      width: '100%',
-                                     height: '140px',
+                                     height: '180px',
                                      borderRadius: '8px'
                                  }}/>
                             {product.stock <= 0 ? (
@@ -292,28 +294,35 @@ export default function AllProduct() {
                         <div className="text-2xl font-bold">{product.nom}</div>
                         <Typography variant="body2" className="ml-1"
                                     color="text.secondary">{product.description}</Typography>
-                        <Rating value={getAverageRating(product)} readOnly cancel={false} precision={0.5}></Rating>
+                        <Rating value={getAverageRating(product)} readOnly  precision={0.5} style={{fontSize:"16px"}}></Rating>
                         <Typography
                             className="font-monospace ">({getReviews(product)})review{getReviews(product) !== 1 ? 's' : ''}</Typography>
                     </div>
-                    <div className=" flex align-items-center justify-content-between">
-                        <span className="text-2xl font-semibold">{product.prix} Dh</span>
+                    <div className="flex align-items-center justify-content-between pt-2 px-3 gap-2">
+                        <span className="text-2xl font-semibold text-left">{product.prix} Dh</span>
                         {productInCart[product.id] ? (
-                            <Link to="/admin/cart">
+                            <Link to="/ifoulki_meals/cart" style={{textDecoration: "none", color: "white"}}>
                                 <Button
-                                    style={{background: 'linear-gradient(-225deg,#AC32E4 0%,#7918F2 48%,#4801FF 100%)'}}
-                                    icon="pi pi-external-link"
-                                    className="p-button-rounded mt-2"
+                                    style={{borderRadius: "50px",background:'linear-gradient(360deg, rgba(0,30,24,0.9759709547881653) 0%, rgba(9,121,84,1) 25%, rgba(0,255,200,1) 100%)'}}
+                                    icon={<img src={viewCartIcon} alt="Shopping Cart" width="30px" />}
+                                    label={"View" }
+                                    className="p-button-rounded border-none mt-2 p-2  "
                                     disabled={product.stock <= 0}
                                 />
                             </Link>
                         ) : (
+                            <div>
                             <Button
-                                icon="pi pi-shopping-cart"
-                                className="p-button-rounded mt-2"
+                                style={{borderRadius: "50px",backgroundColor:"rgb(1,169,164)"}}
+                                icon={<img src={shoppingCartIcon} alt="Shopping Cart"  width="30px" />}
+                                label={"Add"}
+                                className="p-button-rounded mt-2 p-2  gap-2   shadow-1 hover:bg-teal-400 transition-duration-200 border-none "
+
+                                // className="p-3 flex align-items-center justify-content-center w-7 gap-2  border-1 shadow-1 cursor-pointer hover:bg-black-alpha-10 transition-duration-200 border-none"
                                 onClick={() => handleAddToCart(product)}
                                 disabled={product.stock <= 0 || productInCart[product.id]}
                             />
+                            </div>
                         )}
                     </div>
                 </div>
