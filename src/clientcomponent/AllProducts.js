@@ -15,6 +15,7 @@ import Typography from "@mui/material/Typography";
 import shoppingCartIcon from "../images/shopping-cardIcon.gif"
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import DeliveryDiningIcon from '@mui/icons-material/DeliveryDining';
+import RestaurantIcon from '@mui/icons-material/Restaurant';
 
 export default function AllProduct() {
     const [products, setProducts] = useState([]);
@@ -318,24 +319,23 @@ export default function AllProduct() {
                                 </Typography>
                             </div>
                         </div>
-                        <div className="flex align-items-center justify-content-center py-2 px-3 gap-2">
+                        <div className="flex align-items-center justify-content-between py-2 px-1 ">
                             {product.prix >= 100 ?(
                                 <div
-                                    className="flex align-items-center justify-content-center gap-1  surface-border pr-2">
-                                    <Tag value={"Free Shipping"} style={{backgroundColor:"transparent",color:"black"}} icon={<DeliveryDiningIcon style={{fontSize:"20px",marginRight:"5px",color:"rgb(34,129,104)"}}/>}/>
+                                    className="flex align-items-center justify-content-center   surface-border ">
+                                    <Tag value={"Free Shipping"} className="border border-teal-400" style={{backgroundColor:"transparent",color:"black"}} icon={<DeliveryDiningIcon style={{fontSize:"20px",marginRight:"5px",color:"rgb(34,129,104)"}}/>}/>
                                 </div>
                             ):(
                                 <div
-                                    className="flex align-items-center justify-content-center gap-1  surface-border pr-2">
-                                    <Tag value={"Shipping fee : 30 DH"} style={{backgroundColor:"transparent",color:"black"}} icon={<DeliveryDiningIcon style={{fontSize:"20px",marginRight:"5px",color:"rgb(34,129,104)"}}/>}/>
+                                    className="flex align-items-center justify-content-center   surface-border ">
+                                    <Tag value={"Shipping fee : 30 DH"} className="border border-teal-400" style={{backgroundColor:"transparent",color:"black"}} icon={<DeliveryDiningIcon style={{fontSize:"20px",marginRight:"5px",color:"rgb(34,129,104)"}}/>}/>
 
                                 </div>
                             )}
-                            {/*<div*/}
-                            {/*    className="flex align-items-center gap-1 justify-content-center gap-1 border-right-1 surface-border px-2">*/}
-                            {/*    <i className="pi pi-wifi"></i>*/}
-                            {/*    <span className="font-small text-gray-900 white-space-nowrap">Wifi</span>*/}
-                            {/*</div>*/}
+                            <div
+                                className="flex align-items-center gap-1 justify-content-center   surface-border px-1">
+                                <Tag value={product.restaurant && product.restaurant.nom} className="border border-teal-400" style={{backgroundColor:"transparent",color:"black"}} icon={<RestaurantIcon style={{fontSize:"17px",marginRight:"5px",color:"rgb(34,129,104)"}}/>}/>
+                            </div>
                             {/*<div className="flex align-items-center gap-1 justify-content-center gap-1 pl-2">*/}
                             {/*    <i className="pi pi-book"></i>*/}
                             {/*    <span className="font-small text-gray-900 white-space-nowrap">Library</span>*/}

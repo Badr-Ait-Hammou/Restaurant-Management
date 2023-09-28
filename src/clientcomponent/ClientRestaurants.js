@@ -137,9 +137,7 @@ export default function ClientRestaurants() {
                 <div className="p-4 border-1 surface-border surface-card border-round">
                     <div className="flex flex-wrap align-items-center justify-content-between gap-2">
                         <div className="flex align-items-center gap-2">
-                            <Tag severity="success" icon="pi pi-clock">
-                                {restaurant.dateOuverture} / {restaurant.dateFermeture}
-                            </Tag>
+
                         </div>
                         <span className="card-text-value mx-2">
                                     {restaurant.dateOuverture && restaurant.dateFermeture ? (
@@ -185,19 +183,32 @@ export default function ClientRestaurants() {
                         <Typography variant="body2" className="ml-1"
                                     color="text.secondary">{restaurant.adresse}
                         </Typography>
-                        <Tag value={restaurant.specialite && restaurant.specialite.nom}
-                             style={{backgroundColor: "rgb(23,113,122)"}}>
-
-                        </Tag>
-                        <Rating value={getAverageRating(restaurant)} readOnly  precision={0.5}></Rating>
-                        <Typography
-                            className="font-monospace ">({getReviews(restaurant)})review{getReviews(restaurant) !== 1 ? 's' : ''}
-                        </Typography>
-                    </div>
-                    <div className=" flex align-items-center justify-content-between">
 
                     </div>
-                </div>
+                    <div className="content-info">
+                        <div className="flex align-items-center justify-content-between py-2 px-2 gap-1">
+                            <div className="flex align-items-center gap-1">
+                                <Rating value={getAverageRating(restaurant)} readOnly  precision={0.5} style={{fontSize:"16px"}}></Rating>
+                            </div>
+                            <div className="flex align-items-center gap-1">
+                                <Typography
+                                    className="font-monospace ">({getReviews(restaurant)})review{getReviews(restaurant) !== 1 ? 's' : ''}
+                                </Typography>
+                            </div>
+                        </div>
+                        <div className="flex align-items-center justify-content-between py-2 px-2 gap-1">
+                            <div className="flex align-items-center gap-1">
+                                <Tag value={restaurant.specialite && restaurant.specialite.nom}
+                                     style={{backgroundColor: "rgb(23,113,122)"}}>
+                                </Tag>
+                            </div>
+                            <div className="flex align-items-center gap-1">
+                                <i className="pi pi-clock"></i>
+                                <span className="font-small text-gray-900 white-space-nowrap"> {restaurant.dateOuverture} / {restaurant.dateFermeture}</span>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
             </div>
         );
     };
