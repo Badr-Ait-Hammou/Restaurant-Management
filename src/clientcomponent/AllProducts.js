@@ -14,7 +14,7 @@ import DataviewSkeleton from "../skeleton/DataviewSkeleton"
 import Typography from "@mui/material/Typography";
 import shoppingCartIcon from "../images/shopping-cardIcon.gif"
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
-
+import DeliveryDiningIcon from '@mui/icons-material/DeliveryDining';
 
 export default function AllProduct() {
     const [products, setProducts] = useState([]);
@@ -256,13 +256,16 @@ export default function AllProduct() {
                 <div className="p-4 border-1 surface-border surface-card border-round">
                     <div className="flex flex-wrap align-items-center justify-content-between gap-2">
                         <div className="flex align-items-center gap-2">
-                            {product.promotion === true && (
+                            {product.promotion === true ? (
                                 <Tag value="On Sale" severity="danger" icon="pi pi-tag"/>
+                            ):(
+                                <Tag value="New" severity="success" icon="pi pi-tag"/>
+
                             )}
                         </div>
                         <Tag value={product.restaurant && product.restaurant.specialite.nom} style={{backgroundColor:"rgb(23,113,122)"}}></Tag>
                     </div>
-                    <div className="flex flex-column align-items-center gap-1 py-1">
+                    <div className="flex flex-column align-items-center gap-1 py-1 -mx-2">
                         <Link to={`product/${product.id}`}>
                         <div style={{position: 'relative'}}>
                             <img className=" w-20 sm:w-20rem xl:w-20rem  shadow-2 block xl:block mx-auto border-round"
@@ -299,13 +302,49 @@ export default function AllProduct() {
                         </div>
                         </Link>
                         <div className="text-2xl font-bold">{product.nom}</div>
-                        <Typography variant="body2" className="ml-1"
-                                    color="text.secondary">{product.description}</Typography>
-                        <Rating value={getAverageRating(product)} readOnly  precision={0.5} style={{fontSize:"16px"}}></Rating>
-                        <Typography
-                            className="font-monospace ">({getReviews(product)})review{getReviews(product) !== 1 ? 's' : ''}</Typography>
+                        <Typography variant="body2" className="ml-1" color="text.secondary">
+                            {product.description}
+                        </Typography>
                     </div>
-                    <div className="flex align-items-center justify-content-between pt-2 ">
+
+                    <div className="content-info">
+                        <div className="flex align-items-center justify-content-between py-2 px-3 gap-2">
+                            <div className="flex align-items-center gap-2">
+                                <Rating value={getAverageRating(product)} readOnly  precision={0.5} style={{fontSize:"16px"}}></Rating>
+                            </div>
+                            <div className="flex align-items-center gap-2">
+                                <Typography
+                                    className="font-monospace ">({getReviews(product)})review{getReviews(product) !== 1 ? 's' : ''}
+                                </Typography>
+                            </div>
+                        </div>
+                        <div className="flex align-items-center justify-content-center py-2 px-3 gap-2">
+                            {product.prix >= 100 ?(
+                                <div
+                                    className="flex align-items-center justify-content-center gap-1  surface-border pr-2">
+                                    <Tag value={"Free Shipping"} style={{backgroundColor:"transparent",color:"black"}} icon={<DeliveryDiningIcon style={{fontSize:"20px",marginRight:"5px",color:"rgb(34,129,104)"}}/>}/>
+                                </div>
+                            ):(
+                                <div
+                                    className="flex align-items-center justify-content-center gap-1  surface-border pr-2">
+                                    <Tag value={"Shipping fee : 30 DH"} style={{backgroundColor:"transparent",color:"black"}} icon={<DeliveryDiningIcon style={{fontSize:"20px",marginRight:"5px",color:"rgb(34,129,104)"}}/>}/>
+
+                                </div>
+                            )}
+                            {/*<div*/}
+                            {/*    className="flex align-items-center gap-1 justify-content-center gap-1 border-right-1 surface-border px-2">*/}
+                            {/*    <i className="pi pi-wifi"></i>*/}
+                            {/*    <span className="font-small text-gray-900 white-space-nowrap">Wifi</span>*/}
+                            {/*</div>*/}
+                            {/*<div className="flex align-items-center gap-1 justify-content-center gap-1 pl-2">*/}
+                            {/*    <i className="pi pi-book"></i>*/}
+                            {/*    <span className="font-small text-gray-900 white-space-nowrap">Library</span>*/}
+                            {/*</div>*/}
+                        </div>
+                    </div>
+
+
+                    <div className="flex align-items-center justify-content-between py-2  gap-1">
                         <span className="text-2xl font-semibold ">{product.prix} Dh</span>
                         {productInCart[product.id] ? (
                             <Link to="/ifoulki_meals/cart" style={{textDecoration: "none", color: "white"}}>
