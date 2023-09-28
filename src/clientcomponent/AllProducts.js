@@ -112,8 +112,10 @@ export default function AllProduct() {
         });
     }, []);
 
+
     const handleAddToCart = (product) => {
         setIsLoading(true);
+
         const cartItem = {
             quantity: 1,
             totalprice: product.prix,
@@ -127,15 +129,21 @@ export default function AllProduct() {
 
         axios.post('/api/controller/carts/', cartItem)
             .then(() => {
-                setIsLoading(false);
+                loadProductsUser();
+
                 console.log('Product added to cart successfully!');
                 showSuccess();
-                loadProductsUser();
+
+                setTimeout(() => {
+                    setIsLoading(false);
+                }, 2000);
             })
             .catch(error => {
                 console.error('Error adding product to cart:', error);
+                setIsLoading(false);
             });
     };
+
 
     const showSuccess = () => {
         toast.current.show({severity: 'success', summary: 'Success', detail: 'item added to cart', life: 1000});
@@ -328,13 +336,13 @@ export default function AllProduct() {
                             ):(
                                 <div
                                     className="flex align-items-center justify-content-center   surface-border ">
-                                    <Tag value={"Shipping fee : 30 DH"} className="border border-teal-400" style={{backgroundColor:"transparent",color:"black"}} icon={<DeliveryDiningIcon style={{fontSize:"20px",marginRight:"5px",color:"rgb(34,129,104)"}}/>}/>
+                                    <Tag value={"Shipping fee : 30 DH"} className="border border-teal-400" style={{backgroundColor:"transparent",color:"black",fontSize:"10px"}} icon={<DeliveryDiningIcon style={{fontSize:"20px",marginRight:"5px",color:"rgb(34,129,104)"}}/>}/>
 
                                 </div>
                             )}
                             <div
                                 className="flex align-items-center gap-1 justify-content-center   surface-border px-1">
-                                <Tag value={product.restaurant && product.restaurant.nom} className="border border-teal-400" style={{backgroundColor:"transparent",color:"black"}} icon={<RestaurantIcon style={{fontSize:"17px",marginRight:"5px",color:"rgb(34,129,104)"}}/>}/>
+                                <Tag  value={product.restaurant && product.restaurant.nom} className="border border-teal-400" style={{backgroundColor:"transparent",color:"black",fontSize:"10px"}} icon={<RestaurantIcon style={{fontSize:"17px",marginRight:"5px",color:"rgb(34,129,104)"}}/>}/>
                             </div>
                             {/*<div className="flex align-items-center gap-1 justify-content-center gap-1 pl-2">*/}
                             {/*    <i className="pi pi-book"></i>*/}
@@ -345,7 +353,7 @@ export default function AllProduct() {
 
 
                     <div className="flex align-items-center justify-content-between py-2  gap-1">
-                        <span className="text-2xl font-semibold ">{product.prix} Dh</span>
+                        <Tag value={`${product.prix} Dh`} style={{fontSize:"20px"}} className="font-monospace p-tag-rounded bg-transparent border border-teal-400 mt-2 p-2 text-black shadow shadow-2"/>
                         {productInCart[product.id] ? (
                             <Link to="/ifoulki_meals/cart" style={{textDecoration: "none", color: "white"}}>
                                 <Button

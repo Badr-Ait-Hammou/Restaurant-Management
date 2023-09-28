@@ -63,12 +63,12 @@ export default function RestaurantProductDetails() {
             }
         };
         fetchUserData();
-    }, []);
+    }, [id]);
 
     useEffect(() => {
         loadProductsUser();
 
-    }, [id,userId, productSpeciality]);
+    }, [id,restaurantId,userId, productSpeciality]);
 
 
     const loadProductsUser = async () => {
@@ -101,7 +101,7 @@ export default function RestaurantProductDetails() {
 
 
     const handleAddToCart = (product) => {
-        setIsLoading(true); // Set loading state to true
+        setIsLoading(true);
 
         const cartItem = {
             quantity: 1,
@@ -116,15 +116,21 @@ export default function RestaurantProductDetails() {
 
         axios.post('/api/controller/carts/', cartItem)
             .then(() => {
-                setIsLoading(false);
+                loadProductsUser();
+
                 console.log('Product added to cart successfully!');
                 showSuccess();
-                loadProductsUser();
+
+                setTimeout(() => {
+                    setIsLoading(false);
+                }, 2000);
             })
             .catch(error => {
                 console.error('Error adding product to cart:', error);
-            })
+                setIsLoading(false);
+            });
     };
+
 
 
 
