@@ -26,6 +26,8 @@ import shoppingCartIcon from "../images/shopping-cardIcon.gif";
 import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import DeliveryDiningIcon from "@mui/icons-material/DeliveryDining";
 import RestaurantIcon from "@mui/icons-material/Restaurant";
+import saleIcon from "../images/onsaleIcon.gif";
+import Box from "@mui/material/Box";
 
 
 export default function RestaurantDetails() {
@@ -181,18 +183,9 @@ export default function RestaurantDetails() {
             return;
         }
         return (
-            <div className="col-12 sm:col-6 lg:col-4 xl:col-3 p-2">
-                <div className="p-4 border-1 surface-border surface-card border-round">
-                    <div className="flex flex-wrap align-items-center justify-content-between gap-2">
-                        <div className="flex align-items-center gap-2">
-                            {product.promotion === true && (
-                                <Tag value="On Sale" severity="danger" icon="pi pi-tag"/>
-                            )}
-                        </div>
-                        <Tag value={product.restaurant && product.restaurant.specialite.nom}
-                             style={{backgroundColor: "rgb(23,113,122)"}}></Tag>
-                    </div>
-                    <div className="flex flex-column align-items-center gap-2 py-2">
+            <Box sx={{height:"450px"}} className="col-12 sm:col-6 lg:col-4 xl:col-3 p-1 mt-2 mb-2">
+                <div className="p-1 border-1 surface-border surface-card border-round">
+                    <div className="flex flex-column align-items-center gap-1">
                         <Link to={`product/${product.id}`}>
                             <div style={{position: 'relative'}}>
                                 <img className=" w-20 sm:w-20rem xl:w-20rem  shadow-2 block xl:block mx-auto border-round"
@@ -205,31 +198,68 @@ export default function RestaurantDetails() {
                                     }}/>
                                 {product.stock <= 0 ? (
                                     <Tag
-                                        severity="warning"
+                                        severity="danger"
                                         value="Out of Stock"
                                         style={{
-                                            fontSize: "10px",
+                                            fontSize: '8px',
                                             position: 'absolute',
                                             top: '3px',
-                                            right: '5px',
+                                            right: '11px',
+                                        }}
+                                    />
+                                ) : product.stock < 20 ? (
+                                    <Tag
+                                        severity="warning"
+                                        value={` Low Stock :${product.stock} Pcs`}
+                                        style={{
+                                            fontSize: '8px',
+                                            position: 'absolute',
+                                            top: '3px',
+                                            right: '11px',
                                         }}
                                     />
                                 ) : (
                                     <Tag
-                                        severity="success"
-                                        value="In Stock"
+                                        value={` In Stock :${product.stock} Pcs`}
                                         style={{
-                                            fontSize: "10px",
+                                            fontSize: '8px',
                                             position: 'absolute',
                                             top: '3px',
-                                            right: '5px',
+                                            right: '11px',
+                                            backgroundColor:"rgb(1,169,164)",
+
                                         }}
+
                                     />
                                 )}
+
+                                {product.promotion === true ?(
+                                    <Tag value={"On sale"}
+                                         severity="danger"
+                                         style={{
+                                             fontSize: '8px',
+                                             position: 'absolute',
+                                             top: '3px',
+                                             left: '11px',
+                                         }}
+                                         icon={<img src={saleIcon} alt="saleicon" width={"12px"} />}
+                                    />
+                                ):(
+                                    <Tag value={"New"}
+                                         severity="info"
+                                         style={{
+                                             fontSize: '8px',
+                                             position: 'absolute',
+                                             top: '3px',
+                                             left: '11px',
+                                         }}
+                                    />
+                                )}
+
                             </div>
                         </Link>
-                        <div className="text-2xl font-bold">{product.nom}</div>
-                        <Typography variant="body2" className="ml-1" color="text.secondary">
+                        <div className="text-2xl font-monospace">{product.nom}</div>
+                        <Typography sx={{height:"40px",fontSize:"10px"}}   color="text.secondary">
                             {product.description}
                         </Typography>
                         </div>
@@ -290,7 +320,7 @@ export default function RestaurantDetails() {
                         )}
                     </div>
                 </div>
-            </div>
+            </Box>
         );
     };
 

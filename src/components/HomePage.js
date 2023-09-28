@@ -190,7 +190,7 @@ export default function HomePage() {
                             src={product.photo}
                             alt={product.nom}
                             style={{
-                                width: '100%',
+                                width: '400px',
                                 height: '200px',
                                 borderRadius: '8px',
                             }}
@@ -219,13 +219,14 @@ export default function HomePage() {
                             />
                         ) : (
                             <Tag
-                                severity="success"
                                 value={` In Stock :${product.stock} Pcs`}
                                 style={{
                                     fontSize: '8px',
                                     position: 'absolute',
                                     top: '3px',
                                     right: '11px',
+                                    backgroundColor:"rgb(1,169,164)",
+
                                 }}
 
                             />
@@ -233,14 +234,14 @@ export default function HomePage() {
 
                         {product.promotion === true ?(
                             <Tag value={"On sale"}
+                                 severity="danger"
                                  style={{
-                                     backgroundColor:"rgb(1,169,164)",
                                      fontSize: '8px',
                                      position: 'absolute',
                                      top: '3px',
                                      left: '11px',
                                  }}
-                                 icon={<img src={saleIcon} alt="saleicon" width={"16px"} />}
+                                 icon={<img src={saleIcon} alt="saleicon" width={"12px"} />}
                             />
                         ):(
                             <Tag value={"New"}
