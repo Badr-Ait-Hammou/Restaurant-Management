@@ -18,6 +18,11 @@ import RestaurantSlick from "../slick-Slider/RestaurantSlick"
 import HomeImgSlick from "../slick-Slider/HomeImgSlick";
 import SpecialitySlick from "../slick-Slider/SpecialitySlick";
 import ContactSlick from "../slick-Slider/ContactSlick";
+import DeliveryDiningIcon from "@mui/icons-material/DeliveryDining";
+import RestaurantIcon from "@mui/icons-material/Restaurant";
+import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
+import shoppingCartIcon from "../images/shopping-cardIcon.gif";
+import saleIcon from "../images/onsaleIcon.gif"
 
 
 export default function HomePage() {
@@ -167,7 +172,7 @@ export default function HomePage() {
 
     const productTemplate = (product) => {
         return (
-            <div key={product.id} className="border-1 surface-border border-round m-2 text-center py-5 px-3">
+            <div key={product.id} className="border-1 surface-border border-round m-1 text-center py-2 px-1">
                 <Link to={`product/${product.id}`}>
                     <div style={{position: 'relative'}}>
                         <img
@@ -185,7 +190,7 @@ export default function HomePage() {
                                 severity="danger"
                                 value="Out of Stock"
                                 style={{
-                                    fontSize: '10px',
+                                    fontSize: '8px',
                                     position: 'absolute',
                                     top: '3px',
                                     right: '11px',
@@ -194,9 +199,9 @@ export default function HomePage() {
                         ) : product.stock < 20 ? (
                             <Tag
                                 severity="warning"
-                                value="LOWSTOCK"
+                                value={` Low Stock :${product.stock} Pcs`}
                                 style={{
-                                    fontSize: '10px',
+                                    fontSize: '8px',
                                     position: 'absolute',
                                     top: '3px',
                                     right: '11px',
@@ -205,56 +210,107 @@ export default function HomePage() {
                         ) : (
                             <Tag
                                 severity="success"
-                                value="In Stock"
+                                value={` In Stock :${product.stock} Pcs`}
                                 style={{
-                                    fontSize: '10px',
+                                    fontSize: '8px',
                                     position: 'absolute',
                                     top: '3px',
                                     right: '11px',
                                 }}
+
+                            />
+                        )}
+
+                        {product.promotion === true ?(
+                            <Tag value={"On sale"}
+                                 style={{
+                                     backgroundColor:"rgb(1,169,164)",
+                                     fontSize: '8px',
+                                     position: 'absolute',
+                                     top: '3px',
+                                     left: '11px',
+                                 }}
+                                 icon={<img src={saleIcon} alt="saleicon" width={"16px"} />}
+                            />
+                        ):(
+                            <Tag value={"New"}
+                                 severity="info"
+                                 style={{
+                                     fontSize: '8px',
+                                     position: 'absolute',
+                                     top: '3px',
+                                     left: '11px',
+                                 }}
                             />
                         )}
 
                     </div>
                 </Link>
-                <div>
-                    <h4 className="mb-1">{product.nom}</h4>
-                    <Rating value={getAverageRating(product)} readOnly cancel={false} precision={0.5}></Rating>
-                    <Typography
-                        className="font-monospace ">({getReviews(product)})review{getReviews(product) !== 1 ? 's' : ""}</Typography>
+                    <div className="text-xl font-monospace">{product.nom}</div>
+                    <Typography variant="body2" className="ml-1" color="text.secondary">
+                    {product.description}
+                    </Typography>
+                    <div className="flex align-items-center justify-content-between py-2 px-0 gap-0">
+                        <div className="flex align-items-center gap-2">
+                            <Rating value={getAverageRating(product)} readOnly  precision={0.5} style={{fontSize:"16px"}}></Rating>
+                        </div>
+                        <div className="flex align-items-center gap-2">
+                            <Typography
+                                className="font-monospace ">({getReviews(product)})review{getReviews(product) !== 1 ? 's' : ''}
+                            </Typography>
+                        </div>
+                    </div>
+                    <div className="flex align-items-center justify-content-between py-2  px-0 gap-0 ">
+                        {product.prix >= 100 ?(
+                            <div
+                                className="flex align-items-center justify-content-center   surface-border ">
+                                <Tag value={"Free Shipping"} className="border border-teal-400" style={{backgroundColor:"transparent",color:"black"}} icon={<DeliveryDiningIcon style={{fontSize:"20px",marginRight:"5px",color:"rgb(34,129,104)"}}/>}/>
+                            </div>
+                        ):(
+                            <div
+                                className="flex align-items-center justify-content-center   surface-border ">
+                                <Tag value={"Shipping fee : 30 DH"} className="border border-teal-400" style={{backgroundColor:"transparent",color:"black",fontSize:"10px"}} icon={<DeliveryDiningIcon style={{fontSize:"20px",marginRight:"5px",color:"rgb(34,129,104)"}}/>}/>
 
-                    {product.promotion === true && (
-                        <Tag value="On Sale" severity="danger" icon="pi pi-tag"/>
-                    )}
-                    <span className="font-semibold ml-1">{product.stock} Pcs</span>
-                    <div className="mt-5 flex flex-wrap gap-2 justify-content-center">
-                        <span className="text-2xl font-semibold">{product.prix} Dh</span>
+                            </div>
+                        )}
+                        <div
+                            className="flex align-items-center gap-1 justify-content-center   surface-border px-1">
+                            <Tag  value={product.restaurant && product.restaurant.nom} className="border border-teal-400" style={{backgroundColor:"transparent",color:"black",fontSize:"10px"}} icon={<RestaurantIcon style={{fontSize:"17px",marginRight:"5px",color:"rgb(34,129,104)"}}/>}/>
+                        </div>
+                    </div>
 
+                    <div className="flex align-items-center justify-content-between py-1  gap-1">
+                        <Tag value={`${product.prix} Dh`} style={{fontSize:"20px"}} className="font-monospace p-tag-rounded bg-transparent border border-teal-400 mt-2 p-2 text-black shadow shadow-2"/>
                         {productInCart[product.id] ? (
-                            <Link to="/admin/cart">
+                            <Link to="/ifoulki_meals/cart" style={{textDecoration: "none", color: "white"}}>
                                 <Button
-                                    style={{
-                                        background:
-                                            'linear-gradient(-225deg,#AC32E4 0%,#7918F2 48%,#4801FF 100%)',
-                                    }}
-                                    icon="pi pi-external-link"
-                                    className="p-button-rounded "
+                                    // style={{borderRadius: "50px",background:'linear-gradient(360deg, rgba(0,30,24,0.9759709547881653) 0%, rgba(9,121,84,1) 25%, rgba(0,255,200,1) 100%)'}}
+                                    icon={<ShoppingCartCheckoutIcon style={{fontSize:"28px"}}  />}
+                                    label={"View" }
+                                    className="p-button-rounded p-button-raised gap-1 border-teal-400  p-button-text text-teal-600   mt-2 p-2   "
                                     disabled={product.stock <= 0}
                                 />
                             </Link>
                         ) : (
-                            <Button
-                                icon="pi pi-shopping-cart"
-                                className="p-button-rounded "
-                                onClick={() => handleAddToCart(product)}
-                                disabled={product.stock <= 0 || productInCart[product.id]}
-                            />
+                            <div>
+                                <Button
+                                    style={{backgroundColor:"rgb(1,169,164)"}}
+                                    icon={<img src={shoppingCartIcon} alt="Shopping Cart"  width="30px" />}
+                                    label={"Add"}
+                                    className="p-button-rounded p-button-raised gap-2 border-teal-400  p-button-text text-white   mt-2 p-2   "
+                                    // className="p-button-rounded p-button-raised mt-2 p-2  gap-2 border-teal-400  shadow-1 hover:bg-teal-400 transition-duration-200  "
+                                    onClick={() => handleAddToCart(product)}
+                                    disabled={product.stock <= 0 || productInCart[product.id] }
+                                />
+                            </div>
                         )}
                     </div>
-                </div>
+                {/*</div>*/}
             </div>
         );
     };
+
+
 
 
     return (
