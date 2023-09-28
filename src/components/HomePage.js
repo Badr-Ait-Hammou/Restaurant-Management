@@ -257,7 +257,7 @@ export default function HomePage() {
                     </div>
                 </Link>
                     <div className="text-xl font-monospace">{product.nom}</div>
-                    <Typography sx={{height:"40px",fontSize:"12px"}}  className="ml-1" color="text.secondary">
+                    <Typography sx={{height:"40px",fontSize:"10px"}}   color="text.secondary">
                     {product.description}
                     </Typography>
                     <div className="flex align-items-center justify-content-between py-2 px-0 gap-0">

@@ -8,6 +8,7 @@ import {Rating} from "@mui/material";
 import DataviewSkeleton from "../skeleton/DataviewSkeleton"
 import Typography from "@mui/material/Typography";
 import RestaurantMenuRoundedIcon from "@mui/icons-material/RestaurantMenuRounded";
+import Box from "@mui/material/Box";
 
 export default function ClientRestaurants() {
     const [restaurants, setRestaurants] = useState([]);
@@ -133,7 +134,7 @@ export default function ClientRestaurants() {
 
     const gridItem = (restaurant) => {
         return (
-            <div className="col-12 sm:col-6 lg:col-4 xl:col-3 p-2 ">
+            <Box sx={{height:"450px"}} className="col-12 sm:col-6 lg:col-4 xl:col-3 p-2 ">
                 <div className="p-4 border-1 surface-border surface-card border-round">
                     <div className="flex flex-wrap align-items-center justify-content-between gap-2">
                         <div className="flex align-items-center gap-2">
@@ -179,9 +180,9 @@ export default function ClientRestaurants() {
                                 />
                             </div>
                         </Link>
-                        <div className="text-2xl font-bold">{restaurant.nom}</div>
-                        <Typography variant="body2" className="ml-1"
-                                    color="text.secondary">{restaurant.adresse}
+                        <div className="text-xl font-monospace">{restaurant.nom}</div>
+                        <Typography sx={{height:"40px",fontSize:"15px"}}   color="text.secondary">
+                            {restaurant.adresse}
                         </Typography>
 
                     </div>
@@ -209,7 +210,7 @@ export default function ClientRestaurants() {
                         </div>
                     </div>
                     </div>
-            </div>
+            </Box>
         );
     };
 
@@ -246,7 +247,7 @@ export default function ClientRestaurants() {
                     <div
                         className="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-2">
                         <div className="flex flex-column align-items-center sm:align-items-start gap-3">
-                            <div className="text-2xl font-bold text-900">{restaurant.nom}</div>
+                            <div className="text-xl font-monospace">{restaurant.nom}</div>
                             <div className="flex align-items-center gap-3">
                                 <Tag value={restaurant.specialite && restaurant.specialite.nom} severity="danger"
                                      icon="pi pi-tag"/>
@@ -260,8 +261,9 @@ export default function ClientRestaurants() {
 
                             </div>
                             <div>
-                                <Typography variant="body2" className="ml-1"
-                                            color="text.secondary">{restaurant.adresse}</Typography>
+                                <Typography sx={{height:"40px",fontSize:"20px"}}   color="text.secondary">
+                                    {restaurant.adresse}
+                                </Typography>
                             </div>
                         </div>
                         <div className="flex flex-column align-items-center sm:align-items-start gap-3">
