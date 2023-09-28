@@ -331,7 +331,7 @@ export default function AllProduct() {
                             {product.prix >= 100 ?(
                                 <div
                                     className="flex align-items-center justify-content-center   surface-border ">
-                                    <Tag value={"Free Shipping"} className="border border-teal-400" style={{backgroundColor:"transparent",color:"black"}} icon={<DeliveryDiningIcon style={{fontSize:"20px",marginRight:"5px",color:"rgb(34,129,104)"}}/>}/>
+                                    <Tag value={"Free Shipping"} className="border border-teal-400" style={{backgroundColor:"transparent",color:"black",fontSize:"10px"}} icon={<DeliveryDiningIcon style={{fontSize:"20px",marginRight:"5px",color:"rgb(34,129,104)"}}/>}/>
                                 </div>
                             ):(
                                 <div

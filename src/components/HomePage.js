@@ -5,7 +5,7 @@ import {Button} from "primereact/button";
 import {useEffect, useState} from "react";
 import axios from "../service/callerService";
 import {Tag} from "primereact/tag";
-import {Rating} from "@mui/material";
+import {Rating,Box} from "@mui/material";
 import {useRef} from "react";
 import {accountService} from "../service/accountService";
 import {Carousel} from 'primereact/carousel';
@@ -32,6 +32,9 @@ export default function HomePage() {
     const toast = useRef(null);
     const [productInCart, setProductInCart] = useState({});
     const [loading, setLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
+
+
 
 
     useEffect(() => {
@@ -118,6 +121,7 @@ export default function HomePage() {
 
 
     const handleAddToCart = (product) => {
+        setIsLoading(true);
         const cartItem = {
             quantity: 1,
             totalprice: product.prix,
@@ -130,16 +134,22 @@ export default function HomePage() {
         };
 
         axios.post('/api/controller/carts/', cartItem)
-            .then(response => {
-                console.log('Product added to cart successfully!');
+            .then(() => {
                 loadProductsUser();
+
+                console.log('Product added to cart successfully!');
                 showSuccess();
 
+                setTimeout(() => {
+                    setIsLoading(false);
+                }, 2000);
             })
             .catch(error => {
                 console.error('Error adding product to cart:', error);
+                setIsLoading(false);
             });
     };
+
 
     const showSuccess = () => {
         toast.current.show({severity: 'success', summary: 'Success', detail: 'item added to cart', life: 1000});
@@ -172,7 +182,7 @@ export default function HomePage() {
 
     const productTemplate = (product) => {
         return (
-            <div key={product.id} className="border-1 surface-border border-round m-1 text-center py-2 px-1">
+            <Box sx={{height:"450px"}} key={product.id} className=" border-1 surface-border border-round m-1 text-center py-2 px-1 ">
                 <Link to={`product/${product.id}`}>
                     <div style={{position: 'relative'}}>
                         <img
@@ -247,7 +257,7 @@ export default function HomePage() {
                     </div>
                 </Link>
                     <div className="text-xl font-monospace">{product.nom}</div>
-                    <Typography variant="body2" className="ml-1" color="text.secondary">
+                    <Typography sx={{height:"40px",fontSize:"12px"}}  className="ml-1" color="text.secondary">
                     {product.description}
                     </Typography>
                     <div className="flex align-items-center justify-content-between py-2 px-0 gap-0">
@@ -264,30 +274,29 @@ export default function HomePage() {
                         {product.prix >= 100 ?(
                             <div
                                 className="flex align-items-center justify-content-center   surface-border ">
-                                <Tag value={"Free Shipping"} className="border border-teal-400" style={{backgroundColor:"transparent",color:"black"}} icon={<DeliveryDiningIcon style={{fontSize:"20px",marginRight:"5px",color:"rgb(34,129,104)"}}/>}/>
+                                <Tag value={"Free Shipping"} className="border border-teal-400" style={{backgroundColor:"transparent",color:"black",fontSize:"8px"}} icon={<DeliveryDiningIcon style={{fontSize:"20px",marginRight:"5px",color:"rgb(34,129,104)"}}/>}/>
                             </div>
                         ):(
                             <div
                                 className="flex align-items-center justify-content-center   surface-border ">
-                                <Tag value={"Shipping fee : 30 DH"} className="border border-teal-400" style={{backgroundColor:"transparent",color:"black",fontSize:"10px"}} icon={<DeliveryDiningIcon style={{fontSize:"20px",marginRight:"5px",color:"rgb(34,129,104)"}}/>}/>
+                                <Tag value={"Shipping fee : 30 DH"} className="border border-teal-400" style={{backgroundColor:"transparent",color:"black",fontSize:"8px"}} icon={<DeliveryDiningIcon style={{fontSize:"20px",marginRight:"5px",color:"rgb(34,129,104)"}}/>}/>
 
                             </div>
                         )}
                         <div
                             className="flex align-items-center gap-1 justify-content-center   surface-border px-1">
-                            <Tag  value={product.restaurant && product.restaurant.nom} className="border border-teal-400" style={{backgroundColor:"transparent",color:"black",fontSize:"10px"}} icon={<RestaurantIcon style={{fontSize:"17px",marginRight:"5px",color:"rgb(34,129,104)"}}/>}/>
+                            <Tag  value={product.restaurant && product.restaurant.nom} className="border border-teal-400" style={{backgroundColor:"transparent",color:"black",fontSize:"8px"}} icon={<RestaurantIcon style={{fontSize:"17px",marginRight:"5px",color:"rgb(34,129,104)"}}/>}/>
                         </div>
                     </div>
 
                     <div className="flex align-items-center justify-content-between py-1  gap-1">
-                        <Tag value={`${product.prix} Dh`} style={{fontSize:"20px"}} className="font-monospace p-tag-rounded bg-transparent border border-teal-400 mt-2 p-2 text-black shadow shadow-2"/>
+                        <Tag value={`${product.prix} Dh`} style={{fontSize:"17px"}} className="font-monospace p-tag-rounded bg-transparent border border-teal-400 mt-2 p-2 text-black shadow shadow-2"/>
                         {productInCart[product.id] ? (
                             <Link to="/ifoulki_meals/cart" style={{textDecoration: "none", color: "white"}}>
                                 <Button
-                                    // style={{borderRadius: "50px",background:'linear-gradient(360deg, rgba(0,30,24,0.9759709547881653) 0%, rgba(9,121,84,1) 25%, rgba(0,255,200,1) 100%)'}}
                                     icon={<ShoppingCartCheckoutIcon style={{fontSize:"28px"}}  />}
                                     label={"View" }
-                                    className="p-button-rounded p-button-raised gap-1 border-teal-400  p-button-text text-teal-600   mt-2 p-2   "
+                                    className="p-button-rounded p-button-raised gap-1 border-teal-400  p-button-text text-teal-600   mt-2 p-1   "
                                     disabled={product.stock <= 0}
                                 />
                             </Link>
@@ -297,16 +306,14 @@ export default function HomePage() {
                                     style={{backgroundColor:"rgb(1,169,164)"}}
                                     icon={<img src={shoppingCartIcon} alt="Shopping Cart"  width="30px" />}
                                     label={"Add"}
-                                    className="p-button-rounded p-button-raised gap-2 border-teal-400  p-button-text text-white   mt-2 p-2   "
-                                    // className="p-button-rounded p-button-raised mt-2 p-2  gap-2 border-teal-400  shadow-1 hover:bg-teal-400 transition-duration-200  "
+                                    className="p-button-rounded p-button-raised gap-2 border-teal-400  p-button-text text-white   mt-2 p-1   "
                                     onClick={() => handleAddToCart(product)}
-                                    disabled={product.stock <= 0 || productInCart[product.id] }
+                                    disabled={product.stock <= 0 || productInCart[product.id] || isLoading }
                                 />
                             </div>
                         )}
                     </div>
-                {/*</div>*/}
-            </div>
+            </Box>
         );
     };
 
@@ -392,7 +399,6 @@ export default function HomePage() {
                         <strong className="font-serif ">On Sale</strong>
                     </div>
                     <div >
-
                         <Carousel
                             value={products}
                             numVisible={4} numScroll={1}
@@ -401,8 +407,9 @@ export default function HomePage() {
                             circular
                             prevIcon={<SkipPreviousRoundedIcon/>}
                             nextIcon={<SkipNextRoundedIcon/>}
+                            indicatorsContentClassName
                             autoplayInterval={3000} itemTemplate={productTemplate}
-
+                            showIndicators={false}
                         />
                     </div>
                 </div>
@@ -415,19 +422,16 @@ export default function HomePage() {
                     <strong className="font-serif ">Best Plans</strong>
                 </div>
                 <div className=" mt-5">
-                    <div >
-
+                    <div>
                         <Carousel value={productsno}
                                   numVisible={4}
                                   numScroll={1}
                                   responsiveOptions={responsiveOptions}
-                                  className="custom-carousel"
                                   circular
                                   prevIcon={<SkipPreviousRoundedIcon/>}
                                   nextIcon={<SkipNextRoundedIcon/>}
                                   autoplayInterval={3000} itemTemplate={productTemplate}
-
-
+                                  showIndicators={false}
                         />
                     </div>
                 </div>
