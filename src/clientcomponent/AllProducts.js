@@ -26,6 +26,8 @@ export default function AllProduct() {
     const [sortField, setSortField] = useState('');
     const [productInCart, setProductInCart] = useState({});
     const [loading, setLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
+
 
 
 
@@ -110,6 +112,7 @@ export default function AllProduct() {
     }, []);
 
     const handleAddToCart = (product) => {
+        setIsLoading(true);
         const cartItem = {
             quantity: 1,
             totalprice: product.prix,
@@ -123,6 +126,7 @@ export default function AllProduct() {
 
         axios.post('/api/controller/carts/', cartItem)
             .then(() => {
+                setIsLoading(false);
                 console.log('Product added to cart successfully!');
                 showSuccess();
                 loadProductsUser();
@@ -234,7 +238,7 @@ export default function AllProduct() {
                                         label={"Add"}
                                         className="p-button-rounded p-button-raised gap-2 border-teal-400  p-button-text text-white   mt-2 p-2   "
                                         onClick={() => handleAddToCart(product)}
-                                        disabled={product.stock <= 0 || productInCart[product.id]}
+                                        disabled={product.stock <= 0 || productInCart[product.id] || isLoading}
                                     />
                                 </div>
                             )}
@@ -322,7 +326,7 @@ export default function AllProduct() {
                                 className="p-button-rounded p-button-raised gap-2 border-teal-400  p-button-text text-white   mt-2 p-2   "
                                 // className="p-button-rounded p-button-raised mt-2 p-2  gap-2 border-teal-400  shadow-1 hover:bg-teal-400 transition-duration-200  "
                                 onClick={() => handleAddToCart(product)}
-                                disabled={product.stock <= 0 || productInCart[product.id]}
+                                disabled={product.stock <= 0 || productInCart[product.id] || isLoading}
                             />
                             </div>
                         )}
