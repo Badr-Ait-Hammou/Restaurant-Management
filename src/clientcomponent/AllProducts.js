@@ -161,8 +161,8 @@ export default function AllProduct() {
                             src={product.photo}
                             alt={product.nom}
                             style={{
-                                width: '180px',
-                                height: '160px',
+                                width: '400px',
+                                height: '200px',
                                 borderRadius: '18px'
                             }}
                         />
@@ -272,8 +272,8 @@ export default function AllProduct() {
                                  src={product.photo}
                                  alt={product.nom}
                                  style={{
-                                     width: '100%',
-                                     height: '180px',
+                                     width: '400px',
+                                     height: '200px',
                                      borderRadius: '8px'
                                  }}/>
                             {product.stock <= 0 ? (

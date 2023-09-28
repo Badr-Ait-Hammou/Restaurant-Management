@@ -160,15 +160,14 @@ export default function ClientRestaurants() {
                     <div className="flex flex-column align-items-center gap-2 py-2">
                         <Link to={`${restaurant.id}`}>
                             <div style={{position: 'relative'}}>
-                                <img
-                                    className=" w-16 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round"
-                                    src={restaurant.photo}
-                                    alt={restaurant.nom}
-                                    style={{
-                                        width: '100%',
-                                        height: '140px',
-                                        borderRadius: '8px'
-                                    }}/>
+                                <img className=" w-20 sm:w-20rem xl:w-20rem  shadow-2 block xl:block mx-auto border-round"
+                                     src={restaurant.photo}
+                                     alt={restaurant.nom}
+                                     style={{
+                                         width: '400px',
+                                         height: '180px',
+                                         borderRadius: '8px'
+                                     }}/>
 
                                 <Tag
                                     severity="warning"

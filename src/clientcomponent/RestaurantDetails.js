@@ -167,7 +167,7 @@ export default function RestaurantDetails() {
             return;
         }
         return (
-            <div className="col-6 sm:col-6 lg:col-4 xl:col-3 p-2">
+            <div className="col-12 sm:col-6 lg:col-4 xl:col-3 p-2">
                 <div className="p-4 border-1 surface-border surface-card border-round">
                     <div className="flex flex-wrap align-items-center justify-content-between gap-2">
                         <div className="flex align-items-center gap-2">
@@ -181,13 +181,12 @@ export default function RestaurantDetails() {
                     <div className="flex flex-column align-items-center gap-2 py-2">
                         <Link to={`product/${product.id}`}>
                             <div style={{position: 'relative'}}>
-                                <img
-                                    className=" w-16 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round"
+                                <img className=" w-20 sm:w-20rem xl:w-20rem  shadow-2 block xl:block mx-auto border-round"
                                     src={product && product.photo}
                                     alt={product.nom}
                                     style={{
-                                        width: '100%',
-                                        height: '140px',
+                                        width: '400px',
+                                        height: '200px',
                                         borderRadius: '8px'
                                     }}/>
                                 {product.stock <= 0 ? (
