@@ -26,6 +26,9 @@ import LocationCityIcon from '@mui/icons-material/LocationCity';
 import LinkIcon from '@mui/icons-material/Link';
 import SmartButtonIcon from '@mui/icons-material/SmartButton';
 import {DataView} from "primereact/dataview";
+import saleIcon from "../images/onsaleIcon.gif";
+import DeliveryDiningIcon from "@mui/icons-material/DeliveryDining";
+import RestaurantIcon from "@mui/icons-material/Restaurant";
 
 
 export default function RestaurantProfile() {
@@ -224,64 +227,120 @@ export default function RestaurantProfile() {
             return;
         }
         return (
-            <div className="col-6 sm:col-6 lg:col-4 xl:col-3 p-2">
-                <div className="p-4 border-1 surface-border surface-card border-round">
-                    <div className="flex flex-wrap align-items-center justify-content-between gap-2">
-                        <div className="flex align-items-center gap-2">
-                            {product.promotion === true && (
-                                <Tag value="On Sale" severity="danger" icon="pi pi-tag"/>
-                            )}
-                        </div>
-                        <Tag value={product.restaurant && product.restaurant.specialite.nom} style={{backgroundColor:"rgb(23,113,122)"}}></Tag>
-                    </div>
-                    <div className="flex flex-column align-items-center gap-2 py-2">
-                        {/*<Link to={`product/${product.id}`}>*/}
-                            <div style={{position: 'relative'}}>
-                                <img className=" w-16 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round"
-                                     src={product.photo}
+            <Box sx={{height:"380px"}} className="col-12 sm:col-6 lg:col-4 xl:col-3 p-1 mt-2 mb-1">
+                <div className="p-1 border-1 surface-border surface-card border-round">
+                    <div className="flex flex-column align-items-center gap-1">
+                            <div style={{position: 'relative'}} className="hover:ease-out ">
+                                <img className=" w-20 sm:w-20rem xl:w-20rem  shadow-2 block xl:block mx-auto border-round"
+                                     src={product && product.photo}
                                      alt={product.nom}
                                      style={{
-                                         width: '100%',
-                                         height: '140px',
+                                         width: '400px',
+                                         height: '200px',
                                          borderRadius: '8px'
                                      }}/>
                                 {product.stock <= 0 ? (
                                     <Tag
-                                        severity="warning"
+                                        className="animate-pulse"
+                                        severity="danger"
                                         value="Out of Stock"
                                         style={{
-                                            fontSize: "10px",
+                                            fontSize: '8px',
                                             position: 'absolute',
                                             top: '3px',
-                                            right: '5px',
+                                            right: '11px',
+                                        }}
+                                    />
+                                ) : product.stock < 20 ? (
+                                    <Tag
+                                        severity="warning"
+                                        value={` Low Stock :${product.stock} Pcs`}
+                                        style={{
+                                            fontSize: '8px',
+                                            position: 'absolute',
+                                            top: '3px',
+                                            right: '11px',
                                         }}
                                     />
                                 ) : (
                                     <Tag
-                                        severity="success"
-                                        value="In Stock"
+                                        value={` In Stock :${product.stock} Pcs`}
                                         style={{
-                                            fontSize: "10px",
+                                            fontSize: '8px',
                                             position: 'absolute',
                                             top: '3px',
-                                            right: '5px',
+                                            right: '11px',
+                                            backgroundColor:"rgb(1,169,164)",
+
                                         }}
+
                                     />
                                 )}
+
+                                {product.promotion === true ?(
+                                    <Tag value={"On sale"}
+                                         severity="danger"
+                                         style={{
+                                             fontSize: '8px',
+                                             position: 'absolute',
+                                             top: '3px',
+                                             left: '11px',
+                                         }}
+                                         icon={<img src={saleIcon} alt="saleicon" width={"12px"} />}
+                                    />
+                                ):(
+                                    <Tag value={"New"}
+                                         severity="info"
+                                         style={{
+                                             fontSize: '8px',
+                                             position: 'absolute',
+                                             top: '3px',
+                                             left: '11px',
+                                         }}
+                                    />
+                                )}
+
                             </div>
-                        {/*</Link>*/}
-                        <div className="text-2xl font-bold">{product.nom}</div>
-                        <Typography variant="body2" className="ml-1"
-                                    color="text.secondary">{product.description}</Typography>
-                        <Rating value={getAverageRating(product)} readOnly cancel={false} precision={0.5}></Rating>
-                        <Typography
-                            className="font-monospace ">({getReviews(product)})review{getReviews(product) !== 1 ? 's' : ''}</Typography>
+                        <div className="text-2xl font-monospace">{product.nom}</div>
+                        <Typography sx={{height:"40px",fontSize:"10px"}}   color="text.secondary">
+                            {product.description}
+                        </Typography>
                     </div>
-                    <div className="  align-items-center ">
-                        <span className="text-2xl font-semibold">{product.prix} Dh</span>
+
+
+                    <div className="content-info">
+                        <div className="flex align-items-center justify-content-between py-2 px-3 gap-2">
+                            <div className="flex align-items-center gap-2">
+                                <Rating value={getAverageRating(product)} readOnly  precision={0.5} style={{fontSize:"16px"}}></Rating>
+                            </div>
+                            <div className="flex align-items-center gap-2">
+                                <Typography
+                                    className="font-monospace ">({getReviews(product)})review{getReviews(product) !== 1 ? 's' : ''}
+                                </Typography>
+                            </div>
+                        </div>
+                        <div className="flex align-items-center justify-content-between py-2 px-1 ">
+                            {product.prix >= 100 ?(
+                                <div
+                                    className="flex align-items-center justify-content-center   surface-border ">
+                                    <Tag value={"Free Shipping"} className="border border-teal-400" style={{backgroundColor:"transparent",color:"black"}} icon={<DeliveryDiningIcon style={{fontSize:"20px",marginRight:"5px",color:"rgb(34,129,104)"}}/>}/>
+                                </div>
+                            ):(
+                                <div
+                                    className="flex align-items-center justify-content-center   surface-border ">
+                                    <Tag value={"Shipping fee : 30 DH"} className="border border-teal-400" style={{backgroundColor:"transparent",color:"black",fontSize:"10px"}} icon={<DeliveryDiningIcon style={{fontSize:"20px",marginRight:"5px",color:"rgb(34,129,104)"}}/>}/>
+
+                                </div>
+                            )}
+                            <div
+                                className="flex align-items-center gap-1 justify-content-center   surface-border px-1">
+                                <Tag  value={product.restaurant && product.restaurant.specialite.nom} className="border border-teal-400" style={{backgroundColor:"transparent",color:"black",fontSize:"10px"}} icon={<RestaurantIcon style={{fontSize:"17px",marginRight:"5px",color:"rgb(34,129,104)"}}/>}/>
+                            </div>
+                        </div>
                     </div>
+
                 </div>
-            </div>
+            </Box>
         );
     };
 
@@ -328,7 +387,7 @@ export default function RestaurantProfile() {
                 </div>
                 <div className="absolute left-1/2 transform -translate-x-1/2 bottom-1/2 text-white text-2xl text-uppercase">
                     {userRestaurantid.nom || "Restaurant Name"} Restaurant<br/>
-                    <Rating value={restaurantRating}  readOnly cancel={false} precision={0.5} />
+                    <Rating value={restaurantRating}  readOnly  precision={0.5} />
                 </div>
             </div>
 

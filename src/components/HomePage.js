@@ -362,9 +362,10 @@ export default function HomePage() {
 
                     </div>
                     <div style={{position: 'absolute', top: '55%', left: '50%', transform: 'translateX(-50%)'}}>
-                        <Typography variant="h4" align="center" gutterBottom style={{color: "white"}}>
+                        <Typography  className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500" align="center" gutterBottom >
                             Welcome
                         </Typography>
+                        <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500"> hh</span>
                     </div>
 
 
