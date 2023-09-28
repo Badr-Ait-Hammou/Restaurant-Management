@@ -99,7 +99,7 @@ export default function AllProduct() {
 
     useEffect(() => {
         loadProductsUser();
-    // }, );
+
     }, [userId, products]);
 
     useEffect(() => {
@@ -122,7 +122,7 @@ export default function AllProduct() {
         };
 
         axios.post('/api/controller/carts/', cartItem)
-            .then(response => {
+            .then(() => {
                 console.log('Product added to cart successfully!');
                 showSuccess();
                 loadProductsUser();

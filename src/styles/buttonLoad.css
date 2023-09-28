@@ -1,0 +1,25 @@
+.loading-button {
+    position: relative;
+}
+
+.loading-button.loading::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    pointer-events: none;
+    animation: loading 1s infinite linear;
+}
+
+@keyframes loading {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
