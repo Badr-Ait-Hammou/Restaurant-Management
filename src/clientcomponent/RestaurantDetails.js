@@ -22,6 +22,10 @@ import LinkIcon from "@mui/icons-material/Link";
 import SmartButtonIcon from "@mui/icons-material/SmartButton";
 import {Divider} from "primereact/divider";
 import RestaurantProfileSkeleton from "../skeleton/RestaurantProfileSkeleton"
+import shoppingCartIcon from "../images/shopping-cardIcon.gif";
+import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
+import DeliveryDiningIcon from "@mui/icons-material/DeliveryDining";
+import RestaurantIcon from "@mui/icons-material/Restaurant";
 
 
 export default function RestaurantDetails() {
@@ -33,6 +37,8 @@ export default function RestaurantDetails() {
     const [userId, setUserId] = useState("");
     const toast = useRef(null);
     const [productInCart, setProductInCart] = useState({});
+    const [isLoading, setIsLoading] = useState(false);
+
 
 
     const loadProductsUser = () => {
@@ -78,6 +84,8 @@ export default function RestaurantDetails() {
 
 
     const handleAddToCart = (product) => {
+        setIsLoading(true);
+
         const cartItem = {
             quantity: 1,
             totalprice: product.prix,
@@ -91,12 +99,18 @@ export default function RestaurantDetails() {
 
         axios.post('/api/controller/carts/', cartItem)
             .then(() => {
+                loadProductsUser();
+
                 console.log('Product added to cart successfully!');
                 showSuccess();
-                loadProductsUser();
+
+                setTimeout(() => {
+                    setIsLoading(false);
+                }, 2000);
             })
             .catch(error => {
                 console.error('Error adding product to cart:', error);
+                setIsLoading(false);
             });
     };
 
@@ -215,29 +229,63 @@ export default function RestaurantDetails() {
                             </div>
                         </Link>
                         <div className="text-2xl font-bold">{product.nom}</div>
-                        <Typography variant="body2" className="ml-1"
-                                    color="text.secondary">{product.description}</Typography>
-                        <Rating value={getAverageRating(product)} readOnly cancel={false} precision={0.5}></Rating>
-                        <Typography
-                            className="font-monospace ">({getReviews(product)})review{getReviews(product) !== 1 ? 's' : ''}</Typography>
+                        <Typography variant="body2" className="ml-1" color="text.secondary">
+                            {product.description}
+                        </Typography>
+                        </div>
+
+
+                    <div className="content-info">
+                        <div className="flex align-items-center justify-content-between py-2 px-3 gap-2">
+                            <div className="flex align-items-center gap-2">
+                                <Rating value={getAverageRating(product)} readOnly  precision={0.5} style={{fontSize:"16px"}}></Rating>
+                            </div>
+                            <div className="flex align-items-center gap-2">
+                                <Typography
+                                    className="font-monospace ">({getReviews(product)})review{getReviews(product) !== 1 ? 's' : ''}
+                                </Typography>
+                            </div>
+                        </div>
+                        <div className="flex align-items-center justify-content-between py-2 px-1 ">
+                            {product.prix >= 100 ?(
+                                <div
+                                    className="flex align-items-center justify-content-center   surface-border ">
+                                    <Tag value={"Free Shipping"} className="border border-teal-400" style={{backgroundColor:"transparent",color:"black"}} icon={<DeliveryDiningIcon style={{fontSize:"20px",marginRight:"5px",color:"rgb(34,129,104)"}}/>}/>
+                                </div>
+                            ):(
+                                <div
+                                    className="flex align-items-center justify-content-center   surface-border ">
+                                    <Tag value={"Shipping fee : 30 DH"} className="border border-teal-400" style={{backgroundColor:"transparent",color:"black",fontSize:"10px"}} icon={<DeliveryDiningIcon style={{fontSize:"20px",marginRight:"5px",color:"rgb(34,129,104)"}}/>}/>
+
+                                </div>
+                            )}
+                            <div
+                                className="flex align-items-center gap-1 justify-content-center   surface-border px-1">
+                                <Tag  value={product.restaurant && product.restaurant.nom} className="border border-teal-400" style={{backgroundColor:"transparent",color:"black",fontSize:"10px"}} icon={<RestaurantIcon style={{fontSize:"17px",marginRight:"5px",color:"rgb(34,129,104)"}}/>}/>
+                            </div>
+                        </div>
                     </div>
+
+
                     <div className=" flex align-items-center justify-content-between">
-                        <span className="text-2xl font-semibold">{product.prix} Dh</span>
+                        <Tag value={`${product.prix} Dh`} style={{fontSize:"20px"}} className="font-monospace p-tag-rounded bg-transparent border border-teal-400 mt-2 p-2 text-black shadow shadow-2"/>
                         {productInCart[product.id] ? (
-                            <Link to="/admin/cart">
+                            <Link to="/ifoulki_meals/cart">
                                 <Button
-                                    style={{background: 'linear-gradient(-225deg,#AC32E4 0%,#7918F2 48%,#4801FF 100%)'}}
-                                    icon="pi pi-external-link"
-                                    className="p-button-rounded mt-2"
+                                    icon={<ShoppingCartCheckoutIcon style={{fontSize:"28px"}}  />}
+                                    label={"View" }
+                                    className="p-button-rounded p-button-raised gap-1 border-teal-400  p-button-text text-teal-600   mt-2 p-2   "
                                     disabled={product.stock <= 0}
                                 />
                             </Link>
                         ) : (
                             <Button
-                                icon="pi pi-shopping-cart"
-                                className="p-button-rounded mt-2"
+                                style={{backgroundColor:"rgb(1,169,164)"}}
+                                icon={<img src={shoppingCartIcon} alt="Shopping Cart"  width="30px" />}
+                                label={"Add"}
+                                className="p-button-rounded p-button-raised gap-2 border-teal-400  p-button-text text-white   mt-2 p-2   "
                                 onClick={() => handleAddToCart(product)}
-                                disabled={product.stock <= 0 || productInCart[product.id]}
+                                disabled={product.stock <= 0 || productInCart[product.id] || isLoading}
                             />
                         )}
                     </div>

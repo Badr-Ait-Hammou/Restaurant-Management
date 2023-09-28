@@ -344,10 +344,6 @@ export default function AllProduct() {
                                 className="flex align-items-center gap-1 justify-content-center   surface-border px-1">
                                 <Tag  value={product.restaurant && product.restaurant.nom} className="border border-teal-400" style={{backgroundColor:"transparent",color:"black",fontSize:"10px"}} icon={<RestaurantIcon style={{fontSize:"17px",marginRight:"5px",color:"rgb(34,129,104)"}}/>}/>
                             </div>
-                            {/*<div className="flex align-items-center gap-1 justify-content-center gap-1 pl-2">*/}
-                            {/*    <i className="pi pi-book"></i>*/}
-                            {/*    <span className="font-small text-gray-900 white-space-nowrap">Library</span>*/}
-                            {/*</div>*/}
                         </div>
                     </div>
 
