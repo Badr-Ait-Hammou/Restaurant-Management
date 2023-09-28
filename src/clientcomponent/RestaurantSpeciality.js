@@ -80,32 +80,11 @@ export default function ClientRestaurants() {
         return (<DataviewSkeleton/>)
     }
 
-
     const gridItem = (restaurant) => {
         return (
-            <Box sx={{height:"450px"}} className="col-12 sm:col-6 lg:col-4 xl:col-3 p-2 ">
-                <div className="p-4 border-1 surface-border surface-card border-round">
-                    <div className="flex flex-wrap align-items-center justify-content-between gap-2">
-                        <div className="flex align-items-center gap-2">
-
-                        </div>
-                        <span className="card-text-value mx-2">
-                                    {restaurant.dateOuverture && restaurant.dateFermeture ? (
-                                        isRestaurantOpen(restaurant.dateOuverture, restaurant.dateFermeture) ? (
-                                            <Tag severity="info" icon="pi pi-check">
-                                                Open
-                                            </Tag>
-                                        ) : (
-                                            <Tag severity="danger" icon="pi pi-moon">
-                                                Closed
-                                            </Tag>
-                                        )
-                                    ) : (
-                                        "N/A"
-                                    )}
-                                </span>
-                    </div>
-                    <div className="flex flex-column align-items-center gap-2 py-2">
+            <Box sx={{height:"380px"}} className="col-12 sm:col-6 lg:col-4 xl:col-3 p-1 mt-1">
+                <div className="p-1 border-1 surface-border surface-card border-round">
+                    <div className="flex flex-column align-items-center gap-2 py-1">
                         <Link to={`${restaurant.id}`}>
                             <div style={{position: 'relative'}}>
                                 <img className=" w-20 sm:w-20rem xl:w-20rem  shadow-2 block xl:block mx-auto border-round"
@@ -127,6 +106,30 @@ export default function ClientRestaurants() {
                                         right: '5px',
                                     }}
                                 />
+                                {restaurant.dateOuverture && restaurant.dateFermeture ? (
+                                    isRestaurantOpen(restaurant.dateOuverture, restaurant.dateFermeture) ? (
+                                        <Tag severity="info" icon="pi pi-check" value={"Open"}  style={{
+                                            fontSize: "10px",
+                                            position: 'absolute',
+                                            top: '3px',
+                                            left: '5px',
+                                        }}
+
+                                        />
+
+                                    ) : (
+                                        <Tag severity="danger" icon="pi pi-moon" value={"Closed"}  style={{
+                                            fontSize: "10px",
+                                            position: 'absolute',
+                                            top: '3px',
+                                            left: '5px',
+                                        }}
+
+                                        />
+                                    )
+                                ) : (
+                                    "N/A"
+                                )}
                             </div>
                         </Link>
                         <div className="text-xl font-monospace">{restaurant.nom}</div>
