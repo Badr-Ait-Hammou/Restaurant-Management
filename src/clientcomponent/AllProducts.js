@@ -270,18 +270,18 @@ export default function AllProduct() {
     const gridItem = (product) => {
         return (
 
-            <Box sx={{height:"450px"}} className=" col-12 sm:col-6 lg:col-4 xl:col-3 p-1 mt-2 mb-2">
-                {/*<div className="p-1 border-1  surface-border surface-card border-round">*/}
-                <div className={`p-1 border-1   border-round ${isDarkMode ? 'bg-black text-white' : 'bg-white'}`}>
+            <Box sx={{height:"450px"}}  className={`container col-12 sm:col-6 lg:col-4 xl:col-3  ${isDarkMode ? 'bg-black text-white  -py-0.5  px-1' : 'bg-white mb-2 p-1'}`} >
+                <div className={`p-1 border-2   border-round ${isDarkMode ? 'bg-black text-white' : 'bg-white'}`}>
 
 
                     <div className="flex flex-column align-items-center gap-1 py-1 ">
                         <Link to={`product/${product.id}`}>
                         <div style={{position: 'relative'}}>
-                            <img className=" w-20 sm:w-20rem xl:w-20rem  shadow-2 block xl:block mx-auto border-round"
+                            <img className=" w-20 sm:w-20rem xl:w-20rem border-2  shadow-2 block xl:block mx-auto border-round"
                                  src={product.photo}
                                  alt={product.nom}
                                  style={{
+                                     backgroundColor:"white",
                                      width: '400px',
                                      height: '200px',
                                      borderRadius: '8px'
@@ -326,6 +326,7 @@ export default function AllProduct() {
                             {product.promotion === true ?(
                                 <Tag value={"On sale"}
                                      severity="danger"
+                                     className="animate-pulse"
                                      style={{
                                          fontSize: '8px',
                                          position: 'absolute',
@@ -435,7 +436,7 @@ export default function AllProduct() {
 
     const header = () => {
         return (
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center bg-black ">
                 <div>
                     <Dropdown
                         options={sortOptions}
@@ -457,21 +458,21 @@ export default function AllProduct() {
     };
 
     return (
-        <div className={`${isDarkMode ? 'bg-black' : 'bg-white'}`}>
+        <div className={` ${isDarkMode ? 'bg-black text-white' : 'bg-white'}`}>
             <Toast ref={toast}/>
 
-            <div className="card mx-2 mt-5">
+            <div   className="card mx-2 mt-5 ">
                 {layout === 'list' && (
                     <div>
-                        <DataView value={products} itemTemplate={listItem} layout={layout} header={header()}
+                        <DataView value={products} itemTemplate={listItem} layout={layout} header={header()} emptyMessage={"nothing found "}
                                   sortField={sortField} sortOrder={sortOrder} paginator paginatorTemplate={'PrevPageLink CurrentPageReport NextPageLink'} rows={6}/>
                     </div>
                 )}
 
                 {layout === 'grid' && (
                     <div>
-                        <DataView value={products} itemTemplate={gridItem} layout={layout} sortOrder={sortOrder}
-                                  header={header()} sortField={sortField} paginator paginatorTemplate={'PrevPageLink CurrentPageReport NextPageLink'} rows={12}/>
+                        <DataView value={products} itemTemplate={gridItem} layout={layout} sortOrder={sortOrder} paginatorClassName="bg-black"
+                                  header={header()} sortField={sortField} paginator   paginatorTemplate={'PrevPageLink CurrentPageReport NextPageLink'} rows={12}/>
                     </div>
                 )}
             </div>
