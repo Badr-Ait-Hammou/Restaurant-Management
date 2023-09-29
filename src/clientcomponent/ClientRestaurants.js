@@ -214,10 +214,7 @@ export default function ClientRestaurants() {
                                 </Tag>
                             </div>
                             <div className="flex align-items-center gap-1">
-                                {/*<i className="pi pi-clock"></i>*/}
-                                {/*<span className="font-small  white-space-nowrap" style={{backgroundColor:"transparent",fontSize:"15px",color: isDarkMode ? "white" : "black"}}> </span>*/}
                                 <Tag value={`${restaurant.dateOuverture} / ${restaurant.dateFermeture}`}  className="  border border-teal-400" style={{backgroundColor:"transparent",fontSize:"11px",color: isDarkMode ? "white" : "black"}} icon={"pi pi-clock"}/>
-
                             </div>
                         </div>
                     </div>
@@ -287,10 +284,9 @@ export default function ClientRestaurants() {
 
 
                             <span className="card-text-value ">
-                                   <Tag severity="success" icon="pi pi-clock" className="mx-1" >
-                                        {restaurant.dateOuverture} / {restaurant.dateFermeture}
-                                    </Tag>
-                                    {restaurant.dateOuverture && restaurant.dateFermeture ? (
+                            <Tag value={`${restaurant.dateOuverture} / ${restaurant.dateFermeture}`}  className=" mx-1 border border-teal-400" style={{backgroundColor:"transparent",fontSize:"11px",color: isDarkMode ? "white" : "black"}} icon={"pi pi-clock"}/>
+
+                                {restaurant.dateOuverture && restaurant.dateFermeture ? (
                                         isRestaurantOpen(restaurant.dateOuverture, restaurant.dateFermeture) ? (
                                             <Tag severity="info" icon="pi pi-check">
                                                 Open
