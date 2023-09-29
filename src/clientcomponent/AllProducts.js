@@ -169,15 +169,16 @@ export default function AllProduct() {
 
     const listItem = (product) => {
         return (
-            <div className="col-12">
+            <div className={`col-12    ${isDarkMode ? 'bg-black text-white  p-2  px-1 border-teal-400' : 'bg-white mb-2 p-1'}`}>
                 <div className="flex flex-column xl:flex-row xl:align-items-start p-3 gap-4">
                     <Link to={`product/${product.id}`}>
                     <div style={{position: 'relative'}}>
                         <img
-                            className="w-10 sm:w-10rem xl:w-10rem shadow-2 block xl:block mx-auto border-round"
+                            className="w-20 sm:w-20rem xl:w-20rem shadow-2 border-2  block xl:block mx-auto border-round"
                             src={product.photo}
                             alt={product.nom}
                             style={{
+                                backgroundColor:"white",
                                 width: '400px',
                                 height: '200px',
                                 borderRadius: '18px'
@@ -185,10 +186,21 @@ export default function AllProduct() {
                         />
                         {product.stock <= 0 ? (
                             <Tag
-                                severity="warning"
+                                severity="danger"
                                 value="Out of Stock"
                                 style={{
-                                    fontSize: "10px",
+                                    fontSize: '8px',
+                                    position: 'absolute',
+                                    top: '3px',
+                                    right: '11px',
+                                }}
+                            />
+                        ) : product.stock < 20 ? (
+                            <Tag
+                                severity="warning"
+                                value={` Low Stock :${product.stock} Pcs`}
+                                style={{
+                                    fontSize: '8px',
                                     position: 'absolute',
                                     top: '3px',
                                     right: '11px',
@@ -196,14 +208,40 @@ export default function AllProduct() {
                             />
                         ) : (
                             <Tag
-                                severity="success"
-                                value="In Stock"
+                                value={` In Stock :${product.stock} Pcs`}
                                 style={{
-                                    fontSize: "10px",
+                                    fontSize: '8px',
                                     position: 'absolute',
                                     top: '3px',
                                     right: '11px',
+                                    backgroundColor:"rgb(1,169,164)",
+
                                 }}
+
+                            />
+                        )}
+
+                        {product.promotion === true ?(
+                            <Tag value={"On sale"}
+                                 severity="danger"
+                                 className="animate-pulse"
+                                 style={{
+                                     fontSize: '8px',
+                                     position: 'absolute',
+                                     top: '3px',
+                                     left: '11px',
+                                 }}
+                                 icon={<img src={saleIcon} alt="saleicon" width={"12px"} />}
+                            />
+                        ):(
+                            <Tag value={"New"}
+                                 severity="info"
+                                 style={{
+                                     fontSize: '8px',
+                                     position: 'absolute',
+                                     top: '3px',
+                                     left: '11px',
+                                 }}
                             />
                         )}
                     </div>
@@ -211,15 +249,10 @@ export default function AllProduct() {
                     <div
                         className="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-2">
                         <div className="flex flex-column align-items-center sm:align-items-start gap-3">
-                            <div className="text-2xl font-bold text-900">{product.nom}</div>
-                            <div className="flex align-items-center gap-3">
-                                {product.promotion === true && (
-                                    <Tag value="On Sale" severity="danger" icon="pi pi-tag"/>
-                                )}
-                                <span className="flex align-items-center gap-2">
-                                    <i className="pi pi-tag"></i>
-                                    <span className="font-semibold">{product.stock} Pcs</span>
-                                </span>
+                            <div className="text-2xl font-bold ">{product.nom}</div>
+                            <div className="flex flex-col md:align-items-start sm:align-items-center ">
+                                <Tag value={product.restaurant && product.restaurant.specialite.nom} className={`bg-transparent border-2 border-teal-400 ${isDarkMode ? "text-white" :"text-black"}`} icon="pi pi-bolt"/>
+                                <Tag value={product.restaurant && product.restaurant.serie.nom}  className={`bg-transparent border-2 border-teal-400 mt-1 ${isDarkMode ? "text-white" :"text-black"}`} icon="pi pi-tag"/><br/>
                             </div>
                             <div>
                                 <Typography variant="body2" className="ml-1"
@@ -236,14 +269,16 @@ export default function AllProduct() {
                                     style={{fontSize: '16px'}}/>}> {product.restaurant.nom} --{product.restaurant.zone.ville.nom}
                             </Tag>
                         </div>
-                        <div className="flex sm:flex-column align-items-center sm:align-items-end gap-3 sm:gap-2">
-                            <span className="text-2xl font-semibold text-left">{product.prix} Dh</span>
+                        <div className="flex sm:flex-column align-items-center sm:align-items-center gap-3 sm:gap-2">
+                            {/*<span className="text-2xl font-semibold text-left">{product.prix} Dh</span>*/}
+                            <Tag value={`${product.prix} Dh`} style={{fontSize:"17px",color: isDarkMode ? "white" : "black"}} className="font-monospace p-tag-rounded bg-transparent border-2 border-teal-400 mt-2 p-2   shadow shadow-2"/>
+
                             {productInCart[product.id] ? (
                                 <Link to="/ifoulki_meals/cart" style={{textDecoration: "none", color: "white"}}>
                                     <Button
                                         icon={<ShoppingCartCheckoutIcon style={{fontSize:"28px"}}  />}
                                         label={"View" }
-                                        className="p-button-rounded p-button-raised gap-1 border-teal-400  p-button-text text-teal-600   mt-2 p-2   "
+                                        className={`p-button-rounded gap-1 border-2 border-teal-400  p-button-text text-teal-600   mt-2 p-2 ${isDarkMode ? "bg-white" : "p-button-raised"}`}
                                         disabled={product.stock <= 0}
                                     />
                                 </Link>
