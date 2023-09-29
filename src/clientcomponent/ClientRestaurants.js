@@ -11,6 +11,7 @@ import Typography from "@mui/material/Typography";
 import RestaurantMenuRoundedIcon from "@mui/icons-material/RestaurantMenuRounded";
 import Box from "@mui/material/Box";
 import {useDarkMode} from "../components/DarkModeContext";
+import {Skeleton} from "primereact/skeleton";
 
 export default function ClientRestaurants() {
     const [restaurants, setRestaurants] = useState([]);
@@ -131,10 +132,18 @@ export default function ClientRestaurants() {
 
 
     if (loading ) {
-        return (<DataviewSkeleton/>)
+        return (
+            <>
+                <div  className={` col-md-12 flex justify-content-center mt-5 mb-3  ${isDarkMode ? 'bg-black ' : ''}`}>
+                    <Skeleton width="10rem" height="3rem"  className={`border-2 border-teal-400 mr-2 ${isDarkMode ? "bg-gray-900" :""}`}/>
+                    <Skeleton width="11.5rem" height="3rem"  className={` border-2 border-teal-400  mx-2 ${isDarkMode ? "bg-gray-900" :""}`} />
+                </div>
+                <Divider />
+
+            <DataviewSkeleton/>
+                </>
+        )
     }
-
-
 
     const gridItem = (restaurant) => {
         return (

@@ -47,10 +47,12 @@ export default function HomePage() {
         axios.get("/api/controller/produits/nopromotion").then((response) => {
             setProductsno(response.data);
         });
-        loadProductsUser();
         setLoading(false);
     }, []);
 
+    useEffect(() => {
+        loadProductsUser();
+    }, [products,productsno]);
 
 
 
