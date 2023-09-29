@@ -9,6 +9,8 @@ import DataviewSkeleton from "../skeleton/DataviewSkeleton"
 import Typography from "@mui/material/Typography";
 import RestaurantMenuRoundedIcon from "@mui/icons-material/RestaurantMenuRounded";
 import Box from "@mui/material/Box";
+import {useDarkMode} from "../components/DarkModeContext";
+import DeliveryDiningIcon from "@mui/icons-material/DeliveryDining";
 
 export default function ClientRestaurants() {
     const [restaurants, setRestaurants] = useState([]);
@@ -23,6 +25,8 @@ export default function ClientRestaurants() {
     const [sortOrder, setSortOrder] = useState(0);
     const [sortField, setSortField] = useState('');
     const [loading, setLoading] = useState(true); // Track loading state
+    const { isDarkMode } = useDarkMode();
+
 
     const sortOptions = [
         {label: 'Top Rated', value: '!rating'},
@@ -134,15 +138,17 @@ export default function ClientRestaurants() {
 
     const gridItem = (restaurant) => {
         return (
-            <Box sx={{height:"380px"}} className="col-12 sm:col-6 lg:col-4 xl:col-3 p-1 mt-1">
-                <div className="p-1 border-1 surface-border surface-card border-round">
+            <Box sx={{height:"380px"}} className={`col-12 sm:col-6 lg:col-4 xl:col-3   ${isDarkMode ? 'bg-black text-white  p-2  px-1' : 'bg-white mb-2 p-1'}`}>
+                    <div className={`p-1 border-2 border-teal-400  border-round ${isDarkMode ? 'bg-black text-white' : 'bg-white'}`}>
+
                     <div className="flex flex-column align-items-center gap-2 py-1">
                         <Link to={`${restaurant.id}`}>
                             <div style={{position: 'relative'}}>
-                                <img className=" w-20 sm:w-20rem xl:w-20rem  shadow-2 block xl:block mx-auto border-round"
+                                <img className=" w-20 sm:w-20rem xl:w-20rem border-2  shadow-2 block xl:block mx-auto border-round"
                                      src={restaurant.photo}
                                      alt={restaurant.nom}
                                      style={{
+                                         backgroundColor:"white",
                                          width: '400px',
                                          height: '180px',
                                          borderRadius: '8px'
@@ -160,7 +166,7 @@ export default function ClientRestaurants() {
                                 />
                                 {restaurant.dateOuverture && restaurant.dateFermeture ? (
                                     isRestaurantOpen(restaurant.dateOuverture, restaurant.dateFermeture) ? (
-                                        <Tag severity="info" icon="pi pi-check" value={"Open"}  style={{
+                                        <Tag severity="info" className="animate-pulse" icon="pi pi-check" value={"Open"}  style={{
                                             fontSize: "10px",
                                             position: 'absolute',
                                             top: '3px',
@@ -185,7 +191,7 @@ export default function ClientRestaurants() {
                             </div>
                         </Link>
                         <div className="text-xl font-monospace">{restaurant.nom}</div>
-                        <Typography sx={{height:"40px",fontSize:"15px"}}   color="text.secondary">
+                        <Typography sx={{height:"40px",fontSize:"15px",color: isDarkMode ? "white" : "grey"}}  >
                             {restaurant.adresse}
                         </Typography>
 
@@ -208,8 +214,10 @@ export default function ClientRestaurants() {
                                 </Tag>
                             </div>
                             <div className="flex align-items-center gap-1">
-                                <i className="pi pi-clock"></i>
-                                <span className="font-small text-gray-900 white-space-nowrap"> {restaurant.dateOuverture} / {restaurant.dateFermeture}</span>
+                                {/*<i className="pi pi-clock"></i>*/}
+                                {/*<span className="font-small  white-space-nowrap" style={{backgroundColor:"transparent",fontSize:"15px",color: isDarkMode ? "white" : "black"}}> </span>*/}
+                                <Tag value={`${restaurant.dateOuverture} / ${restaurant.dateFermeture}`}  className="  border border-teal-400" style={{backgroundColor:"transparent",fontSize:"11px",color: isDarkMode ? "white" : "black"}} icon={"pi pi-clock"}/>
+
                             </div>
                         </div>
                     </div>
@@ -323,7 +331,7 @@ export default function ClientRestaurants() {
 
     const header = () => {
         return (
-            <div className="flex justify-between items-center">
+            <div  className={`flex justify-between  items-center ${isDarkMode ? 'bg-black text-white p-3 -m-4' : ' '}`}>
                 <div>
                     <Dropdown
                         options={sortOptions}
@@ -331,7 +339,7 @@ export default function ClientRestaurants() {
                         optionLabel="label"
                         placeholder="Sort By Rating"
                         onChange={onSortChange}
-                        className="w-full sm:w-14rem"
+                        className={`w-full sm:w-14rem ${isDarkMode ? 'bg-black text-white border-2  border-teal-400' : ' '}`}
                     />
                 </div>
                 <div>
@@ -349,7 +357,7 @@ export default function ClientRestaurants() {
         <>
             <div className="col-md-12   mb-3 mt-5">
                 <Dropdown
-                    className="mr-2"
+                    className={`mr-2 ${isDarkMode ? 'bg-black text-white border-2  border-teal-400' : ' '}`}
                     value={selectedCity}
                     options={cities.map((ville) => ({label: ville.nom, value: ville.nom}))}
                     onChange={handleCityChange}
@@ -357,6 +365,7 @@ export default function ClientRestaurants() {
                 />
                 {selectedCity && (
                     <Dropdown
+                        className={` ${isDarkMode ? 'bg-black text-white border-2  border-teal-400' : ' '}`}
                         value={selectedZone}
                         options={zones.map((zone) => ({label: zone.nom, value: zone.nom}))}
                         onChange={handleZoneChange}
@@ -365,7 +374,7 @@ export default function ClientRestaurants() {
                 )}
 
                 <Dropdown
-                    className="ml-2"
+                    className={`ml-2 ${isDarkMode ? 'bg-black text-white border-2  border-teal-400' : ' '}`}
                     value={selectedSpecialite}
                     options={specialites.map((specialite) => ({label: specialite.nom, value: specialite.nom}))}
                     onChange={handleSpecialiteChange}
@@ -374,7 +383,8 @@ export default function ClientRestaurants() {
             </div>
 
 
-            <div className="card mx-2">
+                <div className={`card mx-2 ${isDarkMode ? 'bg-black text-white' : 'bg-white'}`}>
+
                 {layout === 'list' && (
                     <div>
                         <DataView value={restaurants} itemTemplate={listItem} layout={layout} header={header()}
@@ -383,8 +393,8 @@ export default function ClientRestaurants() {
                 )}
 
                 {layout === 'grid' && (
-                    <div>
-                        <DataView value={restaurants} itemTemplate={gridItem} layout={layout}
+                    <div >
+                        <DataView  value={restaurants}   itemTemplate={gridItem} layout={layout} paginatorClassName={`${isDarkMode ? "bg-black border-teal-400" :""}`}
                                   header={header()} sortField={sortField} sortOrder={sortOrder} paginator paginatorTemplate={'PrevPageLink CurrentPageReport NextPageLink'} rows={12}/>
                     </div>
                 )}

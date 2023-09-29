@@ -270,7 +270,7 @@ export default function AllProduct() {
     const gridItem = (product) => {
         return (
 
-            <Box sx={{height:"450px"}}   className={`container col-12 sm:col-6 lg:col-4 xl:col-3  ${isDarkMode ? 'bg-black text-white  -p-0.5  px-1' : 'bg-white mb-2 p-1'}`} >
+            <Box sx={{height:"480px"}}   className={`container col-12 sm:col-6 lg:col-4 xl:col-3  p-1  ${isDarkMode ? 'bg-black text-white   px-1' : 'bg-white '}`} >
                 <div className={`p-1 border-2 border-teal-400  border-round ${isDarkMode ? 'bg-black text-white' : 'bg-white'}`}>
 
 
@@ -474,7 +474,7 @@ export default function AllProduct() {
 
                 {layout === 'grid' && (
                     <div>
-                        <DataView value={products} itemTemplate={gridItem} layout={layout} sortOrder={sortOrder} paginatorClassName="bg-black"
+                        <DataView value={products} itemTemplate={gridItem} layout={layout} sortOrder={sortOrder} paginatorClassName={`${isDarkMode ? "bg-black border-teal-400" :""}`}
                                   header={header()} sortField={sortField} paginator   paginatorTemplate={'PrevPageLink CurrentPageReport NextPageLink'} rows={12}/>
                     </div>
                 )}
