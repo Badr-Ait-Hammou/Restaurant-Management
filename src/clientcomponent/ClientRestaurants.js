@@ -3,6 +3,7 @@ import React, {useState, useEffect} from "react";
 import {Link} from 'react-router-dom';
 import {Dropdown} from 'primereact/dropdown';
 import {Tag} from "primereact/tag";
+import {Divider} from "primereact/divider";
 import {DataView, DataViewLayoutOptions} from "primereact/dataview";
 import {Rating} from "@mui/material";
 import DataviewSkeleton from "../skeleton/DataviewSkeleton"
@@ -10,7 +11,6 @@ import Typography from "@mui/material/Typography";
 import RestaurantMenuRoundedIcon from "@mui/icons-material/RestaurantMenuRounded";
 import Box from "@mui/material/Box";
 import {useDarkMode} from "../components/DarkModeContext";
-import DeliveryDiningIcon from "@mui/icons-material/DeliveryDining";
 
 export default function ClientRestaurants() {
     const [restaurants, setRestaurants] = useState([]);
@@ -229,17 +229,18 @@ export default function ClientRestaurants() {
 
     const listItem = (restaurant) => {
         return (
-            <div className="col-12  ">
-                <div className="flex flex-column xl:flex-row xl:align-items-start   p-3 gap-4">
+            <div className={`col-12    ${isDarkMode ? 'bg-black text-white  p-2  px-1 border-teal-400' : 'bg-white mb-2 p-1'}`}>
+                <div className="flex flex-column xl:flex-row xl:align-items-start   p-2 gap-4">
                     <Link to={`${restaurant.id}`}>
                         <div style={{position: 'relative'}}>
                             <img
-                                className="w-10 sm:w-10rem xl:w-10rem shadow-2 block xl:block mx-auto border-round"
+                                className="w-20 sm:w-20rem xl:w-20rem shadow-2 border-2 border-teal-400 block xl:block mx-auto border-round"
                                 src={restaurant.photo}
                                 alt={restaurant.nom}
                                 style={{
-                                    width: '180px',
-                                    height: '140px',
+                                    backgroundColor:"white",
+                                    width: '400px',
+                                    height: '200px',
                                     borderRadius: '18px'
                                 }}
                             />
@@ -381,13 +382,14 @@ export default function ClientRestaurants() {
                     placeholder="Select a specialite"
                 />
             </div>
+            <Divider />
 
 
                 <div className={`card mx-2 ${isDarkMode ? 'bg-black text-white' : 'bg-white'}`}>
 
                 {layout === 'list' && (
                     <div>
-                        <DataView value={restaurants} itemTemplate={listItem} layout={layout} header={header()}
+                        <DataView value={restaurants} itemTemplate={listItem} layout={layout} header={header()} paginatorClassName={`${isDarkMode ? "bg-black border-teal-400" :""}`}
                                   sortField={sortField} sortOrder={sortOrder} paginator paginatorTemplate={'PrevPageLink CurrentPageReport NextPageLink'} rows={6}/>
                     </div>
                 )}
