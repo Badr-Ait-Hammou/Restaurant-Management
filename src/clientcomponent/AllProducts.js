@@ -270,8 +270,8 @@ export default function AllProduct() {
     const gridItem = (product) => {
         return (
 
-            <Box sx={{height:"450px"}}  className={`container col-12 sm:col-6 lg:col-4 xl:col-3  ${isDarkMode ? 'bg-black text-white  -py-0.5  px-1' : 'bg-white mb-2 p-1'}`} >
-                <div className={`p-1 border-2   border-round ${isDarkMode ? 'bg-black text-white' : 'bg-white'}`}>
+            <Box sx={{height:"450px"}}   className={`container col-12 sm:col-6 lg:col-4 xl:col-3  ${isDarkMode ? 'bg-black text-white  -p-0.5  px-1' : 'bg-white mb-2 p-1'}`} >
+                <div className={`p-1 border-2 border-teal-400  border-round ${isDarkMode ? 'bg-black text-white' : 'bg-white'}`}>
 
 
                     <div className="flex flex-column align-items-center gap-1 py-1 ">
@@ -350,7 +350,7 @@ export default function AllProduct() {
                         </div>
                         </Link>
                         <div className="text-1xl font-monospace">{product.nom}</div>
-                        <Typography sx={{height:"40px",fontSize:"10px"}}   color="text.secondary">
+                        <Typography sx={{height:"40px",fontSize:"10px",color: isDarkMode ? "white" : "grey"}}  >
                             {product.description}
                         </Typography>
                     </div>
@@ -370,32 +370,32 @@ export default function AllProduct() {
                             {product.prix >= 100 ?(
                                 <div
                                     className="flex align-items-center justify-content-center   surface-border ">
-                                    <Tag value={"Free Shipping"} className="border border-teal-400" style={{backgroundColor:"transparent",color:"black",fontSize:"10px"}} icon={<DeliveryDiningIcon style={{fontSize:"20px",marginRight:"5px",color:"rgb(34,129,104)"}}/>}/>
+                                    <Tag value={"Free Shipping"} className="  border border-teal-400" style={{backgroundColor:"transparent",fontSize:"8px",color: isDarkMode ? "white" : "black"}} icon={<DeliveryDiningIcon style={{fontSize:"20px",color: isDarkMode ? "white" : "rgb(34,129,104)",marginRight:"5px"}}/>}/>
                                 </div>
                             ):(
                                 <div
                                     className="flex align-items-center justify-content-center   surface-border ">
-                                    <Tag value={"Shipping fee : 30 DH"} className="border border-teal-400" style={{backgroundColor:"transparent",color:"black",fontSize:"10px"}} icon={<DeliveryDiningIcon style={{fontSize:"20px",marginRight:"5px",color:"rgb(34,129,104)"}}/>}/>
+                                    <Tag value={"Shipping fee : 30 DH"} className="  border border-teal-400" style={{backgroundColor:"transparent",fontSize:"8px",color: isDarkMode ? "white" : "black"}} icon={<DeliveryDiningIcon style={{fontSize:"20px",marginRight:"5px",color: isDarkMode ? "white" : "rgb(34,129,104)"}}/>}/>
 
                                 </div>
                             )}
                             <div
                                 className="flex align-items-center gap-1 justify-content-center   surface-border px-1">
-                                <Tag  value={product.restaurant && product.restaurant.nom} className="border border-teal-400" style={{backgroundColor:"transparent",color:"black",fontSize:"10px"}} icon={<RestaurantIcon style={{fontSize:"17px",marginRight:"5px",color:"rgb(34,129,104)"}}/>}/>
+                                <Tag  value={product.restaurant && product.restaurant.nom} className="border border-teal-400" style={{backgroundColor:"transparent",color: isDarkMode ? "white" : "black",fontSize:"8px"}} icon={<RestaurantIcon style={{fontSize:"17px",marginRight:"5px",color: isDarkMode ? "white" : "rgb(34,129,104)"}}/>}/>
                             </div>
                         </div>
                     </div>
 
 
                     <div className="flex align-items-center justify-content-between py-2  gap-1">
-                        <Tag value={`${product.prix} Dh`} style={{fontSize:"20px"}} className="font-monospace p-tag-rounded bg-transparent border border-teal-400 mt-2 p-2 text-black shadow shadow-2"/>
+                        <Tag value={`${product.prix} Dh`} style={{fontSize:"17px",color: isDarkMode ? "white" : "black"}} className="font-monospace p-tag-rounded bg-transparent border border-teal-400 mt-2 p-2  shadow shadow-2"/>
                         {productInCart[product.id] ? (
                             <Link to="/ifoulki_meals/cart" style={{textDecoration: "none", color: "white"}}>
                                 <Button
-                                    // style={{borderRadius: "50px",background:'linear-gradient(360deg, rgba(0,30,24,0.9759709547881653) 0%, rgba(9,121,84,1) 25%, rgba(0,255,200,1) 100%)'}}
                                     icon={<ShoppingCartCheckoutIcon style={{fontSize:"28px"}}  />}
                                     label={"View" }
-                                    className="p-button-rounded p-button-raised gap-1 border-teal-400  p-button-text text-teal-600   mt-2 p-2   "
+                                    className={`p-button-rounded gap-1 border-teal-400  p-button-text text-teal-600   mt-2 p-2 ${isDarkMode ? "bg-white" : "p-button-raised"}`}
+
                                     disabled={product.stock <= 0}
                                 />
                             </Link>
@@ -436,15 +436,18 @@ export default function AllProduct() {
 
     const header = () => {
         return (
-            <div className="flex justify-between items-center bg-black ">
+            // <div className="flex justify-between items-center ">
+                <div  className={`flex justify-between  items-center ${isDarkMode ? 'bg-black text-white p-3 -m-4' : ' '}`}>
                 <div>
                     <Dropdown
+
+                        // style={{backgroundColor:isDarkMode ?"black":"white"}}
                         options={sortOptions}
                         value={sortKey}
                         optionLabel="label"
                         placeholder="Sort By Price"
                         onChange={onSortChange}
-                        className="w-full sm:w-14rem"
+                        className={`w-full sm:w-14rem ${isDarkMode ? 'bg-black text-white border-2  border-teal-400' : ' '}`}
                     />
                 </div>
                 <div>
@@ -461,7 +464,7 @@ export default function AllProduct() {
         <div className={` ${isDarkMode ? 'bg-black text-white' : 'bg-white'}`}>
             <Toast ref={toast}/>
 
-            <div   className="card mx-2 mt-5 ">
+            <div    className={`card mx-2 mt-5 ${isDarkMode ? 'bg-black text-white' : 'bg-white'}`}>
                 {layout === 'list' && (
                     <div>
                         <DataView value={products} itemTemplate={listItem} layout={layout} header={header()} emptyMessage={"nothing found "}

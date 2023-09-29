@@ -185,7 +185,7 @@ export default function HomePage() {
 
     const productTemplate = (product) => {
         return (
-                <Box sx={{height:"450px"}} key={product.id} className={`border-2 surface-border border-round m-1 text-center py-2 px-1 ${isDarkMode ? 'bg-black text-white ' : 'bg-white text-black'}`} >
+                <Box sx={{height:"450px"}} key={product.id} className={`border-2   border-teal-400 border-round m-1 text-center py-2 px-1 ${isDarkMode ? 'bg-black text-white ' : 'bg-white text-black'}`} >
 
                 <Link to={`product/${product.id}`}>
                     <div style={{position: 'relative'}}
