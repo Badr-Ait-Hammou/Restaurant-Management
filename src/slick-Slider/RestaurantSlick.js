@@ -7,11 +7,14 @@ import axios from "../service/callerService";
 import { Avatar } from "@mui/material";
 import {Link} from 'react-router-dom';
 import {Skeleton} from "primereact/skeleton";
+import {useDarkMode} from "../components/DarkModeContext";
 
 
 function RestaurantSlick() {
     const [restaurants, setRestaurants] = useState([]);
     const [loading, setLoading] = useState(true);
+    const { isDarkMode } = useDarkMode();
+
 
 
     useEffect(() => {
@@ -36,7 +39,7 @@ function RestaurantSlick() {
 
     if(loading || !restaurants){
         return ( <div className="mainContainer">
-            <Skeleton width="100%" height="100px"  />
+            <Skeleton width="100%" height="100px" className={` font-monospace ${isDarkMode ? "bg-black" :""}`}  />
 
         </div>);
     }

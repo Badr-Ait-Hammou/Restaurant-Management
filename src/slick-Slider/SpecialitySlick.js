@@ -40,7 +40,7 @@ function SpecialitySlick() {
     if(loading){
         return ( <div className="mainContainer">
             <p className="font-monospace  ">Specialities</p>
-            <Skeleton width="100%" height="100px"  />
+            <Skeleton width="100%" height="100px"  className={` font-monospace ${isDarkMode ? "bg-black" :""}`} />
 
         </div>);
     }
