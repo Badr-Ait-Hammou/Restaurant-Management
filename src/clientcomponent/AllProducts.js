@@ -18,6 +18,8 @@ import DeliveryDiningIcon from '@mui/icons-material/DeliveryDining';
 import RestaurantIcon from '@mui/icons-material/Restaurant';
 import Box from "@mui/material/Box";
 import saleIcon from "../images/onsaleIcon.gif";
+import { useDarkMode } from '../components/DarkModeContext'; // Import the context
+
 
 export default function AllProduct() {
     const [products, setProducts] = useState([]);
@@ -30,6 +32,8 @@ export default function AllProduct() {
     const [productInCart, setProductInCart] = useState({});
     const [loading, setLoading] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
+    const { isDarkMode } = useDarkMode();
+
 
 
 
@@ -50,6 +54,7 @@ export default function AllProduct() {
                 try {
                     const user = await accountService.getUserByEmail(tokenInfo.sub);
                     setUserId(user.id);
+                    console.log(isDarkMode);
                     console.log('user', user.id);
                 } catch (error) {
                     console.log('Error retrieving user:', error);
@@ -57,6 +62,7 @@ export default function AllProduct() {
             }
         };
         fetchUserData();
+    // }, [isDarkMode]);
     }, []);
 
 
@@ -263,8 +269,12 @@ export default function AllProduct() {
 
     const gridItem = (product) => {
         return (
-            <Box sx={{height:"450px"}} className="col-12 sm:col-6 lg:col-4 xl:col-3 p-1 mt-2 mb-2">
-                <div className="p-1 border-1 surface-border surface-card border-round">
+
+            <Box sx={{height:"450px"}} className=" col-12 sm:col-6 lg:col-4 xl:col-3 p-1 mt-2 mb-2">
+                {/*<div className="p-1 border-1  surface-border surface-card border-round">*/}
+                <div className={`p-1 border-1   border-round ${isDarkMode ? 'bg-black text-white' : 'bg-white'}`}>
+
+
                     <div className="flex flex-column align-items-center gap-1 py-1 ">
                         <Link to={`product/${product.id}`}>
                         <div style={{position: 'relative'}}>
@@ -447,7 +457,7 @@ export default function AllProduct() {
     };
 
     return (
-        <div>
+        <div className={`${isDarkMode ? 'bg-black' : 'bg-white'}`}>
             <Toast ref={toast}/>
 
             <div className="card mx-2 mt-5">

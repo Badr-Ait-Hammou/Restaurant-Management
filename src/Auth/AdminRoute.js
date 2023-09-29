@@ -6,7 +6,7 @@ import Restaurant from '../components/Restaurants';
 import Zone from '../components/Zones';
 import Serie from '../components/Series';
 import Specilite from '../components/Specialities';
-import User from '../components/Owners';
+import Owner from '../components/Owners';
 import Produit from '../components/Products';
 import Header from '../components/Header';
 import CltRest from '../clientcomponent/ClientRestaurants';
@@ -100,7 +100,7 @@ const AdminRoute = () => {
                     <Route path="/specialite" element={<Specilite/>}/>
                     )}
                 {accountService.isLogged && accountService.getRole() === 'ADMIN' && (
-                    <Route path="/user" element={<User/>}/>
+                    <Route path="/user" element={<Owner/>}/>
                     )}
                 {accountService.isLogged && accountService.getRole() === 'ADMIN' && (
                     <Route path="/produit" element={<Produit/>}/>

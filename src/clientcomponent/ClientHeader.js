@@ -16,14 +16,20 @@ import {useNavigate} from "react-router-dom";
 import {accountService} from "../service/accountService";
 import {Grid} from "@mui/material";
 import LocalShippingRoundedIcon from "@mui/icons-material/LocalShippingRounded";
+import RailwayAlertRoundedIcon from '@mui/icons-material/RailwayAlertRounded';
+import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import Ifoulkilogo from "../images/IFOULKIlogo2.svg";
+import { useDarkMode } from '../components/DarkModeContext';
+
+
 const pages = [ 'restaurants', 'profile', 'reservation', 'orders', 'cart', 'all_products'];
 
 export default function ClientHeader() {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
-    const navigate = useNavigate();
+    const { isDarkMode, toggleDarkMode } = useDarkMode(); // Get dark mode state and toggle function
 
+    const navigate = useNavigate();
     const handleLogout = () => {
         accountService.logout();
         navigate('/', {replace: true});
@@ -181,6 +187,15 @@ export default function ClientHeader() {
                                     <Typography textAlign="center">Logout</Typography>
                                 </Button>
                             </Menu>
+
+                            <IconButton
+                                size="large"
+                                aria-label="toggle dark mode"
+                                onClick={toggleDarkMode}
+                                color="inherit"
+                            >
+                                {isDarkMode ? <LocalShippingIcon /> : <RailwayAlertRoundedIcon />}
+                            </IconButton>
                         </Box>
 
                     </Toolbar>

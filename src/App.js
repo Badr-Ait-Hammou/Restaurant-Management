@@ -7,13 +7,15 @@ import AuthRoute from './Auth/AuthRoute';
 import AdminRoute from './Auth/AdminRoute';
 import ProtectedRoute from './components/ProtectedRoute';
 import 'primeflex/primeflex.css';
+import {useDarkMode} from "./components/DarkModeContext";
 
 
 function App() {
+    const { isDarkMode } = useDarkMode();
 
     return (
 
-            <div className="App">
+            <div className={`App  ${isDarkMode ? 'bg-black ' : 'bg-white'}`}>
                 <Router>
                 <Routes>
                     <Route path="/*" element={<AuthRoute/>}/>
