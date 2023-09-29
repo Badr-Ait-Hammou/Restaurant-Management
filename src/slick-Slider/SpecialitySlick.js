@@ -7,11 +7,14 @@ import axios from "../service/callerService";
 import { Avatar } from "@mui/material";
 import {Link} from 'react-router-dom';
 import {Skeleton} from "primereact/skeleton";
+import {useDarkMode} from "../components/DarkModeContext";
 
 
 function SpecialitySlick() {
     const [specialities, setSpecialities] = useState([]);
     const [loading, setLoading] = useState(true);
+    const { isDarkMode } = useDarkMode();
+
 
 
     useEffect(() => {
@@ -36,7 +39,7 @@ function SpecialitySlick() {
 
     if(loading){
         return ( <div className="mainContainer">
-            <p className="font-monospace ">Specialities</p>
+            <p className="font-monospace  ">Specialities</p>
             <Skeleton width="100%" height="100px"  />
 
         </div>);
@@ -44,7 +47,7 @@ function SpecialitySlick() {
 
     return (
         <div className="mainContainer">
-            <p className="font-monospace ">Specialities</p>
+            <p  className={` font-monospace ${isDarkMode ? "text-white" :"text-black"}`}>Specialities</p>
 
             <Slider {...settings}>
                 {specialities.map((specialite) => (

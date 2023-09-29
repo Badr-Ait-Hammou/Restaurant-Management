@@ -23,6 +23,7 @@ import RestaurantIcon from "@mui/icons-material/Restaurant";
 import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
 import shoppingCartIcon from "../images/shopping-cardIcon.gif";
 import saleIcon from "../images/onsaleIcon.gif"
+import {useDarkMode} from "./DarkModeContext";
 
 
 export default function HomePage() {
@@ -33,6 +34,8 @@ export default function HomePage() {
     const [productInCart, setProductInCart] = useState({});
     const [loading, setLoading] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
+    const { isDarkMode } = useDarkMode();
+
 
 
 
@@ -182,14 +185,17 @@ export default function HomePage() {
 
     const productTemplate = (product) => {
         return (
-            <Box sx={{height:"450px"}} key={product.id} className=" border-1 surface-border border-round m-1 text-center py-2 px-1 ">
+                <Box sx={{height:"450px"}} key={product.id} className={`border-2 surface-border border-round m-1 text-center py-2 px-1 ${isDarkMode ? 'bg-black text-white ' : 'bg-white text-black'}`} >
+
                 <Link to={`product/${product.id}`}>
-                    <div style={{position: 'relative'}}>
+                    <div style={{position: 'relative'}}
+                    >
                         <img
-                            className="shadow-2 "
+                            className="shadow-2 border-2 border-white"
                             src={product.photo}
                             alt={product.nom}
                             style={{
+                                backgroundColor:"white",
                                 width: '400px',
                                 height: '200px',
                                 borderRadius: '8px',
@@ -235,6 +241,7 @@ export default function HomePage() {
                         {product.promotion === true ?(
                             <Tag value={"On sale"}
                                  severity="danger"
+                                 className="animate-pulse"
                                  style={{
                                      fontSize: '8px',
                                      position: 'absolute',
@@ -258,7 +265,7 @@ export default function HomePage() {
                     </div>
                 </Link>
                     <div className="text-xl font-monospace">{product.nom}</div>
-                    <Typography sx={{height:"40px",fontSize:"10px"}}   color="text.secondary">
+                    <Typography sx={{height:"40px",fontSize:"10px",color: isDarkMode ? "white" : "grey"}}  >
                     {product.description}
                     </Typography>
                     <div className="flex align-items-center justify-content-between py-2 px-0 gap-0">
@@ -271,33 +278,32 @@ export default function HomePage() {
                             </Typography>
                         </div>
                     </div>
-                    <div className="flex align-items-center justify-content-between py-2  px-0 gap-0 ">
+                    <div  className="flex align-items-center justify-content-between py-2  px-0 gap-0" >
                         {product.prix >= 100 ?(
-                            <div
-                                className="flex align-items-center justify-content-center   surface-border ">
-                                <Tag value={"Free Shipping"} className="border border-teal-400" style={{backgroundColor:"transparent",color:"black",fontSize:"8px"}} icon={<DeliveryDiningIcon style={{fontSize:"20px",marginRight:"5px",color:"rgb(34,129,104)"}}/>}/>
+                            <div className="flex align-items-center justify-content-center   surface-border " >
+                                <Tag value={"Free Shipping"} className="  border border-teal-400" style={{backgroundColor:"transparent",fontSize:"8px",color: isDarkMode ? "white" : "black"}} icon={<DeliveryDiningIcon style={{fontSize:"20px",color: isDarkMode ? "white" : "rgb(34,129,104)",marginRight:"5px"}}/>}/>
                             </div>
                         ):(
                             <div
                                 className="flex align-items-center justify-content-center   surface-border ">
-                                <Tag value={"Shipping fee : 30 DH"} className="border border-teal-400" style={{backgroundColor:"transparent",color:"black",fontSize:"8px"}} icon={<DeliveryDiningIcon style={{fontSize:"20px",marginRight:"5px",color:"rgb(34,129,104)"}}/>}/>
+                                <Tag value={"Shipping fee : 30 DH"} className="  border border-teal-400" style={{backgroundColor:"transparent",fontSize:"8px",color: isDarkMode ? "white" : "black"}} icon={<DeliveryDiningIcon style={{fontSize:"20px",marginRight:"5px",color: isDarkMode ? "white" : "rgb(34,129,104)"}}/>}/>
 
                             </div>
                         )}
                         <div
                             className="flex align-items-center gap-1 justify-content-center   surface-border px-1">
-                            <Tag  value={product.restaurant && product.restaurant.nom} className="border border-teal-400" style={{backgroundColor:"transparent",color:"black",fontSize:"8px"}} icon={<RestaurantIcon style={{fontSize:"17px",marginRight:"5px",color:"rgb(34,129,104)"}}/>}/>
+                            <Tag  value={product.restaurant && product.restaurant.nom} className="border border-teal-400" style={{backgroundColor:"transparent",color: isDarkMode ? "white" : "black",fontSize:"8px"}} icon={<RestaurantIcon style={{fontSize:"17px",marginRight:"5px",color: isDarkMode ? "white" : "rgb(34,129,104)"}}/>}/>
                         </div>
                     </div>
 
                     <div className="flex align-items-center justify-content-between py-1  gap-1">
-                        <Tag value={`${product.prix} Dh`} style={{fontSize:"17px"}} className="font-monospace p-tag-rounded bg-transparent border border-teal-400 mt-2 p-2 text-black shadow shadow-2"/>
+                        <Tag value={`${product.prix} Dh`} style={{fontSize:"17px",color: isDarkMode ? "white" : "black"}} className="font-monospace p-tag-rounded bg-transparent border border-teal-400 mt-2 p-2  shadow shadow-2"/>
                         {productInCart[product.id] ? (
                             <Link to="/ifoulki_meals/cart" style={{textDecoration: "none", color: "white"}}>
                                 <Button
                                     icon={<ShoppingCartCheckoutIcon style={{fontSize:"28px"}}  />}
                                     label={"View" }
-                                    className="p-button-rounded p-button-raised gap-1 border-teal-400  p-button-text text-teal-600   mt-2 p-1   "
+                                    className={`p-button-rounded gap-1 border-teal-400  p-button-text text-teal-600   mt-2 p-1 ${isDarkMode ? "bg-white" : "p-button-raised"}`}
                                     disabled={product.stock <= 0}
                                 />
                             </Link>
@@ -374,7 +380,7 @@ export default function HomePage() {
 
             <div style={{marginTop: "135px"}}>
                 <Card variant="outlined"
-                      sx={{borderColor: "white", backgroundColor: 'rgba(234,230,233,0.27)'}}>
+                      sx={{ backgroundColor: 'rgba(234,230,233,0.27)'}}>
                     <CardContent>
                         <SpecialitySlick/>
                     </CardContent>
@@ -423,8 +429,10 @@ export default function HomePage() {
                     <strong className="font-serif ">Best Plans</strong>
                 </div>
                 <div className=" mt-5">
-                    <div>
-                        <Carousel value={productsno}
+                    {/*<div >*/}
+                    <div className={`${isDarkMode ? 'bg-black text-white' : 'bg-white'}`}>
+
+                    <Carousel value={productsno}
                                   numVisible={4}
                                   numScroll={1}
                                   responsiveOptions={responsiveOptions}

@@ -15,7 +15,7 @@ function App() {
 
     return (
 
-            <div className={`App  ${isDarkMode ? 'bg-black ' : 'bg-white'}`}>
+            <div className={` App ${isDarkMode ? 'bg-black text-white ' : 'bg-white'}`}>
                 <Router>
                 <Routes>
                     <Route path="/*" element={<AuthRoute/>}/>
