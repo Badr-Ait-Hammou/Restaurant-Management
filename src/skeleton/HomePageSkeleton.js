@@ -39,26 +39,18 @@ export default function HomePageSkeleton() {
 
     const carouselItemTemplate = () => {
 
-
-
         return (
-            <div  className="border-1 surface-border border-round m-2 text-center py-5 px-3">
-
-            <div className="flex flex-wrap align-items-center justify-content-between gap-2">
-                        <Skeleton  className={`w-6rem border-round h-1rem  ${isDarkMode ? "bg-black" :""}`} />
-                        <Skeleton  className={`w-3rem border-round h-1rem  ${isDarkMode ? "bg-black" :""}`} />
+            <div  className={`border-1 surface-border border-round m-2 text-center py-5 px-3  ${isDarkMode ? 'bg-black text-white   px-1' : 'bg-white '}`}>
+                    <div className={`flex flex-column align-items-center gap-3 -mt-4 ${isDarkMode ? "bg-black" :""}`}>
+                        <Skeleton  className={`w-12 shadow-2 border-round h-12rem ${isDarkMode ? "bg-gray-900" :""}`} />
+                        <Skeleton  className={`w-8rem border-round h-2rem ${isDarkMode ? "bg-gray-900" :""}`}/>
+                        <Skeleton  className={`w-6rem border-round h-1rem ${isDarkMode ? "bg-gray-900" :""}`}/>
                     </div>
-                    <div className="flex flex-column align-items-center gap-3 py-5">
-                        <Skeleton  className={`w-9 shadow-2 border-round h-10rem${isDarkMode ? "bg-black" :""}`} />
-                        <Skeleton  className={`w-8rem border-round h-2rem${isDarkMode ? "bg-black" :""}`}/>
-                        <Skeleton  className={`w-6rem border-round h-1rem ${isDarkMode ? "bg-black" :""}`}/>
-                    </div>
-                    <div className="flex align-items-center justify-content-between">
-                        <Skeleton  className={`w-4rem border-round h-2rem ${isDarkMode ? "bg-black" :""}`} />
-                        <Skeleton shape="circle"  className={`w-3rem h-3rem ${isDarkMode ? "bg-black" :""}`} />
+                    <div  className={`flex align-items-center justify-content-between ${isDarkMode ? "bg-black" :""}`}>
+                        <Skeleton  className={`w-4rem border-round h-2rem ${isDarkMode ? "bg-gray-900" :""}`} />
+                        <Skeleton  className={`w-4rem border-round h-2rem ${isDarkMode ? "bg-gray-900" :""}`} />
                     </div>
                 </div>
-            // </div>
         );
     };
 
@@ -70,17 +62,16 @@ export default function HomePageSkeleton() {
 
     return (
         <>
-            <div >
-                <div className="  surface-card ">
-
-                    <Skeleton width="100%" height="2rem" borderRadius={"0px"}  className={`mb-0.5 ${isDarkMode ? "bg-black" :""}`} />
-                    <Skeleton width="100%" height="400px"  className={`mb-1 ${isDarkMode ? "bg-black" :""}`} />
-                    <Skeleton width="100%" height="100px"  />
-                    <Skeleton width="100%" height="100px"  className={`mt-3 ${isDarkMode ? "bg-black" :""}`} />
-                    <div className="flex justify-content-center mt-1">
-                        <Skeleton width="4rem" height="2rem"  className={` mx-2 ${isDarkMode ? "bg-black" :""}`}/>
-                        <Skeleton width="4rem" height="2rem" className={` ${isDarkMode ? "bg-black" :""}`} />
-                        <Skeleton width="4rem" height="2rem"  className={`mx-2 ${isDarkMode ? "bg-black" :""}`} />
+            <div className={` ${isDarkMode ? "bg-black" :""}`}>
+                <div   className={`card  ${isDarkMode ? "bg-black" :""}`}>
+                    <Skeleton width="100%" height="2rem" borderRadius={"0px"}  className={`mb-0.5 ${isDarkMode ? "bg-gray-900" :""}`} />
+                    <Skeleton width="100%" height="400px"  className={`mb-1 ${isDarkMode ? "bg-gray-900" :""}`} />
+                    <Skeleton width="100%" height="150px"  className={`  ${isDarkMode ? 'bg-gray-900   px-1' : ' '}`}/>
+                    <Skeleton width="100%" height="150px"  className={`mt-3 ${isDarkMode ? "bg-gray-900" :""}`} />
+                    <div  className={`flex justify-content-center mt-1  ${isDarkMode ? 'bg-black   px-1' : ''}`}>
+                        <Skeleton width="4rem" height="2rem"  className={` mx-2 ${isDarkMode ? "bg-gray-900" :""}`}/>
+                        <Skeleton width="4rem" height="2rem" className={` ${isDarkMode ? "bg-gray-900" :""}`} />
+                        <Skeleton width="4rem" height="2rem"  className={`mx-2 ${isDarkMode ? "bg-gray-900" :""}`} />
                     </div>
                 </div>
             </div>
@@ -98,6 +89,7 @@ export default function HomePageSkeleton() {
                 circular
                 autoplayInterval={3000}
                 itemTemplate={carouselItemTemplate}
+                showIndicators={false}
             />
         </div>
 
@@ -112,6 +104,7 @@ export default function HomePageSkeleton() {
                 circular
                 autoplayInterval={3000}
                 itemTemplate={carouselItemTemplate}
+                showIndicators={false}
             />
         </div>
         </>

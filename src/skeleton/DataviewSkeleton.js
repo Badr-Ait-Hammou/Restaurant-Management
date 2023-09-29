@@ -34,6 +34,7 @@ export default function DataviewSkeleton() {
                             <div className="flex align-items-center gap-3">
                                 <Skeleton className="w-6rem border-round h-1rem" />
                                 <Skeleton className="w-3rem border-round h-1rem" />
+
                             </div>
                         </div>
                         <div className="flex sm:flex-column align-items-center sm:align-items-end gap-3 sm:gap-2">
