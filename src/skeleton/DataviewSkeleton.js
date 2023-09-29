@@ -2,9 +2,12 @@ import React, { useState } from 'react';
 import { DataView, DataViewLayoutOptions } from 'primereact/dataview';
 import { Skeleton } from 'primereact/skeleton';
 import {Dropdown} from "primereact/dropdown";
+import {useDarkMode} from "../components/DarkModeContext";
 
 export default function DataviewSkeleton() {
     const [layout, setLayout] = useState('grid');
+    const { isDarkMode } = useDarkMode();
+
 
     const products = [
         { id: 1 },
@@ -15,6 +18,7 @@ export default function DataviewSkeleton() {
         { id: 6 },
         { id: 7 },
         { id: 8 },
+        { id: 9 },
 
     ];
 
@@ -44,20 +48,18 @@ export default function DataviewSkeleton() {
 
     const gridItem = () => {
         return (
-            <div className="col-12 sm:col-6 lg:col-4 xl:col-3 p-2">
-                <div className="p-4 border-1 surface-border surface-card border-round">
-                    <div className="flex flex-wrap align-items-center justify-content-between gap-2">
-                        <Skeleton className="w-6rem border-round h-1rem" />
-                        <Skeleton className="w-3rem border-round h-1rem" />
+            <div className={`container col-12 sm:col-6 lg:col-4 xl:col-3  p-1  ${isDarkMode ? 'bg-black text-white   px-1' : 'bg-white '}`} >
+                <div className={`p-1 border-2 border-teal-400  border-round ${isDarkMode ? 'bg-black text-white' : 'bg-white'}`}>
+                    <div   className={`flex flex-column align-items-center gap-1 py-1 ${isDarkMode ? "bg-gray-900" :""}`}>
+                        <Skeleton   className={`w-12 shadow-2 border-round h-12rem ${isDarkMode ? "bg-gray-900" :""}`}/>
                     </div>
                     <div className="flex flex-column align-items-center gap-3 py-5">
-                        <Skeleton className="w-9 shadow-2 border-round h-10rem" />
-                        <Skeleton className="w-8rem border-round h-2rem" />
-                        <Skeleton className="w-6rem border-round h-1rem" />
+                        <Skeleton  className={`w-10rem border-round h-2rem ${isDarkMode ? "bg-gray-900" :""}`} />
+                        <Skeleton className={`w-6rem border-round h-1rem ${isDarkMode ? "bg-gray-900" :""}`} />
                     </div>
                     <div className="flex align-items-center justify-content-between">
-                        <Skeleton className="w-4rem border-round h-2rem" />
-                        <Skeleton shape="circle" className="w-3rem h-3rem" />
+                        <Skeleton   className={`w-5rem border-round h-3rem ${isDarkMode ? "bg-gray-900" :""}`}/>
+                        <Skeleton shape="rectangle"   className={` w-5rem h-3rem ${isDarkMode ? "bg-gray-900" :""}`} />
                     </div>
                 </div>
             </div>
@@ -75,12 +77,12 @@ export default function DataviewSkeleton() {
 
     const header = () => {
         return (
-            <div className="flex justify-between items-center">
+            <div  className={`flex justify-between  items-center ${isDarkMode ? 'bg-black text-white p-3 -m-4' : ' '}`}>
                 <div>
                     <Dropdown
                         optionLabel="label"
                         placeholder="Sort By Price"
-                        className="w-full sm:w-14rem"
+                        className={`w-full sm:w-14rem ${isDarkMode ? 'bg-black text-white border-2  border-teal-400' : ' '}`}
                     />
                 </div>
                 <div>
@@ -94,7 +96,7 @@ export default function DataviewSkeleton() {
     };
 
     return (
-        <div className="card mx-2 mt-5">
+        <div    className={`card mx-2 mt-5 ${isDarkMode ? 'bg-black text-white' : 'bg-white'}`}>
             <DataView value={products} itemTemplate={itemTemplate} layout={layout} header={header()} />
         </div>
     );
