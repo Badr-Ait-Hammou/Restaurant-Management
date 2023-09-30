@@ -23,6 +23,7 @@ import {Divider} from "primereact/divider";
 import Chip from '@mui/material/Chip';
 import Avatar from '@mui/material/Avatar';
 import { useNavigate } from 'react-router-dom';
+import {useDarkMode} from "../components/DarkModeContext";
 
 
 
@@ -48,6 +49,7 @@ export default function Cart() {
     const [activeStep, setActiveStep] = useState(0);
     const [isCashOnDelivery, setIsCashOnDelivery] = useState(false);
     const [isOnlinePayment, setIsOnlinePayment] = useState(false);
+    const { isDarkMode } = useDarkMode();
     const steps = ['Verify Email and Address', 'Choose Payment Method', 'Review and Confirm'];
 
 
@@ -250,9 +252,9 @@ export default function Cart() {
 
     const itemTemplate = (product) => {
         return (
-            <div key={product.id} className="flex col-12 flex-wrap p-2 align-items-center gap-3">
+            <div key={product.id} className={`flex col-12 flex-wrap p-2 align-items-center gap-3  ${isDarkMode ? "bg-black text-white" :"text-black"}`}>
                 <img
-                    className="w-4rem shadow-2 flex-shrink-0 border-round"
+                    className="w-4rem shadow-2 flex-shrink-0 border-round border-2 border-teal-400"
                     src={product.produit.photo}
                     alt={product.produit.nom}
                 />
@@ -332,12 +334,15 @@ export default function Cart() {
     const renderRestaurantCards = () => {
         const groupedProducts = groupProductsByRestaurant();
         return Object.keys(groupedProducts).map((restaurantName) => (
-            <div key={restaurantName} className="card m-1">
-                <div className="restaurant-header text-left">
-                    <Divider align="left" className="-mb-2">
-                        <div className="inline-flex align-items-center -mt-3 ">
+            <div key={restaurantName}  className={`card m-1 ${isDarkMode ? "bg-black text-white" :"text-black"}`}
+            >
+                <div className="restaurant-header text-left "  >
+                    <Divider align="left" className="-mb-2 "  >
+                        <div className={`inline-flex align-items-center -m-2  ${isDarkMode ? "bg-black text-white" :"text-black"}`}
+                        >
                             <Chip
-                                avatar={<Avatar alt={restaurantName} src={groupedProducts[restaurantName].photo} />}
+                                className={` ${isDarkMode ? "bg-black  border-2 border-teal-400 text-white" :"text-black"}`}
+                                avatar={<Avatar alt={restaurantName} src={groupedProducts[restaurantName].photo}  className={` ${isDarkMode ? "bg-black border-2 border-teal-400 text-white" :"text-black"}`}/>}
                                 label={restaurantName}
                                 variant="outlined"
                                 size="medium"
