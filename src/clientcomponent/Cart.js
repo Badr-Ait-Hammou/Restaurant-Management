@@ -24,6 +24,7 @@ import Chip from '@mui/material/Chip';
 import Avatar from '@mui/material/Avatar';
 import { useNavigate } from 'react-router-dom';
 import {useDarkMode} from "../components/DarkModeContext";
+import {teal} from "@mui/material/colors";
 
 
 
@@ -252,7 +253,7 @@ export default function Cart() {
 
     const itemTemplate = (product) => {
         return (
-            <div key={product.id} className={`flex col-12 flex-wrap p-2 align-items-center gap-3  ${isDarkMode ? "bg-black text-white" :"text-black"}`}>
+            <div key={product.id} className={`flex col-12 flex-wrap p-2  align-items-center gap-3  ${isDarkMode ? "bg-black text-white" :"text-black"}`}>
                 <img
                     className="w-4rem shadow-2 flex-shrink-0 border-round border-2 border-teal-400"
                     src={product.produit.photo}
@@ -265,10 +266,10 @@ export default function Cart() {
                             <Tag style={{ fontSize: "10px" }} value={`In Stock :${product.produit.stock} Pcs`} />
                         </span>
                     </div>
-                    <div className="flex align-items-center sm:col-12  md:col-12 xl:col-12 justify-content-sm-center justify-content-between ">
+                    <div className="flex align-items-center sm:col-12  md:col-12 xl:col-12 justify-content-sm-center justify-content-between " >
                         <div>
-                            <Tag
-                                style={{ fontSize: "10px", float: "left", backgroundColor: "rgba(224,200,200,0.21)", color: "black" }}
+                            <Tag className={`bg-transparent border-2 border-teal-400 ${isDarkMode ? "text-white" :"text-black"}`}
+                                 style={{ fontSize: "10px", float: "left" }}
                                 value={`Price :${product.totalprice} Dh`}
                             /><br />
                             <Typography variant="body2" color="text.secondary" style={{fontSize:"12px",float: "left"}} className="ml-1">{product.produit.description}</Typography><br/>
@@ -278,8 +279,9 @@ export default function Cart() {
 
                         <div>
                             <TextField
-                                sx={{width:90}}
-                                className="text-right "
+                                sx={{width:90,borderRadius:2}}
+
+                                className={`text-right ${isDarkMode ? "bg-gray-800  text-white" :"text-black"}`}
                                 type="number"
                                 value={productQuantities[product.id] || product.quantity}
                                 onChange={(e) => {
@@ -297,6 +299,7 @@ export default function Cart() {
                                                 color="error"
                                                 size="small"
                                                 sx={{p:-1,m:-1}}
+
 
                                             >
                                                 <DeleteIcon sx={{fontSize:20}}/>
@@ -334,7 +337,7 @@ export default function Cart() {
     const renderRestaurantCards = () => {
         const groupedProducts = groupProductsByRestaurant();
         return Object.keys(groupedProducts).map((restaurantName) => (
-            <div key={restaurantName}  className={`card m-1 ${isDarkMode ? "bg-black text-white" :"text-black"}`}
+            <div key={restaurantName}  className={`card border-2 border-teal-400 p-1 m-1 ${isDarkMode ? "bg-black text-white" :"text-black"}`}
             >
                 <div className="restaurant-header text-left "  >
                     <Divider align="left" className="-mb-2 "  >
@@ -396,23 +399,23 @@ export default function Cart() {
     return (
         <>
             <Toast ref={toast}/>
-            <Box sx={{mx:3,mt:3}}>
+            <Box sx={{mx:3,mt:3}} >
                 <Grid item container spacing={1}  columns={12} >
                     <Grid item xs={12} md={7}  >
                         <div className="card " style={{width:"100%",height:"40px",backgroundColor:"rgb(23,113,122)",borderBottomRightRadius:"0px",borderBottomLeftRadius:"0px"}}><Typography className="font-monospace text-center text-white text-1xl mt-1">Shopping Cart</Typography></div>
-                        <div className="card" style={{backgroundColor:"rgba(23,113,122,0.04)",borderTopRightRadius:"0px",borderTopLeftRadius:"0px"}}>
+                        <div className="card border-2 border-teal-400" style={{backgroundColor:"rgba(23,113,122,0.04)",borderTopRightRadius:"0px",borderTopLeftRadius:"0px"}}>
                             {renderRestaurantCards()}
 
                         </div>
                     </Grid>
                     <Grid item xs={12} md={5}   >
                         <div className="card " style={{width:"100%",height:"40px",backgroundColor:"rgb(23,113,122)",borderBottomRightRadius:"0px",borderBottomLeftRadius:"0px"}}></div>
-                        <div className="card" style={{backgroundColor:"rgba(23,113,122,0.04)",borderTopRightRadius:"0px",borderTopLeftRadius:"0px"}}>
+                        <div className="card border-2 border-teal-400" style={{backgroundColor:"rgba(23,113,122,0.04)",borderTopRightRadius:"0px",borderTopLeftRadius:"0px"}}>
                         {cartProducts.length === 0 ? (
                                 <Skeleton width="100%" height="233px"  />
 
                         ) : (
-                            <div className="grid mt-1 p-1" >
+                            <div className="grid mt-1 p-1 0" >
                                 <div className="col-6">
                                     <div className="text-center p-1 border-round-sm  font-bold">
                                         <p className="mb-1">Total Quantity :</p>
