@@ -24,7 +24,6 @@ import Chip from '@mui/material/Chip';
 import Avatar from '@mui/material/Avatar';
 import { useNavigate } from 'react-router-dom';
 import {useDarkMode} from "../components/DarkModeContext";
-import {teal} from "@mui/material/colors";
 
 
 
@@ -360,7 +359,7 @@ export default function Cart() {
     };
 
 
-    /**************************************************User info **************************** **/
+    /************************************************** User info **************************** **/
 
 
     const handleUpdate = (event) => {

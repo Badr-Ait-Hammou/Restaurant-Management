@@ -16,10 +16,10 @@ import {useNavigate} from "react-router-dom";
 import {accountService} from "../service/accountService";
 import {Grid} from "@mui/material";
 import LocalShippingRoundedIcon from "@mui/icons-material/LocalShippingRounded";
-import RailwayAlertRoundedIcon from '@mui/icons-material/RailwayAlertRounded';
-import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import Ifoulkilogo from "../images/IFOULKIlogo2.svg";
 import { useDarkMode } from '../components/DarkModeContext';
+import LightModeIcon from '@mui/icons-material/LightMode';
+import NightsStayIcon from '@mui/icons-material/NightsStay';
 
 
 const pages = [ 'restaurants', 'profile', 'reservation', 'orders', 'cart', 'all_products'];
@@ -194,7 +194,7 @@ export default function ClientHeader() {
                                 onClick={toggleDarkMode}
                                 color="inherit"
                             >
-                                {isDarkMode ? <LocalShippingIcon /> : <RailwayAlertRoundedIcon />}
+                                {isDarkMode ? <LightModeIcon /> : <NightsStayIcon />}
                             </IconButton>
                         </Box>
 

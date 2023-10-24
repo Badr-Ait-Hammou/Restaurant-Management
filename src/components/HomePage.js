@@ -363,15 +363,15 @@ export default function HomePage() {
                     }}>
 
 
-                        <Button label="Best Offers" severity="help" raised className="m-1 p-1"
+                        <Button label="Best Offers"  raised className="m-1 p-1 bg-teal-400 border-2 border-teal-400"
                                 style={{fontSize: "11px"}}/>
-                        <Button label="Today's Deals " severity="warning" raised className="m-1 p-1"
+                        <Button label="Today's Deals " severity="warning" raised className="m-1 p-1 bg-transparent  border-2 border-teal-400"
                                 style={{fontSize: "11px"}}/>
 
                     </div>
                     <div style={{position: 'absolute', top: '55%', left: '50%', transform: 'translateX(-50%)'}}>
-                        <Typography variant="h2" className=" font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-teal-800" align="center" gutterBottom >
-                            Welcome
+                        <Typography variant="h4" className=" font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-teal-800" align="center" gutterBottom >
+                            Welcome To Ifoulki Meals
                         </Typography>
                     </div>
 
