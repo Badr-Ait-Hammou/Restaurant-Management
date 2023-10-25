@@ -20,9 +20,12 @@ import Ifoulkilogo from "../images/IFOULKIlogo2.svg";
 import { useDarkMode } from '../components/DarkModeContext';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import NightsStayIcon from '@mui/icons-material/NightsStay';
+import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 
-const pages = [ 'restaurants', 'profile', 'reservation', 'orders', 'cart', 'all_products'];
+
+const pages = [ 'restaurants', 'profile', 'reservation', 'orders', 'all_products'];
 
 export default function ClientHeader() {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -161,6 +164,20 @@ export default function ClientHeader() {
                         </Box>
 
                         <Box sx={{flexGrow: 0}}>
+
+                            <IconButton
+                                size="small"
+                            >
+                                <Link
+
+                                    style={{textDecoration: "none", color: "white"}}
+                                    to={`cart`}
+                                >
+                                <ShoppingCartCheckoutIcon />
+                                </Link>
+                            </IconButton>
+
+
                             <Tooltip title="Open settings">
                                 <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
                                     <Avatar alt="Remy Sharp" src="/static/images/avatar/logo.png"/>
@@ -183,19 +200,21 @@ export default function ClientHeader() {
                                 onClose={handleCloseUserMenu}
                             >
 
-                                <Button onClick={handleLogout} sx={{color: "black"}}>
-                                    <Typography textAlign="center">Logout</Typography>
-                                </Button>
+                                <IconButton
+                                    onClick={handleLogout}
+                                >
+                                   <LogoutIcon/>
+                                </IconButton><br/>
+
+                                <IconButton
+                                    size="small"
+                                    onClick={toggleDarkMode}
+                                >
+                                    {isDarkMode ? <LightModeIcon /> : <NightsStayIcon />}
+                                </IconButton>
                             </Menu>
 
-                            <IconButton
-                                size="large"
-                                aria-label="toggle dark mode"
-                                onClick={toggleDarkMode}
-                                color="inherit"
-                            >
-                                {isDarkMode ? <LightModeIcon /> : <NightsStayIcon />}
-                            </IconButton>
+
                         </Box>
 
                     </Toolbar>
