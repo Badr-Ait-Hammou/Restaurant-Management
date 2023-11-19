@@ -213,7 +213,7 @@ export default function Dashboard() {
 
                 <Grid item container columns={12} className="justify-content-center">
                     <Grid item xs={12} md={6}>
-                        <Tag severity="success" value={"orders stats"}/>
+                        <Tag severity="success" value={"orders "}/>
 
                         <Chart
                             type="polarArea"
@@ -223,7 +223,7 @@ export default function Dashboard() {
                     </Grid>
                     <Grid item xs={12} md={6} className="template justify-content-center">
                         <Tag className="facebook  ">
-                            <span className="px-2">products count</span>
+                            <span className="px-2">Products count / Rating</span>
                         </Tag>
 
 
