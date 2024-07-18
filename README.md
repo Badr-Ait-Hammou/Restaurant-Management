@@ -50,6 +50,13 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ![image](https://github.com/user-attachments/assets/1d36dbcc-ca25-4c65-9b01-4e7ec72b8859)
 
+## basket
+
+![image](https://github.com/user-attachments/assets/5b76d62c-4586-4276-b365-3874ef952bdb)
+
+## place order
+
+![image](https://github.com/user-attachments/assets/0b0aaf22-33e6-4bcb-9c19-191d62bf316a)
 
 
 
